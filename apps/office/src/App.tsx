@@ -1,22 +1,19 @@
-// Office app (owner and dispatcher). First slice: sign in, then today's jobs from Supabase.
-// The rest of the screens follow the clickable demo in /demo.
+// Office app for owners and dispatchers (web, and wrapped as a desktop app in apps/desktop).
 import { useEffect, useState, type FormEvent } from "react";
 import type { Session } from "@supabase/supabase-js";
-import { t, type Lang } from "@zentek/shared";
+import type { Lang } from "@zentek/shared";
 import { supabase } from "./supabase";
+import { LOGIN_DOMAIN, signInEmail } from "./lib";
+import { Today } from "./Today";
+import { Team } from "./Team";
+import { Admin } from "./Admin";
 
 type Membership = { company_id: string; role: "owner" | "dispatcher" | "crew"; companies: { name: string } | null };
-type VisitRow = {
-  id: string;
-  status: string;
-  route_order: number | null;
-  properties: { address: string } | null;
-  crews: { name: string } | null;
-};
+type Tab = "today" | "team" | "admin";
 
 export function App() {
   const [lang, setLang] = useState<Lang>("en");
-  const [session, setSession] = useState<Session | null>(null);
+  const [session, setSession] = useState<Session | null | undefined>(undefined);
 
   useEffect(() => {
     if (!supabase) return;
@@ -25,122 +22,129 @@ export function App() {
     return () => data.subscription.unsubscribe();
   }, []);
 
-  if (!supabase) return <SetupNeeded />;
+  if (!supabase || !LOGIN_DOMAIN)
+    return (
+      <main className="shell">
+        <div className="card narrow">
+          <h1>Setup needed</h1>
+          <p>Copy <code>apps/office/.env.example</code> to <code>.env.local</code> and fill it in.</p>
+        </div>
+      </main>
+    );
+
   return (
     <div className="shell">
       <header className="top">
         <strong>Zentek</strong>
-        <div className="seg" role="group" aria-label="Language">
-          {(["en", "es"] as const).map((l) => (
-            <button key={l} aria-pressed={lang === l} onClick={() => setLang(l)}>
-              {l.toUpperCase()}
+        <div className="row">
+          <div className="seg" role="group" aria-label="Language">
+            {(["en", "es"] as const).map((l) => (
+              <button key={l} aria-pressed={lang === l} onClick={() => setLang(l)}>
+                {l.toUpperCase()}
+              </button>
+            ))}
+          </div>
+          {session && (
+            <button className="link" onClick={() => void supabase!.auth.signOut()}>
+              Sign out
             </button>
-          ))}
+          )}
         </div>
       </header>
-      {session ? <Today lang={lang} /> : <SignIn />}
+      {session === undefined ? <p className="muted">Loading…</p> : session ? <Office lang={lang} userId={session.user.id} /> : <SignIn />}
     </div>
   );
 }
 
-function SetupNeeded() {
-  return (
-    <main className="card narrow">
-      <h1>Connect Supabase</h1>
-      <p>
-        Copy <code>apps/office/.env.example</code> to <code>.env.local</code> and fill in your project URL and anon key.
-      </p>
-    </main>
-  );
-}
-
 function SignIn() {
-  const [email, setEmail] = useState("");
-  const [sent, setSent] = useState(false);
+  const [user, setUser] = useState("");
+  const [pw, setPw] = useState("");
   const [error, setError] = useState("");
+  const [forgot, setForgot] = useState<"no" | "form" | "sent">("no");
 
   async function submit(e: FormEvent) {
     e.preventDefault();
     setError("");
-    const { error } = await supabase!.auth.signInWithOtp({ email, options: { shouldCreateUser: false, emailRedirectTo: window.location.origin } });
-    if (error) setError(error.message);
-    else setSent(true);
+    const { error } = await supabase!.auth.signInWithPassword({ email: signInEmail(user), password: pw });
+    if (error) setError("Wrong username or password.");
   }
 
+  async function requestReset(e: FormEvent) {
+    e.preventDefault();
+    await supabase!.rpc("request_password_reset", { p_username: user.includes("@") ? "" : user });
+    setForgot("sent");
+  }
+
+  if (forgot !== "no")
+    return (
+      <main className="card narrow stack">
+        <h1>Forgot password</h1>
+        {forgot === "sent" ? (
+          <p className="ok">Your request was sent. A company owner will set a new password and tell you. Owners: contact your Zentek administrator.</p>
+        ) : (
+          <form className="stack" onSubmit={requestReset}>
+            <label htmlFor="fu">Username</label>
+            <input id="fu" value={user} onChange={(e) => setUser(e.target.value)} autoCapitalize="none" spellCheck={false} required />
+            <button className="primary">Send request</button>
+          </form>
+        )}
+        <button className="link" onClick={() => setForgot("no")}>Back</button>
+      </main>
+    );
+
   return (
-    <main className="card narrow">
+    <main className="card narrow stack">
       <h1>Sign in</h1>
-      {sent ? (
-        <p>Check your email for a sign-in link.</p>
-      ) : (
-        <form onSubmit={submit} className="stack">
-          <label htmlFor="email">Work email</label>
-          <input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
-          <button className="primary" type="submit">
-            Email me a sign-in link
-          </button>
-          {error && <p className="error">{error}</p>}
-          <p className="muted">Only people your company invited can sign in.</p>
-        </form>
-      )}
+      <form className="stack" onSubmit={submit}>
+        <label htmlFor="u">Username or email</label>
+        <input id="u" value={user} onChange={(e) => setUser(e.target.value)} autoCapitalize="none" spellCheck={false} autoComplete="username" required />
+        <label htmlFor="p">Password</label>
+        <input id="p" type="password" value={pw} onChange={(e) => setPw(e.target.value)} autoComplete="current-password" required />
+        {error && <p className="error" role="alert">{error}</p>}
+        <button className="primary" type="submit">Sign in</button>
+      </form>
+      <button className="link" onClick={() => setForgot("form")}>Forgot password?</button>
     </main>
   );
 }
 
-function Today({ lang }: { lang: Lang }) {
-  const [membership, setMembership] = useState<Membership | null>(null);
-  const [visits, setVisits] = useState<VisitRow[]>([]);
-  const [error, setError] = useState("");
+function Office({ lang, userId }: { lang: Lang; userId: string }) {
+  const [membership, setMembership] = useState<Membership | null | undefined>(undefined);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [tab, setTab] = useState<Tab>("today");
 
   useEffect(() => {
     (async () => {
-      const m = await supabase!.from("memberships").select("company_id, role, companies(name)").limit(1).maybeSingle<Membership>();
-      if (m.error) return setError(m.error.message);
-      setMembership(m.data);
-      if (!m.data || m.data.role === "crew") return;
-      const today = new Date().toISOString().slice(0, 10);
-      const v = await supabase!
-        .from("visits")
-        .select("id, status, route_order, properties(address), crews(name)")
-        .eq("company_id", m.data.company_id)
-        .eq("scheduled_on", today)
-        .order("route_order", { ascending: true, nullsFirst: false })
-        .returns<VisitRow[]>();
-      if (v.error) setError(v.error.message);
-      else setVisits(v.data ?? []);
+      const [m, a] = await Promise.all([
+        supabase!.from("memberships").select("company_id, role, companies(name)").eq("user_id", userId).limit(1).maybeSingle<Membership>(),
+        supabase!.rpc("is_platform_admin"),
+      ]);
+      setMembership(m.data ?? null);
+      setIsAdmin(a.data === true);
+      if (!m.data && a.data === true) setTab("admin");
     })();
-  }, []);
+  }, [userId]);
 
-  if (error) return <main className="card"><p className="error">{error}</p></main>;
-  if (!membership) return <main className="card"><p className="muted">No company is linked to this login yet. Ask the owner for an invite.</p></main>;
-  if (membership.role === "crew") return <main className="card"><p>This login is a crew tablet. Use the Zentek Crew app.</p></main>;
+  if (membership === undefined) return <p className="muted">Loading…</p>;
+  if (membership?.role === "crew") return <main className="card"><p>This login is a technician. Use the Zentek technician app.</p></main>;
+  if (!membership && !isAdmin) return <main className="card"><p className="muted">This login isn't linked to a company yet.</p></main>;
 
-  const done = visits.filter((v) => v.status === "done").length;
+  const tabs: [Tab, string][] = [
+    ...(membership ? ([["today", "Today"], ["team", "Team"]] as [Tab, string][]) : []),
+    ...(isAdmin ? ([["admin", "App owner"]] as [Tab, string][]) : []),
+  ];
   return (
-    <main className="stack">
-      <section className="card">
-        <h1>{membership.companies?.name}</h1>
-        <p className="headline">{t(lang, "hlJobs", { d: done, n: visits.length })}</p>
-      </section>
-      <section className="card">
-        <h2>{t(lang, "tabToday")}</h2>
-        {visits.length === 0 ? (
-          <p className="muted">{t(lang, "allClear")}</p>
-        ) : (
-          <ul className="rows">
-            {visits.map((v) => (
-              <li key={v.id}>
-                <b>{v.properties?.address}</b>
-                <span>{v.crews?.name ?? t(lang, "notAssigned")}</span>
-                <span className={`chip ${v.status}`}>{v.status.replace("_", " ")}</span>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
-      <button className="link" onClick={() => supabase!.auth.signOut()}>
-        Sign out
-      </button>
-    </main>
+    <>
+      <nav className="tabs" role="tablist">
+        {tabs.map(([k, label]) => (
+          <button key={k} role="tab" aria-selected={tab === k} onClick={() => setTab(k)}>
+            {label}
+          </button>
+        ))}
+      </nav>
+      {tab === "today" && membership && <Today lang={lang} companyId={membership.company_id} companyName={membership.companies?.name ?? ""} />}
+      {tab === "team" && membership && <Team companyId={membership.company_id} myRole={membership.role} myId={userId} />}
+      {tab === "admin" && isAdmin && <Admin />}
+    </>
   );
 }

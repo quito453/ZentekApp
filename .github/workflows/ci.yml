@@ -25,3 +25,8 @@ jobs:
         run: npm test
       - name: Build office and crew apps
         run: npm run build
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Type-check Edge Functions
+        run: deno check supabase/functions/*/index.ts

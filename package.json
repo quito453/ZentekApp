@@ -5,8 +5,9 @@
   "description": "Field-service app for lawn care crews, dispatchers and owners.",
   "type": "module",
   "workspaces": [
-    "packages/*",
-    "apps/*"
+    "packages/shared",
+    "apps/office",
+    "apps/crew"
   ],
   "engines": {
     "node": ">=20"
@@ -17,7 +18,8 @@
     "build": "npm run build -w @zentek/shared && npm run build -w @zentek/office && npm run build -w @zentek/crew",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "vitest run",
-    "test:db": "vitest run supabase/tests"
+    "test:db": "vitest run supabase/tests",
+    "check:functions": "npx --yes deno@2 check supabase/functions/*/index.ts"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.5.14",

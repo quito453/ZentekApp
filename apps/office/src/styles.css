@@ -39,3 +39,33 @@ button { font: inherit; cursor: pointer; }
 .chip.done { background: var(--ok-soft); color: var(--ok); }
 .chip.blocked { background: var(--warn-soft); color: var(--warn); }
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+/* ── Office layout ── */
+.shell { max-width: 1180px; }
+.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.row-between { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.grid2 { display: grid; gap: 16px; }
+@media (min-width: 900px) { .grid2 { grid-template-columns: 1.1fr 1fr; align-items: start; } }
+.tabs { display: flex; gap: 6px; }
+.tabs button { border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 8px 18px; font-weight: 600; min-height: 44px; }
+.tabs button[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.live { font-size: 0.85rem; font-weight: 700; padding: 4px 12px; border-radius: 999px; background: var(--sunken); color: var(--muted); white-space: nowrap; }
+.live.on { background: var(--ok-soft); color: var(--ok); }
+.live.on::before { content: "● "; }
+.items { list-style: none; margin: 0; padding: 0; display: grid; }
+.items li { padding: 12px 0 12px 12px; border-top: 1px solid var(--line); border-left: 4px solid var(--line); margin-top: -1px; display: grid; gap: 6px; }
+.items li.password_reset { border-left-color: var(--warn); }
+.items p { margin: 0; }
+.small { min-height: 40px; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 10px; padding: 6px 14px; font-weight: 600; justify-self: start; }
+.small.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.small.danger { color: var(--bad); }
+.inline-form { display: grid; gap: 10px; max-width: 420px; padding-top: 8px; }
+.inline-form h3 { margin: 8px 0 0; }
+.inline-form label { display: grid; gap: 4px; font-weight: 600; font-size: 0.92rem; }
+select { min-height: 44px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); padding: 6px 10px; font: inherit; }
+.team-row { grid-template-columns: 1fr auto !important; }
+.linkish { background: none; border: 0; padding: 4px 0; color: var(--ink); text-align: left; }
+.linkish.sel b { text-decoration: underline; text-underline-offset: 4px; }
+input.num { width: 80px; min-height: 40px; }
+.ok { color: var(--ok); font-weight: 600; }
+code { font-size: 0.88em; background: var(--sunken); padding: 1px 6px; border-radius: 4px; }

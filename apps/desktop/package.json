@@ -1,0 +1,27 @@
+{
+  "name": "zentek-office-desktop",
+  "productName": "Zentek Office",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Desktop window for the Zentek office site (owners and dispatchers).",
+  "main": "main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "dist:win": "electron-builder --win",
+    "dist:mac": "electron-builder --mac"
+  },
+  "zentek": {
+    "officeUrl": "https://office.zentekapp.com"
+  },
+  "devDependencies": {
+    "electron": "45.2.1",
+    "electron-builder": "26.18.0"
+  },
+  "build": {
+    "appId": "com.zentek.office",
+    "productName": "Zentek Office",
+    "files": ["main.cjs", "package.json"],
+    "win": { "target": "nsis" },
+    "mac": { "target": "dmg", "category": "public.app-category.business" }
+  }
+}

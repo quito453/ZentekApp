@@ -489,5 +489,21 @@
   "thu": "Thu",
   "fri": "Fri",
   "sat": "Sat",
-  "sun": "Sun"
+  "sun": "Sun",
+  "techTitle": "Technician",
+  "username": "Username",
+  "password": "Password",
+  "signIn": "Sign in",
+  "forgotPw": "Forgot password?",
+  "forgotP": "We'll ask your dispatcher to set a new password. They'll tell you what it is.",
+  "forgotSend": "Ask my dispatcher",
+  "forgotSent": "Done. Your dispatcher got your request.",
+  "forgotNoSignal": "No signal. Try again when you have signal, or call your dispatcher.",
+  "badLogin": "Wrong username or password.",
+  "needSignalLogin": "Signing in needs signal the first time.",
+  "signOut": "Sign out",
+  "notTechLogin": "This login isn't a technician. Use the office app.",
+  "back": "Back",
+  "gmName": "Good morning, {n}",
+  "loading": "Loading…"
 }

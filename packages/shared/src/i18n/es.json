@@ -489,5 +489,21 @@
   "thu": "jue",
   "fri": "vie",
   "sat": "sáb",
-  "sun": "dom"
+  "sun": "dom",
+  "techTitle": "Técnico",
+  "username": "Usuario",
+  "password": "Contraseña",
+  "signIn": "Entrar",
+  "forgotPw": "¿Olvidaste tu contraseña?",
+  "forgotP": "Le pediremos a tu despachador una contraseña nueva. Él te dirá cuál es.",
+  "forgotSend": "Pedir a mi despachador",
+  "forgotSent": "Listo. Tu despachador recibió tu solicitud.",
+  "forgotNoSignal": "Sin señal. Intenta de nuevo cuando tengas señal o llama a tu despachador.",
+  "badLogin": "Usuario o contraseña incorrectos.",
+  "needSignalLogin": "La primera vez necesitas señal para entrar.",
+  "signOut": "Cerrar sesión",
+  "notTechLogin": "Este usuario no es de técnico. Usa la app de oficina.",
+  "back": "Regresar",
+  "gmName": "Buenos días, {n}",
+  "loading": "Cargando…"
 }

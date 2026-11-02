@@ -26,7 +26,7 @@ beforeAll(async () => {
   db = await freshDb();
   await db.exec(`
     insert into auth.users (id) values ('${OWNER_A}'), ('${DISP_A}'), ('${TAB_A1}'), ('${TAB_A2}'), ('${OWNER_B}');
-    insert into public.companies (id, name, region) values ('${CO_A}', 'Green Ridge', 'ON'), ('${CO_B}', 'Other Lawn Co', 'ON');
+    insert into public.companies (id, name, region, seat_limit) values ('${CO_A}', 'Green Ridge', 'ON', 10), ('${CO_B}', 'Other Lawn Co', 'ON', 10);
     insert into public.crews (id, company_id, name) values ('${CREW_A1}', '${CO_A}', 'Crew 1'), ('${CREW_A2}', '${CO_A}', 'Crew 2'), ('${CREW_B1}', '${CO_B}', 'Crew 1');
     insert into public.memberships (user_id, company_id, role, crew_id) values
       ('${OWNER_A}', '${CO_A}', 'owner', null),
