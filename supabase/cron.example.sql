@@ -16,3 +16,18 @@ select cron.schedule(
   );
   $$
 );
+
+-- Fuel prices: once a day at 13:30 UTC, for companies with automatic fuel prices turned on.
+-- U.S. prices come out on Mondays and Canadian ones monthly; a daily check picks each up the day
+-- it's published. U.S. companies need the EIA_API_KEY secret (free from eia.gov/opendata).
+select cron.schedule(
+  'fuel-prices',
+  '30 13 * * *',
+  $$
+  select net.http_post(
+    url := 'https://<your-project-ref>.supabase.co/functions/v1/fuel-prices',
+    headers := jsonb_build_object('Content-Type', 'application/json', 'x-cron-secret', '<same value as the CRON_SECRET secret>'),
+    body := '{}'::jsonb
+  );
+  $$
+);

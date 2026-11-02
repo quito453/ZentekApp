@@ -179,3 +179,17 @@ describe("signed-out visitors", () => {
     ).rejects.toThrow();
   });
 });
+
+describe("fixed costs and fetched fuel prices", () => {
+  it("are the owner's alone", async () => {
+    await asUser(db, OWNER_A, (tx) => tx.query("insert into fixed_costs (company_id, name, monthly_cents) values ($1, 'Insurance', 90000)", [CO_A]));
+    await db.query("insert into company_fuel_prices (company_id, fuel_type, price_per_l, period, area, source) values ($1, 'regular', 1.45, '2026-09-01', 'Toronto', 'Statistics Canada')", [CO_A]);
+    expect(await asUser(db, OWNER_A, (tx) => count(tx, "select * from fixed_costs"))).toBe(1);
+    expect(await asUser(db, OWNER_A, (tx) => count(tx, "select * from company_fuel_prices"))).toBe(1);
+    for (const who of [DISP_A, TAB_A1, OWNER_B]) {
+      expect(await asUser(db, who, (tx) => count(tx, "select * from fixed_costs"))).toBe(0);
+      expect(await asUser(db, who, (tx) => count(tx, "select * from company_fuel_prices"))).toBe(0);
+    }
+    await expect(asUser(db, TAB_A1, (tx) => tx.query("insert into fixed_costs (company_id, name, monthly_cents) values ($1, 'x', 1)", [CO_A]))).rejects.toThrow();
+  });
+});

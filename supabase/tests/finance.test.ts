@@ -172,3 +172,43 @@ describe("finance is owner-only", () => {
     await asUser(db, OWNER, (tx) => tx.query("update labour_rates set hourly_cost_cents = 3000 where crew_member_id = $1", [MARCO]));
   });
 });
+
+describe("fixed costs and fuel receipts", () => {
+  it("shares fixed costs by what each job earns", async () => {
+    // $1,000 a month → one day is 100000 × 12 ÷ 365.25 = 3285¢, split 250 : 80 : 400.
+    await asUser(db, OWNER, (tx) => tx.query("insert into fixed_costs (company_id, name, monthly_cents) values ($1, 'Insurance', 100000)", [CO]));
+    const r = await asUser(db, OWNER, (tx) => tx.query<Job & { fixed_share_cents: number; net_cents: number }>("select * from public.job_profit($1, '2026-10-05', '2026-10-05')", [CO]));
+    const byId = Object.fromEntries(r.rows.map((j) => [j.visit_id, j]));
+    expect(byId[V1]).toMatchObject({ fixed_share_cents: 1125, net_cents: 9778 - 1125 });
+    expect(byId[V2]).toMatchObject({ fixed_share_cents: 360, net_cents: -922 - 360 });
+    expect(byId[V3]).toMatchObject({ fixed_share_cents: 1800, net_cents: 17278 - 1800 });
+    const s = await asUser(db, OWNER, (tx) => tx.query<{ s: Record<string, any> }>("select public.finance_summary($1, '2026-10-05', '2026-10-05') as s", [CO]));
+    expect(s.rows[0]!.s).toMatchObject({ profit_cents: 26134, fixed_cents: 3285, net_profit_cents: 26134 - 3285 });
+    await asUser(db, OWNER, (tx) => tx.query("delete from fixed_costs where company_id = $1", [CO]));
+  });
+
+  it("uses what crews paid at the pump when there are receipts", async () => {
+    // 50 L for $90 → $1.80/L instead of the $1.50 setting: 7.41 km per job × 20 L/100 km × $1.80 = 267¢.
+    await db.query("insert into fuel_receipts (company_id, crew_id, litres, amount_cents, bought_at) values ($1, $2, 50, 9000, '2026-10-05 15:00:00+00')", [CO, CREW]);
+    const r = await asUser(db, OWNER, (tx) => tx.query<Job>("select * from public.job_profit($1, '2026-10-05', '2026-10-05')", [CO]));
+    expect(r.rows.every((j) => j.fuel_cents === 267)).toBe(true);
+    const s = await asUser(db, OWNER, (tx) => tx.query<{ s: Record<string, any> }>("select public.finance_summary($1, '2026-10-05', '2026-10-05') as s", [CO]));
+    expect(s.rows[0]!.s).toMatchObject({ fuel_price_from: "receipts" });
+    expect(Number(s.rows[0]!.s.fuel_price_per_l)).toBe(1.8);
+    await db.query("delete from fuel_receipts where company_id = $1", [CO]);
+  });
+
+  it("keeps fixed costs and fetched fuel prices from dispatchers and crews", async () => {
+    await asUser(db, OWNER, (tx) => tx.query("insert into fixed_costs (company_id, name, monthly_cents) values ($1, 'Shop rent', 150000)", [CO]));
+    await db.query("insert into company_fuel_prices (company_id, fuel_type, price_per_l, period, area, source) values ($1, 'regular', 1.468, '2026-09-01', 'Toronto', 'Statistics Canada')", [CO]);
+    for (const who of [DISP, TECH, OTHER_OWNER]) {
+      expect(await asUser(db, who, (tx) => count(tx, "select * from fixed_costs"))).toBe(0);
+      expect(await asUser(db, who, (tx) => count(tx, "select * from company_fuel_prices"))).toBe(0);
+    }
+    expect(await asUser(db, OWNER, (tx) => count(tx, "select * from company_fuel_prices"))).toBe(1);
+    await expect(asUser(db, DISP, (tx) => tx.query("insert into fixed_costs (company_id, name, monthly_cents) values ($1, 'x', 1)", [CO]))).rejects.toThrow();
+    // Only the server writes fetched prices, not even the owner.
+    await expect(asUser(db, OWNER, (tx) => tx.query("insert into company_fuel_prices (company_id, fuel_type, price_per_l, period, area, source) values ($1, 'regular', 1, '2026-10-01', 'x', 'x')", [CO]))).rejects.toThrow();
+    await asUser(db, OWNER, (tx) => tx.query("delete from fixed_costs where company_id = $1", [CO]));
+  });
+});

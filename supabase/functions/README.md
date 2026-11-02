@@ -9,4 +9,14 @@ Server code that needs secrets or runs on a schedule lives here (Deno/TypeScript
 | `gps-daily` | Turns GPS points into trips, km and arrivals; deletes points older than 90 days | 3 |
 | `invite` | Owner invites a dispatcher, or creates a crew tablet login | 2 |
 
+Built so far: `admin-users`, `set-password`, `finance-report`, and `fuel-prices`.
+
+`fuel-prices` looks up the area's average fuel price once a day for companies that turned on automatic prices, and when an owner taps "Check the price now":
+
+- Canada: Statistics Canada table 18-10-0001-01 (monthly, by city, self-serve). No key needed.
+- United States: EIA weekly retail prices (your state where EIA publishes one, otherwise your region). Needs `EIA_API_KEY`, free from https://www.eia.gov/opendata/register.php.
+- Other countries: the owner types the price.
+
+Fuel receipts that crews log always take priority over the area average for that period.
+
 Secrets (Twilio, maps) are set with `npx supabase secrets set` and never committed.

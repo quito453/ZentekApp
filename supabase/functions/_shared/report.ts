@@ -87,6 +87,12 @@ export interface FinanceSummary {
   materials_cents: number;
   truck_cents: number;
   profit_cents: number;
+  /** Fixed monthly costs prorated to the period, and profit after them (added with fixed costs). */
+  fixed_cents?: number;
+  net_profit_cents?: number;
+  /** The fuel price used, and whether it came from crews' receipts or the area average / owner. */
+  fuel_price_per_l?: number;
+  fuel_price_from?: string;
   losing_jobs: number;
   complaint_jobs: number;
   mix: { regular_cents: number; new_customer_cents: number; upsell_cents: number; other_cents: number };
@@ -154,7 +160,8 @@ ${row("Labour", money(s.labour_cents, { whole: true }))}
 ${row("Fuel", money(s.fuel_cents, { whole: true }))}
 ${row("Materials", money(s.materials_cents, { whole: true }))}
 ${row("Truck wear", money(s.truck_cents, { whole: true }))}
-${row("Profit", money(s.profit_cents, { whole: true }))}
+${row("Profit from jobs", money(s.profit_cents, { whole: true }))}
+${s.fixed_cents ? row("Fixed costs", money(s.fixed_cents, { whole: true })) + row("Profit after fixed costs", money(s.net_profit_cents ?? s.profit_cents - s.fixed_cents, { whole: true })) : ""}
 </table>
 ${target}
 <h2 style="font-size:17px;margin:24px 0 6px">Where revenue came from</h2>
@@ -181,6 +188,7 @@ ${opts.appUrl ? `<p style="margin:24px 0 0"><a href="${esc(opts.appUrl)}" style=
     `${opts.companyName} · ${label}`,
     `Profit ${money(s.profit_cents, { whole: true })} (${margin}% margin) on ${money(s.revenue_cents, { whole: true })} from ${s.jobs} jobs.`,
     `Labour ${money(s.labour_cents, { whole: true })}, fuel ${money(s.fuel_cents, { whole: true })}, materials ${money(s.materials_cents, { whole: true })}, truck wear ${money(s.truck_cents, { whole: true })}.`,
+    ...(s.fixed_cents ? [`Fixed costs ${money(s.fixed_cents, { whole: true })}. Profit after fixed costs ${money(s.net_profit_cents ?? s.profit_cents - s.fixed_cents, { whole: true })}.`] : []),
     ...watch,
   ].join("\n");
 

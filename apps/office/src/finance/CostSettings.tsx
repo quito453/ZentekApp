@@ -2,6 +2,8 @@
 // Entered once by the owner; every job's profit is worked out from these.
 import { useEffect, useState, type FormEvent } from "react";
 import { supabase } from "../supabase";
+import { FuelSource } from "./FuelSource";
+import { FixedCosts } from "./FixedCosts";
 
 type Crew = { id: string; name: string };
 type Member = { id: string; full_name: string; crew_id: string | null; active: boolean };
@@ -204,11 +206,14 @@ export function CostSettings({ companyId }: { companyId: string }) {
         </form>
       </section>
 
+      <FixedCosts companyId={companyId} />
+      <FuelSource companyId={companyId} onChange={reload} />
+
       {company && (
-        <section className="card">
+        <section className="card" key={tick}>
           <h2>Fuel, overtime and target</h2>
           <form className="inline-form" onSubmit={saveCompany}>
-            <label>Fuel price ($ per litre)<input name="fuel" inputMode="decimal" defaultValue={company.fuel_price_per_l ?? ""} /></label>
+            <label>Fuel price you pay ($ per litre; replaced by automatic prices when they're on)<input name="fuel" inputMode="decimal" defaultValue={company.fuel_price_per_l ?? ""} /></label>
             <label>Overtime after (hours per week)<input name="ot" inputMode="decimal" defaultValue={company.overtime_after_hours} /></label>
             <label>Overtime pay (× regular)<input name="otx" inputMode="decimal" defaultValue={company.overtime_multiplier} /></label>
             <label>Monthly revenue target ($, optional)<input name="target" inputMode="decimal" defaultValue={dollars(company.monthly_revenue_target_cents)} /></label>

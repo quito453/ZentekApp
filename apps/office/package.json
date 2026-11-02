@@ -10,6 +10,8 @@
     "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {
+    "@fontsource/barlow": "^5.3.0",
+    "@fontsource/barlow-semi-condensed": "^5.3.0",
     "@supabase/supabase-js": "2.118.0",
     "@zentek/shared": "0.1.0",
     "react": "19.3.1",

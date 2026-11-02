@@ -4,3 +4,4 @@ export * from "./outbox";
 export * from "./accounts";
 export * from "./report";
 export * from "./csv";
+export * from "./fuel";

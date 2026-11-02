@@ -42,7 +42,9 @@ Owners open the office app on **Finance**. Dispatchers and technicians can't see
   - **Jobs, least profitable first,** downloadable as CSV.
 - **Profit per job** = price − labour − fuel − materials − truck wear. Labour is the crew's paid time that day (shift minus unpaid lunch) × each member's hourly cost, shared across the day's jobs by minutes on site. Fuel comes from GPS km. Truck wear is value ÷ years ÷ working hours. The SQL is in `supabase/migrations/20261102190000_finance.sql`, with a worked example in its test.
 - **Payroll:** this or last week or month, with paid hours, regular and overtime hours (threshold and multiplier per company; Ontario default 44 h at 1.5×) and cost. Downloads as CSV for Excel or your payroll service.
-- **Costs and rates:** people and their hourly cost, trucks (value, years, hours per year, L/100 km), material prices, fuel price, overtime rule, monthly target.
+- **Costs and rates:** people and their hourly cost, trucks (value, years, hours per year, L/100 km), material prices, fixed costs, fuel price, overtime rule, monthly target.
+- **Fixed costs** (insurance, rent, phones, software, loans) are entered per month, prorated to the period, and shared across jobs **in proportion to what each job earns**: a $2,000 job carries ten times the share of a $200 job. Overview shows profit before and after them, "Every $100 you charged" in plain words, and a "What if…" panel with sliders for fuel, crew pay, fixed costs and prices.
+- **Fuel price:** pick the country, province or state, closest city (Canada) and fuel type, and turn on automatic prices. The `fuel-prices` Edge Function checks public averages every day (Statistics Canada monthly by city; U.S. EIA weekly by state or region). Fuel receipts logged by crews override the average for that period, because they're what was actually paid.
 - **Email reports:** weekly on a chosen day and/or monthly on the 1st, to any addresses, plus "Email me … now". Sent by the `finance-report` Edge Function through [Resend](https://resend.com). Set the secrets `RESEND_API_KEY`, `REPORT_FROM` (e.g. `Zentek <reports@zentekapp.com>`, on a domain verified in Resend), `CRON_SECRET` and `OFFICE_URL`, then schedule it with `supabase/cron.example.sql`.
 
 ## Live updates
@@ -81,7 +83,7 @@ Connect to Supabase:
 
 Sign-up is off (`supabase/config.toml`): only the app owner creates logins.
 
-Edge Functions need three secrets: `npx supabase secrets set LOGIN_EMAIL_DOMAIN=users.zentekapp.com ALLOWED_ORIGINS=https://office.zentekapp.com,http://127.0.0.1:5173` (the service role key is provided by Supabase). Deploy them with `npx supabase functions deploy admin-users set-password finance-report`.
+Edge Functions need three secrets: `npx supabase secrets set LOGIN_EMAIL_DOMAIN=users.zentekapp.com ALLOWED_ORIGINS=https://office.zentekapp.com,http://127.0.0.1:5173` (the service role key is provided by Supabase). Deploy them with `npx supabase functions deploy admin-users set-password finance-report fuel-prices`. For automatic U.S. fuel prices also set `EIA_API_KEY` (free from eia.gov/opendata).
 
 ## Deploy
 
