@@ -123,7 +123,6 @@ function Office({ lang, userId }: { lang: Lang; userId: string }) {
       setMembership(m.data ?? null);
       setIsAdmin(a.data === true);
       if (!m.data && a.data === true) setTab("admin");
-      else if (m.data?.role === "owner") setTab("finance"); // owners open on the numbers
     })();
   }, [userId]);
 
@@ -132,8 +131,9 @@ function Office({ lang, userId }: { lang: Lang; userId: string }) {
   if (!membership && !isAdmin) return <main className="card"><p className="muted">This login isn't linked to a company yet.</p></main>;
 
   const tabs: [Tab, string][] = [
+    ...(membership ? ([["today", "Today"]] as [Tab, string][]) : []),
     ...(membership?.role === "owner" ? ([["finance", "Finance"]] as [Tab, string][]) : []),
-    ...(membership ? ([["today", "Today"], ["team", "Team"]] as [Tab, string][]) : []),
+    ...(membership ? ([["team", "Team"]] as [Tab, string][]) : []),
     ...(isAdmin ? ([["admin", "App owner"]] as [Tab, string][]) : []),
   ];
   return (

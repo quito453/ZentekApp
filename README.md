@@ -32,7 +32,7 @@ The clickable demo of every screen is in [`demo/index.html`](demo/index.html) (o
 
 ## Finance (owners only)
 
-Owners open the office app on **Finance**. Dispatchers and technicians can't see any of it, including pay rates (`supabase/tests/finance.test.ts` checks this).
+Owners open the office app on **Today**, with **Finance** as the next tab. Dispatchers and technicians can't see any of it, including pay rates (`supabase/tests/finance.test.ts` checks this).
 
 - **Overview** for a day, week or month, with the previous period for comparison: profit, revenue, costs, margin, jobs done and the monthly target. Below that:
   - **Needs a look:** money-losing jobs, complaint rate, open crew leads, missing pay rates

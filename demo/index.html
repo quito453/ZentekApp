@@ -2117,7 +2117,7 @@ function ownerTexts() {
   return `<div class="panel"><h2>${t("textsToday")} <small>${S.texts.length}</small></h2><div class="sms-log">${S.texts.map((x) => `<div><span><span class="mono muted">${x.at}</span> · ${esc(x.to)} · ${esc(L(x.what))}</span><span class="chip ${x.st === "st_sent" ? "ok" : x.st === "st_held" ? "app" : ""}">${t(x.st)}</span></div>`).join("")}</div></div>`;
 }
 const GROUPS = { today: ["today"], schedule: ["assign", "map", "props"], money: ["overview", "hours", "fuel"], team: ["team"], records: ["quality", "records", "texts"], settings: ["costs", "email"] };
-const officeGroups = () => (S.view === "dispatch" ? ["today", "schedule", "team", "records"] : ["money", "today", "team", "records", "settings"]);
+const officeGroups = () => (S.view === "dispatch" ? ["today", "schedule", "team", "records"] : ["today", "money", "team", "records", "settings"]);
 const groupOf = (k) => Object.keys(GROUPS).find((g) => GROUPS[g].includes(k));
 const SVC_TASKS = { ns_reg: ["mow", "edge", "trim", "blow"], ns_leaves: ["leaves", "beds", "haul"], ns_aer: ["aerate"], ns_fert: ["fert"], ns_over: ["over"], ns_shrub: ["shrub", "haul"], ns_snow: ["stakes"], j_gutter: ["gutter"], j_sprk: ["sprk"] };
 function doNewJob() {
@@ -2666,7 +2666,7 @@ document.addEventListener("click", (e) => {
   if (b.tagName === "A") e.preventDefault();
   const s = curStop();
   switch (a) {
-    case "view": S.view = b.dataset.v; S.focusCrew = null; if (S.view === "owner") S.ownerTab = "overview"; if (S.view === "dispatch") S.ownerTab = "today"; window.scrollTo({ top: 0 }); break;
+    case "view": S.view = b.dataset.v; S.focusCrew = null; if (S.view === "owner" || S.view === "dispatch") S.ownerTab = "today"; window.scrollTo({ top: 0 }); break;
     case "focusCrew": S.focusCrew = b.dataset.c && S.focusCrew !== b.dataset.c ? b.dataset.c : null; break;
     case "focusItem": if (b.dataset.c) S.focusCrew = b.dataset.c; break;
     case "leads": S.leadsOpen = !S.leadsOpen; break;
@@ -2714,7 +2714,7 @@ document.addEventListener("click", (e) => {
     case "payDl": downloadText("Payroll last week.csv", toCsvText([["Name", "Crew", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Paid hours", "Hourly cost", "Cost"], ...PEOPLE.map(([n, c, d]) => { const h = d.reduce((x, y) => x + y, 0), r = S.rates[n] || 25, reg = Math.min(h, S.otAfter), ot = Math.max(0, h - S.otAfter); return [n, T.en[c + "n"], ...d, h.toFixed(1), r, (r * (reg + ot * S.otx)).toFixed(2)]; })])); toast(t("payDl")); break;
     case "erNow": S.repLog.unshift({ at: fmtDay(START) + " · " + fmtT(now()), kind: b.dataset.k || "Report", to: S.rep.to || "—" }); toast(t("erSent", { e: S.rep.to || "—" })); break;
     case "lang": lang = b.dataset.l; document.documentElement.lang = lang; break;
-    case "reset": { const v = S.view; S = freshState(); S.view = v; if (v === "owner") S.ownerTab = "overview"; toast(t("reset")); break; }
+    case "reset": { const v = S.view; S = freshState(); S.view = v; if (v === "owner") S.ownerTab = "today"; toast(t("reset")); break; }
     case "crewTab": S.crewTab = b.dataset.k; window.scrollTo({ top: 0 }); break;
     case "clock":
       if (S.shift === "pre") {
