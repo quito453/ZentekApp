@@ -7,9 +7,10 @@ import { LOGIN_DOMAIN, signInEmail } from "./lib";
 import { Today } from "./Today";
 import { Team } from "./Team";
 import { Admin } from "./Admin";
+import { Finance } from "./finance/Finance";
 
 type Membership = { company_id: string; role: "owner" | "dispatcher" | "crew"; companies: { name: string } | null };
-type Tab = "today" | "team" | "admin";
+type Tab = "finance" | "today" | "team" | "admin";
 
 export function App() {
   const [lang, setLang] = useState<Lang>("en");
@@ -122,6 +123,7 @@ function Office({ lang, userId }: { lang: Lang; userId: string }) {
       setMembership(m.data ?? null);
       setIsAdmin(a.data === true);
       if (!m.data && a.data === true) setTab("admin");
+      else if (m.data?.role === "owner") setTab("finance"); // owners open on the numbers
     })();
   }, [userId]);
 
@@ -130,6 +132,7 @@ function Office({ lang, userId }: { lang: Lang; userId: string }) {
   if (!membership && !isAdmin) return <main className="card"><p className="muted">This login isn't linked to a company yet.</p></main>;
 
   const tabs: [Tab, string][] = [
+    ...(membership?.role === "owner" ? ([["finance", "Finance"]] as [Tab, string][]) : []),
     ...(membership ? ([["today", "Today"], ["team", "Team"]] as [Tab, string][]) : []),
     ...(isAdmin ? ([["admin", "App owner"]] as [Tab, string][]) : []),
   ];
@@ -142,6 +145,7 @@ function Office({ lang, userId }: { lang: Lang; userId: string }) {
           </button>
         ))}
       </nav>
+      {tab === "finance" && membership?.role === "owner" && <Finance companyId={membership.company_id} companyName={membership.companies?.name ?? ""} />}
       {tab === "today" && membership && <Today lang={lang} companyId={membership.company_id} companyName={membership.companies?.name ?? ""} />}
       {tab === "team" && membership && <Team companyId={membership.company_id} myRole={membership.role} myId={userId} />}
       {tab === "admin" && isAdmin && <Admin />}

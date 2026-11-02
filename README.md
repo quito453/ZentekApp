@@ -30,6 +30,21 @@ The clickable demo of every screen is in [`demo/index.html`](demo/index.html) (o
 2. In the SQL editor: `insert into app.platform_admins (user_id) values ('<your user id>');`
 3. Sign in to the office app; the **App owner** tab appears.
 
+## Finance (owners only)
+
+Owners open the office app on **Finance**. Dispatchers and technicians can't see any of it, including pay rates (`supabase/tests/finance.test.ts` checks this).
+
+- **Overview** for a day, week or month, with the previous period for comparison: profit, revenue, costs, margin, jobs done and the monthly target. Below that:
+  - **Needs a look:** money-losing jobs, complaint rate, open crew leads, missing pay rates
+  - **Where the money went:** labour, fuel, materials, truck wear
+  - **Where revenue came from:** regular customers, new customers, extra work from crew leads, redos
+  - **Crews:** profit per hour on site, leads won, complaint rate
+  - **Jobs, least profitable first,** downloadable as CSV.
+- **Profit per job** = price − labour − fuel − materials − truck wear. Labour is the crew's paid time that day (shift minus unpaid lunch) × each member's hourly cost, shared across the day's jobs by minutes on site. Fuel comes from GPS km. Truck wear is value ÷ years ÷ working hours. The SQL is in `supabase/migrations/20261102190000_finance.sql`, with a worked example in its test.
+- **Payroll:** this or last week or month, with paid hours, regular and overtime hours (threshold and multiplier per company; Ontario default 44 h at 1.5×) and cost. Downloads as CSV for Excel or your payroll service.
+- **Costs and rates:** people and their hourly cost, trucks (value, years, hours per year, L/100 km), material prices, fuel price, overtime rule, monthly target.
+- **Email reports:** weekly on a chosen day and/or monthly on the 1st, to any addresses, plus "Email me … now". Sent by the `finance-report` Edge Function through [Resend](https://resend.com). Set the secrets `RESEND_API_KEY`, `REPORT_FROM` (e.g. `Zentek <reports@zentekapp.com>`, on a domain verified in Resend), `CRON_SECRET` and `OFFICE_URL`, then schedule it with `supabase/cron.example.sql`.
+
 ## Live updates
 
 The office app listens to Supabase Realtime: when a technician taps a button, a dispatcher closes an item or a password request comes in, every open office screen updates within about a second, with no refresh. It also reloads when the window regains focus, so a laptop that slept catches up. Row-level security still applies to every update.
@@ -40,8 +55,8 @@ Every row belongs to a company. Row-level security in Postgres enforces it on ev
 
 | Role | Can do |
 | --- | --- |
-| Owner | Everything in their company, including fuel costs and prices |
-| Dispatcher | Schedule, crews, properties, records. No fuel or plan prices |
+| Owner | Everything in their company, including Finance: profit, pay rates, payroll and email reports |
+| Dispatcher | Schedule, crews, properties, records. No Finance, pay rates, fuel costs or plan prices |
 | Technician | Its own crew's visits, and the properties and notes on them. Records progress, checklist, photos, GPS, shifts. Can't change prices, dates or which crew a job belongs to |
 | App owner (you) | Creates companies, licences and logins; can set any password |
 
@@ -66,7 +81,7 @@ Connect to Supabase:
 
 Sign-up is off (`supabase/config.toml`): only the app owner creates logins.
 
-Edge Functions need three secrets: `npx supabase secrets set LOGIN_EMAIL_DOMAIN=users.zentekapp.com ALLOWED_ORIGINS=https://office.zentekapp.com,http://127.0.0.1:5173` (the service role key is provided by Supabase). Deploy them with `npx supabase functions deploy admin-users set-password`.
+Edge Functions need three secrets: `npx supabase secrets set LOGIN_EMAIL_DOMAIN=users.zentekapp.com ALLOWED_ORIGINS=https://office.zentekapp.com,http://127.0.0.1:5173` (the service role key is provided by Supabase). Deploy them with `npx supabase functions deploy admin-users set-password finance-report`.
 
 ## Deploy
 
