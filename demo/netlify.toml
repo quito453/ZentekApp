@@ -1,0 +1,9 @@
+# Optional second Netlify site for the clickable demo: set the site's base directory to "demo".
+[build]
+  publish = "."
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Robots-Tag = "noindex"

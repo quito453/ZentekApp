@@ -1,0 +1,27 @@
+{
+  "name": "zentek",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Field-service app for lawn care crews, dispatchers and owners.",
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev:office": "npm run dev -w @zentek/office",
+    "dev:crew": "npm run dev -w @zentek/crew",
+    "build": "npm run build -w @zentek/shared && npm run build -w @zentek/office && npm run build -w @zentek/crew",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "vitest run",
+    "test:db": "vitest run supabase/tests"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.14",
+    "typescript": "5.9.3",
+    "vitest": "5.1.0"
+  }
+}

@@ -1,0 +1,1985 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>[hidden]{display:none!important} :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)} body{margin:0} img{max-width:100%}</style>
+<title>GreenRoute Crew &amp; Owner</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: one phone column for the crew; the owner screen widens to two columns on desktop. Palette carried over from RealEstate-AI. */
+:root {
+  --bg: #f4f6f4; --surface: #ffffff; --sunken: #eaeeeb; --ink: #16201c; --muted: #5a6962; --line: #d9e0dc;
+  --accent: #2c6a55; --accent-ink: #ffffff; --accent-soft: #dcebe4;
+  --brass: #9a7316; --brass-soft: #f3e8cc; --ok: #2d7a4c; --ok-soft: #dcefe2;
+  --warn: #a8670f; --warn-soft: #f7e7cc; --bad: #b0402c; --bad-soft: #f6dfd9;
+  --bar: #16201c; --bar-ink: #eef3f0;
+  --map-land: #e7ece4; --map-park: #cfe0c8; --map-water: #cfe0ea; --map-road: #ffffff; --map-main: #f6e8c4;
+  --c1: #2f6fb0; --c2: #2c6a55; --c3: #b0402c; --c4: #8a55a8;
+  --shade: rgba(16, 24, 20, 0.4);
+  --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --r: 12px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111715; --surface: #18201d; --sunken: #0d1311; --ink: #e5ece8; --muted: #9aaba3; --line: #2a3632;
+    --accent: #6cc2a3; --accent-ink: #0c1512; --accent-soft: #1d3a30; --brass: #d9b45a; --brass-soft: #3a3019;
+    --ok: #6fcf93; --ok-soft: #173326; --warn: #e6ad55; --warn-soft: #3b2c14; --bad: #ee8a75; --bad-soft: #3d1f19;
+    --bar: #0b100e; --bar-ink: #dfe7e2;
+    --map-land: #1a2420; --map-park: #20332a; --map-water: #1b2a33; --map-road: #2c3a35; --map-main: #4a4230;
+    --c1: #7fb2e6; --c2: #6cc2a3; --c3: #ee8a75; --c4: #c79be0;
+    --shade: rgba(0, 0, 0, 0.6); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111715; --surface: #18201d; --sunken: #0d1311; --ink: #e5ece8; --muted: #9aaba3; --line: #2a3632;
+  --accent: #6cc2a3; --accent-ink: #0c1512; --accent-soft: #1d3a30; --brass: #d9b45a; --brass-soft: #3a3019;
+  --ok: #6fcf93; --ok-soft: #173326; --warn: #e6ad55; --warn-soft: #3b2c14; --bad: #ee8a75; --bad-soft: #3d1f19;
+  --bar: #0b100e; --bar-ink: #dfe7e2;
+  --map-land: #1a2420; --map-park: #20332a; --map-water: #1b2a33; --map-road: #2c3a35; --map-main: #4a4230;
+  --c1: #7fb2e6; --c2: #6cc2a3; --c3: #ee8a75; --c4: #c79be0;
+  --shade: rgba(0, 0, 0, 0.6); color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.45; }
+h1, h2, h3 { font-family: var(--font-display); margin: 0; line-height: 1.15; text-wrap: balance; font-weight: 700; }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.mono { font-family: var(--font-mono); font-size: 0.85em; }
+.muted { color: var(--muted); }
+.num { font-variant-numeric: tabular-nums; }
+.wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+/* demo bar */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--bar); }
+.demo-bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: var(--bar); color: var(--bar-ink); padding-block: 8px; }
+.demo-bar .in { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; max-width: 1180px; margin: 0 auto; }
+.demo-bar .lbl { font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.75; }
+.seg { display: inline-flex; border: 1px solid color-mix(in srgb, var(--bar-ink) 35%, transparent); border-radius: 999px; padding: 2px; }
+.seg button { border: 0; background: transparent; color: var(--bar-ink); padding: 6px 14px; border-radius: 999px; font-weight: 600; font-size: 0.9rem; min-height: 36px; }
+.seg button[aria-pressed="true"] { background: var(--bar-ink); color: var(--bar); }
+.demo-bar .sp { flex: 1; }
+@media (max-width: 480px) { .demo-bar .lbl { display: none; } .demo-bar .ghost { padding: 6px 10px; } }
+.demo-bar .ghost { background: transparent; border: 1px solid color-mix(in srgb, var(--bar-ink) 35%, transparent); color: var(--bar-ink); border-radius: 999px; padding: 6px 12px; font-size: 0.85rem; min-height: 36px; }
+
+/* banners */
+.banner { border-radius: var(--r); padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start; font-size: 0.95rem; }
+.banner.rain { background: var(--c1); color: #fff; }
+:root[data-theme="dark"] .banner.rain { color: #0c1512; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .banner.rain { color: #0c1512; } }
+.banner b { display: block; }
+.banner button { margin-left: auto; background: transparent; border: 1px solid currentColor; color: inherit; border-radius: 8px; padding: 4px 10px; white-space: nowrap; }
+
+/* ---------- crew screen ---------- */
+#crew { max-width: 480px; margin: 0 auto; padding-block: 12px 96px; display: flex; flex-direction: column; gap: 14px; }
+.crew-head { display: flex; align-items: center; gap: 12px; }
+.crew-head .who { flex: 1; min-width: 0; }
+.crew-head .who h1 { font-size: 1.45rem; }
+.crew-head .who span { color: var(--muted); font-size: 0.9rem; }
+.clock { border: 0; border-radius: 999px; padding: 10px 16px; min-height: 48px; font-weight: 600; display: inline-flex; gap: 8px; align-items: center; }
+.clock.out { background: var(--accent); color: var(--accent-ink); }
+.clock.in { background: var(--ok-soft); color: var(--ok); }
+.clock .dot { width: 9px; height: 9px; border-radius: 50%; background: currentColor; }
+.clock.in .dot { animation: pulse 1.6s infinite; }
+@keyframes pulse { 50% { opacity: 0.25; } }
+.progress { display: flex; gap: 4px; }
+.progress i { flex: 1; height: 8px; border-radius: 4px; background: var(--line); }
+.progress i.d { background: var(--accent); }
+.progress i.b { background: var(--warn); }
+.progress i.m { background: var(--c1); opacity: 0.5; }
+.progress-txt { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--muted); margin-top: 6px; }
+
+.job { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+.job.current { border: 2px solid var(--accent); box-shadow: 0 6px 24px -12px var(--shade); }
+.job-top { padding: 16px 16px 12px; display: grid; grid-template-columns: 40px 1fr; gap: 12px; }
+.stopno { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-family: var(--font-display); font-weight: 700; background: var(--accent); color: var(--accent-ink); font-size: 1.1rem; }
+.job-top h2 { font-size: 1.35rem; }
+.job-top .addr { font-size: 1rem; margin-top: 2px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.chip { font-size: 0.78rem; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: var(--sunken); color: var(--muted); }
+.chip.freq { background: var(--accent-soft); color: var(--accent); }
+.chip.season { background: var(--brass-soft); color: var(--brass); }
+.chip.app { background: var(--warn-soft); color: var(--warn); }
+.chip.ok { background: var(--ok-soft); color: var(--ok); }
+.chip.bad { background: var(--bad-soft); color: var(--bad); }
+.chip.blue { background: color-mix(in srgb, var(--c1) 18%, transparent); color: var(--c1); }
+.notes { margin: 0 16px 12px; border-radius: 10px; background: var(--brass-soft); padding: 10px 12px; display: grid; gap: 6px; }
+.note { display: grid; grid-template-columns: 26px 1fr; gap: 8px; align-items: start; font-size: 0.97rem; }
+.note svg { width: 22px; height: 22px; color: var(--brass); }
+.note b { font-weight: 600; }
+.sec-label { font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin: 0 16px 6px; }
+.checklist { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0 16px 14px; }
+.check { display: flex; align-items: center; gap: 10px; border: 1.5px solid var(--line); background: var(--surface); border-radius: 10px; min-height: 52px; padding: 8px 12px; text-align: left; font-weight: 600; }
+.check .box { width: 26px; height: 26px; border-radius: 7px; border: 2px solid var(--muted); flex: none; display: grid; place-items: center; }
+.check[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.check[aria-pressed="true"] .box { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.check:disabled { opacity: 0.55; cursor: default; }
+.photos { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0 16px 14px; }
+.ph { position: relative; aspect-ratio: 4 / 3; max-width: 100%; border-radius: 10px; border: 2px dashed var(--line); background: var(--sunken); display: grid; place-items: center; text-align: center; color: var(--muted); font-size: 0.85rem; overflow: hidden; padding: 0; }
+.ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ph .tag { position: absolute; left: 6px; top: 6px; background: var(--bar); color: var(--bar-ink); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 7px; border-radius: 5px; }
+.ph.has { border-style: solid; border-color: var(--accent); }
+.ph svg.cam { width: 28px; height: 28px; display: block; margin: 0 auto 4px; }
+.main-act { margin: 0 16px; }
+.nextbox { margin: 0 16px 14px; display: grid; gap: 10px; border: 1.5px dashed var(--line); border-radius: 12px; padding: 12px; }
+.chips-sel { display: flex; flex-wrap: wrap; gap: 6px; }
+.pick { border: 1.5px solid var(--line); background: var(--surface); border-radius: 999px; padding: 8px 14px; min-height: 44px; font-weight: 600; font-size: 0.92rem; }
+.pick[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.notein { display: grid; grid-template-columns: 1fr 52px; gap: 8px; }
+.notein input { min-width: 0; }
+.notein button { padding: 0; display: grid; place-items: center; }
+.notein button svg { width: 22px; height: 22px; }
+.crewpick { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 10px; }
+@media (min-width: 560px) { .crewpick { grid-template-columns: repeat(4, 1fr); } }
+.crewpick button { border: 1.5px solid var(--line); background: var(--surface); border-radius: 10px; min-height: 52px; padding: 6px 10px; text-align: left; font-weight: 600; font-size: 0.9rem; display: grid; grid-template-columns: 12px 1fr; column-gap: 8px; align-items: center; }
+.crewpick i { width: 12px; height: 12px; border-radius: 50%; background: var(--cc); grid-row: span 2; }
+.crewpick small { font-weight: 400; color: var(--muted); font-size: 0.78rem; }
+.crewpick small.o { color: var(--bad); font-weight: 600; }
+.crewpick button.sug { border-color: var(--cc); box-shadow: inset 0 0 0 1px var(--cc); }
+.ntiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.ntile { border: 1.5px solid var(--line); background: var(--surface); border-radius: 12px; min-height: 76px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-weight: 600; font-size: 0.82rem; padding: 6px 4px; text-align: center; }
+.ntile svg { width: 28px; height: 28px; color: var(--brass); }
+.ntile[aria-pressed="true"] { border-color: var(--brass); background: var(--brass-soft); box-shadow: inset 0 0 0 1px var(--brass); }
+.npanel { display: grid; grid-template-columns: 40px 1fr; gap: 10px; align-items: start; background: var(--brass-soft); border-radius: 12px; padding: 10px; }
+.nic { width: 40px; height: 40px; border-radius: 10px; background: var(--surface); display: grid; place-items: center; color: var(--brass); }
+.nic svg { width: 24px; height: 24px; }
+.lic svg { width: 18px; height: 18px; vertical-align: -3px; margin-right: 6px; color: var(--brass); }
+.nchips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.nchip { display: inline-flex; align-items: center; gap: 5px; background: var(--brass-soft); color: var(--brass); border-radius: 999px; padding: 3px 10px 3px 6px; font-size: 0.8rem; font-weight: 600; }
+.nchip svg { width: 16px; height: 16px; }
+.gpsline { display: flex; gap: 6px; justify-content: center; align-items: center; font-size: 0.88rem; font-weight: 600; color: var(--c1); margin: 6px 16px 0; }
+.gpsline svg { width: 16px; height: 16px; }
+.gpsline.ok { color: var(--ok); }
+.gpschip { display: inline-flex; align-items: center; gap: 4px; color: var(--ok); font-weight: 600; }
+.gpschip svg { width: 14px; height: 14px; }
+.gpschip.off { color: var(--bad); }
+.locoff { text-align: center; display: grid; gap: 12px; justify-items: center; padding-block: 28px; }
+.locoff .nic { width: 64px; height: 64px; border-radius: 16px; background: var(--bad-soft); color: var(--bad); display: grid; place-items: center; }
+.locoff .nic svg { width: 32px; height: 32px; }
+.locoff p { margin: 0; max-width: 36ch; }
+.setrow { display: grid; grid-template-columns: 1fr 120px; gap: 10px; align-items: center; padding: 8px 0; border-top: 1px solid var(--line); }
+.setrow:first-of-type { border-top: 0; }
+.setrow input, .setrow select { min-height: 44px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); padding: 6px 10px; font: inherit; width: 100%; min-width: 0; }
+.note-sm { font-size: 0.85rem; color: var(--muted); margin: 10px 0 0; }
+.subtabs { display: flex; gap: 4px; overflow-x: auto; margin-top: -6px; scrollbar-width: none; }
+.subtabs button { border: 0; background: transparent; padding: 6px 12px; border-radius: 8px; font-weight: 600; color: var(--muted); min-height: 40px; white-space: nowrap; }
+.subtabs button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
+.headline { display: flex; gap: 12px; align-items: center; justify-content: space-between; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; }
+.headline > div:first-child { min-width: 0; }
+.headline b { font-family: var(--font-display); font-size: 1.4rem; display: block; line-height: 1.2; }
+.headline span { color: var(--muted); }
+.hl-need { text-align: center; background: var(--bad-soft); color: var(--bad); border-radius: 12px; padding: 8px 14px; flex: none; }
+.hl-need b { font-size: 1.8rem; }
+.hl-need span { color: inherit; font-size: 0.8rem; font-weight: 600; }
+.hl-need.ok { background: var(--ok-soft); color: var(--ok); }
+.fchips { display: flex; gap: 6px; overflow-x: auto; margin-bottom: 8px; padding-bottom: 2px; scrollbar-width: none; }
+.fchips button { border: 1.5px solid var(--line); background: var(--surface); border-radius: 999px; padding: 6px 12px; font-weight: 600; font-size: 0.85rem; white-space: nowrap; min-height: 38px; }
+.fchips button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.fchips em { font-style: normal; margin-left: 6px; opacity: 0.7; }
+.linkb { border: 0; background: none; padding: 0; font-weight: 700; font-size: 1rem; text-align: left; color: var(--ink); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; display: block; }
+.proplink { display: inline-flex; gap: 6px; align-items: center; border: 0; background: var(--sunken); color: var(--ink); border-radius: 999px; padding: 6px 12px; font-size: 0.85rem; font-weight: 600; margin-top: 8px; min-height: 36px; }
+.proplink svg { width: 16px; height: 16px; }
+.hist { display: grid; grid-template-columns: 112px 1fr; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line); align-items: start; }
+.hist .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; border-radius: 8px; overflow: hidden; }
+.hist img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+.hist b { display: block; }
+.hist span { font-size: 0.85rem; color: var(--muted); display: block; }
+.note.ed { grid-template-columns: 26px 1fr 36px; }
+.nx { border: 0; background: var(--surface); border-radius: 8px; width: 32px; height: 32px; font-size: 1.2rem; line-height: 1; color: var(--bad); }
+.nextsum { display: grid; grid-template-columns: 26px 1fr auto; gap: 10px; align-items: center; }
+.nextsum svg { width: 22px; height: 22px; color: var(--ok); }
+.nextsum b { display: block; }
+.nextsum span { font-size: 0.85rem; color: var(--muted); }
+.nextbox.compact { border-style: solid; background: var(--ok-soft); border-color: transparent; }
+.shift-hero h2 { font-size: 1.6rem; }
+.shift-hero p { margin: 4px 0 0; color: var(--muted); font-size: 1.05rem; }
+.shiftlist .opt { min-height: 60px; font-size: 1.08rem; }
+.precount { text-align: center; font-weight: 600; margin: 12px 0; font-size: 1.05rem; }
+.gpsready { display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap; background: var(--ok-soft); color: var(--ok); border-radius: 12px; padding: 12px; font-weight: 600; }
+.gpsready svg { width: 20px; height: 20px; }
+.gpsready.off { background: var(--bad-soft); color: var(--bad); }
+.bigopt { min-height: 76px; font-size: 1.15rem; }
+.bigopt svg { width: 32px; height: 32px; flex: none; color: var(--accent); }
+.bigopt small { font-size: 0.9rem; }
+.bigopt.danger { color: var(--bad); }
+.bigopt.danger svg { color: var(--bad); }
+.pausecard { text-align: center; display: grid; gap: 14px; justify-items: center; padding-block: 28px; }
+.pausecard .nic { width: 72px; height: 72px; border-radius: 18px; background: var(--brass-soft); color: var(--brass); display: grid; place-items: center; }
+.pausecard .nic svg { width: 40px; height: 40px; }
+.pausecard h2 { font-size: 1.6rem; }
+.pausecard p { margin: 0; font-size: 1.02rem; }
+.ptime { font-family: var(--font-display); font-size: 3.4rem; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; }
+.cocard { display: grid; gap: 14px; }
+.cocard h2 { font-size: 1.6rem; }
+.sumgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.sumgrid div { background: var(--sunken); border-radius: 12px; padding: 12px; }
+.sumgrid span { display: block; color: var(--muted); font-size: 0.95rem; }
+.sumgrid b { font-family: var(--font-display); font-size: 1.6rem; font-variant-numeric: tabular-nums; }
+.big.ghostbig { background: var(--surface); color: var(--ink); border: 2px solid var(--line); }
+.clock.pause { background: var(--brass-soft); color: var(--brass); }
+.clock.idle { background: var(--sunken); color: var(--muted); }
+.clock svg { width: 18px; height: 18px; }
+.netchip { display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 999px; padding: 8px 14px; min-height: 44px; font-weight: 700; font-size: 0.95rem; }
+.netchip svg { width: 20px; height: 20px; }
+.netchip.off { background: var(--warn-soft); color: var(--warn); }
+.netchip.sync { background: color-mix(in srgb, var(--c1) 18%, transparent); color: var(--c1); }
+.netchip.sync svg { animation: spin 1.2s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.banner.offline { background: var(--warn-soft); color: var(--ink); }
+.banner.offline svg { color: var(--warn); flex: none; }
+.obrow { display: grid; grid-template-columns: 32px 1fr auto; gap: 10px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line); font-size: 1rem; }
+.obrow:first-of-type { border-top: 0; }
+.obrow svg { width: 24px; height: 24px; color: var(--muted); }
+.obrow .tm { font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); }
+.obbar { height: 10px; border-radius: 5px; background: var(--sunken); overflow: hidden; }
+.obbar span { display: block; height: 100%; background: var(--c1); transition: width 0.3s; }
+.rainbtn.newjob { background: var(--accent); color: var(--accent-ink); }
+.ld { padding: 10px 0; border-top: 1px solid var(--line); }
+.ld:first-of-type { border-top: 0; padding-top: 2px; }
+.ld-h { display: flex; justify-content: space-between; gap: 8px; font-size: 0.9rem; flex-wrap: wrap; }
+.ld-h i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+.cells { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 8px; }
+.cells span { width: 14px; height: 14px; border-radius: 3px; background: var(--accent-soft); }
+.cells span.f { background: var(--accent); } .cells span.o { background: var(--bad); } .cells span.off { background: var(--sunken); }
+.big { width: 100%; min-height: 64px; border: 0; border-radius: 14px; font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; background: var(--accent); color: var(--accent-ink); display: flex; align-items: center; justify-content: center; gap: 10px; }
+.big.onway { background: var(--c1); color: #fff; }
+.big.done { background: var(--ok); color: var(--accent-ink); }
+.big:disabled { opacity: 0.45; cursor: not-allowed; }
+.hint { font-size: 0.85rem; color: var(--muted); text-align: center; margin: 6px 16px 0; min-height: 1.2em; }
+.timer { margin: 0 16px 12px; display: flex; justify-content: space-between; align-items: center; background: var(--ok-soft); color: var(--ok); border-radius: 10px; padding: 8px 12px; font-weight: 600; }
+.sub-acts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; padding: 12px 10px 14px; border-top: 1px solid var(--line); margin-top: 14px; }
+.sub-acts button { border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.78rem; font-weight: 600; color: var(--muted); padding: 6px 2px; border-radius: 10px; min-height: 64px; }
+.sub-acts button svg { width: 26px; height: 26px; }
+.sub-acts button.warnbtn { color: var(--bad); }
+.sub-acts button:hover { background: var(--sunken); }
+.log { margin: 0 16px; display: grid; gap: 6px; }
+.log div { font-size: 0.88rem; background: var(--sunken); border-radius: 8px; padding: 6px 10px; }
+
+.list-h { font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-top: 4px; }
+.row { display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; text-align: left; width: 100%; min-height: 64px; }
+.row .stopno { width: 34px; height: 34px; font-size: 0.95rem; background: var(--sunken); color: var(--ink); }
+.row.done .stopno { background: var(--ok-soft); color: var(--ok); }
+.row.blocked .stopno { background: var(--warn-soft); color: var(--warn); }
+.row.moved { opacity: 0.6; }
+.row b { display: block; font-size: 1rem; }
+.row span { font-size: 0.85rem; color: var(--muted); }
+.row .r { font-size: 0.82rem; color: var(--muted); text-align: right; }
+
+.tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; background: var(--surface); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom, 0px); padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); }
+.tabbar .in { max-width: 480px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); }
+.tabbar button { border: 0; background: transparent; min-height: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font-size: 0.8rem; font-weight: 600; color: var(--muted); }
+.tabbar button svg { width: 24px; height: 24px; }
+.tabbar button[aria-pressed="true"] { color: var(--accent); }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+.card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+.eq { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; padding: 10px 0; border-top: 1px solid var(--line); align-items: center; }
+.eq:first-of-type { border-top: 0; }
+.eq b { font-weight: 600; }
+.eq span { font-size: 0.85rem; color: var(--muted); grid-column: 1; }
+.small-btn { border: 1.5px solid var(--line); background: var(--surface); border-radius: 10px; padding: 8px 12px; font-weight: 600; font-size: 0.9rem; min-height: 44px; }
+.small-btn.pri { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.small-btn.bad { color: var(--bad); }
+
+/* map */
+.map { width: 100%; height: auto; display: block; border-radius: 14px; background: var(--map-land); border: 1px solid var(--line); }
+.map text { font-family: var(--font-body); }
+.legend { display: flex; flex-wrap: wrap; gap: 10px 16px; font-size: 0.85rem; margin-top: 10px; }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+
+/* sheet */
+.scrim { position: fixed; inset: 0; background: var(--shade); z-index: 80; display: flex; align-items: flex-end; justify-content: center; }
+.sheet { background: var(--surface); width: 100%; max-width: 520px; max-height: 88vh; overflow-y: auto; border-radius: 20px 20px 0 0; padding: 10px 16px calc(20px + env(safe-area-inset-bottom, 0px)); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: flex; flex-direction: column; gap: 12px; }
+.sheet .grab { width: 44px; height: 5px; border-radius: 3px; background: var(--line); margin: 0 auto 4px; }
+.sheet h2 { font-size: 1.35rem; }
+.sheet p { margin: 0; }
+.opts { display: grid; gap: 8px; }
+.opt { min-height: 56px; border: 1.5px solid var(--line); background: var(--surface); border-radius: 12px; padding: 10px 14px; text-align: left; font-weight: 600; font-size: 1.02rem; display: flex; align-items: center; gap: 12px; }
+.opt[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.opt small { display: block; font-weight: 400; color: var(--muted); font-size: 0.85rem; }
+.opts.two { grid-template-columns: 1fr 1fr; }
+.opts.three { grid-template-columns: repeat(3, 1fr); }
+.opts.three .opt, .opts.two .opt { justify-content: center; text-align: center; }
+.sheet-acts { display: grid; grid-template-columns: 1fr 2fr; gap: 8px; margin-top: 4px; }
+.sheet-acts button { min-height: 56px; border-radius: 12px; font-weight: 700; font-size: 1.05rem; border: 1.5px solid var(--line); background: var(--surface); }
+.sheet-acts .go { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.sheet-acts .go:disabled { opacity: 0.45; }
+.consent { border-radius: 10px; padding: 10px 12px; font-size: 0.92rem; }
+.consent.yes { background: var(--ok-soft); color: var(--ok); }
+.consent.no { background: var(--sunken); color: var(--muted); }
+.sms { background: var(--sunken); border-radius: 14px 14px 14px 4px; padding: 10px 12px; font-size: 0.93rem; max-width: 92%; }
+.sms img { border-radius: 8px; margin-top: 6px; max-height: 140px; }
+.switch { display: flex; align-items: center; gap: 12px; min-height: 52px; font-weight: 600; }
+.switch input { width: 24px; height: 24px; accent-color: var(--accent); }
+.field { display: grid; gap: 6px; }
+.field label { font-weight: 600; font-size: 0.92rem; }
+.field input, .field select { min-height: 52px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); padding: 8px 12px; font-size: 1.05rem; font-family: var(--font-body); }
+.stepper { display: grid; grid-template-columns: 56px 1fr 56px; gap: 8px; align-items: center; }
+.stepper button { min-height: 52px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--surface); font-size: 1.4rem; font-weight: 700; }
+.stepper output { text-align: center; font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; }
+.mic { width: 96px; height: 96px; border-radius: 50%; border: 0; background: var(--bad); color: #fff; display: grid; place-items: center; margin: 6px auto; }
+.mic svg { width: 40px; height: 40px; }
+.mic.rec { animation: pulse 1s infinite; }
+.lock { background: var(--bad-soft); color: var(--bad); border-radius: 10px; padding: 10px 12px; font-size: 0.92rem; }
+
+.toast { position: fixed; left: 50%; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 90; background: var(--bar); color: var(--bar-ink); padding: 12px 18px; border-radius: 12px; font-weight: 500; width: max-content; max-width: calc(100% - 32px); box-shadow: 0 8px 30px -8px var(--shade); }
+
+/* ---------- owner screen ---------- */
+#owner { max-width: 1180px; margin: 0 auto; padding-block: 14px 48px; display: flex; flex-direction: column; gap: 16px; }
+.o-head { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.o-head .t { flex: 1; min-width: 200px; }
+.o-head h1 { font-size: 1.6rem; }
+.o-head .t span { color: var(--muted); }
+.rainbtn { border: 0; background: var(--c1); color: #fff; border-radius: 12px; min-height: 48px; padding: 8px 16px; font-weight: 700; display: inline-flex; gap: 8px; align-items: center; }
+.rainbtn svg { width: 22px; height: 22px; }
+.o-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+.o-tabs button { border: 1.5px solid var(--line); background: var(--surface); border-radius: 999px; padding: 8px 16px; font-weight: 600; white-space: nowrap; min-height: 44px; }
+.o-tabs button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+@media (min-width: 820px) { .tiles { grid-template-columns: repeat(6, 1fr); } }
+.tile { border: 1.5px solid var(--line); background: var(--surface); border-radius: 14px; padding: 12px; text-align: left; display: flex; flex-direction: column; gap: 2px; min-height: 92px; position: relative; }
+.tile b { font-family: var(--font-display); font-size: 2rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.tile span { font-size: 0.85rem; color: var(--muted); font-weight: 600; }
+.tile.bad b { color: var(--bad); } .tile.warn b { color: var(--warn); } .tile.acc b { color: var(--accent); } .tile.brass b { color: var(--brass); }
+.tile[aria-pressed="true"] { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+.o-grid { display: grid; gap: 16px; }
+@media (min-width: 900px) { .o-grid { grid-template-columns: 1.15fr 1fr; align-items: start; } }
+.col { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; min-width: 0; }
+.panel > h2 { font-size: 1.15rem; display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; }
+.panel > h2 small { font-family: var(--font-body); font-weight: 500; color: var(--muted); font-size: 0.85rem; }
+.item { display: grid; grid-template-columns: 6px 1fr; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); }
+.item:first-of-type { border-top: 0; padding-top: 2px; }
+.item .stripe { border-radius: 3px; background: var(--line); }
+.item .stripe.bad { background: var(--bad); } .item .stripe.warn { background: var(--warn); } .item .stripe.acc { background: var(--accent); } .item .stripe.brass { background: var(--brass); } .item .stripe.blue { background: var(--c1); }
+.item .k { font-size: 0.74rem; letter-spacing: 0.07em; text-transform: uppercase; font-weight: 600; color: var(--muted); }
+.item b { display: block; }
+.item p { margin: 2px 0 0; font-size: 0.93rem; color: var(--muted); }
+.item .acts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; align-items: center; }
+.item img.thumb { width: 96px; border-radius: 8px; margin-top: 8px; display: block; }
+.crewrow { display: grid; grid-template-columns: 14px 1fr auto; gap: 10px; padding: 12px 0; border-top: 1px solid var(--line); align-items: start; }
+.crewrow:first-of-type { border-top: 0; padding-top: 2px; }
+.crewrow i { width: 14px; height: 14px; border-radius: 50%; margin-top: 4px; }
+.crewrow b { display: block; }
+.crewrow .st { font-size: 0.92rem; }
+.crewrow .ppl { font-size: 0.82rem; color: var(--muted); }
+.crewrow .r { text-align: right; font-size: 0.85rem; }
+.crewrow .r strong { font-family: var(--font-display); font-size: 1.15rem; display: block; }
+.minibar { height: 6px; background: var(--sunken); border-radius: 3px; overflow: hidden; margin-top: 6px; width: 100%; }
+.minibar span { display: block; height: 100%; background: var(--accent); }
+.tbl-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+th, td { padding: 8px 8px; border-bottom: 1px solid var(--line); text-align: left; white-space: nowrap; }
+th { font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--font-mono); font-size: 0.85rem; }
+tr.tot td { font-weight: 700; border-bottom: 0; }
+.flag { color: var(--warn); font-weight: 600; }
+.qgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.qcard { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--surface); }
+.qcard .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--line); }
+.qcard .pair div { position: relative; }
+.qcard .pair img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+.qcard .pair .tag { position: absolute; left: 6px; top: 6px; background: var(--bar); color: var(--bar-ink); font-size: 0.66rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 6px; border-radius: 4px; }
+.qcard .meta { padding: 10px 12px; display: grid; gap: 8px; }
+.qcard .meta b { display: block; }
+.qcard .meta span { font-size: 0.85rem; color: var(--muted); }
+.qcard .acts { display: flex; gap: 6px; }
+.qcard .acts button { flex: 1; }
+.bars { display: grid; gap: 8px; }
+.bars .b { display: grid; grid-template-columns: 70px 1fr 74px; gap: 10px; align-items: center; font-size: 0.9rem; }
+.bars .track { height: 22px; background: var(--sunken); border-radius: 5px; overflow: hidden; }
+.bars .track span { display: block; height: 100%; border-radius: 5px; }
+.bars .v { text-align: right; font-family: var(--font-mono); font-size: 0.85rem; }
+.cols { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; align-items: end; height: 180px; padding-top: 18px; }
+.cols .c { display: flex; flex-direction: column; justify-content: flex-end; align-items: center; height: 100%; gap: 4px; font-size: 0.78rem; }
+.cols .c .bar { width: 100%; max-width: 44px; background: var(--accent); border-radius: 5px 5px 0 0; }
+.cols .c.today .bar { background: repeating-linear-gradient(135deg, var(--accent) 0 6px, var(--accent-soft) 6px 10px); }
+.cols .c .v { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); }
+.kv { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.kv div { background: var(--sunken); border-radius: 12px; padding: 10px 12px; }
+.kv b { display: block; font-family: var(--font-display); font-size: 1.5rem; font-variant-numeric: tabular-nums; }
+.kv span { font-size: 0.85rem; color: var(--muted); }
+.rules { font-size: 0.9rem; background: var(--brass-soft); border-radius: 12px; padding: 12px 14px; }
+.rules b { color: var(--brass); }
+.foot { font-size: 0.82rem; color: var(--muted); text-align: center; padding-block: 8px; }
+.sms-log div { display: grid; grid-template-columns: 1fr auto; gap: 8px; padding: 8px 0; border-top: 1px solid var(--line); font-size: 0.9rem; }
+.sms-log div:first-child { border-top: 0; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="demo-bar wrap"><div class="in">
+  <span class="lbl" data-t="viewAs">Demo · view as</span>
+  <div class="seg" role="group" aria-label="View as">
+    <button id="v-crew" data-act="view" data-v="crew" aria-pressed="true" data-t="crew">Crew</button>
+    <button data-act="view" data-v="dispatch" aria-pressed="false" data-t="dispatch">Dispatcher</button>
+    <button id="v-owner" data-act="view" data-v="owner" aria-pressed="false" data-t="owner">Owner</button>
+  </div>
+  <span class="sp"></span>
+  <div class="seg" role="group" aria-label="Language">
+    <button data-act="lang" data-l="en" aria-pressed="true">EN</button>
+    <button data-act="lang" data-l="es" aria-pressed="false">ES</button>
+  </div>
+  <div class="seg" role="group" aria-label="Tablet signal">
+    <button data-act="net" data-v="on" aria-pressed="true" data-t="sigOn">Signal on</button>
+    <button data-act="net" data-v="off" aria-pressed="false" data-t="sigOff">No signal</button>
+  </div>
+  <button class="ghost" data-act="reset" data-t="reset">Reset demo</button>
+</div></div>
+
+<main id="crew" class="wrap"></main>
+<main id="owner" class="wrap" hidden></main>
+<nav class="tabbar" id="crew-tabs"></nav>
+<div id="layer"></div>
+<input type="file" id="cam" accept="image/*" capture="environment" hidden>
+
+<script>
+(() => {
+"use strict";
+/* ================= icons ================= */
+const I = {
+  gate: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>',
+  dog: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10l-1-5 4 2h6l4-2-1 5"/><path d="M5 10c0 6 3 9 7 9s7-3 7-9"/><circle cx="9.5" cy="12" r=".6" fill="currentColor"/><circle cx="14.5" cy="12" r=".6" fill="currentColor"/><path d="M11 15.5h2"/></svg>',
+  drop: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg>',
+  park: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M10 16V8h3a2.5 2.5 0 0 1 0 5h-3"/></svg>',
+  info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>',
+  cam: '<svg class="cam" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>',
+  check: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  stop: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/></svg>',
+  star: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.8-4.5 4.2 1.1 6-5.4-3-5.4 3 1.1-6L3.2 9.4l6.1-.8z"/></svg>',
+  bag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 8h12l-1 12H7z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>',
+  mic: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>',
+  nav: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 11l18-8-8 18-2-8z"/></svg>',
+  list: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1" fill="currentColor"/><circle cx="4.5" cy="12" r="1" fill="currentColor"/><circle cx="4.5" cy="18" r="1" fill="currentColor"/></svg>',
+  map: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></svg>',
+  truck: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M2 6h12v10H2zM14 10h4l3 3v3h-7"/><circle cx="6" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>',
+  wifiOff: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18"/><path d="M8.5 16.4a5 5 0 0 1 7 0"/><path d="M5 12.9a10 10 0 0 1 5.2-2.7"/><path d="M14 10.3a10 10 0 0 1 5 2.6"/><path d="M2 9.3a15 15 0 0 1 4-2.6"/><path d="M11 5.1A15 15 0 0 1 22 9.3"/><circle cx="12" cy="19.5" r=".8" fill="currentColor"/></svg>',
+  sync: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 0 1-14 5.3M4 12a8 8 0 0 1 14-5.3"/><path d="M18 3v4h-4M6 21v-4h4"/></svg>',
+  cloud: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a5 5 0 0 1-.6-10A6.5 6.5 0 0 1 19 9.5 4.3 4.3 0 0 1 18 18z"/><path d="M12 15V11M10 13l2-2 2 2"/></svg>',
+  coffee: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M8 3v3M12 3v3"/></svg>',
+  lunch: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10"/><path d="M17 21V3c-2 1-3 4-3 7h3"/></svg>',
+  clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+  chev: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>',
+  rain: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 15a4 4 0 0 1 .5-8A5.5 5.5 0 0 1 18 8.5a3.5 3.5 0 0 1-1 6.5z"/><path d="M8 18l-1 2M12 18l-1 2M16 18l-1 2"/></svg>'
+};
+const NOTE_ICON = { gate: I.gate, dog: I.dog, sprinkler: I.drop, park: I.park, info: I.info };
+
+/* ================= strings ================= */
+const T = {
+  en: {
+    viewAs: "Demo · view as", crew: "Crew", owner: "Owner", reset: "Reset demo",
+    clockIn: "Clock in", onClock: "On the clock", clockedOut: "Clocked out",
+    today: "Today", map: "Map", truck: "Truck",
+    ofDone: "{d} of {n} done", left: "{n} left · about {h}",
+    next: "Up next", later: "Later today", doneH: "Done", movedH: "Moved by rain day",
+    onWay: "On my way", imHere: "I'm here", finish: "Done",
+    cantFinish: "Can't finish", spotted: "Spotted work", materials: "Materials", voice: "Voice note", directions: "Directions",
+    before: "Before", after: "After", tapPhoto: "Tap to take photo",
+    checklist: "Checklist", propNotes: "Property notes",
+    onSite: "On site", min: "min",
+    needClock: "Clock in first", needBefore: "Take the before photo to start", needChecks: "Tick every item, or tap Can't finish", needAfter: "Take the after photo to finish", needMat: "Record the materials you applied",
+    mow: "Mow", edge: "Edge", trim: "Trim", blow: "Blow", leaves: "Leaves", haul: "Haul bags", beds: "Clean beds", fert: "Fertilize", weed: "Weed control",
+    weekly: "Weekly", biweekly: "Every 2 weeks", fall: "Fall cleanup", final: "Last mow of season",
+    eta: "When will you get there?", etaMin: "{m} min", textCust: "Text the customer", textYes: "Customer agreed to texts. The text goes now.", textNo: "No text permission on file. Nothing will be sent.",
+    cancel: "Cancel", send: "Send", go: "Go", save: "Save", confirm: "Confirm",
+    doneTitle: "Finish this job?", doneText: "Text a done photo to the customer", doneHint: "Sends the after photo with a short message.",
+    reasonTitle: "Why can't you finish?", reasonHint: "The office gets a task right away.",
+    r_gate: "Gate locked", r_dog: "Dog loose in yard", r_skip: "Customer asked to skip", r_wet: "Too wet", r_equip: "Equipment broke", r_unsafe: "Not safe", r_car: "Car blocking access",
+    upTitle: "What did you see?", upHint: "Goes to the owner as a sales lead. A photo helps.",
+    u_aer: "Needs aeration", u_shrub: "Dead shrub", u_bare: "Bare patches", u_hedge: "Hedges overgrown", u_gutter: "Gutters full of leaves", u_grub: "Grub damage",
+    addPhotoOpt: "Add a photo",
+    matTitle: "What did you apply?", product: "Product", amount: "Amount", area: "Area", weather: "Weather (filled in for you)",
+    lockLic: "Weed control needs a licensed applicator. {who} holds the licence on this crew, so it is recorded under that name.",
+    voiceTitle: "Voice note", voiceHint: "Tap and talk. It becomes text for the office.", listening: "Listening…", tapToTalk: "Tap to talk",
+    sampleVoice: "Back gate latch is broken. We used the side gate and tied it shut.",
+    preTrip: "Before you drive", reportIssue: "Report a problem", equipment: "Equipment", onTruck: "On the truck",
+
+    sigOn: "Signal on", sigOff: "No signal", netOff: "No signal · {n} saved", netSync: "Uploading · {n} left",
+    offT: "No signal", offP: "Keep working. Everything is saved on this tablet and uploads by itself when signal returns.",
+    obT: "Saved on this tablet", obP: "These upload in order when signal returns. Don't log out or reset the tablet until they're done.", obGps: "{n} location points", obEmpty: "Nothing waiting. Everything is uploaded.", obPhotos: "{n} photos · {mb} MB", obSyncing: "Uploading {d} of {n}",
+    t_synced: "Back online · {n} changes uploaded", t_saved: "Saved on the tablet. It uploads when signal returns.", t_txtQueued: "The text goes out when signal returns",
+    coWaiting: "{n} changes are still on this tablet. They upload when signal returns, so keep the tablet on and charged.",
+    noSigSince: "No signal since {t} · last known position", k_sig: "Signal", st_late: "Not sent: too late",
+    lb_onway: "On my way · {a}", lb_here: "Arrived · {a}", lb_check: "Checklist: {k} · {a}", lb_photo: "Photo ({k}) · {a}", lb_done: "Job done · {a}", lb_cant: "Can't finish · {a}", lb_spot: "Lead · {a}", lb_mat: "Materials · {a}", lb_voice: "Voice note · {a}", lb_clockin: "Clocked in", lb_pause: "{w} started", lb_pauseEnd: "{w} ended", lb_clockout: "Clocked out", lb_issue: "Equipment problem · {n}", lb_receipt: "Fuel receipt", lb_odo: "Odometer photo",
+    gm: "Good morning, Crew 2", shiftSum: "{d} · Truck 12 · {n} jobs · about {h}", preT: "Start-of-shift checklist", preP: "Tick each one. Clock in unlocks when everything is checked.", preCount: "{d} of {n} checked", preNeed: "Finish the checklist to clock in",
+    locReady: "Location on. Shared once you clock in.", somethingWrong: "Something missing or broken? Report it",
+    p_ppe: "Safety glasses & ear protection", p_aid: "First aid kit", p_trailer: "Trailer hitch, chains & lights", p_tablet: "Tablet charged",
+    clockMenu: "Your shift", startBreak: "Start break", startLunch: "Start lunch", clockOutBtn: "Clock out for the day", brk: "Break", lunch: "Lunch", onBreak: "On break", atLunch: "At lunch", endBreak: "End break", endLunch: "End lunch",
+    pauseNote: "Your break time is recorded. The truck's GPS keeps tracking.", breakSoFar: "Breaks today: {b} min · Lunch: {l} min", t_pauseStart: "{w} started", t_pauseEnd: "{w} ended · {m} min",
+    coTitle: "Clock out?", coOnClock: "On the clock", coBreaks: "Breaks", coLunch: "Lunch", coWorked: "Worked", coJobs: "Jobs done", coKm: "Driven", coLeft: "{n} jobs are not done. They go back to the office to reschedule.", coYes: "Yes, clock out", coBack: "Go back",
+    offTitle: "Shift ended", offP: "Clocked out at {t}. Location sharing stopped.", newShift: "Demo: start a new shift", onBreakSince: "On break · {m} min", atLunchSince: "At lunch · {m} min",
+    brkH: "Breaks and lunch today", clockInAt: "Clock in", breaksCol: "Breaks", lunchCol: "Lunch", nowTag: "now",
+    p_oil: "Mower oil checked", p_blades: "Blades sharp", p_line: "Trimmer line", p_fuel: "Fuel cans full", p_bags: "Leaf bags & tarps",
+    issueTitle: "What's wrong with it?", i_start: "Won't start", i_tire: "Flat tire", i_blade: "Blade damaged", i_leak: "Leaking", i_noise: "Strange noise",
+    hoursDue: "{h} h · service due at {d} h",
+    t_onway: "Customer texted: on the way, about {m} min", t_nosms: "Marked on the way. No text sent (no permission).",
+    t_here: "Clock started at this property", t_done: "Job done. {x}", t_doneSms: "Done photo texted to the customer.", t_doneNo: "No text sent.",
+    t_blocked: "Office got a task: {r}", t_lead: "Sent to the owner as a lead", t_mat: "Application recorded", t_voice: "Note saved", t_issue: "Logged. The owner sees it in maintenance.",
+    t_clockIn: "Clocked in at {t}", t_clockOut: "Clocked out at {t}",
+    rainCrew: "Rain day", rainCrewTxt: "The rest of today's route moved to {d}. Customers who agreed to texts were told.",
+    smsOnway: "Hi {n}, it's Green Ridge Lawn. Your crew is on the way, about {m} min. Reply STOP to opt out.",
+    smsDone: "Hi {n}, your {s} is done. Here's the after photo. Questions? Just reply. Reply STOP to opt out.",
+    blockedTag: "Office task", movedTag: "Moved", doneTag: "Done", lic: "Licensed",
+    useSample: "Use a sample photo", openCam: "Open camera", photoTitle: "Add photo",
+    totalTime: "{m} min on site",
+    crewName: "Crew 2", crewPpl: "Marco R. · Luis G.",
+    dispatch: "Dispatcher", dispWho: "Rosa M. · Team lead / dispatcher",
+    nextSvc: "Next recommended service", nextWhen: "When", nextNote: "Short note for the office", nextPh: "e.g. Leaves still falling, needs a 2nd pass", needNext: "Pick the next service, a date and write a short note",
+    ns_reg: "Regular visit", ns_leaves: "Leaf cleanup", ns_aer: "Aeration", ns_fert: "Fertilizer", ns_over: "Overseeding", ns_shrub: "Shrubs / hedges", ns_snow: "Snow stakes",
+    j_first: "First visit: mow + cleanup", j_redo: "Redo: blow the driveway", j_gutter: "Gutter cleaning", j_sprk: "Sprinkler blow-out",
+    d7: "+1 week", d14: "+2 weeks", d30: "+1 month", sampleNext: "Leaves still falling. Needs a second pass.", nextLbl: "Next",
+    tabAssign: "Assign jobs", aToday: "Today", aWeek: "Next week", aMonth: "Month (30 days)",
+    notAssigned: "Not assigned", assignedH: "Assigned", crewLoad: "Crew load", booked: "{b} of {c} h booked", over: "over by {h} h",
+    src_new: "New customer", src_redo: "Redo (complaint)", src_lead: "Lead won", src_crew: "Recommended by crew", src_resched: "Rescheduled",
+    changeDay: "Change day", unassign: "Unassign", t_assigned: "Assigned to {c} · {d}", allAssigned: "Everything in this range is assigned.", sugg: "Suggested: {c}", pickDay: "Pick a day", addedRoute: "Added to Crew 2's route",
+
+    tabProps: "Properties", tabTexts: "Customer texts", tabRecSub: "Chemicals & equipment", gToday: "Today", gSchedule: "Schedule", gMoney: "Finance", gRecords: "Records",
+    hlCrews: "{a} of {n} crews on track", hlJobs: "{d} of {n} jobs done", hlSoFar: "so far", hlNeed: "need you", allF: "All", allClear: "Nothing needs you right now.",
+    propPage: "Property & history", custSince: "customer since {y}", perVisit: "per visit", noPlan: "No plan yet", textsOk: "Texts OK", textsNo: "No texts", addNote: "Add a note", history: "Visit history", upcoming: "Coming up", appsH: "Products applied",
+    t_notesSaved: "Notes saved. The crew sees them on the next visit.", noteRemoved: "Note removed", searchProps: "Search address or name", lastVisit: "Last: {d}", nextVisit: "Next: {d}",
+    fromPlan: "From the customer's plan. Change it only if something is different.", change: "Change", optional: "optional",
+    tabFuel: "Fuel & km", gpsArrived: "GPS: you're at {a}", gpsHere: "GPS shows you here since {t}", gpsLeft: "GPS: {d} to go",
+    locOffT: "Location is off", locOffP: "This company phone has to share its location while you're clocked in. Turn it back on to keep working. It stops when you clock out.", locOn: "Turn location on", needLocT: "Turn on location to clock in",
+    locCard: "Location", locDevice: "Company tablet · Truck 12", locRule: "Shared only while you're clocked in. It stops when you clock out.", locToday: "Today: {d} driven · {h} driving", demoOff: "Demo: turn location off",
+    receiptBtn: "Fuel receipt", odoBtn: "Odometer photo", litres: "Litres", totalPaid: "Total paid", odoReading: "Odometer reading (km)", t_receipt: "Receipt saved", t_odo: "Odometer saved",
+    k_loc: "Location", locOffSince: "Location off since {t}", gpsPaused: "GPS paused (clocked out)", gpsAgo: "GPS {s} s ago · {d} today",
+    fToday: "Today by crew", fKm: "Distance", fDrive: "Driving", fVisits: "Visits", fEstL: "Est. fuel", fEstCost: "Est. cost", fPerVisit: "Per visit", fPctRev: "% of revenue", fRevKm: "Revenue per {u}",
+    fWeek: "Last week: estimate vs receipts", fRecL: "Receipts", fRecCost: "Paid", fDiff: "Difference", fUse: "Use {v}", fDaily: "Estimated fuel cost per day", fLegs: "Cost to reach each stop · Crew 2 today", fLeg: "Drive", fVisitPrice: "Visit price", fShare: "Fuel share",
+    fSettings: "Fuel settings", fPrice: "Fuel price", fUnits: "Units", fIdle: "Idling per stop (min)", fEcon: "Fuel economy", fOdo: "GPS vs odometer (last week)", fOdoGps: "GPS", fOdoOdo: "Odometer",
+    fRetention: "Raw GPS points are kept 90 days, then deleted. Daily totals stay for reports. Location is only shared while a crew is clocked in.", fNewOdo: "New odometer photo from Crew 2 at {t}: {r} km", fReceiptsToday: "Receipts today",
+    fHowEst: "Estimate = distance × fuel economy + idling at each stop. Receipts show how far off it is, and one tap corrects the truck's fuel economy.", truck: "Truck", fTotal: "Total", unitKm: "km and litres", unitMi: "miles and gallons", t_calib: "Fuel economy updated",
+    nj: "Create new job", njCust: "Customer / property", njChoose: "Choose…", njNewCust: "+ New customer", njName: "Customer name", njSvc: "Service", njEst: "Time on site", njSrc: "Where it came from", assignTo: "Assign to", njPrice: "Price (optional)", njNote: "Note for the crew (optional)", njCreate: "Create job", njNeed: "Pick a customer and a service", njDone: "Job created for {d}",
+    nGate: "Gate code", nPets: "Pets", nPark: "Parking", nSpr: "Sprinklers", nOther: "Other note", codePh: "e.g. 4412", crewSees: "What the crew will see",
+    petDog: "Dog", petCat: "Cat", petOther: "Other pet", bFriendly: "Friendly", bKnock: "Knock first", bGate: "Keep gate shut",
+    pStreet: "Street", pDrive: "Driveway", pLane: "Lane behind", pNoBlock: "Don't block driveway", sFront: "Front walk", sDrive: "Along driveway", sBack: "Back yard",
+    aerate: "Aerate", over: "Overseed", shrub: "Trim shrubs", stakes: "Place stakes", gutter: "Clean gutters", sprk: "Blow out lines",
+    legLoad: "Each square is a day: light has room, dark is full, red is over 8 h.",
+    sample: "Sample data. Nothing is sent.",
+    /* owner */
+    ownerCo: "Green Ridge Lawn & Snow", rainDay: "Rain day",
+    tabToday: "Today", tabMap: "Live map", tabHours: "Hours", tabMoney: "Revenue", tabQuality: "Quality", tabRecords: "Records",
+    tLate: "Late", tStuck: "Can't finish", tWait: "Waiting for you", tComp: "Complaints", tLeads: "New leads", tDone: "Jobs done",
+    needsYou: "Needs you", all: "all", team: "Team right now", textsToday: "Customer texts today",
+    behind: "{m} min behind", onTrack: "On track", driving: "Driving to {a}", atStop: "At {a} · {m} min", notIn: "Not clocked in", finished: "Route finished",
+    jobs: "{d}/{n} jobs",
+    approve: "Approve", call: "Call", reschedule: "Move to tomorrow", skipNoCharge: "Skip, no charge", close: "Close",
+    quote: "Send quote", notNow: "Not now", redo: "Send crew back", setTime: "Set 5:15 PM", keep: "Keep as is",
+    k_stuck: "Can't finish", k_skip: "Skip request", k_time: "Missed clock-out", k_lead: "Lead from crew", k_comp: "Complaint", k_late: "Running late", k_equip: "Equipment",
+    resolved: "Done. Removed from the list.",
+    rainTitle: "Push the rest of today", rainWhich: "Move to", rainCount: "{v} visits on {c} crews move. {s} customers get a text. {n} have no text permission and go on the office call list.",
+    rainPreview: "Text preview", rainGo: "Move route and text", rainUndo: "Undo", rainDone: "Rain day set. Remaining visits moved to {d}.",
+    smsRain: "Hi, it's Green Ridge Lawn. Rain today, so your visit moves to {d}. No need to reply. Reply STOP to opt out.",
+    tomorrow: "Tomorrow", nextOpen: "Next open day",
+    st_sent: "Sent", st_held: "Held for quiet hours", st_skip: "Not sent: no permission",
+    hoursH: "Last week", hoursSub: "Oct 26 – Nov 1 · overtime after 44 h (Ontario sample rule)", person: "Person", total: "Total", onsitePct: "On site", flags: "Flags",
+    missedOut: "Missed clock-out Sat", copyCsv: "Copy for payroll", copied: "Copied as CSV",
+    todayHours: "Today so far",
+    revCrew: "Revenue per crew today", revDay: "Revenue per day this week", revHour: "Per crew hour", visitsDay: "Visits today", avgVisit: "Average visit",
+    qualH: "Spot-check today's photos", looksGood: "Looks good", flagIt: "Flag", flagged: "Flagged for the crew lead", approved: "Marked good",
+    recH: "Application records", recSub: "Kept per job. Rules follow the company's province or state.", eqH: "Equipment and maintenance",
+    date: "Date", address: "Address", applicator: "Applicator", reg: "Reg. No.", wx: "Weather",
+    rulesTxt: "<b>Rules set: Ontario (sample).</b> Weed control limited to lower-risk products on the province's allowable list; applicator licence required for commercial use. Check the current rules for each province, state or city before go-live.",
+    due: "Service due", ok: "OK", reported: "Reported today",
+    hrsShort: "h", c1n: "Crew 1", c2n: "Crew 2", c3n: "Crew 3", c4n: "Crew 4",
+    yard: "Yard", crewsLegend: "Crews",
+    mon: "Mon", tue: "Tue", wed: "Wed", thu: "Thu", fri: "Fri", sat: "Sat", sun: "Sun",
+  },
+  es: {
+    viewAs: "Demo · ver como", crew: "Cuadrilla", owner: "Dueño", reset: "Reiniciar demo",
+    clockIn: "Marcar entrada", onClock: "En turno", clockedOut: "Turno cerrado",
+    today: "Hoy", map: "Mapa", truck: "Camión",
+    ofDone: "{d} de {n} listos", left: "Faltan {n} · cerca de {h}",
+    next: "Sigue", later: "Más tarde", doneH: "Terminados", movedH: "Movidos por lluvia",
+    onWay: "Voy en camino", imHere: "Ya llegué", finish: "Terminado",
+    cantFinish: "No puedo terminar", spotted: "Vi trabajo extra", materials: "Materiales", voice: "Nota de voz", directions: "Cómo llegar",
+    before: "Antes", after: "Después", tapPhoto: "Toca para tomar foto",
+    checklist: "Lista de tareas", propNotes: "Notas de la propiedad",
+    onSite: "En el sitio", min: "min",
+    needClock: "Primero marca entrada", needBefore: "Toma la foto de antes para empezar", needChecks: "Marca cada tarea o toca No puedo terminar", needAfter: "Toma la foto de después para terminar", needMat: "Registra los materiales que aplicaste",
+    mow: "Cortar", edge: "Bordear", trim: "Recortar", blow: "Soplar", leaves: "Hojas", haul: "Llevar bolsas", beds: "Limpiar jardineras", fert: "Fertilizar", weed: "Control de maleza",
+    weekly: "Semanal", biweekly: "Cada 2 semanas", fall: "Limpieza de otoño", final: "Último corte de temporada",
+    eta: "¿Cuándo llegas?", etaMin: "{m} min", textCust: "Enviar texto al cliente", textYes: "El cliente aceptó textos. El texto sale ahora.", textNo: "No hay permiso para textos. No se envía nada.",
+    cancel: "Cancelar", send: "Enviar", go: "Listo", save: "Guardar", confirm: "Confirmar",
+    doneTitle: "¿Terminar este trabajo?", doneText: "Enviar foto de terminado al cliente", doneHint: "Manda la foto de después con un mensaje corto.",
+    reasonTitle: "¿Por qué no puedes terminar?", reasonHint: "La oficina recibe una tarea enseguida.",
+    r_gate: "Portón con llave", r_dog: "Perro suelto en el patio", r_skip: "El cliente pidió saltar", r_wet: "Muy mojado", r_equip: "Se dañó el equipo", r_unsafe: "No es seguro", r_car: "Un carro bloquea el paso",
+    upTitle: "¿Qué viste?", upHint: "Le llega al dueño como oportunidad de venta. Una foto ayuda.",
+    u_aer: "Necesita aireación", u_shrub: "Arbusto muerto", u_bare: "Parches sin pasto", u_hedge: "Setos muy crecidos", u_gutter: "Canaletas llenas de hojas", u_grub: "Daño de larvas",
+    addPhotoOpt: "Agregar foto",
+    matTitle: "¿Qué aplicaste?", product: "Producto", amount: "Cantidad", area: "Área", weather: "Clima (se llena solo)",
+    lockLic: "El control de maleza necesita aplicador con licencia. {who} tiene la licencia en esta cuadrilla, así que se registra a su nombre.",
+    voiceTitle: "Nota de voz", voiceHint: "Toca y habla. Se convierte en texto para la oficina.", listening: "Escuchando…", tapToTalk: "Toca para hablar",
+    sampleVoice: "El pasador del portón de atrás está roto. Usamos el portón lateral y lo amarramos.",
+    preTrip: "Antes de salir", reportIssue: "Reportar un problema", equipment: "Equipo", onTruck: "En el camión",
+
+    sigOn: "Con señal", sigOff: "Sin señal", netOff: "Sin señal · {n} guardados", netSync: "Subiendo · faltan {n}",
+    offT: "Sin señal", offP: "Sigue trabajando. Todo se guarda en esta tableta y se sube solo cuando vuelva la señal.",
+    obT: "Guardado en esta tableta", obP: "Se suben en orden cuando vuelva la señal. No cierres sesión ni reinicies la tableta hasta que terminen.", obGps: "{n} puntos de ubicación", obEmpty: "Nada pendiente. Todo está subido.", obPhotos: "{n} fotos · {mb} MB", obSyncing: "Subiendo {d} de {n}",
+    t_synced: "Con señal · {n} cambios subidos", t_saved: "Guardado en la tableta. Se sube cuando vuelva la señal.", t_txtQueued: "El texto se envía cuando vuelva la señal",
+    coWaiting: "{n} cambios siguen en esta tableta. Se suben cuando vuelva la señal; deja la tableta encendida y cargada.",
+    noSigSince: "Sin señal desde las {t} · última posición conocida", k_sig: "Señal", st_late: "No enviado: muy tarde",
+    lb_onway: "Voy en camino · {a}", lb_here: "Llegué · {a}", lb_check: "Lista: {k} · {a}", lb_photo: "Foto ({k}) · {a}", lb_done: "Trabajo terminado · {a}", lb_cant: "No puedo terminar · {a}", lb_spot: "Oportunidad · {a}", lb_mat: "Materiales · {a}", lb_voice: "Nota de voz · {a}", lb_clockin: "Entrada marcada", lb_pause: "{w} empezó", lb_pauseEnd: "{w} terminó", lb_clockout: "Salida marcada", lb_issue: "Problema de equipo · {n}", lb_receipt: "Recibo de gasolina", lb_odo: "Foto del odómetro",
+    gm: "Buenos días, Cuadrilla 2", shiftSum: "{d} · Camión 12 · {n} trabajos · cerca de {h}", preT: "Revisión de inicio de turno", preP: "Marca cada uno. Marcar entrada se activa cuando todo esté revisado.", preCount: "{d} de {n} revisados", preNeed: "Termina la revisión para marcar entrada",
+    locReady: "Ubicación encendida. Se comparte al marcar entrada.", somethingWrong: "¿Falta algo o está dañado? Repórtalo",
+    p_ppe: "Lentes y protección de oídos", p_aid: "Botiquín", p_trailer: "Enganche, cadenas y luces del remolque", p_tablet: "Tableta cargada",
+    clockMenu: "Tu turno", startBreak: "Empezar descanso", startLunch: "Empezar almuerzo", clockOutBtn: "Marcar salida del día", brk: "Descanso", lunch: "Almuerzo", onBreak: "En descanso", atLunch: "Almorzando", endBreak: "Terminar descanso", endLunch: "Terminar almuerzo",
+    pauseNote: "Tu tiempo de descanso se registra. El GPS del camión sigue activo.", breakSoFar: "Descansos hoy: {b} min · Almuerzo: {l} min", t_pauseStart: "{w} empezó", t_pauseEnd: "{w} terminó · {m} min",
+    coTitle: "¿Marcar salida?", coOnClock: "En turno", coBreaks: "Descansos", coLunch: "Almuerzo", coWorked: "Trabajado", coJobs: "Trabajos listos", coKm: "Recorrido", coLeft: "{n} trabajos sin terminar. Regresan a la oficina para reprogramar.", coYes: "Sí, marcar salida", coBack: "Regresar",
+    offTitle: "Turno terminado", offP: "Salida marcada a las {t}. Se detuvo la ubicación.", newShift: "Demo: empezar otro turno", onBreakSince: "En descanso · {m} min", atLunchSince: "Almorzando · {m} min",
+    brkH: "Descansos y almuerzo hoy", clockInAt: "Entrada", breaksCol: "Descansos", lunchCol: "Almuerzo", nowTag: "ahora",
+    p_oil: "Aceite de la podadora revisado", p_blades: "Cuchillas afiladas", p_line: "Hilo de la recortadora", p_fuel: "Bidones de gasolina llenos", p_bags: "Bolsas y lonas para hojas",
+    issueTitle: "¿Qué le pasa?", i_start: "No arranca", i_tire: "Llanta ponchada", i_blade: "Cuchilla dañada", i_leak: "Gotea", i_noise: "Hace un ruido raro",
+    hoursDue: "{h} h · servicio a las {d} h",
+    t_onway: "Texto enviado: en camino, unos {m} min", t_nosms: "Marcado en camino. No se envió texto (sin permiso).",
+    t_here: "Empezó el tiempo en esta propiedad", t_done: "Trabajo terminado. {x}", t_doneSms: "Foto enviada al cliente.", t_doneNo: "No se envió texto.",
+    t_blocked: "La oficina recibió una tarea: {r}", t_lead: "Enviado al dueño como oportunidad", t_mat: "Aplicación registrada", t_voice: "Nota guardada", t_issue: "Registrado. El dueño lo ve en mantenimiento.",
+    t_clockIn: "Entrada marcada a las {t}", t_clockOut: "Salida marcada a las {t}",
+    rainCrew: "Día de lluvia", rainCrewTxt: "El resto de la ruta de hoy pasó al {d}. Se avisó a los clientes que aceptaron textos.",
+    smsOnway: "Hi {n}, it's Green Ridge Lawn. Your crew is on the way, about {m} min. Reply STOP to opt out.",
+    smsDone: "Hi {n}, your {s} is done. Here's the after photo. Questions? Just reply. Reply STOP to opt out.",
+    blockedTag: "Tarea oficina", movedTag: "Movido", doneTag: "Listo", lic: "Con licencia",
+    useSample: "Usar foto de ejemplo", openCam: "Abrir cámara", photoTitle: "Agregar foto",
+    totalTime: "{m} min en el sitio",
+    crewName: "Cuadrilla 2", crewPpl: "Marco R. · Luis G.",
+    dispatch: "Despachador", dispWho: "Rosa M. · Jefa de equipo / despacho",
+    nextSvc: "Próximo servicio recomendado", nextWhen: "Cuándo", nextNote: "Nota corta para la oficina", nextPh: "ej. Siguen cayendo hojas, falta otra pasada", needNext: "Elige el próximo servicio, una fecha y escribe una nota corta",
+    ns_reg: "Visita regular", ns_leaves: "Limpieza de hojas", ns_aer: "Aireación", ns_fert: "Fertilizante", ns_over: "Resiembra", ns_shrub: "Arbustos / setos", ns_snow: "Estacas de nieve",
+    j_first: "Primera visita: corte + limpieza", j_redo: "Corregir: soplar la entrada", j_gutter: "Limpieza de canaletas", j_sprk: "Purgar aspersores",
+    d7: "+1 semana", d14: "+2 semanas", d30: "+1 mes", sampleNext: "Siguen cayendo hojas. Falta otra pasada.", nextLbl: "Próximo",
+    tabAssign: "Asignar trabajos", aToday: "Hoy", aWeek: "Próxima semana", aMonth: "Mes (30 días)",
+    notAssigned: "Sin asignar", assignedH: "Asignados", crewLoad: "Carga por cuadrilla", booked: "{b} de {c} h ocupadas", over: "pasada por {h} h",
+    src_new: "Cliente nuevo", src_redo: "Corregir (queja)", src_lead: "Oportunidad ganada", src_crew: "Recomendado por la cuadrilla", src_resched: "Reprogramado",
+    changeDay: "Cambiar día", unassign: "Quitar", t_assigned: "Asignado a {c} · {d}", allAssigned: "Todo en este rango está asignado.", sugg: "Sugerido: {c}", pickDay: "Elige un día", addedRoute: "Agregado a la ruta de la Cuadrilla 2",
+
+    tabProps: "Propiedades", tabTexts: "Textos a clientes", tabRecSub: "Químicos y equipo", gToday: "Hoy", gSchedule: "Agenda", gMoney: "Finanzas", gRecords: "Registros",
+    hlCrews: "{a} de {n} cuadrillas a tiempo", hlJobs: "{d} de {n} trabajos listos", hlSoFar: "hasta ahora", hlNeed: "te necesitan", allF: "Todo", allClear: "Nada te necesita ahora.",
+    propPage: "Propiedad e historial", custSince: "cliente desde {y}", perVisit: "por visita", noPlan: "Sin plan aún", textsOk: "Acepta textos", textsNo: "Sin textos", addNote: "Agregar nota", history: "Historial de visitas", upcoming: "Próximas visitas", appsH: "Productos aplicados",
+    t_notesSaved: "Notas guardadas. La cuadrilla las ve en la próxima visita.", noteRemoved: "Nota quitada", searchProps: "Buscar dirección o nombre", lastVisit: "Última: {d}", nextVisit: "Próxima: {d}",
+    fromPlan: "Del plan del cliente. Cámbialo solo si algo es diferente.", change: "Cambiar", optional: "opcional",
+    tabFuel: "Combustible y km", gpsArrived: "GPS: estás en {a}", gpsHere: "El GPS te ubica aquí desde las {t}", gpsLeft: "GPS: faltan {d}",
+    locOffT: "La ubicación está apagada", locOffP: "Este teléfono de la empresa debe compartir su ubicación mientras estás en turno. Vuelve a encenderla para seguir trabajando. Se detiene al marcar salida.", locOn: "Encender ubicación", needLocT: "Enciende la ubicación para marcar entrada",
+    locCard: "Ubicación", locDevice: "Tableta de la empresa · Camión 12", locRule: "Se comparte solo mientras estás en turno. Se detiene al marcar salida.", locToday: "Hoy: {d} recorridos · {h} manejando", demoOff: "Demo: apagar ubicación",
+    receiptBtn: "Recibo de gasolina", odoBtn: "Foto del odómetro", litres: "Litros", totalPaid: "Total pagado", odoReading: "Lectura del odómetro (km)", t_receipt: "Recibo guardado", t_odo: "Odómetro guardado",
+    k_loc: "Ubicación", locOffSince: "Ubicación apagada desde {t}", gpsPaused: "GPS en pausa (sin turno)", gpsAgo: "GPS hace {s} s · {d} hoy",
+    fToday: "Hoy por cuadrilla", fKm: "Distancia", fDrive: "Manejando", fVisits: "Visitas", fEstL: "Combustible est.", fEstCost: "Costo est.", fPerVisit: "Por visita", fPctRev: "% de ingresos", fRevKm: "Ingreso por {u}",
+    fWeek: "Semana pasada: estimado vs recibos", fRecL: "Recibos", fRecCost: "Pagado", fDiff: "Diferencia", fUse: "Usar {v}", fDaily: "Costo estimado de combustible por día", fLegs: "Costo para llegar a cada parada · Cuadrilla 2 hoy", fLeg: "Tramo", fVisitPrice: "Precio de visita", fShare: "Parte de combustible",
+    fSettings: "Ajustes de combustible", fPrice: "Precio del combustible", fUnits: "Unidades", fIdle: "Motor encendido por parada (min)", fEcon: "Rendimiento", fOdo: "GPS vs odómetro (semana pasada)", fOdoGps: "GPS", fOdoOdo: "Odómetro",
+    fRetention: "Los puntos de GPS se guardan 90 días y luego se borran. Los totales diarios quedan para reportes. La ubicación solo se comparte mientras la cuadrilla está en turno.", fNewOdo: "Nueva foto del odómetro de la Cuadrilla 2 a las {t}: {r} km", fReceiptsToday: "Recibos de hoy",
+    fHowEst: "Estimado = distancia × rendimiento + motor encendido en cada parada. Los recibos muestran la diferencia y con un toque se corrige el rendimiento del camión.", truck: "Camión", fTotal: "Total", unitKm: "km y litros", unitMi: "millas y galones", t_calib: "Rendimiento actualizado",
+    nj: "Crear trabajo nuevo", njCust: "Cliente / propiedad", njChoose: "Elegir…", njNewCust: "+ Cliente nuevo", njName: "Nombre del cliente", njSvc: "Servicio", njEst: "Tiempo en el sitio", njSrc: "De dónde vino", assignTo: "Asignar a", njPrice: "Precio (opcional)", njNote: "Nota para la cuadrilla (opcional)", njCreate: "Crear trabajo", njNeed: "Elige un cliente y un servicio", njDone: "Trabajo creado para el {d}",
+    nGate: "Código del portón", nPets: "Mascotas", nPark: "Estacionar", nSpr: "Aspersores", nOther: "Otra nota", codePh: "ej. 4412", crewSees: "Lo que verá la cuadrilla",
+    petDog: "Perro", petCat: "Gato", petOther: "Otra mascota", bFriendly: "Amistoso", bKnock: "Tocar primero", bGate: "Portón cerrado",
+    pStreet: "Calle", pDrive: "Entrada", pLane: "Callejón", pNoBlock: "No bloquear entrada", sFront: "Entrada", sDrive: "Junto a la entrada de autos", sBack: "Patio de atrás",
+    aerate: "Airear", over: "Resembrar", shrub: "Podar arbustos", stakes: "Poner estacas", gutter: "Limpiar canaletas", sprk: "Purgar líneas",
+    legLoad: "Cada cuadro es un día: claro tiene espacio, oscuro está lleno, rojo pasa de 8 h.",
+    sample: "Datos de ejemplo. No se envía nada.",
+    ownerCo: "Green Ridge Lawn & Snow", rainDay: "Día de lluvia",
+    tabToday: "Hoy", tabMap: "Mapa en vivo", tabHours: "Horas", tabMoney: "Ingresos", tabQuality: "Calidad", tabRecords: "Registros",
+    tLate: "Atrasados", tStuck: "No terminados", tWait: "Te esperan", tComp: "Quejas", tLeads: "Oportunidades", tDone: "Terminados",
+    needsYou: "Te necesitan", all: "todo", team: "El equipo ahora", textsToday: "Textos a clientes hoy",
+    behind: "{m} min atrasada", onTrack: "A tiempo", driving: "Manejando a {a}", atStop: "En {a} · {m} min", notIn: "Sin marcar entrada", finished: "Ruta terminada",
+    jobs: "{d}/{n} trabajos",
+    approve: "Aprobar", call: "Llamar", reschedule: "Pasar a mañana", skipNoCharge: "Saltar sin cobro", close: "Cerrar",
+    quote: "Enviar cotización", notNow: "Ahora no", redo: "Mandar a corregir", setTime: "Poner 5:15 PM", keep: "Dejar así",
+    k_stuck: "No terminado", k_skip: "Pidió saltar", k_time: "Salida sin marcar", k_lead: "Oportunidad de la cuadrilla", k_comp: "Queja", k_late: "Atrasada", k_equip: "Equipo",
+    resolved: "Listo. Quitado de la lista.",
+    rainTitle: "Mover el resto de hoy", rainWhich: "Mover a", rainCount: "Se mueven {v} visitas de {c} cuadrillas. {s} clientes reciben texto. {n} no dieron permiso y pasan a la lista de llamadas.",
+    rainPreview: "Vista previa del texto", rainGo: "Mover ruta y avisar", rainUndo: "Deshacer", rainDone: "Día de lluvia. Las visitas restantes pasaron al {d}.",
+    smsRain: "Hi, it's Green Ridge Lawn. Rain today, so your visit moves to {d}. No need to reply. Reply STOP to opt out.",
+    tomorrow: "Mañana", nextOpen: "Próximo día libre",
+    st_sent: "Enviado", st_held: "En espera (horas de silencio)", st_skip: "No enviado: sin permiso",
+    hoursH: "Semana pasada", hoursSub: "26 oct – 1 nov · horas extra después de 44 h (regla de ejemplo de Ontario)", person: "Persona", total: "Total", onsitePct: "En sitio", flags: "Alertas",
+    missedOut: "Salida sin marcar el sáb", copyCsv: "Copiar para nómina", copied: "Copiado como CSV",
+    todayHours: "Hoy hasta ahora",
+    revCrew: "Ingresos por cuadrilla hoy", revDay: "Ingresos por día esta semana", revHour: "Por hora de cuadrilla", visitsDay: "Visitas hoy", avgVisit: "Visita promedio",
+    qualH: "Revisar fotos de hoy", looksGood: "Se ve bien", flagIt: "Marcar", flagged: "Marcado para el jefe de cuadrilla", approved: "Marcado como bueno",
+    recH: "Registros de aplicación", recSub: "Se guardan por trabajo. Las reglas siguen la provincia o estado de la empresa.", eqH: "Equipo y mantenimiento",
+    date: "Fecha", address: "Dirección", applicator: "Aplicador", reg: "N.º reg.", wx: "Clima",
+    rulesTxt: "<b>Reglas: Ontario (ejemplo).</b> Control de maleza solo con productos de menor riesgo de la lista permitida de la provincia; uso comercial requiere licencia de aplicador. Revisa las reglas vigentes de cada provincia, estado o ciudad antes de lanzar.",
+    due: "Servicio pendiente", ok: "OK", reported: "Reportado hoy",
+    hrsShort: "h", c1n: "Cuadrilla 1", c2n: "Cuadrilla 2", c3n: "Cuadrilla 3", c4n: "Cuadrilla 4",
+    yard: "Base", crewsLegend: "Cuadrillas",
+    mon: "lun", tue: "mar", wed: "mié", thu: "jue", fri: "vie", sat: "sáb", sun: "dom",
+  }
+};
+let lang = "en";
+const t = (k, v) => { let s = (T[lang][k] ?? T.en[k] ?? k); if (v) for (const [a, b] of Object.entries(v)) s = s.split("{" + a + "}").join(b); return s; };
+const L = (o) => (typeof o === "string" ? o : (o[lang] ?? o.en));
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+/* ================= sample photos (generated) ================= */
+function rnd(seed) { let s = seed * 9301 + 49297; return () => ((s = (s * 9301 + 49297) % 233280) / 233280); }
+function lawnPhoto(kind, seed) {
+  const r = rnd(seed + (kind === "after" ? 7 : 0));
+  let g = "";
+  g += '<rect width="400" height="300" fill="#5d8a3c"/>';
+  g += '<rect y="0" width="400" height="58" fill="#6b4f36"/>'; // garden bed
+  for (let i = 0; i < 14; i++) g += `<circle cx="${(i * 31 + r() * 20) | 0}" cy="${(20 + r() * 26) | 0}" r="${(8 + r() * 10) | 0}" fill="${r() > 0.5 ? "#3f6b2a" : "#4f7d33"}"/>`;
+  g += '<rect y="262" width="400" height="38" fill="#b9b6ad"/>'; // walkway
+  if (kind === "after") {
+    for (let i = 0; i < 8; i++) g += `<rect x="${i * 50}" y="58" width="25" height="204" fill="#79a94c" opacity=".55"/>`;
+    g += '<rect y="258" width="400" height="4" fill="#3b2f22"/>';
+  } else {
+    for (let i = 0; i < 160; i++) { const x = r() * 400, y = 58 + r() * 204; g += `<path d="M${x | 0} ${y | 0}l${(r() * 6 - 3) | 0} -${(6 + r() * 10) | 0}" stroke="${r() > 0.5 ? "#476f2c" : "#7aa04e"}" stroke-width="2"/>`; }
+    for (let i = 0; i < 46; i++) g += `<ellipse cx="${(r() * 400) | 0}" cy="${(60 + r() * 230) | 0}" rx="${(5 + r() * 5) | 0}" ry="3.5" fill="${["#c98a2c", "#a8562a", "#d9b24a", "#8a4b2a"][(r() * 4) | 0]}" transform="rotate(${(r() * 180) | 0} 200 150)"/>`;
+    for (let i = 0; i < 10; i++) g += `<path d="M${(r() * 400) | 0} 262l${(r() * 8) | 0} -${(8 + r() * 8) | 0}" stroke="#4f7d33" stroke-width="2.5"/>`;
+  }
+  return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">${g}</svg>`);
+}
+
+/* ================= data ================= */
+const START = new Date(); START.setHours(10, 42, 0, 0);
+const LOAD = Date.now();
+const now = () => new Date(START.getTime() + (Date.now() - LOAD));
+const fmtT = (d) => d.toLocaleTimeString(lang === "es" ? "es" : "en-CA", { hour: "numeric", minute: "2-digit" });
+const tomorrowDate = () => { const d = new Date(START); d.setDate(d.getDate() + 1); return d; };
+const fmtDay = (d) => d.toLocaleDateString(lang === "es" ? "es" : "en-CA", { weekday: "short", month: "short", day: "numeric" });
+const money = (n) => "$" + Math.round(n).toLocaleString("en-CA");
+
+function freshStops() {
+  return [
+    { id: "s1", n: "Hendricks", addr: "12 Maple Grove Rd", x: 230, y: 470, freq: "weekly", tasks: ["mow", "edge", "trim", "blow"], notes: [], price: 55, consent: true, status: "todo", est: 30 },
+    { id: "s2", n: "Okafor", addr: "30 Maple Grove Rd", x: 330, y: 470, freq: "weekly", tasks: ["mow", "edge", "trim", "blow"], notes: [{ i: "info", tx: { en: "Bags of clippings to green bin, not garbage", es: "Bolsas de pasto al contenedor verde, no a la basura" } }], price: 55, consent: true, status: "todo", est: 30 },
+    { id: "s3", n: "Tremblay", addr: "7 Birch Cres", x: 420, y: 360, freq: "fall", tasks: ["leaves", "mow", "beds", "haul"], notes: [
+        { i: "gate", tx: { en: "Gate code <b>4412</b>", es: "Código del portón <b>4412</b>" } },
+        { i: "dog", tx: { en: "Friendly lab in the yard. Keep the gate shut.", es: "Labrador amistoso en el patio. Mantén el portón cerrado." } },
+        { i: "park", tx: { en: "Park on the street, not the driveway", es: "Estaciona en la calle, no en la entrada" } }],
+      price: 145, consent: true, status: "todo", est: 60 },
+    { id: "s4", n: "Nguyen", addr: "19 Birch Cres", x: 500, y: 330, freq: "weekly", tasks: ["mow", "edge", "blow", "fert"], app: "fert", notes: [
+        { i: "sprinkler", tx: { en: "Sprinkler heads along the front walk. Flag them before mowing.", es: "Aspersores junto a la entrada. Márcalos antes de cortar." } }],
+      price: 120, consent: true, status: "todo", est: 40 },
+    { id: "s5", n: "Silva", addr: "4 Cedar Ct", x: 600, y: 280, freq: "biweekly", tasks: ["mow", "edge", "trim", "blow"], notes: [
+        { i: "gate", tx: { en: "Back gate sticks. Lift it to open.", es: "El portón de atrás se traba. Levántalo para abrir." } }],
+      price: 55, consent: false, status: "todo", est: 30 },
+    { id: "s6", n: "Patel", addr: "22 Cedar Ct", x: 680, y: 250, freq: "fall", tasks: ["leaves", "beds", "haul"], notes: [
+        { i: "info", tx: { en: "Leaf bags to the curb, not on the driveway", es: "Bolsas de hojas a la acera, no en la entrada" } }],
+      price: 160, consent: true, status: "todo", est: 55 },
+    { id: "s7", n: "MacLeod", addr: "90 Spruce St", x: 760, y: 360, freq: "biweekly", tasks: ["mow", "edge", "trim", "blow"], notes: [
+        { i: "dog", tx: { en: "Dog in back yard. Knock first, owner brings him in.", es: "Perro en el patio de atrás. Toca primero, el dueño lo mete." } }],
+      price: 55, consent: true, status: "todo", est: 30 },
+    { id: "s8", n: "Dubois", addr: "115 Spruce St", x: 840, y: 430, freq: "final", tasks: ["mow", "trim", "blow", "weed"], app: "weed", notes: [
+        { i: "park", tx: { en: "Park in the lane behind the house", es: "Estaciona en el callejón detrás de la casa" } }],
+      price: 105, consent: true, status: "todo", est: 40 },
+  ];
+}
+const YARD = { x: 120, y: 560 };
+const OTHER = {
+  c1: { color: "--c1", ppl: "Dave K. · Priya S.", route: [[120, 560], [150, 420], [140, 300], [210, 200], [300, 150], [380, 120], [470, 140], [520, 90], [600, 120]], done: 6, total: 9, rev: 520, hrs: 6.6, late: 0, at: "63 Aspen Ave", mins: 14, state: "at" },
+  c3: { color: "--c3", ppl: "Ana M. · José L. · Beto R.", route: [[120, 560], [260, 600], [380, 620], [500, 600], [600, 640], [720, 600], [820, 620], [900, 560]], done: 3, total: 7, rev: 330, hrs: 9.3, late: 35, at: "88 Willow Dr", mins: 0, state: "drive" },
+  c4: { color: "--c4", ppl: "Sam T. · Kev O.", route: [[120, 560], [220, 330], [330, 260], [560, 180], [700, 130], [820, 170], [900, 240], [880, 320]], done: 5, total: 8, rev: 455, hrs: 6.4, late: 20, at: "5 Oak Ln", mins: 48, state: "at" },
+};
+/* ================= GPS (simulated company device per crew) ================= */
+const UNIT_M = 25, STEP = 22, SIM_S = 60;   // 1 map unit = 25 m; one fix ≈ 550 m of driving = 1 min of demo time (≈33 km/h in town)
+const ROUTE_NAMES = {
+  c1: ["Yard", "8 Aspen Ave", "17 Aspen Ave", "21 Aspen Ave", "40 Aspen Ave", "14 Aspen Ave", "63 Aspen Ave", "70 Aspen Ave", "81 Aspen Ave"],
+  c3: ["Yard", "2 Elm St", "11 Elm St", "3 Elm St", "88 Willow Dr", "92 Willow Dr", "101 Willow Dr", "7 Willow Dr"],
+  c4: ["Yard", "12 Pine Ct", "8 Oak Ln", "2 Oak Ln", "19 Oak Ln", "5 Oak Ln", "30 Oak Ln", "44 Oak Ln"],
+};
+const pt = (a) => (Array.isArray(a) ? { x: a[0], y: a[1] } : { x: a.x, y: a.y });
+const legWay = (a, b) => [{ x: b.x, y: a.y }, { x: b.x, y: b.y }];   // drive along one street, then the cross street
+function sample(a, way) {
+  const out = []; let cur = { x: a.x, y: a.y };
+  for (const w of way) {
+    let d = Math.hypot(w.x - cur.x, w.y - cur.y);
+    while (d > STEP) { cur = { x: cur.x + (w.x - cur.x) * STEP / d, y: cur.y + (w.y - cur.y) * STEP / d }; out.push(cur); d -= STEP; }
+    if (d > 0.5) { cur = { x: w.x, y: w.y }; out.push(cur); }
+  }
+  return out;
+}
+const jit = () => (Math.random() - 0.5) * 3;
+function record(d, p) {
+  const step = Math.hypot(p.x - d.pos.x, p.y - d.pos.y);
+  d.km += step * UNIT_M / 1000; d.driveS += SIM_S;
+  d.pos = { x: p.x, y: p.y };
+  d.trail.push({ x: p.x + jit(), y: p.y + jit() }); if (d.trail.length > 700) d.trail.shift();
+  d.lastFix = Date.now();
+}
+function makeDev(id, color, stops, idx, driving) {
+  const d = { id, color, on: true, offSince: null, pos: pt(stops[0]), trail: [pt(stops[0])], queue: [], km: 0, driveS: 0, lastFix: Date.now(), idx, wait: 0, home: false };
+  for (let i = 1; i <= idx; i++) sample(stops[i - 1], legWay(stops[i - 1], stops[i])).forEach((q) => record(d, q));
+  if (driving && stops[idx + 1]) { const pts = sample(stops[idx], legWay(stops[idx], stops[idx + 1])); pts.splice(0, Math.floor(pts.length / 2)).forEach((q) => record(d, q)); d.queue = pts; }
+  return d;
+}
+function makeDevs(st) {
+  const dev = { c2: makeDev("c2", "--c2", [YARD], 0, false) };
+  const init = { c1: [6, false, 10], c3: [3, true, 0], c4: [5, false, 6] };
+  for (const [c, [idx, driving, wait]] of Object.entries(init)) {
+    st.oth[c].names = ROUTE_NAMES[c];
+    const d = makeDev(c, st.oth[c].color, st.oth[c].route.map(pt), idx, driving);
+    d.idx = driving ? idx + 1 : idx; d.wait = wait; dev[c] = d;
+  }
+  return dev;
+}
+
+const pad2 = (n) => String(n).padStart(2, "0");
+const isoDate = (d) => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+const parseIso = (v) => { const [y, m, d] = v.split("-").map(Number); return new Date(y, m - 1, d); };
+const Cap = (k) => k[0].toUpperCase() + k.slice(1);
+function nextMonday() { const d = new Date(START); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() + ((8 - d.getDay()) % 7 || 7)); return d; }
+function freshJobs() {
+  const d = (off) => { const x = new Date(START); x.setHours(0, 0, 0, 0); x.setDate(x.getDate() + off); return x; };
+  const ws = nextMonday(); const w = (i) => { const x = new Date(ws); x.setDate(ws.getDate() + i); return x; };
+  return [
+    { id: "j1", addr: "41 Spruce St", n: "Kowalski", svc: "j_redo", src: "src_redo", est: 20, date: d(0), crew: null, sugg: "c2", x: 800, y: 390, tasks: ["blow"], price: 0 },
+    { id: "j2", addr: "301 Lakeshore Rd", n: "Haddad", svc: "j_first", src: "src_new", est: 60, date: d(0), crew: null, x: 900, y: 300, tasks: ["mow", "edge", "trim", "leaves"], price: 140, notes: [{ i: "gate", tx: { en: "Gate code <b>7731</b>", es: "Código del portón <b>7731</b>" }, short: { en: "7731", es: "7731" } }, { i: "dog", tx: { en: "Dog in the yard. Friendly.", es: "Perro en el patio. Amistoso." }, short: { en: "Dog", es: "Perro" } }, { i: "park", tx: { en: "Park on the street", es: "Estaciona en la calle" }, short: { en: "Parking", es: "Estacionar" } }] },
+    { id: "j3", addr: "12 Pine Ct", n: "Leblanc", svc: "ns_aer", src: "src_lead", est: 45, date: d(0), crew: "c4", price: 85 },
+    { id: "j4", addr: "5 Oak Ln", n: "Fraser", svc: "ns_aer", src: "src_lead", est: 45, date: w(0), crew: null, sugg: "c4", price: 85 },
+    { id: "j5", addr: "88 Willow Dr", n: "Reyes", svc: "ns_leaves", src: "src_resched", est: 50, date: w(0), crew: "c3", price: 150 },
+    { id: "j6", addr: "63 Aspen Ave", n: "Wong", svc: "ns_shrub", src: "src_lead", est: 90, date: w(1), crew: null, sugg: "c1", price: 240 },
+    { id: "j7", addr: "14 Maple Grove Rd", n: "Chen", svc: "j_gutter", src: "src_lead", est: 40, date: w(2), crew: null, price: 120 },
+    { id: "j8", addr: "27 Cedar Ct", n: "Morin", svc: "j_sprk", src: "src_new", est: 30, date: w(2), crew: "c2", price: 90 },
+    { id: "j9", addr: "9 Birch Cres", n: "Ali", svc: "ns_leaves", src: "src_new", est: 60, date: w(3), crew: null, price: 160 },
+    { id: "j10", addr: "19 Birch Cres", n: "Nguyen", svc: "ns_over", src: "src_crew", est: 40, date: w(4), crew: null, sugg: "c2", note: "Thin spots by the walk", price: 110 },
+    { id: "j11", addr: "115 Spruce St", n: "Dubois", svc: "ns_snow", src: "src_crew", est: 25, date: w(9), crew: null, sugg: "c2", note: "Stakes along the driveway before freeze-up", price: 60 },
+    { id: "j12", addr: "Northgate Plaza lot", n: "Northgate Plaza", svc: "ns_snow", src: "src_new", est: 120, date: w(11), crew: null, price: 400 },
+    { id: "j13", addr: "22 Cedar Ct", n: "Patel", svc: "ns_leaves", src: "src_crew", est: 55, date: w(8), crew: "c2", note: "Second pass, the oak is still dropping", price: 160 },
+    { id: "j14", addr: "40 Aspen Ave", n: "Singh", svc: "j_sprk", src: "src_new", est: 30, date: w(15), crew: null, price: 90 },
+    { id: "j15", addr: "3 Elm St", n: "Roy", svc: "ns_fert", src: "src_lead", est: 30, date: w(17), crew: "c1", price: 65 },
+  ];
+}
+function buildProps(st) {
+  const P = {};
+  const add = (x, plan) => {
+    if (!P[x.addr]) P[x.addr] = { addr: x.addr, n: x.n, x: x.x, y: x.y, plan: plan || null, notes: x.notes ? [...x.notes] : [], hist: [], apps: [], consent: x.consent !== false, since: null };
+    else if ((x.notes || []).length && !P[x.addr].notes.length) P[x.addr].notes = [...x.notes];
+    return P[x.addr];
+  };
+  const years = ["2023", "2021", "2024", "2022", "2025", "2023", "2020", "2024"];
+  st.stops.forEach((x, k) => {
+    const p = add(x, { freq: x.freq, price: x.price, crew: "c2" });
+    p.since = years[k % 8];
+    if (x.status === "done") p.hist.push({ date: new Date(START), crew: "c2", svc: x.freq, mins: x.mins, seed: 3 + k, by: "Marco R." });
+    const gap = x.freq === "biweekly" ? 14 : 7;
+    for (let w = 1; w <= 3; w++) { const d = new Date(START); d.setDate(d.getDate() - gap * w); p.hist.push({ date: d, crew: "c2", svc: x.freq === "biweekly" ? "biweekly" : "weekly", mins: Math.max(18, x.est - 6 + ((k + w) % 7)), seed: 40 + k * 5 + w, by: w === 2 ? "Luis G." : "Marco R." }); }
+  });
+  st.jobs.forEach((j) => add(j, null));
+  if (P["19 Birch Cres"]) P["19 Birch Cres"].apps.push({ date: "Sep 14", prod: "Fall fertilizer 24-0-12", amt: "10 kg", who: "Luis G." });
+  if (P["115 Spruce St"]) P["115 Spruce St"].apps.push({ date: "Sep 30", prod: "Iron-based weed control (FeHEDTA)", amt: "0.5 L", who: "Marco R. (lic. sample)" });
+  return P;
+}
+const propNotes = (x) => (S.props && S.props[x.addr] ? S.props[x.addr].notes : x.notes || []);
+let S;
+function freshState() {
+  const st = {
+    view: "crew", crewTab: "today", ownerTab: "today", filter: null,
+    clockedIn: false, clockAt: null, shift: "pre", pause: null, breaks: [], coConfirm: false, clockOutAt: null,
+    stops: freshStops(), cur: "s1", checks: {}, photos: {}, mats: {}, log: {},
+    preTrip: { p_oil: false, p_blades: false, p_line: false, p_fuel: false, p_bags: false, p_ppe: false, p_aid: false, p_trailer: false, p_tablet: false },
+    rain: null,
+    texts: [
+      { at: "9:40 AM", to: "Wong (Crew 1)", what: { en: "Done + photo", es: "Terminado + foto" }, st: "st_sent" },
+      { at: "10:05 AM", to: "Reyes (Crew 3)", what: { en: "On the way", es: "En camino" }, st: "st_skip" },
+    ],
+    items: [
+      { id: "i1", k: "k_skip", tone: "warn", tile: "wait", title: { en: "88 Willow Dr · Crew 3", es: "88 Willow Dr · Cuadrilla 3" }, body: { en: "Customer asked to skip this week (texted the crew lead).", es: "El cliente pidió saltar esta semana (le escribió al jefe de cuadrilla)." }, acts: ["skipNoCharge", "reschedule"] },
+      { id: "i2", k: "k_time", tone: "warn", tile: "wait", title: { en: "Priya S. · Crew 1 · Saturday", es: "Priya S. · Cuadrilla 1 · sábado" }, body: { en: "Phone shows clock-out at 9:58 PM. Last job ended 5:02 PM.", es: "El teléfono marca salida a las 9:58 PM. El último trabajo terminó a las 5:02 PM." }, acts: ["setTime", "keep"] },
+      { id: "i3", k: "k_lead", tone: "brass", tile: "leads", title: { en: "Needs aeration · 5 Oak Ln", es: "Necesita aireación · 5 Oak Ln" }, body: { en: "Spotted by Crew 4. Compacted soil along the driveway.", es: "Lo vio la Cuadrilla 4. Suelo compactado junto a la entrada." }, acts: ["quote", "notNow"], photo: 21 },
+      { id: "i4", k: "k_comp", tone: "bad", tile: "comp", title: { en: "41 Spruce St · Crew 1 · Thu", es: "41 Spruce St · Cuadrilla 1 · jue" }, body: { en: "\"Clippings left all over the driveway.\" After photo shows the driveway not blown.", es: "\"Dejaron pasto por toda la entrada.\" La foto de después muestra la entrada sin soplar." }, acts: ["redo", "call"] },
+      { id: "i5", k: "k_late", tone: "bad", tile: "late", title: { en: "Crew 3 · 35 min behind", es: "Cuadrilla 3 · 35 min atrasada" }, body: { en: "Lost time at 2 Elm St (mower wouldn't start). 4 visits left.", es: "Perdió tiempo en 2 Elm St (la podadora no arrancaba). Faltan 4 visitas." }, acts: ["call"] },
+      { id: "i6", k: "k_late", tone: "bad", tile: "late", title: { en: "Crew 4 · 48 min at 5 Oak Ln (planned 30)", es: "Cuadrilla 4 · 48 min en 5 Oak Ln (plan: 30)" }, body: { en: "Heavy leaf load. 20 min behind.", es: "Mucha hoja. 20 min atrasada." }, acts: ["call"] },
+      { id: "i7", k: "k_lead", tone: "brass", tile: "leads", title: { en: "Dead cedar · 63 Aspen Ave", es: "Cedro muerto · 63 Aspen Ave" }, body: { en: "Spotted by Crew 1. Front corner of the house.", es: "Lo vio la Cuadrilla 1. Esquina delantera de la casa." }, acts: ["quote", "notNow"], photo: 33 },
+    ],
+    quality: {}, next: {}, jobs: freshJobs(), aRange: "today",
+    equipLog: [], gpsAt: {}, receipts: [], odoNew: null,
+    oth: JSON.parse(JSON.stringify(OTHER)),
+    trucks: { c1: { n: "Truck 10", l100: 18, idle: 2.5 }, c2: { n: "Truck 12", l100: 19, idle: 2.5 }, c3: { n: "Truck 14", l100: 21, idle: 2.5 }, c4: { n: "Truck 15", l100: 17.5, idle: 2.5 } },
+    price: 1.55, units: "km", idleMin: 3, lastSub: {}, propQ: "",
+    net: { online: true, since: null, syncing: false, snap: null, total: 0 }, outbox: [],
+  };
+  st.dev = makeDevs(st);
+  st.props = buildProps(st);
+  return st;
+}
+S = freshState();
+
+/* ================= helpers ================= */
+const $ = (s, r = document) => r.querySelector(s);
+const curStop = () => S.stops.find((s) => s.id === S.cur);
+const elapsedMin = (d) => Math.max(0, Math.round((now() - d) / 60000));
+function toast(msg) {
+  const el = document.createElement("div"); el.className = "toast"; el.setAttribute("role", "status"); el.textContent = msg;
+  document.body.appendChild(el); setTimeout(() => el.remove(), 2800);
+}
+function sheet(html, onMount) {
+  const L = $("#layer");
+  L.innerHTML = `<div class="scrim" data-act="closeSheet"><div class="sheet" role="dialog" aria-modal="true" data-stop>${'<div class="grab"></div>' + html}</div></div>`;
+  const sh = $(".sheet", L);
+  if (onMount) onMount(sh);
+  const f = sh.querySelector("button, input, select"); if (f) f.focus({ preventScroll: true });
+}
+const closeSheet = () => { $("#layer").innerHTML = ""; };
+
+/* photo capture */
+let photoCb = null;
+$("#cam").addEventListener("change", (e) => {
+  const f = e.target.files && e.target.files[0]; e.target.value = "";
+  if (f && photoCb) { photoCb(URL.createObjectURL(f)); photoCb = null; }
+});
+function askPhoto(seed, cb) {
+  sheet(`<h2>${t("photoTitle")}</h2>
+    <div class="opts"><button class="opt" id="ph-cam">${I.cam.replace('class="cam"', 'width="26" height="26"')}${t("openCam")}</button>
+    <button class="opt" id="ph-sample">${I.star.replace("<svg", '<svg width="26" height="26"')}${t("useSample")}</button></div>
+    <div class="sheet-acts" style="grid-template-columns:1fr"><button data-act="closeSheet">${t("cancel")}</button></div>`, (sh) => {
+    $("#ph-cam", sh).onclick = () => { photoCb = cb; closeSheet(); $("#cam").click(); };
+    $("#ph-sample", sh).onclick = () => { closeSheet(); cb(lawnPhoto(seed.kind, seed.n)); };
+  });
+}
+
+/* ================= crew screen ================= */
+function crewProgress() {
+  const n = S.stops.length, d = S.stops.filter((s) => s.status === "done").length;
+  const leftMins = S.stops.filter((s) => s.status === "todo" || s.status === "enroute" || s.status === "onsite").reduce((a, s) => a + s.est + 8, 0);
+  const h = Math.floor(leftMins / 60) + "h " + (leftMins % 60) + "m";
+  const bars = S.stops.map((s) => `<i class="${s.status === "done" ? "d" : s.status === "blocked" ? "b" : s.status === "moved" ? "m" : ""}"></i>`).join("");
+  return `<div><div class="progress" aria-hidden="true">${bars}</div><div class="progress-txt"><span>${t("ofDone", { d, n })}</span><span>${t("left", { n: S.stops.filter((s) => ["todo", "enroute", "onsite"].includes(s.status)).length, h })}</span></div></div>`;
+}
+function freqChip(s) {
+  const cls = s.freq === "fall" || s.freq === "final" ? "season" : "freq";
+  return `<span class="chip ${cls}">${t(s.freq)}</span>`;
+}
+const preDone = () => Object.values(S.preTrip).every(Boolean);
+const sumType = (k) => S.breaks.filter((x) => x.type === k).reduce((a, x) => a + x.mins, 0);
+const mmss = () => { const sec = Math.max(0, Math.floor((Date.now() - S.pause.since) / 1000)); return pad2(Math.floor(sec / 60)) + ":" + pad2(sec % 60); };
+function headerClock() {
+  if (S.shift === "pre") return `<span class="clock idle">${I.clock}${t("notIn")}</span>`;
+  if (S.shift === "off") return `<span class="clock idle">${I.clock}${t("clockedOut")}</span>`;
+  if (S.pause) return `<span class="clock pause">${S.pause.type === "lunch" ? I.lunch : I.coffee}<span class="num" id="hdr-pause">${mmss()}</span></span>`;
+  return `<button class="clock in" data-act="clock" aria-haspopup="dialog"><span class="dot"></span>${t("onClock")} <span class="num">${hm(elapsedMin(S.clockAt))}</span>${I.chev}</button>`;
+}
+function preShift() {
+  const keys = Object.keys(S.preTrip), d = keys.filter((k) => S.preTrip[k]).length, ok = d === keys.length, dv = S.dev.c2;
+  const mins = S.stops.reduce((a, x) => a + x.est + 8, 0);
+  return `<div class="shift-hero"><h2>${t("gm")}</h2><p>${t("shiftSum", { d: fmtDay(START), n: S.stops.length, h: Math.floor(mins / 60) + "h " + (mins % 60) + "m" })}</p></div>
+    <div class="card"><h3>${t("preT")}</h3><p class="muted" style="margin:0 0 10px">${t("preP")}</p>
+      <div class="opts shiftlist">${keys.map((k) => `<button class="opt" data-act="pre" data-k="${k}" aria-pressed="${S.preTrip[k]}"><span class="check" style="border:0;padding:0;min-height:0;background:transparent"><span class="box">${S.preTrip[k] ? I.check : ""}</span></span>${t(k)}</button>`).join("")}</div>
+      <p class="precount">${t("preCount", { d, n: keys.length })}</p>
+      <button class="small-btn bad" data-act="issue" data-n="Truck 12" style="width:100%;min-height:52px">${t("somethingWrong")}</button></div>
+    <div class="gpsready ${dv.on ? "" : "off"}">${I.nav}${dv.on ? t("locReady") : t("locOffT")}${dv.on ? "" : `<button class="small-btn" data-act="locOn">${t("locOn")}</button>`}</div>
+    <button class="big" data-act="clock" ${ok && dv.on ? "" : "disabled"}>${I.clock.replace("<svg", '<svg width="28" height="28"')}${t("clockIn")}</button>
+    <p class="hint" style="margin-top:-6px">${ok ? "" : t("preNeed")}</p>`;
+}
+function pauseScreen() {
+  const lunch = S.pause.type === "lunch";
+  return `<div class="card pausecard"><div class="nic">${lunch ? I.lunch : I.coffee}</div><h2>${t(lunch ? "atLunch" : "onBreak")}</h2><div class="ptime" id="pause-timer">${mmss()}</div>
+    <p class="muted">${t("pauseNote")}</p><p>${t("breakSoFar", { b: sumType("break"), l: sumType("lunch") })}</p>
+    <button class="big" data-act="pauseEnd">${t(lunch ? "endLunch" : "endBreak")}</button></div>`;
+}
+function shiftSummary() {
+  const on = S.clockAt ? Math.round(((S.clockOutAt || now()) - S.clockAt) / 60000) : 0, br = sumType("break"), lu = sumType("lunch");
+  const done = S.stops.filter((x) => x.status === "done").length;
+  return `<div class="sumgrid"><div><span>${t("coOnClock")}</span><b>${hm(on)}</b></div><div><span>${t("coWorked")}</span><b>${hm(Math.max(0, on - br - lu))}</b></div>
+    <div><span>${t("coBreaks")}</span><b>${br} min</b></div><div><span>${t("coLunch")}</span><b>${lu} min</b></div>
+    <div><span>${t("coJobs")}</span><b>${done} / ${S.stops.length}</b></div><div><span>${t("coKm")}</span><b>${fDist(S.dev.c2.km)}</b></div></div>`;
+}
+const jobsLeft = () => S.stops.filter((x) => ["todo", "enroute", "onsite"].includes(x.status)).length;
+function coScreen() {
+  const left = jobsLeft();
+  return `<div class="card cocard"><h2>${t("coTitle")}</h2>${shiftSummary()}${left ? `<div class="lock">${t("coLeft", { n: left })}</div>` : ""}${S.outbox.length ? `<div class="lock" style="background:var(--warn-soft);color:var(--warn)">${t("coWaiting", { n: S.outbox.length })}</div>` : ""}
+    <button class="big" data-act="coYes">${t("coYes")}</button><button class="big ghostbig" data-act="coBack">${t("coBack")}</button></div>`;
+}
+function offScreen() {
+  return `<div class="card cocard"><h2>${t("offTitle")}</h2><p style="margin:0;font-size:1.05rem">${t("offP", { t: fmtT(S.clockOutAt) })}</p>${shiftSummary()}
+    <button class="small-btn" data-act="newShift" style="border-style:dashed;min-height:52px">${t("newShift")}</button></div>`;
+}
+function doClockMenu() {
+  sheet(`<h2>${t("clockMenu")}</h2><p class="muted" style="font-size:1rem">${t("onClock")} ${hm(elapsedMin(S.clockAt))} · ${t("breakSoFar", { b: sumType("break"), l: sumType("lunch") })}</p>
+    <div class="opts">
+      <button class="opt bigopt" data-act="pauseStart" data-k="break">${I.coffee}<span>${t("startBreak")}<small>${t("pauseNote")}</small></span></button>
+      <button class="opt bigopt" data-act="pauseStart" data-k="lunch">${I.lunch}<span>${t("startLunch")}</span></button>
+      <button class="opt bigopt danger" data-act="coAsk">${I.clock}<span>${t("clockOutBtn")}</span></button></div>
+    <div class="sheet-acts" style="grid-template-columns:1fr"><button data-act="closeSheet">${t("cancel")}</button></div>`);
+}
+function renderCrew() {
+  const el = $("#crew"), dv = S.dev.c2;
+  let h = `<div class="crew-head"><div class="who"><h1>${t("crewName")}</h1><span>${t("crewPpl")} · ${fmtDay(START)} · <span class="gpschip ${devLive(dv) ? "" : "off"}">${I.nav}GPS</span></span></div>${headerClock()}</div>`;
+  if (S.shift !== "pre" && (queued() || S.outbox.length)) h += `<div style="display:flex;justify-content:flex-end;margin-top:-6px">${netChip()}</div>`;
+  if (S.rain && S.shift !== "pre") h += `<div class="banner rain">${I.rain.replace("<svg", '<svg width="24" height="24"')}<div><b>${t("rainCrew")}</b>${t("rainCrewTxt", { d: fmtDay(S.rain.to) })}</div></div>`;
+  let tabs = false;
+  if (S.shift === "pre" && !S.net.online) h += `<div class="banner offline">${I.wifiOff.replace("<svg", '<svg width="26" height="26"')}<div><b>${t("offT")}</b>${t("offP")}</div></div>`;
+  if (S.shift === "pre") h += preShift();
+  else if (S.shift === "off") h += offScreen();
+  else if (S.coConfirm) h += coScreen();
+  else if (S.pause) h += pauseScreen();
+  else if (!dv.on) h += `<div class="card locoff"><div class="nic">${I.nav}</div><h2>${t("locOffT")}</h2><p>${t("locOffP")}</p><button class="big" data-act="locOn">${t("locOn")}</button></div>`;
+  else {
+    tabs = true;
+    if (S.crewTab === "today") h += crewToday();
+    else if (S.crewTab === "map") h += crewMap();
+    else h += crewTruck();
+  }
+  h += `<p class="foot">${t("sample")}</p>`;
+  el.innerHTML = h;
+  const tb = $("#crew-tabs");
+  tb.innerHTML = `<div class="in">${[["today", I.list], ["map", I.map], ["truck", I.truck]].map(([k, ic]) => `<button data-act="crewTab" data-k="${k}" aria-pressed="${S.crewTab === k}">${ic}${t(k)}</button>`).join("")}</div>`;
+  tb.hidden = !tabs;
+}
+const hm = (m) => Math.floor(m / 60) + ":" + String(m % 60).padStart(2, "0");
+
+function crewToday() {
+  let h = !S.net.online ? `<div class="banner offline">${I.wifiOff.replace("<svg", '<svg width="26" height="26"')}<div><b>${t("offT")}</b>${t("offP")}</div></div>` : "";
+  h += crewProgress();
+  const c = curStop();
+  if (c) h += jobCard(c);
+  const idx = S.stops.indexOf(c);
+  const later = S.stops.filter((s) => s !== c && ["todo", "blocked", "moved"].includes(s.status));
+  const done = S.stops.filter((s) => s.status === "done");
+  if (later.length) {
+    h += `<div class="list-h">${S.rain ? t("movedH") : t("later")}</div>`;
+    h += later.map((s) => row(s)).join("");
+  }
+  if (done.length) {
+    h += `<div class="list-h">${t("doneH")}</div>` + done.map((s) => row(s)).join("");
+  }
+  return h;
+}
+function row(s) {
+  const i = S.stops.indexOf(s) + 1;
+  let r = `${s.est} ${t("min")}`;
+  if (s.status === "done") r = `<span class="chip ok">${t("doneTag")}</span><div style="margin-top:4px">${t("totalTime", { m: s.mins })}</div>`;
+  if (s.status === "blocked") r = `<span class="chip app">${t("blockedTag")}</span>`;
+  if (s.status === "moved") r = `<span class="chip blue">${t("movedTag")}</span>`;
+  return `<button class="row ${s.status}" data-act="pick" data-id="${s.id}"><span class="stopno">${s.status === "done" ? I.check : i}</span><div style="min-width:0"><b>${esc(s.addr)}</b><span>${esc(s.n)} · ${t(s.freq)} · ${s.tasks.map((k) => t(k)).join(", ")}</span></div><div class="r">${r}</div></button>`;
+}
+function gate(s) {
+  const ch = S.checks[s.id] || {}, ph = S.photos[s.id] || {}, nx = S.next[s.id] || {};
+  if (!S.clockedIn) return t("needClock");
+  if (s.status !== "onsite") return "";
+  if (!ph.before) return t("needBefore");
+  if (!s.tasks.every((k) => ch[k])) return t("needChecks");
+  if (s.app && !S.mats[s.id]) return t("needMat");
+  if (!ph.after) return t("needAfter");
+  if (!nx.type || !nx.date || (nx.type !== "ns_reg" && !(nx.note || "").trim())) return t("needNext");
+  return "";
+}
+function updateGate() { const s = curStop(); if (!s) return; const h = gate(s); const b = $("#mainbtn"); if (b) b.disabled = !!h; const p = $("#mainhint"); if (p) p.textContent = h; }
+function jobCard(s) {
+  const i = S.stops.indexOf(s) + 1;
+  const ch = S.checks[s.id] || {}; const ph = S.photos[s.id] || {};
+  let btnCls = "big", btnTxt = t("onWay"), act = "onway";
+  if (s.status === "enroute") { btnTxt = t("imHere"); act = "here"; }
+  if (s.status === "onsite") { btnCls = "big done"; btnTxt = t("finish"); act = "finish"; }
+  if (s.status === "todo") btnCls = "big onway";
+  const hint = gate(s), dis = !!hint;
+  const onsite = s.status === "onsite";
+  let h = `<article class="job current" aria-label="${esc(s.addr)}">
+    <div class="job-top"><span class="stopno">${i}</span><div style="min-width:0"><h2>${esc(s.addr)}</h2><div class="addr muted">${esc(s.n)} · ${money(s.price)}</div>
+    <div class="chips">${freqChip(s)}${s.app ? `<span class="chip app">${t(s.app)}</span>` : ""}<span class="chip">${s.est} ${t("min")}</span></div><button class="proplink" data-act="prop" data-addr="${esc(s.addr)}">${I.list}${t("propPage")}</button></div></div>`;
+  const pn = propNotes(s);
+  if (pn.length) h += `<div class="sec-label">${t("propNotes")}</div><div class="notes">${pn.map((n) => `<div class="note">${NOTE_ICON[n.i]}<div>${L(n.tx)}</div></div>`).join("")}</div>`;
+  if (onsite) h += `<div class="timer"><span>${t("onSite")}</span><span class="num" id="site-timer">${elapsedMin(s.arrived)} ${t("min")} / ${s.est}</span></div>`;
+  h += `<div class="sec-label">${t("checklist")}</div><div class="checklist">${s.tasks.map((k) => `<button class="check" data-act="check" data-k="${k}" aria-pressed="${!!ch[k]}" ${onsite && ph.before ? "" : "disabled"}><span class="box">${ch[k] ? I.check : ""}</span>${t(k)}</button>`).join("")}</div>`;
+  h += `<div class="photos">${["before", "after"].map((k) => `<button class="ph ${ph[k] ? "has" : ""}" data-act="photo" data-k="${k}" ${onsite && (k === "before" || ph.before) ? "" : "disabled"}>${ph[k] ? `<img src="${ph[k]}" alt="${t(k)}">` : `<div>${I.cam}${t("tapPhoto")}</div>`}<span class="tag">${t(k)}</span></button>`).join("")}</div>`;
+  if (onsite && !S.next[s.id] && (s.freq === "weekly" || s.freq === "biweekly")) {
+    const days = s.freq === "weekly" ? 7 : 14, d = new Date(START); d.setDate(d.getDate() + days);
+    S.next[s.id] = { type: "ns_reg", days, date: isoDate(d), auto: true };
+  }
+  if (onsite && S.next[s.id] && S.next[s.id].auto && !S.next[s.id].open) {
+    const nx = S.next[s.id];
+    h += `<div class="sec-label">${t("nextSvc")}</div><div class="nextbox compact"><div class="nextsum">${I.check}<div><b>${t(nx.type)} · ${fmtDay(parseIso(nx.date))}</b><span>${t("fromPlan")}</span></div><button class="small-btn" data-act="nsOpen">${t("change")}</button></div></div>`;
+  } else if (onsite) {
+    const nx = S.next[s.id] || {};
+    const types = ["ns_reg", "ns_leaves", "ns_aer", "ns_fert", "ns_over", "ns_shrub", "ns_snow"];
+    h += `<div class="sec-label">${t("nextSvc")} *</div><div class="nextbox">
+      <div class="chips-sel" role="group" aria-label="${t("nextSvc")}">${types.map((k) => `<button class="pick" data-act="nsType" data-k="${k}" aria-pressed="${nx.type === k}">${t(k)}</button>`).join("")}</div>
+      <div class="field"><label for="ns-date">${t("nextWhen")}</label><div class="chips-sel">${[7, 14, 30].map((d) => `<button class="pick" data-act="nsDate" data-d="${d}" aria-pressed="${nx.days === d}">${t("d" + d)}</button>`).join("")}</div><input type="date" id="ns-date" value="${nx.date || ""}" min="${isoDate(START)}"></div>
+      <div class="field"><label for="ns-note">${t("nextNote")}${nx.type === "ns_reg" ? ` (${t("optional")})` : " *"}</label><div class="notein"><input id="ns-note" maxlength="120" autocomplete="off" placeholder="${esc(t("nextPh"))}" value="${esc(nx.note || "")}"><button class="small-btn" data-act="nsVoice" aria-label="${t("voice")}">${I.mic}</button></div></div>
+    </div>`;
+  }
+  if ((S.log[s.id] || []).length) h += `<div class="log" style="margin-bottom:12px">${S.log[s.id].map((x) => `<div>${esc(x)}</div>`).join("")}</div>`;
+  h += `<div class="main-act"><button id="mainbtn" class="${btnCls}" data-act="${act}" ${dis ? "disabled" : ""}>${btnTxt}</button></div><p class="hint" id="mainhint">${hint}</p>${gpsLine(s)}`;
+  h += `<div class="sub-acts">
+    <button class="warnbtn" data-act="cant">${I.stop}${t("cantFinish")}</button>
+    <button data-act="spot">${I.star}${t("spotted")}</button>
+    <button data-act="${s.app ? "mat" : "voice"}">${s.app ? I.bag : I.mic}${s.app ? t("materials") : t("voice")}</button>
+    ${s.app ? `<button data-act="voice">${I.mic}${t("voice")}</button>` : `<a href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(s.addr + ", Ontario")}" target="_blank" rel="noopener" style="display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.78rem;font-weight:600;color:var(--muted);text-decoration:none;padding:6px 2px;min-height:64px">${I.nav.replace("<svg", '<svg width="26" height="26"')}${t("directions")}</a>`}
+  </div></article>`;
+  return h;
+}
+function addLog(id, msg) { (S.log[id] = S.log[id] || []).push(fmtT(now()) + " · " + msg); }
+
+function crewMap() {
+  return `<div class="card" style="padding:10px">${mapSVG({ crewOnly: true })}</div>
+    <div class="legend"><span><i style="background:var(--ok)"></i>${t("doneH")}</span><span><i style="background:var(--c2)"></i>${t("next")}</span><span><i style="background:var(--surface);border:2px solid var(--muted)"></i>${t("later")}</span><span><i style="background:var(--ink)"></i>${t("yard")}</span></div>`;
+}
+function crewTruck() {
+  const eq = [
+    { n: "Mower #2 · 60\"", h: 412, d: 450 }, { n: "Trimmer T-4", h: 188, d: 200 }, { n: "Blower B-2", h: 96, d: 150 }, { n: "Leaf vac LV-1", h: 141, d: 150 }, { n: "Truck 12", h: null, km: (S.odoNew ? S.odoNew.reading : 84210).toLocaleString("en-CA") + " km" },
+  ];
+  const dv = S.dev.c2;
+  return `<div class="card"><h3>${t("locCard")}</h3>
+    <div class="eq"><b>${t("locDevice")}</b><div class="gpschip ${devLive(dv) ? "" : "off"}">${I.nav}${!dv.on ? t("locOffT") : S.clockedIn ? "GPS" : t("gpsPaused")}</div></div>
+    <p class="muted" style="margin:4px 0 6px">${t("locRule")}</p>
+    <p style="margin:0 0 12px;font-weight:600">${t("locToday", { d: fDist(dv.km), h: hm(Math.round(dv.driveS / 60)) })}</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="small-btn pri" data-act="receipt">${t("receiptBtn")}</button><button class="small-btn" data-act="odo">${t("odoBtn")}</button></div>
+    <button class="small-btn" data-act="locOff" style="margin-top:10px;width:100%;border-style:dashed">${t("demoOff")}</button></div>
+  <div class="card"><h3>${t("preT")}</h3><div class="gpschip">${I.check}${t("preCount", { d: Object.values(S.preTrip).filter(Boolean).length, n: Object.keys(S.preTrip).length })}</div></div>
+  <div class="card"><h3>${t("equipment")}</h3>${eq.map((e, i) => `<div class="eq"><b>${e.n}</b><button class="small-btn bad" data-act="issue" data-i="${i}" data-n="${esc(e.n)}">${t("reportIssue")}</button><span>${e.h != null ? t("hoursDue", { h: e.h, d: e.d }) : e.km}${e.h != null && e.d - e.h <= 15 ? ` · <span class="flag">${t("due")}</span>` : ""}</span></div>`).join("")}</div>
+  <div class="card"><h3>${t("onTruck")}</h3><div class="eq"><b>Fall fertilizer 24-0-12</b><span>6 × 20 kg</span></div><div class="eq"><b>Iron-based weed control (FeHEDTA)</b><span>2 × 3.78 L</span></div><div class="eq"><b>Leaf bags</b><span>40</span></div></div>`;
+}
+
+/* ================= map ================= */
+function mapSVG({ crewOnly }) {
+  const W = 1000, H = 700;
+  let g = `<rect width="${W}" height="${H}" fill="var(--map-land)"/>`;
+  g += `<path d="M0 640 C 200 610, 300 690, 520 660 S 860 690, 1000 650 L1000 700 L0 700Z" fill="var(--map-water)"/>`;
+  g += `<rect x="40" y="60" width="150" height="110" rx="14" fill="var(--map-park)"/><rect x="600" y="430" width="170" height="120" rx="14" fill="var(--map-park)"/>`;
+  for (let x = 80; x < W; x += 110) g += `<line x1="${x}" y1="0" x2="${x}" y2="${H}" stroke="var(--map-road)" stroke-width="7"/>`;
+  for (let y = 70; y < H - 60; y += 95) g += `<line x1="0" y1="${y}" x2="${W}" y2="${y}" stroke="var(--map-road)" stroke-width="7"/>`;
+  g += `<path d="M0 520 L 1000 180" stroke="var(--map-main)" stroke-width="14"/>`;
+  g += `<text x="610" y="500" font-size="20" fill="var(--muted)" opacity=".8">Birchwood Park</text>`;
+  // yard
+  g += `<rect x="${YARD.x - 16}" y="${YARD.y - 16}" width="32" height="32" rx="6" fill="var(--ink)"/><text x="${YARD.x}" y="${YARD.y + 6}" text-anchor="middle" font-size="16" font-weight="700" fill="var(--bg)">Y</text>`;
+  if (!crewOnly) {
+    for (const [id, c] of Object.entries(S.oth)) {
+      const pts = c.route.map((p) => p.join(",")).join(" ");
+      g += `<polyline points="${pts}" fill="none" stroke="var(${c.color})" stroke-width="5" stroke-dasharray="2 10" stroke-linecap="round" opacity=".7"/>`;
+      c.route.slice(1).forEach((p, i) => { g += `<circle cx="${p[0]}" cy="${p[1]}" r="9" fill="${i < c.done ? `var(${c.color})` : "var(--surface)"}" stroke="var(${c.color})" stroke-width="3"/>`; });
+    }
+  }
+  const pts = [YARD, ...S.stops].map((p) => p.x + "," + p.y).join(" ");
+  g += `<polyline points="${pts}" fill="none" stroke="var(--c2)" stroke-width="4" stroke-dasharray="2 10" stroke-linecap="round" opacity=".7"/>`;
+  for (const d of Object.values(S.dev)) if (!crewOnly || d.id === "c2") g += `<polyline points="${(!crewOnly && d.id === "c2" && S.net.snap ? d.trail.slice(0, S.net.snap.trailLen) : d.trail).map((q) => q.x.toFixed(0) + "," + q.y.toFixed(0)).join(" ")}" fill="none" stroke="var(${d.color})" stroke-width="5" stroke-linejoin="round" stroke-linecap="round" opacity=".6"/>`;
+  S.stops.forEach((s, i) => {
+    const isCur = s.id === S.cur;
+    const fill = s.status === "done" ? "var(--ok)" : isCur ? "var(--c2)" : s.status === "blocked" ? "var(--warn)" : s.status === "moved" ? "var(--map-land)" : "var(--surface)";
+    const txt = s.status === "done" || isCur || s.status === "blocked" ? "var(--accent-ink)" : "var(--ink)";
+    if (isCur) g += `<circle cx="${s.x}" cy="${s.y}" r="30" fill="var(--c2)" opacity=".2"><animate attributeName="r" values="22;34;22" dur="2s" repeatCount="indefinite"/></circle>`;
+    g += `<circle cx="${s.x}" cy="${s.y}" r="${crewOnly ? 21 : 16}" fill="${fill}" stroke="var(--c2)" stroke-width="3"/><text x="${s.x}" y="${s.y + (crewOnly ? 7 : 6)}" text-anchor="middle" font-size="${crewOnly ? 19 : 15}" font-weight="700" fill="${txt}">${i + 1}</text>`;
+    if (crewOnly) g += `<text x="${s.x}" y="${s.y - 30}" text-anchor="middle" font-size="17" fill="var(--ink)" font-weight="600">${esc(s.addr.split(" ").slice(0, 2).join(" "))}</text>`;
+  });
+  // crew dots
+  for (const d of Object.values(S.dev)) {
+    if (crewOnly && d.id !== "c2") continue;
+    const live = devLive(d) && !(!crewOnly && d.id === "c2" && S.net.snap);
+    const pos = !crewOnly && d.id === "c2" && S.net.snap ? S.net.snap.pos : d.pos;
+    g += `<g><circle cx="${pos.x.toFixed(0)}" cy="${pos.y.toFixed(0)}" r="17" fill="${live ? `var(${d.color})` : "var(--muted)"}" stroke="var(--surface)" stroke-width="4"/><text x="${pos.x.toFixed(0)}" y="${(pos.y + 6).toFixed(0)}" text-anchor="middle" font-size="15" font-weight="700" fill="var(--surface)">${live ? d.id.slice(1) : "!"}</text></g>`;
+  }
+  return `<svg class="map" id="mapsvg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${t("map")}">${g}</svg>`;
+}
+function lerp(a, b, f) { return { x: a.x + (b.x - a.x) * f, y: a.y + (b.y - a.y) * f }; }
+const devLive = (d) => (d.id === "c2" ? S.clockedIn && d.on : true);
+function gpsTick() {
+  for (const d of Object.values(S.dev)) {
+    if (!devLive(d)) continue;
+    if (d.queue.length) { record(d, d.queue.shift()); if (!d.queue.length) onArrive(d); }
+    else { d.lastFix = Date.now(); if (d.id !== "c2") otherIdle(d); }
+  }
+}
+function onArrive(d) {
+  if (d.id === "c2") {
+    const s = curStop();
+    if (s && s.status === "enroute" && Math.hypot(s.x - d.pos.x, s.y - d.pos.y) < 8) { S.gpsAt[s.id] = fmtT(now()); toast(t("gpsArrived", { a: s.addr })); if (S.view === "crew" && !$("#layer").innerHTML) render(); }
+    return;
+  }
+  const o = S.oth[d.id];
+  if (d.home) { o.state = "fin"; return; }
+  o.state = "at"; o.at = o.names[d.idx]; o.mins = 0; d.wait = 10;
+}
+function otherIdle(d) {
+  const o = S.oth[d.id];
+  if (o.state !== "at" || S.rain) return;
+  o.mins += SIM_S / 60;
+  if (--d.wait > 0) return;
+  o.done = Math.min(o.total, o.done + 1); o.rev += 58;
+  const r = o.route.map(pt);
+  if (d.idx + 1 < r.length) { d.queue = sample(r[d.idx], legWay(r[d.idx], r[d.idx + 1])); d.idx++; o.state = "drive"; o.at = o.names[d.idx]; }
+  else { d.queue = sample(d.pos, legWay(d.pos, YARD)); d.home = true; o.state = "drive"; o.at = t("yard"); }
+}
+function gpsLine(s) {
+  if (s.status !== "enroute") return "";
+  if (S.gpsAt[s.id]) return `<p class="gpsline ok" id="gpsline">${I.nav}${t("gpsHere", { t: S.gpsAt[s.id] })}</p>`;
+  const left = S.dev.c2.queue.length * STEP * UNIT_M / 1000;
+  return `<p class="gpsline" id="gpsline">${I.nav}${t("gpsLeft", { d: fDist(left) })}</p>`;
+}
+
+/* ================= offline outbox (simulated) ================= */
+// Local-first: the crew screen always updates at once. While there is no signal, anything the office
+// would see is held in S.outbox and replayed, in order, when signal returns.
+function office(label, fn, kind, size) {
+  if (S.net.online && !S.net.syncing) { if (fn) fn(); return; }
+  S.outbox.push({ label, at: fmtT(now()), fn: fn || null, kind: kind || "data", size: size || 0 });
+}
+const queued = () => !S.net.online || S.net.syncing;
+function goOffline() {
+  if (!S.net.online) return;
+  const cs = crewSummary().find((c) => c.id === "c2"), d = S.dev.c2;
+  S.net = { online: false, since: fmtT(now()), syncing: false, total: 0,
+    snap: { done: cs.done, rev: cs.rev, state: cs.state, at: cs.at, mins: cs.mins, late: cs.late, pauseTxt: cs.pauseTxt, pos: { ...d.pos }, trailLen: d.trail.length, km: d.km, lastFix: d.lastFix, doneIds: S.stops.filter((x) => x.status === "done").map((x) => x.id) } };
+}
+function goOnline() {
+  if (S.net.online) return;
+  S.net.online = true; S.net.syncing = true; S.net.total = S.outbox.length;
+  const token = S;
+  const step = () => {
+    if (S !== token) return;
+    const it = S.outbox.shift();
+    if (it) { try { if (it.fn) it.fn(); } catch (e) { console.error(e); } }
+    if (S.outbox.length) { setTimeout(step, S.outbox[0].kind === "photo" ? 700 : 220); }
+    else { const n = S.net.total; S.net.syncing = false; S.net.snap = null; S.net.total = 0; toast(t("t_synced", { n })); }
+    render();
+  };
+  if (S.outbox.length) setTimeout(step, 600); else { S.net.syncing = false; S.net.snap = null; }
+}
+function netChip() {
+  const n = S.outbox.length;
+  if (!S.net.online) return `<button class="netchip off" data-act="outbox">${I.wifiOff}${t("netOff", { n })}</button>`;
+  if (S.net.syncing) return `<button class="netchip sync" data-act="outbox">${I.sync}${t("netSync", { n })}</button>`;
+  return "";
+}
+function gpsWaiting() { return S.net.snap ? Math.max(0, S.dev.c2.trail.length - S.net.snap.trailLen) : 0; }
+function doOutbox() {
+  const photos = S.outbox.filter((x) => x.kind === "photo"), mb = photos.reduce((a, x) => a + x.size, 0).toFixed(1);
+  const icon = (k) => (k === "photo" ? I.cam.replace('class="cam"', "") : k === "text" ? I.nav : I.cloud);
+  const done = S.net.total - S.outbox.length;
+  sheet(`<h2>${t("obT")}</h2><p class="muted" style="font-size:1rem">${t("obP")}</p>
+    ${S.net.syncing ? `<div class="field"><label>${t("obSyncing", { d: done, n: S.net.total })}</label><div class="obbar"><span style="width:${(done / Math.max(1, S.net.total)) * 100}%"></span></div></div>` : ""}
+    ${photos.length ? `<div class="chips" style="margin:0"><span class="chip">${t("obPhotos", { n: photos.length, mb })}</span>${gpsWaiting() ? `<span class="chip">${t("obGps", { n: gpsWaiting() })}</span>` : ""}</div>` : gpsWaiting() ? `<div class="chips" style="margin:0"><span class="chip">${t("obGps", { n: gpsWaiting() })}</span></div>` : ""}
+    <div>${S.outbox.length ? S.outbox.map((x) => `<div class="obrow">${icon(x.kind)}<span>${esc(x.label)}</span><span class="tm">${x.at}</span></div>`).join("") : `<p class="muted">${t("obEmpty")}</p>`}</div>
+    <div class="sheet-acts" style="grid-template-columns:1fr"><button data-act="closeSheet">${t("close")}</button></div>`);
+}
+
+/* ================= crew actions ================= */
+function nextStop() {
+  const n = S.stops.find((s) => s.status === "todo");
+  S.cur = n ? n.id : null;
+}
+function doOnWay() {
+  const s = curStop();
+  let m = 10;
+  sheet(`<h2>${t("eta")}</h2>
+    <div class="opts three">${[5, 10, 20].map((v) => `<button class="opt" data-m="${v}" aria-pressed="${v === m}">${t("etaMin", { m: v })}</button>`).join("")}</div>
+    <div class="consent ${s.consent ? "yes" : "no"}">${s.consent ? t("textYes") : t("textNo")}</div>
+    ${s.consent ? `<div class="sms" id="prev"></div>` : ""}
+    <div class="sheet-acts"><button data-act="closeSheet">${t("cancel")}</button><button class="go" id="go">${t("onWay")}</button></div>`, (sh) => {
+    const upd = () => { const p = $("#prev", sh); if (p) p.textContent = t("smsOnway", { n: s.n, m }); };
+    upd();
+    sh.querySelectorAll("[data-m]").forEach((b) => b.onclick = () => { m = +b.dataset.m; sh.querySelectorAll("[data-m]").forEach((x) => x.setAttribute("aria-pressed", x === b)); upd(); });
+    $("#go", sh).onclick = () => {
+      s.status = "enroute"; s.left = now(); closeSheet();
+      { const dv = S.dev.c2; dv.queue = sample(dv.pos, legWay(dv.pos, s)); }
+      const off = queued();
+      office(t("lb_onway", { a: s.addr }), () => S.texts.unshift({ at: fmtT(now()), to: s.n, what: { en: "On the way", es: "En camino" }, st: !s.consent ? "st_skip" : off && s.status !== "enroute" ? "st_late" : "st_sent" }), "text");
+      addLog(s.id, off && s.consent ? t("t_txtQueued") : s.consent ? t("t_onway", { m }) : t("t_nosms"));
+      toast(off && s.consent ? t("t_txtQueued") : s.consent ? t("t_onway", { m }) : t("t_nosms")); render();
+    };
+  });
+}
+function doFinish() {
+  const s = curStop(); const ph = S.photos[s.id] || {};
+  let send = s.consent;
+  const nx = S.next[s.id];
+  sheet(`<h2>${t("doneTitle")}</h2><p class="muted">${t("totalTime", { m: elapsedMin(s.arrived) })}</p>
+    <div class="consent yes"><b>${t("nextLbl")}:</b> ${t(nx.type)} · ${fmtDay(parseIso(nx.date))}${(nx.note || "").trim() ? `<br>“${esc(nx.note)}”` : ""}</div>
+    ${s.consent ? `<label class="switch"><input type="checkbox" id="sendchk" checked>${t("doneText")}</label><div class="sms" id="prev">${esc(t("smsDone", { n: s.n, s: ({ weekly: "lawn service", biweekly: "lawn service", fall: "fall cleanup", final: "last mow of the season" })[s.freq] }))}<img src="${ph.after}" alt=""></div>` : `<div class="consent no">${t("textNo")}</div>`}
+    <div class="sheet-acts"><button data-act="closeSheet">${t("cancel")}</button><button class="go" id="go">${t("finish")}</button></div>`, (sh) => {
+    const c = $("#sendchk", sh); if (c) c.onchange = () => { send = c.checked; $("#prev", sh).hidden = !send; };
+    $("#go", sh).onclick = () => {
+      s.status = "done"; s.mins = Math.max(1, elapsedMin(s.arrived)); closeSheet();
+      const off = queued(), nxc = { ...nx };
+      office(t("lb_done", { a: s.addr }), () => {
+        if (nxc.type !== "ns_reg") S.jobs.push({ id: "j" + Date.now(), addr: s.addr, n: s.n, svc: nxc.type, src: "src_crew", est: 45, date: parseIso(nxc.date), crew: null, sugg: "c2", note: (nxc.note || "").trim(), x: s.x, y: s.y, price: 0 });
+        const P = S.props[s.addr]; if (P) P.hist.unshift({ date: new Date(START), crew: "c2", svc: s.freq, mins: s.mins, before: ph.before, after: ph.after, next: nxc, by: "Marco R." });
+        if (s.consent) S.texts.unshift({ at: fmtT(now()), to: s.n, what: { en: "Done + photo", es: "Terminado + foto" }, st: send ? "st_sent" : "st_skip" });
+      });
+      toast(off ? t("t_saved") : t("t_done", { x: send && s.consent ? t("t_doneSms") : t("t_doneNo") }));
+      nextStop(); render(); window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+  });
+}
+function doCant() {
+  const s = curStop(); let r = null;
+  const rs = ["r_gate", "r_dog", "r_skip", "r_wet", "r_equip", "r_unsafe", "r_car"];
+  sheet(`<h2>${t("reasonTitle")}</h2><p class="muted">${t("reasonHint")}</p>
+    <div class="opts">${rs.map((k) => `<button class="opt" data-r="${k}" aria-pressed="false">${t(k)}</button>`).join("")}</div>
+    <div class="sheet-acts"><button data-act="closeSheet">${t("cancel")}</button><button class="go" id="go" disabled>${t("send")}</button></div>`, (sh) => {
+    sh.querySelectorAll("[data-r]").forEach((b) => b.onclick = () => { r = b.dataset.r; sh.querySelectorAll("[data-r]").forEach((x) => x.setAttribute("aria-pressed", x === b)); $("#go", sh).disabled = false; });
+    $("#go", sh).onclick = () => {
+      s.status = "blocked"; s.reason = r; closeSheet();
+      { const at = fmtT(now()); office(t("lb_cant", { a: s.addr }), () => S.items.unshift({ id: "x" + Date.now(), k: "k_stuck", tone: "bad", tile: "stuck", title: { en: `${s.addr} · Crew 2`, es: `${s.addr} · Cuadrilla 2` }, body: { en: T.en[r] + ". Reported " + at + ".", es: T.es[r] + ". Reportado " + at + "." }, acts: ["reschedule", "call", "close"], fresh: true })); }
+      toast(queued() ? t("t_saved") : t("t_blocked", { r: t(r) })); nextStop(); render();
+    };
+  });
+}
+function doSpot() {
+  const s = curStop(); let u = null, photo = null;
+  const us = ["u_aer", "u_shrub", "u_bare", "u_hedge", "u_gutter", "u_grub"];
+  sheet(`<h2>${t("upTitle")}</h2><p class="muted">${t("upHint")}</p>
+    <div class="opts two">${us.map((k) => `<button class="opt" data-u="${k}" aria-pressed="false">${t(k)}</button>`).join("")}</div>
+    <button class="ph" id="upph" style="aspect-ratio:auto;min-height:64px"><div>${I.cam}${t("addPhotoOpt")}</div></button>
+    <div class="sheet-acts"><button data-act="closeSheet">${t("cancel")}</button><button class="go" id="go" disabled>${t("send")}</button></div>`, (sh) => {
+    sh.querySelectorAll("[data-u]").forEach((b) => b.onclick = () => { u = b.dataset.u; sh.querySelectorAll("[data-u]").forEach((x) => x.setAttribute("aria-pressed", x === b)); $("#go", sh).disabled = false; });
+    $("#upph", sh).onclick = () => { photoCb = (url) => { photo = url; $("#upph", sh).innerHTML = `<img src="${url}" alt="" style="max-height:120px;width:auto">`; }; $("#cam").click(); };
+    $("#go", sh).onclick = () => {
+      office(t("lb_spot", { a: s.addr }), () => S.items.unshift({ id: "x" + Date.now(), k: "k_lead", tone: "brass", tile: "leads", title: { en: `${T.en[u]} · ${s.addr}`, es: `${T.es[u]} · ${s.addr}` }, body: { en: "Spotted by Crew 2 just now.", es: "Lo vio la Cuadrilla 2 ahora." }, acts: ["quote", "notNow"], photoUrl: photo, photo: photo ? null : 50, fresh: true }), photo ? "photo" : "data", photo ? 2.4 : 0);
+      addLog(s.id, t("t_lead") + ": " + t(u)); closeSheet(); toast(queued() ? t("t_saved") : t("t_lead")); render();
+    };
+  });
+}
+function doMat() {
+  const s = curStop();
+  const isWeed = s.app === "weed";
+  const prods = isWeed ? [["Iron-based weed control (FeHEDTA)", "L", 0.5, "Reg. No. on label"]] : [["Fall fertilizer 24-0-12 (granular)", "kg", 10, "—"]];
+  let amt = prods[0][2];
+  const area = isWeed ? 320 : 450;
+  sheet(`<h2>${t("matTitle")}</h2>
+    ${isWeed ? `<div class="lock">${t("lockLic", { who: "Marco R." })}</div>` : ""}
+    <div class="field"><label for="m-prod">${t("product")}</label><select id="m-prod">${prods.map((p) => `<option>${p[0]}</option>`).join("")}</select></div>
+    <div class="field"><label>${t("amount")} (${prods[0][1]})</label><div class="stepper"><button id="m-minus" aria-label="−">−</button><output id="m-amt" class="num">${amt}</output><button id="m-plus" aria-label="+">+</button></div></div>
+    <div class="field"><label for="m-area">${t("area")} (m²)</label><input id="m-area" inputmode="numeric" value="${area}"></div>
+    <div class="field"><label>${t("weather")}</label><div class="consent no">6 °C · wind 9 km/h NW · dry</div></div>
+    <div class="sheet-acts"><button data-act="closeSheet">${t("cancel")}</button><button class="go" id="go">${t("save")}</button></div>`, (sh) => {
+    const step = prods[0][1] === "L" ? 0.25 : 2.5;
+    const out = $("#m-amt", sh);
+    $("#m-minus", sh).onclick = () => { amt = Math.max(0, +(amt - step).toFixed(2)); out.textContent = amt; };
+    $("#m-plus", sh).onclick = () => { amt = +(amt + step).toFixed(2); out.textContent = amt; };
+    $("#go", sh).onclick = () => {
+      S.mats[s.id] = { prod: prods[0][0], amt, unit: prods[0][1], area: +$("#m-area", sh).value || area, reg: prods[0][3], who: isWeed ? "Marco R. (lic. sample)" : "Luis G.", at: fmtT(now()), addr: s.addr };
+      addLog(s.id, `${t("t_mat")}: ${prods[0][0]} · ${amt} ${prods[0][1]}`);
+      { const P = S.props[s.addr], rec = { date: t("today"), prod: prods[0][0], amt: amt + " " + prods[0][1], who: S.mats[s.id].who }; office(t("lb_mat", { a: s.addr }), () => { if (P) P.apps.unshift(rec); }); }
+      closeSheet(); toast(queued() ? t("t_saved") : t("t_mat")); render();
+    };
+  });
+}
+function doVoice() {
+  const s = curStop();
+  sheet(`<h2>${t("voiceTitle")}</h2><p class="muted">${t("voiceHint")}</p>
+    <button class="mic" id="mic" aria-label="${t("tapToTalk")}">${I.mic}</button>
+    <p class="hint" id="mic-st">${t("tapToTalk")}</p>
+    <div class="field"><textarea id="vtext" rows="3" style="min-height:80px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px;font:inherit"></textarea></div>
+    <div class="sheet-acts"><button data-act="closeSheet">${t("cancel")}</button><button class="go" id="go" disabled>${t("save")}</button></div>`, (sh) => {
+    const ta = $("#vtext", sh);
+    ta.oninput = () => { $("#go", sh).disabled = !ta.value.trim(); };
+    $("#mic", sh).onclick = () => {
+      const m = $("#mic", sh); m.classList.add("rec"); $("#mic-st", sh).textContent = t("listening");
+      const words = t("sampleVoice").split(" "); let i = 0; ta.value = "";
+      const iv = setInterval(() => { ta.value += (i ? " " : "") + words[i++]; if (i >= words.length) { clearInterval(iv); m.classList.remove("rec"); $("#mic-st", sh).textContent = t("tapToTalk"); $("#go", sh).disabled = false; } }, 140);
+    };
+    $("#go", sh).onclick = () => { addLog(s.id, t("voice") + ": " + ta.value.trim()); office(t("lb_voice", { a: s.addr })); closeSheet(); toast(queued() ? t("t_saved") : t("t_voice")); render(); };
+  });
+}
+function doIssue(name) {
+  let r = null;
+  const rs = ["i_start", "i_tire", "i_blade", "i_leak", "i_noise"];
+  sheet(`<h2>${esc(name)}</h2><p class="muted">${t("issueTitle")}</p>
+    <div class="opts">${rs.map((k) => `<button class="opt" data-r="${k}" aria-pressed="false">${t(k)}</button>`).join("")}</div>
+    <div class="sheet-acts"><button data-act="closeSheet">${t("cancel")}</button><button class="go" id="go" disabled>${t("send")}</button></div>`, (sh) => {
+    sh.querySelectorAll("[data-r]").forEach((b) => b.onclick = () => { r = b.dataset.r; sh.querySelectorAll("[data-r]").forEach((x) => x.setAttribute("aria-pressed", x === b)); $("#go", sh).disabled = false; });
+    $("#go", sh).onclick = () => {
+      { const at = fmtT(now()); office(t("lb_issue", { n: name }), () => { S.equipLog.unshift({ n: name, r, at });
+      S.items.unshift({ id: "x" + Date.now(), k: "k_equip", tone: "warn", tile: "wait", title: { en: `${name} · Crew 2`, es: `${name} · Cuadrilla 2` }, body: { en: T.en[r] + ".", es: T.es[r] + "." }, acts: ["approve", "call"], fresh: true }); }); }
+      closeSheet(); toast(queued() ? t("t_saved") : t("t_issue")); render();
+    };
+  });
+}
+
+/* ================= owner screen ================= */
+function crewSummary() {
+  const c2done = S.stops.filter((s) => s.status === "done").length;
+  const c2rev = S.stops.filter((s) => s.status === "done").reduce((a, s) => a + s.price, 0);
+  const cur = curStop();
+  let state = "drive", at = cur ? cur.addr : "", mins = 0, late = 0;
+  if (S.shift === "pre") state = "out"; else if (S.shift === "off") state = "off"; else if (S.pause) state = "pause";
+  else if (!cur) state = "fin";
+  else if (cur.status === "onsite") { state = "at"; mins = elapsedMin(cur.arrived); late = Math.max(0, mins - cur.est); }
+  else if (cur.status === "enroute") state = "drive";
+  else { state = "at"; at = S.stops.filter((s) => s.status === "done").slice(-1)[0]?.addr || at; mins = 0; }
+  const list = [
+    { id: "c1", ...S.oth.c1 },
+    S.net.snap ? { id: "c2", color: "--c2", ppl: "Marco R. · Luis G.", total: S.stops.length, hrs: S.clockAt ? +(Math.round((now() - S.clockAt) / 60000) / 60 * 2).toFixed(1) : 0, ...S.net.snap, nosig: true } :
+    { id: "c2", color: "--c2", ppl: "Marco R. · Luis G.", done: c2done, total: S.stops.length, rev: c2rev, hrs: S.clockAt ? +(Math.round(((S.clockOutAt || now()) - S.clockAt) / 60000) / 60 * 2).toFixed(1) : 0, late, at, mins, state, pauseTxt: S.pause ? t(S.pause.type === "lunch" ? "atLunchSince" : "onBreakSince", { m: Math.floor((Date.now() - S.pause.since) / 60000) }) : "" },
+    { id: "c3", ...S.oth.c3 }, { id: "c4", ...S.oth.c4 },
+  ];
+  return list;
+}
+function allItems() {
+  const d = S.dev.c2;
+  const sig = S.net.snap ? [{ id: "sig", k: "k_sig", tone: "warn", tile: "wait", title: { en: "Crew 2 · no signal", es: "Cuadrilla 2 · sin señal" }, body: { en: `Their work is saved on the tablet and shows up here when they're back in range. Last contact: ${S.net.since}`, es: `Su trabajo se guarda en la tableta y aparece aquí cuando vuelvan a tener señal. Último contacto: ${S.net.since}` }, acts: ["call"] }] : [];
+  const loc = S.clockedIn && !d.on ? [{ id: "loc", k: "k_loc", tone: "bad", tile: "wait", title: { en: "Crew 2 · location off", es: "Cuadrilla 2 · ubicación apagada" }, body: { en: `Since ${d.offSince}. The crew screen is blocked until it's back on.`, es: `Desde las ${d.offSince}. La pantalla de la cuadrilla está bloqueada hasta que se encienda.` }, acts: ["call"] }] : [];
+  return [...sig, ...loc, ...S.items];
+}
+function tileCounts() {
+  const its = allItems();
+  const cs = crewSummary();
+  const done = cs.reduce((a, c) => a + c.done, 0), total = cs.reduce((a, c) => a + c.total, 0);
+  return {
+    late: its.filter((i) => i.tile === "late").length,
+    stuck: its.filter((i) => i.tile === "stuck").length,
+    wait: its.filter((i) => i.tile === "wait").length,
+    comp: its.filter((i) => i.tile === "comp").length,
+    leads: its.filter((i) => i.tile === "leads").length,
+    done: done + "/" + total,
+  };
+}
+function renderOwner() {
+  const el = $("#owner");
+  const isD = S.view === "dispatch";
+  const groups = isD ? ["today", "schedule", "records"] : ["today", "schedule", "money", "records"];
+  if (!groups.flatMap((g) => GROUPS[g]).includes(S.ownerTab)) S.ownerTab = "today";
+  const grp = groupOf(S.ownerTab);
+  let h = `<div class="o-head"><div class="t"><h1>${t("ownerCo")}</h1><span>${isD ? t("dispWho") + " · " : ""}${fmtDay(START)} · ${fmtT(now())}</span></div>
+    <button class="rainbtn newjob" data-act="newJob">+ ${t("nj")}</button>${S.rain ? "" : `<button class="rainbtn" data-act="rain">${I.rain}${t("rainDay")}</button>`}</div>`;
+  if (S.rain) h += `<div class="banner rain">${I.rain.replace("<svg", '<svg width="24" height="24"')}<div><b>${t("rainDay")}</b>${t("rainCrewTxt", { d: fmtDay(S.rain.to) })}</div><button data-act="rainUndo">${t("rainUndo")}</button></div>`;
+  h += `<div class="o-tabs" role="group">${groups.map((g) => `<button data-act="oGroup" data-k="${g}" aria-pressed="${grp === g}">${t("g" + Cap(g))}</button>`).join("")}</div>`;
+  if (GROUPS[grp].length > 1) h += `<div class="subtabs" role="group">${GROUPS[grp].map((k) => `<button data-act="oTab" data-k="${k}" aria-pressed="${S.ownerTab === k}">${k === "records" ? t("tabRecSub") : t("tab" + Cap(k))}</button>`).join("")}</div>`;
+  const tab = S.ownerTab;
+  if (tab === "today") h += ownerToday();
+  if (tab === "assign") h += ownerAssign();
+  if (tab === "map") h += `<div class="panel">${mapSVG({ crewOnly: false })}<div class="legend">${crewSummary().map((c) => `<span><i style="background:var(${c.color})"></i>${t(c.id + "n")}</span>`).join("")}<span><i style="background:var(--ink);border-radius:3px"></i>${t("yard")}</span></div></div><div class="panel"><h2>${t("team")}</h2><div id="teamrows">${teamRows()}</div></div>`;
+  if (tab === "hours") h += ownerHours();
+  if (tab === "money") h += ownerMoney();
+  if (tab === "fuel" && !isD) h += ownerFuel();
+  if (tab === "quality") h += ownerQuality();
+  if (tab === "records") h += ownerRecords();
+  if (tab === "props") h += ownerProps();
+  if (tab === "texts") h += ownerTexts();
+  h += `<p class="foot">${t("sample")}</p>`;
+  el.innerHTML = h;
+}
+function gpsTxt(id) {
+  const d = S.dev[id];
+  if (id === "c2" && S.net.snap) return `<span class="gpschip off">${I.wifiOff}${t("noSigSince", { t: S.net.since })}</span>`;
+  if (id === "c2" && !d.on && S.clockedIn) return `<span class="gpschip off">${I.nav}${t("locOffSince", { t: d.offSince })}</span>`;
+  if (!devLive(d)) return `<span class="gpschip off">${I.nav}${t("gpsPaused")}</span>`;
+  return `<span class="gpschip">${I.nav}${t("gpsAgo", { s: Math.max(0, Math.round((Date.now() - d.lastFix) / 1000)), d: fDist(d.km) })}</span>`;
+}
+function teamRows() {
+  return crewSummary().map((c) => {
+    let st = c.state === "pause" ? c.pauseTxt : c.state === "off" ? t("clockedOut") : c.state === "out" ? t("notIn") : c.state === "fin" ? t("finished") : c.state === "drive" ? t("driving", { a: c.at }) : t("atStop", { a: c.at, m: Math.round(c.mins) });
+    if (S.rain) st = t("rainDay");
+    const lateTxt = c.late > 0 && !S.rain ? `<span class="flag">${t("behind", { m: c.late })}</span>` : `<span style="color:var(--ok)">${t("onTrack")}</span>`;
+    return `<div class="crewrow"><i style="background:var(${c.color})"></i><div style="min-width:0"><b>${t(c.id + "n")}</b><div class="st">${esc(st)}</div><div class="ppl">${c.ppl} · ${lateTxt}</div><div class="ppl">${gpsTxt(c.id)}</div><div class="minibar"><span style="width:${(c.done / c.total) * 100}%;background:var(${c.color})"></span></div></div><div class="r">${S.view === "dispatch" ? "" : `<strong class="num">${money(c.rev)}</strong>`}${t("jobs", { d: c.done, n: c.total })}</div></div>`;
+  }).join("");
+}
+function ownerToday() {
+  const c = tileCounts(), cs = crewSummary(), all = allItems();
+  const onTrack = cs.filter((x) => !(x.late > 0) && !(x.id === "c2" && S.clockedIn && !S.dev.c2.on)).length;
+  const done = cs.reduce((a, x) => a + x.done, 0), total = cs.reduce((a, x) => a + x.total, 0), rev = cs.reduce((a, x) => a + x.rev, 0);
+  const cats = [["late", "tLate"], ["stuck", "tStuck"], ["wait", "tWait"], ["comp", "tComp"], ["leads", "tLeads"]];
+  const items = S.filter ? all.filter((i) => i.tile === S.filter) : all;
+  let h = `<div class="headline"><div><b>${t("hlCrews", { a: S.rain ? cs.length : onTrack, n: cs.length })}</b><span>${t("hlJobs", { d: done, n: total })}${S.view === "dispatch" ? "" : ` · ${money(rev)} ${t("hlSoFar")}`}</span></div><div class="hl-need ${all.length ? "" : "ok"}"><b>${all.length}</b><span>${t("hlNeed")}</span></div></div>`;
+  h += `<div class="o-grid"><div class="col"><div class="panel"><h2>${t("needsYou")}</h2>
+    <div class="fchips" role="group"><button data-act="filter" data-k="" aria-pressed="${!S.filter}">${t("allF")}<em>${all.length}</em></button>${cats.filter(([k]) => c[k] > 0 || S.filter === k).map(([k, l]) => `<button data-act="filter" data-k="${k}" aria-pressed="${S.filter === k}">${t(l)}<em>${c[k]}</em></button>`).join("")}</div>`;
+  h += items.length ? items.map((i) => `<div class="item"><span class="stripe ${i.tone}"></span><div style="min-width:0"><div class="k">${t(i.k)}${i.fresh ? ` · <span style="color:var(--accent)">new</span>` : ""}</div><b>${esc(L(i.title))}</b><p>${esc(L(i.body))}</p>${i.photoUrl ? `<img class="thumb" src="${i.photoUrl}" alt="">` : i.photo ? `<img class="thumb" src="${lawnPhoto("before", i.photo)}" alt="">` : ""}<div class="acts">${i.acts.map((a, j) => `<button class="small-btn ${j === 0 ? "pri" : ""}" data-act="resolve" data-id="${i.id}" data-a="${a}">${t(a)}</button>`).join("")}</div></div></div>`).join("") : `<p class="muted">${t("allClear")}</p>`;
+  h += `</div></div><div class="col"><div class="panel"><h2>${t("team")}</h2><div id="teamrows">${teamRows()}</div></div></div></div>`;
+  return h;
+}
+const PEOPLE = [
+  ["Dave K.", "c1", [9.5, 9.2, 10, 9.8, 9.6, 5.2]], ["Priya S.", "c1", [9.5, 9.1, 10, 9.8, 9.6, 12.1]],
+  ["Marco R.", "c2", [9.4, 9.9, 9.7, 10.1, 9.5, 4.8]], ["Luis G.", "c2", [9.4, 9.9, 9.7, 10.1, 9.5, 4.8]],
+  ["Ana M.", "c3", [8.8, 9.0, 9.2, 8.9, 9.1, 0]], ["José L.", "c3", [8.8, 9.0, 9.2, 8.9, 9.1, 0]], ["Beto R.", "c3", [8.8, 9.0, 0, 8.9, 9.1, 5.0]],
+  ["Sam T.", "c4", [9.9, 10.2, 9.8, 10.0, 9.7, 4.5]], ["Kev O.", "c4", [9.9, 10.2, 9.8, 10.0, 9.7, 4.5]],
+];
+function ownerHours() {
+  const days = ["mon", "tue", "wed", "thu", "fri", "sat"];
+  const onsite = { c1: 74, c2: 78, c3: 69, c4: 72 };
+  let rows = PEOPLE.map(([n, c, d]) => {
+    const tot = d.reduce((a, b) => a + b, 0);
+    const fl = [];
+    if (n === "Priya S.") fl.push(t("missedOut"));
+    if (tot > 44) fl.push("OT " + (tot - 44).toFixed(1) + " h");
+    return `<tr><td><i style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--${c});margin-right:6px"></i>${n}</td>${d.map((x) => `<td class="n">${x ? x.toFixed(1) : "—"}</td>`).join("")}<td class="n"><b>${tot.toFixed(1)}</b></td><td class="n">${onsite[c]}%</td><td class="${fl.length ? "flag" : ""}">${fl.join(" · ")}</td></tr>`;
+  }).join("");
+  const cs = crewSummary();
+  return `<div class="panel"><h2>${t("hoursH")} <small>${t("hoursSub")}</small></h2><div class="tbl-wrap"><table><thead><tr><th>${t("person")}</th>${days.map((d) => `<th class="n">${t(d)}</th>`).join("")}<th class="n">${t("total")}</th><th class="n">${t("onsitePct")}</th><th>${t("flags")}</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="small-btn pri" data-act="csv">${t("copyCsv")}</button></div></div>
+    <div class="panel"><h2>${t("brkH")}</h2><div class="tbl-wrap"><table><thead><tr><th>${t("crew")}</th><th>${t("clockInAt")}</th><th class="n">${t("breaksCol")}</th><th class="n">${t("lunchCol")}</th></tr></thead><tbody>
+      <tr><td>${t("c1n")}</td><td>6:58 a.m.</td><td class="n">2 · 24 min</td><td class="n">—</td></tr>
+      <tr><td>${t("c2n")}</td><td>${S.clockAt ? fmtT(S.clockAt) : "—"}</td><td class="n">${S.breaks.filter((x) => x.type === "break").length} · ${sumType("break")} min${S.pause && S.pause.type === "break" ? ` <span class="chip app">${t("nowTag")}</span>` : ""}</td><td class="n">${sumType("lunch") ? sumType("lunch") + " min" : "—"}${S.pause && S.pause.type === "lunch" ? ` <span class="chip app">${t("nowTag")}</span>` : ""}</td></tr>
+      <tr><td>${t("c3n")}</td><td>7:05 a.m.</td><td class="n">1 · 12 min</td><td class="n">—</td></tr>
+      <tr><td>${t("c4n")}</td><td>7:02 a.m.</td><td class="n">1 · 15 min</td><td class="n">—</td></tr></tbody></table></div></div>
+    <div class="panel"><h2>${t("todayHours")}</h2><div class="kv">${cs.map((c) => `<div><b class="num">${c.hrs.toFixed(1)} ${t("hrsShort")}</b><span>${t(c.id + "n")} · ${c.ppl.split(" · ").length} ppl</span></div>`).join("")}</div></div>`;
+}
+function ownerMoney() {
+  const cs = crewSummary();
+  const max = Math.max(...cs.map((c) => c.rev), 1);
+  const week = [["mon", 3120], ["tue", 2980], ["wed", 3340], ["thu", 3010], ["fri", 3260], ["sat", 1480]];
+  const todayRev = cs.reduce((a, c) => a + c.rev, 0);
+  const cols = [...week.map(([d, v]) => ({ d: t(d), v })), { d: t("today"), v: todayRev, today: true }];
+  const cmax = Math.max(...cols.map((c) => c.v));
+  const visits = cs.reduce((a, c) => a + c.done, 0);
+  const hrs = cs.reduce((a, c) => a + c.hrs, 0);
+  return `<div class="kv"><div><b>${money(todayRev)}</b><span>${t("tabMoney")} · ${t("today")}</span></div><div><b>${visits}</b><span>${t("visitsDay")}</span></div><div><b>${money(todayRev / Math.max(visits, 1))}</b><span>${t("avgVisit")}</span></div><div><b>${money(todayRev / Math.max(hrs, 1))}</b><span>${t("revHour")}</span></div></div>
+    <div class="o-grid"><div class="panel"><h2>${t("revCrew")}</h2><div class="bars">${cs.map((c) => `<div class="b"><span>${t(c.id + "n")}</span><div class="track"><span style="width:${(c.rev / max) * 100}%;background:var(${c.color})"></span></div><span class="v">${money(c.rev)}</span></div>`).join("")}</div>
+    <p class="muted" style="font-size:.85rem;margin:10px 0 0">${t("revHour")}: ${cs.map((c) => `${t(c.id + "n")} ${money(c.rev / Math.max(c.hrs, 0.1))}`).join(" · ")}</p></div>
+    <div class="panel"><h2>${t("revDay")}</h2><div class="cols">${cols.map((c) => `<div class="c ${c.today ? "today" : ""}"><span class="v">${money(c.v)}</span><div class="bar" style="height:${(c.v / cmax) * 130}px"></div><span>${c.d}</span></div>`).join("")}</div></div></div>`;
+}
+function ownerQuality() {
+  const jobs = [
+    ...S.stops.filter((s) => s.status === "done" && (!S.net.snap || S.net.snap.doneIds.includes(s.id))).map((s, i) => ({ id: s.id, addr: s.addr, crew: "c2", b: S.photos[s.id]?.before || lawnPhoto("before", 3 + i), a: S.photos[s.id]?.after || lawnPhoto("after", 3 + i), mins: s.mins, next: S.next[s.id] })),
+    { id: "q1", addr: "63 Aspen Ave", crew: "c1", b: lawnPhoto("before", 11), a: lawnPhoto("after", 11), mins: 31 },
+    { id: "q2", addr: "17 Aspen Ave", crew: "c1", b: lawnPhoto("before", 12), a: lawnPhoto("before", 13), mins: 12 },
+    { id: "q3", addr: "2 Elm St", crew: "c3", b: lawnPhoto("before", 14), a: lawnPhoto("after", 14), mins: 44 },
+    { id: "q4", addr: "8 Oak Ln", crew: "c4", b: lawnPhoto("before", 15), a: lawnPhoto("after", 15), mins: 27 },
+  ];
+  return `<div class="panel"><h2>${t("qualH")} <small>${jobs.length}</small></h2><div class="qgrid">${jobs.map((j) => {
+    const q = S.quality[j.id];
+    return `<div class="qcard"><div class="pair"><div><img src="${j.b}" alt="${t("before")}"><span class="tag">${t("before")}</span></div><div><img src="${j.a}" alt="${t("after")}"><span class="tag">${t("after")}</span></div></div>
+    <div class="meta"><div><b>${esc(j.addr)}</b><span>${t(j.crew + "n")} · ${t("totalTime", { m: j.mins })}</span>${j.next ? `<span style="display:block;margin-top:4px"><b style="display:inline">${t("nextLbl")}:</b> ${t(j.next.type)} · ${fmtDay(parseIso(j.next.date))}${(j.next.note || "").trim() ? ` · “${esc(j.next.note)}”` : ""}</span>` : ""}</div>
+    ${q ? `<span class="chip ${q === "good" ? "ok" : "bad"}">${q === "good" ? t("approved") : t("flagged")}</span>` : `<div class="acts"><button class="small-btn pri" data-act="q" data-id="${j.id}" data-v="good">${t("looksGood")}</button><button class="small-btn bad" data-act="q" data-id="${j.id}" data-v="flag">${t("flagIt")}</button></div>`}</div></div>`;
+  }).join("")}</div></div>`;
+}
+function ownerRecords() {
+  const recs = [
+    { at: "Oct 30", addr: "14 Aspen Ave", prod: "Iron-based weed control (FeHEDTA)", reg: "Reg. No. on label", amt: "0.75 L", area: "410 m²", who: "Dave K. (lic. sample)", wx: "9 °C · 6 km/h" },
+    { at: "Oct 30", addr: "21 Aspen Ave", prod: "Fall fertilizer 24-0-12", reg: "—", amt: "12.5 kg", area: "520 m²", who: "Priya S.", wx: "9 °C · 6 km/h" },
+    ...Object.values(S.mats).map((m) => ({ at: t("today"), addr: m.addr, prod: m.prod, reg: m.reg, amt: m.amt + " " + m.unit, area: m.area + " m²", who: m.who, wx: "6 °C · 9 km/h", fresh: true })),
+  ];
+  const eq = [
+    ["Mower #2 · Crew 2", "412 / 450 h", false], ["Trimmer T-4 · Crew 2", "188 / 200 h", true], ["Plow truck P-1 · snow", "Pre-season inspection", true], ["Salt spreader S-2 · snow", "OK", false],
+  ];
+  return `<div class="rules">${t("rulesTxt")}</div>
+    <div class="panel"><h2>${t("recH")} <small>${t("recSub")}</small></h2><div class="tbl-wrap"><table><thead><tr><th>${t("date")}</th><th>${t("address")}</th><th>${t("product")}</th><th>${t("reg")}</th><th class="n">${t("amount")}</th><th class="n">${t("area")}</th><th>${t("applicator")}</th><th>${t("wx")}</th></tr></thead><tbody>
+    ${recs.map((r) => `<tr ${r.fresh ? 'style="background:var(--accent-soft)"' : ""}><td>${r.at}</td><td>${esc(r.addr)}</td><td>${esc(r.prod)}</td><td class="muted">${r.reg}</td><td class="n">${r.amt}</td><td class="n">${r.area}</td><td>${r.who}</td><td class="muted">${r.wx}</td></tr>`).join("")}</tbody></table></div></div>
+    <div class="panel"><h2>${t("eqH")}</h2>
+    ${S.equipLog.map((e) => `<div class="item"><span class="stripe warn"></span><div><div class="k">${t("reported")} · ${e.at}</div><b>${esc(e.n)}</b><p>${t(e.r)}</p></div></div>`).join("")}
+    ${eq.map(([n, v, due]) => `<div class="item"><span class="stripe ${due ? "warn" : ""}"></span><div><b>${n}</b><p>${v}${due ? ` · <span class="flag">${t("due")}</span>` : ""}</p></div></div>`).join("")}</div>`;
+}
+const CREWS = ["c1", "c2", "c3", "c4"];
+const CAP = 480;
+function rangeDays() {
+  const out = [];
+  if (S.aRange === "today") out.push(new Date(START.getFullYear(), START.getMonth(), START.getDate()));
+  else if (S.aRange === "week") { const ws = nextMonday(); for (let i = 0; i < 6; i++) { const d = new Date(ws); d.setDate(ws.getDate() + i); out.push(d); } }
+  else for (let i = 1; i <= 30; i++) { const d = new Date(START.getFullYear(), START.getMonth(), START.getDate() + i); out.push(d); }
+  return out;
+}
+function baseLoad(c, d) {
+  if (isoDate(d) === isoDate(START)) return c === "c2" ? S.stops.filter((x) => x.status !== "moved").reduce((a, x) => a + x.est + 8, 0) : S.oth[c].total * 48;
+  if (d.getDay() === 0) return 0;
+  let hsh = 0; for (const ch of c + isoDate(d)) hsh = (hsh * 31 + ch.charCodeAt(0)) % 9973;
+  return 300 + (hsh % 160);
+}
+const load = (c, d) => baseLoad(c, d) + S.jobs.filter((j) => j.crew === c && isoDate(j.date) === isoDate(d) && !j.stopId).reduce((a, j) => a + j.est, 0);
+const hrs = (m) => (m / 60).toFixed(1);
+function jobRow(j) {
+  const c = j.crew;
+  const tone = c ? "acc" : j.src === "src_redo" ? "bad" : j.src === "src_crew" ? "brass" : "blue";
+  let h = `<div class="item"><span class="stripe ${tone}"></span><div style="min-width:0"><div class="k">${t(j.src)} · ${fmtDay(j.date)} · ${j.est} ${t("min")}</div><button class="linkb" data-act="prop" data-addr="${esc(j.addr)}">${esc(j.addr)}</button><p>${esc(j.n)} · ${esc(t(j.svc))}${j.note ? ` · “${esc(j.note)}”` : ""}${j.sugg && !c ? ` · ${t("sugg", { c: t(j.sugg + "n") })}` : ""}</p>${propNotes(j).length ? `<div class="nchips">${propNotes(j).map((n) => `<span class="nchip" title="${esc(L(n.tx).replace(/<[^>]+>/g, ""))}">${NOTE_ICON[n.i]}${esc(n.short ? L(n.short) : t(NOTE_LBL[n.i]))}</span>`).join("")}</div>` : ""}`;
+  if (c) h += `<div class="acts"><span class="chip" style="background:color-mix(in srgb, var(--${c}) 18%, transparent);color:var(--${c})">${t(c + "n")}</span><button class="small-btn" data-act="unassign" data-id="${j.id}">${t("unassign")}</button></div>`;
+  else {
+    h += `<div class="crewpick">${CREWS.map((cc) => { const l = load(cc, j.date) + j.est; return `<button data-act="assign" data-id="${j.id}" data-c="${cc}" style="--cc:var(--${cc})" class="${j.sugg === cc ? "sug" : ""}"><i></i>${t(cc + "n")}<small class="${l > CAP ? "o" : ""}">${hrs(l)} / 8 h</small></button>`; }).join("")}</div>`;
+    if (S.aRange !== "today") h += `<div class="acts"><button class="small-btn" data-act="chDay" data-id="${j.id}">${t("changeDay")}</button></div>`;
+  }
+  return h + `</div></div>`;
+}
+function ownerAssign() {
+  const days = rangeDays(); const keys = new Set(days.map(isoDate));
+  const inR = S.jobs.filter((j) => keys.has(isoDate(j.date))).sort((a, b) => a.date - b.date);
+  const un = inR.filter((j) => !j.crew), as = inR.filter((j) => j.crew);
+  const lbl = days.length === 1 ? fmtDay(days[0]) : fmtDay(days[0]) + " – " + fmtDay(days[days.length - 1]);
+  let h = `<div class="o-tabs" role="group">${["today", "week", "month"].map((k) => `<button data-act="aRange" data-k="${k}" aria-pressed="${S.aRange === k}">${t("a" + Cap(k))}</button>`).join("")}</div><p class="muted" style="margin:-6px 0 0">${lbl}</p>`;
+  h += `<div class="o-grid"><div class="col"><div class="panel"><h2>${t("notAssigned")} <small>${un.length}</small></h2>${un.length ? un.map(jobRow).join("") : `<p class="muted">${t("allAssigned")}</p>`}</div>`;
+  if (as.length) h += `<div class="panel"><h2>${t("assignedH")} <small>${as.length}</small></h2>${as.map(jobRow).join("")}</div>`;
+  h += `</div><div class="col"><div class="panel"><h2>${t("crewLoad")}</h2>${CREWS.map((c) => {
+    const b = days.reduce((a, d) => a + load(c, d), 0), cap = days.filter((d) => d.getDay() !== 0).length * CAP, pct = b / Math.max(cap, 1);
+    const cells = days.length > 1 ? `<div class="cells">${days.map((d) => { const p = load(c, d) / CAP; return `<span title="${fmtDay(d)} · ${hrs(load(c, d))} h" class="${d.getDay() === 0 ? "off" : p > 1 ? "o" : p > 0.85 ? "f" : ""}"></span>`; }).join("")}</div>` : "";
+    return `<div class="ld"><div class="ld-h"><b><i style="background:var(--${c})"></i>${t(c + "n")}</b><span class="${pct > 1 ? "flag" : "muted"}">${t("booked", { b: hrs(b), c: hrs(cap) })}${pct > 1 ? " · " + t("over", { h: hrs(b - cap) }) : ""}</span></div><div class="minibar"><span style="width:${Math.min(100, pct * 100)}%;background:var(--${c})"></span></div>${cells}</div>`;
+  }).join("")}${days.length > 1 ? `<p class="muted" style="font-size:.82rem;margin:10px 0 0">${t("legLoad")}</p>` : ""}</div></div></div>`;
+  return h;
+}
+function doAssign(j, c) {
+  j.crew = c;
+  if (isoDate(j.date) === isoDate(START) && c === "c2") {
+    j.stopId = "s-" + j.id;
+    S.stops.push({ id: j.stopId, n: j.n, addr: j.addr, x: j.x || 880, y: j.y || 380, freq: "weekly", tasks: j.tasks || ["mow", "edge", "trim", "blow"], app: j.app, notes: j.notes || (j.note ? [{ i: "info", tx: { en: esc(j.note), es: esc(j.note) } }] : []), price: j.price, consent: true, status: S.rain ? "moved" : "todo", est: j.est });
+    if (!S.cur) nextStop();
+    toast(t("addedRoute"));
+  } else toast(t("t_assigned", { c: t(c + "n"), d: fmtDay(j.date) }));
+}
+function doUnassign(j) {
+  if (j.stopId) { const st = S.stops.find((x) => x.id === j.stopId); if (st && st.status === "todo") { S.stops = S.stops.filter((x) => x !== st); if (S.cur === st.id) nextStop(); } j.stopId = null; }
+  j.crew = null;
+}
+function doChDay(j) {
+  const days = rangeDays();
+  const body = S.aRange === "week"
+    ? `<div class="opts two">${days.map((d) => `<button class="opt" data-day="${isoDate(d)}" aria-pressed="${isoDate(d) === isoDate(j.date)}">${fmtDay(d)}</button>`).join("")}</div>`
+    : `<div class="field"><input type="date" id="cd-date" value="${isoDate(j.date)}" min="${isoDate(days[0])}" max="${isoDate(days[days.length - 1])}"></div>`;
+  sheet(`<h2>${t("pickDay")}</h2><p class="muted">${esc(j.addr)} · ${esc(t(j.svc))}</p>${body}
+    <div class="sheet-acts"><button data-act="closeSheet">${t("cancel")}</button><button class="go" id="go">${t("save")}</button></div>`, (sh) => {
+    let v = isoDate(j.date);
+    sh.querySelectorAll("[data-day]").forEach((b) => b.onclick = () => { v = b.dataset.day; sh.querySelectorAll("[data-day]").forEach((x) => x.setAttribute("aria-pressed", x === b)); });
+    $("#go", sh).onclick = () => { const i = $("#cd-date", sh); if (i && i.value) v = i.value; j.date = parseIso(v); closeSheet(); render(); };
+  });
+}
+const NOTE_LBL = { gate: "nGate", dog: "nPets", park: "nPark", sprinkler: "nSpr", info: "nOther" };
+const NOTE_W = { dog: { en: "Dog", es: "Perro" }, cat: { en: "Cat", es: "Gato" }, other: { en: "Pet", es: "Mascota" },
+  friendly: { en: "Friendly", es: "Amistoso" }, knock: { en: "Knock first, the owner brings it in", es: "Toca primero, el dueño lo mete" }, gate: { en: "Keep the gate shut", es: "Mantén el portón cerrado" },
+  street: { en: "Park on the street", es: "Estaciona en la calle" }, drive: { en: "Park in the driveway", es: "Estaciona en la entrada" }, lane: { en: "Park in the lane behind the house", es: "Estaciona en el callejón detrás de la casa" }, noblock: { en: "Don't block the driveway", es: "No bloquees la entrada" },
+  front: { en: "front walk", es: "la entrada" }, sdrive: { en: "along the driveway", es: "junto a la entrada de autos" }, back: { en: "back yard", es: "el patio de atrás" } };
+function noteEditorHTML(px) {
+  const chips = (attr, list) => list.map(([k, l]) => `<button class="pick" data-${attr}="${k}" aria-pressed="false">${t(l)}</button>`).join("");
+  return `<div id="${px}-ed" style="display:grid;gap:10px">
+    <div class="ntiles">${[["gate", "nGate", I.gate], ["dog", "nPets", I.dog], ["park", "nPark", I.park], ["sprinkler", "nSpr", I.drop]].map(([k, l, ic]) => `<button class="ntile" data-nt="${k}" aria-pressed="false">${ic}<span>${t(l)}</span></button>`).join("")}</div>
+    <div class="npanel" data-np="gate" hidden><span class="nic">${I.gate}</span><div class="field"><label for="${px}-gate">${t("nGate")}</label><input id="${px}-gate" inputmode="numeric" maxlength="12" placeholder="${t("codePh")}" autocomplete="off"></div></div>
+    <div class="npanel" data-np="dog" hidden><span class="nic">${I.dog}</span><div style="display:grid;gap:8px;min-width:0"><div class="chips-sel">${chips("pt", [["dog", "petDog"], ["cat", "petCat"], ["other", "petOther"]])}</div><div class="chips-sel">${chips("pb", [["friendly", "bFriendly"], ["knock", "bKnock"], ["gate", "bGate"]])}</div></div></div>
+    <div class="npanel" data-np="park" hidden><span class="nic">${I.park}</span><div class="chips-sel">${chips("pk", [["street", "pStreet"], ["drive", "pDrive"], ["lane", "pLane"], ["noblock", "pNoBlock"]])}</div></div>
+    <div class="npanel" data-np="sprinkler" hidden><span class="nic">${I.drop}</span><div class="chips-sel">${chips("sp", [["front", "sFront"], ["sdrive", "sDrive"], ["back", "sBack"]])}</div></div>
+    <div class="field"><label for="${px}-note"><span class="lic">${I.info}</span>${t("nOther")}</label><input id="${px}-note" maxlength="120" autocomplete="off"></div></div>`;
+}
+function wireNoteEditor(sh, px, onChange) {
+  const ed = $("#" + px + "-ed", sh), W = NOTE_W;
+  const nf = { gate: false, dog: false, park: false, sprinkler: false, pt: "dog", pb: new Set(), pk: new Set(), sp: new Set() };
+  ed.querySelectorAll("[data-nt]").forEach((b) => b.onclick = () => {
+    const k = b.dataset.nt; nf[k] = !nf[k]; b.setAttribute("aria-pressed", nf[k]); ed.querySelector(`[data-np="${k}"]`).hidden = !nf[k];
+    if (k === "dog" && nf.dog) ed.querySelector('[data-pt="dog"]').setAttribute("aria-pressed", nf.pt === "dog");
+    if (k === "gate" && nf.gate) $("#" + px + "-gate", ed).focus();
+    onChange();
+  });
+  ed.querySelectorAll("[data-pt]").forEach((b) => b.onclick = () => { nf.pt = b.dataset.pt; ed.querySelectorAll("[data-pt]").forEach((x) => x.setAttribute("aria-pressed", x === b)); onChange(); });
+  for (const g of ["pb", "pk", "sp"]) ed.querySelectorAll(`[data-${g}]`).forEach((b) => b.onclick = () => { const v = b.dataset[g]; nf[g].has(v) ? nf[g].delete(v) : nf[g].add(v); b.setAttribute("aria-pressed", nf[g].has(v)); onChange(); });
+  $("#" + px + "-gate", ed).addEventListener("input", onChange); $("#" + px + "-note", ed).addEventListener("input", onChange);
+  return () => {
+    const out = [];
+    const code = $("#" + px + "-gate", ed).value.trim();
+    if (nf.gate && code) out.push({ i: "gate", tx: { en: `Gate code <b>${esc(code)}</b>`, es: `Código del portón <b>${esc(code)}</b>` }, short: { en: code, es: code } });
+    if (nf.dog) { const b = [...nf.pb], pt = W[nf.pt]; out.push({ i: "dog", tx: { en: `${pt.en} in the yard.` + b.map((x) => " " + W[x].en + ".").join(""), es: `${pt.es} en el patio.` + b.map((x) => " " + W[x].es + ".").join("") }, short: pt }); }
+    if (nf.park && nf.pk.size) { const k = [...nf.pk]; out.push({ i: "park", tx: { en: k.map((x) => W[x].en).join(". "), es: k.map((x) => W[x].es).join(". ") }, short: { en: T.en.nPark, es: T.es.nPark } }); }
+    if (nf.sprinkler) { const k = [...nf.sp]; out.push({ i: "sprinkler", tx: { en: `Sprinkler heads${k.length ? ": " + k.map((x) => W[x].en).join(", ") : ""}. Flag them before mowing.`, es: `Aspersores${k.length ? ": " + k.map((x) => W[x].es).join(", ") : ""}. Márcalos antes de cortar.` }, short: { en: T.en.nSpr, es: T.es.nSpr } }); }
+    const note = $("#" + px + "-note", ed).value.trim();
+    if (note) out.push({ i: "info", tx: { en: esc(note), es: esc(note) }, short: { en: note.length > 22 ? note.slice(0, 21) + "…" : note, es: note.length > 22 ? note.slice(0, 21) + "…" : note } });
+    return out;
+  };
+}
+function propNext(p) {
+  const today0 = new Date(START.getFullYear(), START.getMonth(), START.getDate());
+  const up = S.jobs.filter((j) => j.addr === p.addr && j.date >= today0).sort((a, b) => a.date - b.date);
+  const reg = p.plan && (p.plan.freq === "weekly" || p.plan.freq === "biweekly") ? (() => { const d = new Date(today0); d.setDate(d.getDate() + (p.plan.freq === "weekly" ? 7 : 14)); return { date: d, svc: p.plan.freq, crew: p.plan.crew }; })() : null;
+  return [...up.map((j) => ({ date: j.date, svc: j.svc, crew: j.crew })), ...(reg ? [reg] : [])].sort((a, b) => a.date - b.date);
+}
+function doProp(addr) {
+  const p = S.props[addr]; if (!p) return;
+  const canEdit = S.view !== "crew";
+  const hist = p.hist.slice().sort((a, b) => b.date - a.date).slice(0, 5);
+  const nextList = propNext(p).slice(0, 3);
+  const notes = p.notes.length ? `<div class="notes" style="margin:0">${p.notes.map((n, i) => `<div class="note ${canEdit ? "ed" : ""}">${NOTE_ICON[n.i]}<div>${L(n.tx)}</div>${canEdit ? `<button class="nx" data-del="${i}" aria-label="Remove">×</button>` : ""}</div>`).join("")}</div>` : `<p class="muted" style="margin:0">—</p>`;
+  sheet(`<h2>${esc(p.addr)}</h2><p class="muted">${esc(p.n)}${p.since ? " · " + t("custSince", { y: p.since }) : ""}</p>
+    <div class="chips" style="margin:0">${p.plan ? `<span class="chip freq">${t(p.plan.freq)}</span>${S.view === "owner" ? `<span class="chip">${money(p.plan.price)} ${t("perVisit")}</span>` : ""}` : `<span class="chip">${t("noPlan")}</span>`}<span class="chip ${p.consent ? "ok" : ""}">${p.consent ? t("textsOk") : t("textsNo")}</span></div>
+    <div class="sec-label" style="margin:4px 0 0">${t("propNotes")}</div>${notes}
+    ${canEdit ? `<button class="small-btn" id="pn-add">+ ${t("addNote")}</button><div id="pn-editor" hidden style="display:grid;gap:10px">${noteEditorHTML("pe")}<div class="sheet-acts" style="grid-template-columns:1fr 1fr;margin:0"><button id="pe-cancel">${t("cancel")}</button><button class="go" id="pe-save">${t("save")}</button></div></div>` : ""}
+    ${nextList.length ? `<div class="sec-label" style="margin:4px 0 0">${t("upcoming")}</div><div>${nextList.map((x) => `<div class="eq"><b>${fmtDay(x.date)} · ${t(x.svc)}</b><span>${x.crew ? t(x.crew + "n") : t("notAssigned")}</span></div>`).join("")}</div>` : ""}
+    <div class="sec-label" style="margin:4px 0 0">${t("history")}</div>
+    <div>${hist.map((h) => `<div class="hist"><div class="pair"><img src="${h.before || lawnPhoto("before", h.seed)}" alt="${t("before")}"><img src="${h.after || lawnPhoto("after", h.seed)}" alt="${t("after")}"></div><div><b>${fmtDay(h.date)}</b><span>${t(h.svc)} · ${t(h.crew + "n")} · ${h.mins} ${t("min")}</span><span>${esc(h.by)}</span>${h.next && h.next.type !== "ns_reg" ? `<span>${t("nextLbl")}: ${t(h.next.type)}${(h.next.note || "").trim() ? " · “" + esc(h.next.note) + "”" : ""}</span>` : ""}</div></div>`).join("") || `<p class="muted">—</p>`}</div>
+    ${p.apps.length ? `<div class="sec-label" style="margin:4px 0 0">${t("appsH")}</div><div>${p.apps.map((a) => `<div class="eq"><b>${esc(a.prod)} · ${esc(a.amt)}</b><span>${esc(a.date)} · ${esc(a.who)}</span></div>`).join("")}</div>` : ""}
+    <div class="sheet-acts" style="grid-template-columns:1fr"><button data-act="closeSheet">${t("close")}</button></div>`, (sh) => {
+    sh.querySelectorAll("[data-del]").forEach((b) => b.onclick = () => { p.notes = p.notes.filter((_, i) => i !== +b.dataset.del); toast(t("noteRemoved")); doProp(addr); render(); });
+    const add = $("#pn-add", sh);
+    if (add) {
+      const build = wireNoteEditor(sh, "pe", () => {});
+      add.onclick = () => { $("#pn-editor", sh).hidden = false; add.hidden = true; };
+      $("#pe-cancel", sh).onclick = () => { $("#pn-editor", sh).hidden = true; add.hidden = false; };
+      $("#pe-save", sh).onclick = () => { const n = build(); if (n.length) { p.notes = [...p.notes, ...n]; toast(t("t_notesSaved")); } doProp(addr); render(); };
+    }
+  });
+}
+function propRows() {
+  const q = S.propQ.trim().toLowerCase();
+  const list = Object.values(S.props).filter((p) => !q || p.addr.toLowerCase().includes(q) || p.n.toLowerCase().includes(q)).sort((a, b) => a.addr.localeCompare(b.addr));
+  return list.map((p) => {
+    const last = p.hist.slice().sort((a, b) => b.date - a.date)[0], nx = propNext(p)[0];
+    return `<button class="row" data-act="prop" data-addr="${esc(p.addr)}"><span class="stopno">${esc(p.n[0])}</span><div style="min-width:0"><b>${esc(p.addr)}</b><span>${esc(p.n)} · ${p.plan ? t(p.plan.freq) : t("noPlan")}</span>${p.notes.length ? `<div class="nchips">${p.notes.map((n) => `<span class="nchip">${NOTE_ICON[n.i]}${esc(n.short ? L(n.short) : t(NOTE_LBL[n.i]))}</span>`).join("")}</div>` : ""}</div><div class="r">${last ? t("lastVisit", { d: fmtDay(last.date) }) : ""}${nx ? `<div>${t("nextVisit", { d: fmtDay(nx.date) })}</div>` : ""}</div></button>`;
+  }).join("") || `<p class="muted">—</p>`;
+}
+function ownerProps() {
+  return `<div class="panel"><h2>${t("tabProps")} <small>${Object.keys(S.props).length}</small></h2>
+    <div class="field" style="margin-bottom:10px"><label for="prop-q" class="sr" style="position:absolute;left:-9999px">${t("searchProps")}</label><input id="prop-q" type="search" placeholder="${t("searchProps")}" value="${esc(S.propQ)}" autocomplete="off"></div>
+    <div id="prop-list" style="display:grid;gap:8px">${propRows()}</div></div>`;
+}
+function ownerTexts() {
+  return `<div class="panel"><h2>${t("textsToday")} <small>${S.texts.length}</small></h2><div class="sms-log">${S.texts.map((x) => `<div><span><span class="mono muted">${x.at}</span> · ${esc(x.to)} · ${esc(L(x.what))}</span><span class="chip ${x.st === "st_sent" ? "ok" : x.st === "st_held" ? "app" : ""}">${t(x.st)}</span></div>`).join("")}</div></div>`;
+}
+const GROUPS = { today: ["today"], schedule: ["assign", "map", "props"], money: ["money", "fuel", "hours"], records: ["quality", "records", "texts"] };
+const groupOf = (k) => Object.keys(GROUPS).find((g) => GROUPS[g].includes(k));
+const SVC_TASKS = { ns_reg: ["mow", "edge", "trim", "blow"], ns_leaves: ["leaves", "beds", "haul"], ns_aer: ["aerate"], ns_fert: ["fert"], ns_over: ["over"], ns_shrub: ["shrub", "haul"], ns_snow: ["stakes"], j_gutter: ["gutter"], j_sprk: ["sprk"] };
+function doNewJob() {
+  const map = new Map();
+  [...S.stops, ...S.jobs].forEach((x) => { if (!map.has(x.addr)) map.set(x.addr, { addr: x.addr, n: x.n, x: x.x, y: x.y, notes: x.notes || [] }); else if ((x.notes || []).length && !map.get(x.addr).notes.length) map.get(x.addr).notes = x.notes; });
+  const props = [...map.values()].sort((a, b) => a.addr.localeCompare(b.addr));
+  const srcs = ["src_new", "src_lead", "src_redo", "src_resched"];
+  const f = { svc: null, est: 45, src: "src_lead", crew: "" };
+  sheet(`<h2>${t("nj")}</h2>
+    <div class="field"><label for="nj-cust">${t("njCust")}</label><select id="nj-cust"><option value="">${t("njChoose")}</option><option value="__new">${t("njNewCust")}</option>${props.map((p, i) => `<option value="${i}">${esc(p.addr)} · ${esc(p.n)}</option>`).join("")}</select></div>
+    <div id="nj-newf" hidden><div style="display:grid;gap:10px"><div class="field"><label for="nj-name">${t("njName")}</label><input id="nj-name" autocomplete="off"></div><div class="field"><label for="nj-addr">${t("address")}</label><input id="nj-addr" autocomplete="off"></div></div></div>
+    <div class="field"><label>${t("njSvc")}</label><div class="chips-sel">${Object.keys(SVC_TASKS).map((k) => `<button class="pick" data-g="svc" data-v="${k}" aria-pressed="false">${t(k)}</button>`).join("")}</div></div>
+    <div class="field"><label for="nj-date">${t("nextWhen")}</label><div class="chips-sel">${[[0, "today"], [1, "tomorrow"], [7, "d7"]].map(([d, k]) => `<button class="pick" data-g="dd" data-v="${d}" aria-pressed="${d === 0}">${t(k)}</button>`).join("")}</div><input type="date" id="nj-date" value="${isoDate(START)}" min="${isoDate(START)}"></div>
+    <div class="field"><label>${t("njEst")}</label><div class="chips-sel">${[30, 45, 60, 90, 120].map((m) => `<button class="pick" data-g="est" data-v="${m}" aria-pressed="${m === 45}">${m} ${t("min")}</button>`).join("")}</div></div>
+    <div class="field"><label>${t("njSrc")}</label><div class="chips-sel">${srcs.map((k) => `<button class="pick" data-g="src" data-v="${k}" aria-pressed="${k === f.src}">${t(k)}</button>`).join("")}</div></div>
+    <div class="field"><label>${t("assignTo")}</label><div class="chips-sel"><button class="pick" data-g="crew" data-v="" aria-pressed="true">${t("notAssigned")}</button>${CREWS.map((c) => `<button class="pick" data-g="crew" data-v="${c}" aria-pressed="false">${t(c + "n")}</button>`).join("")}</div></div>
+    <div class="field"><label for="nj-price">${t("njPrice")}</label><input id="nj-price" inputmode="decimal" placeholder="$" autocomplete="off"></div>
+    <div class="field"><label>${t("propNotes")}</label>${noteEditorHTML("nj")}</div>
+    <div id="nj-prevwrap" hidden><div class="sec-label" style="margin:0 0 6px">${t("crewSees")}</div><div class="notes" id="nj-prev" style="margin:0"></div></div>
+    <p class="hint" id="nj-hint" style="text-align:left;margin:0">${t("njNeed")}</p>
+    <div class="sheet-acts"><button data-act="closeSheet">${t("cancel")}</button><button class="go" id="go" disabled>${t("njCreate")}</button></div>`, (sh) => {
+    const cust = $("#nj-cust", sh), dateIn = $("#nj-date", sh);
+    let saved = [];
+    const buildNew = wireNoteEditor(sh, "nj", () => preview());
+    const build = () => [...saved, ...buildNew()];
+    const preview = () => {
+      const all = build();
+      $("#nj-prevwrap", sh).hidden = !all.length;
+      $("#nj-prev", sh).innerHTML = all.map((n) => `<div class="note">${NOTE_ICON[n.i]}<div>${L(n.tx)}</div></div>`).join("");
+    };
+    const valid = () => {
+      const c = cust.value;
+      const ok = f.svc && dateIn.value && (c === "__new" ? $("#nj-name", sh).value.trim() && $("#nj-addr", sh).value.trim() : c !== "");
+      $("#go", sh).disabled = !ok; $("#nj-hint", sh).textContent = ok ? "" : t("njNeed");
+    };
+    cust.onchange = () => { $("#nj-newf", sh).hidden = cust.value !== "__new"; saved = cust.value !== "" && cust.value !== "__new" ? props[+cust.value].notes : []; preview(); valid(); };
+    sh.querySelectorAll("input").forEach((i) => i.addEventListener("input", valid));
+    dateIn.onchange = () => { sh.querySelectorAll('[data-g="dd"]').forEach((x) => x.setAttribute("aria-pressed", "false")); valid(); };
+    sh.querySelectorAll("[data-g]").forEach((b) => b.onclick = () => {
+      const g = b.dataset.g, v = b.dataset.v;
+      sh.querySelectorAll(`[data-g="${g}"]`).forEach((x) => x.setAttribute("aria-pressed", x === b));
+      if (g === "dd") { const d = new Date(START); d.setDate(d.getDate() + +v); dateIn.value = isoDate(d); }
+      else f[g] = g === "est" ? +v : v;
+      valid();
+    });
+    $("#go", sh).onclick = () => {
+      const c = cust.value; const p = c === "__new" ? { addr: $("#nj-addr", sh).value.trim(), n: $("#nj-name", sh).value.trim() } : props[+c];
+      const j = { id: "j" + Date.now(), addr: p.addr, n: p.n, x: p.x, y: p.y, svc: f.svc, src: c === "__new" ? "src_new" : f.src, est: f.est, date: parseIso(dateIn.value), crew: null,
+        notes: build(), price: +($("#nj-price", sh).value.replace(/[^0-9.]/g, "")) || 0, tasks: SVC_TASKS[f.svc], app: f.svc === "ns_fert" ? "fert" : undefined };
+      { let P = S.props[p.addr]; if (!P) P = S.props[p.addr] = { addr: p.addr, n: p.n, x: p.x, y: p.y, plan: null, notes: [], hist: [], apps: [], consent: true, since: String(START.getFullYear()) }; P.notes = j.notes; }
+      S.jobs.push(j);
+      const diff = Math.round((j.date - new Date(START.getFullYear(), START.getMonth(), START.getDate())) / 86400000);
+      const ws = nextMonday(), we = new Date(ws); we.setDate(ws.getDate() + 5);
+      S.aRange = diff === 0 ? "today" : (j.date >= ws && j.date <= we) ? "week" : "month";
+      S.ownerTab = "assign";
+      closeSheet();
+      if (f.crew) doAssign(j, f.crew); else toast(t("njDone", { d: fmtDay(j.date) }));
+      render();
+    };
+  });
+}
+const ACT_L100 = { c1: 18.3, c2: 20.4, c3: 21.2, c4: 17.4 };
+const LW_KM = { c1: [58, 61, 55, 63, 60, 30], c2: [64, 59, 66, 62, 61, 28], c3: [71, 68, 0, 70, 66, 35], c4: [55, 57, 60, 54, 58, 25] };
+const LW_VIS = { c1: [9, 8, 9, 8, 9, 4], c2: [8, 8, 9, 8, 8, 5], c3: [7, 7, 0, 7, 7, 4], c4: [8, 8, 8, 8, 8, 5] };
+const LW_ODO = { c1: 330, c2: 341, c3: 316, c4: 312 };
+const sum = (a) => a.reduce((x, y) => x + y, 0);
+const isMi = () => S.units === "mi";
+function fDist(km) { return (isMi() ? km * 0.621371 : km).toFixed(1) + " " + (isMi() ? "mi" : "km"); }
+const fVol = (L) => (isMi() ? L * 0.264172 : L).toFixed(1) + " " + (isMi() ? "gal" : "L");
+const fEcon = (l100) => (isMi() ? (235.215 / l100).toFixed(1) + " mpg" : (+l100).toFixed(1) + " L/100 km");
+const estL = (c, km, vis) => km * S.trucks[c].l100 / 100 + vis * S.idleMin / 60 * S.trucks[c].idle;
+const actL = (c) => sum(LW_KM[c]) * ACT_L100[c] / 100 + sum(LW_VIS[c]) * 3 / 60 * 2.5;
+const PAID_PER_L = 1.561;
+function fuelTodayTable() {
+  const cs = crewSummary(); let tk = 0, tL = 0, tv = 0, tr = 0, tdr = 0;
+  const rows = cs.map((c) => {
+    const d = S.dev[c.id], km = c.id === "c2" && S.net.snap ? S.net.snap.km : d.km, L = estL(c.id, km, c.done), cost = L * S.price, uk = isMi() ? km * 0.621371 : km;
+    tk += km; tL += L; tv += c.done; tr += c.rev; tdr += d.driveS;
+    return `<tr><td><i style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(${c.color});margin-right:6px"></i>${t(c.id + "n")} <span class="muted">· ${S.trucks[c.id].n}</span></td><td class="n">${fDist(km)}</td><td class="n">${hm(Math.round(d.driveS / 60))}</td><td class="n">${c.done}</td><td class="n">${fVol(L)}</td><td class="n">${money2(cost)}</td><td class="n">${c.done ? money2(cost / c.done) : "—"}</td><td class="n">${c.rev ? (cost / c.rev * 100).toFixed(1) + "%" : "—"}</td><td class="n">${uk > 0 ? money2(c.rev / uk) : "—"}</td></tr>`;
+  }).join("");
+  const tc = tL * S.price, tu = isMi() ? tk * 0.621371 : tk;
+  return `<table><thead><tr><th>${t("crew")}</th><th class="n">${t("fKm")}</th><th class="n">${t("fDrive")}</th><th class="n">${t("fVisits")}</th><th class="n">${t("fEstL")}</th><th class="n">${t("fEstCost")}</th><th class="n">${t("fPerVisit")}</th><th class="n">${t("fPctRev")}</th><th class="n">${t("fRevKm", { u: isMi() ? "mi" : "km" })}</th></tr></thead><tbody>${rows}
+    <tr class="tot"><td>${t("fTotal")}</td><td class="n">${fDist(tk)}</td><td class="n">${hm(Math.round(tdr / 60))}</td><td class="n">${tv}</td><td class="n">${fVol(tL)}</td><td class="n">${money2(tc)}</td><td class="n">${tv ? money2(tc / tv) : "—"}</td><td class="n">${tr ? (tc / tr * 100).toFixed(1) + "%" : "—"}</td><td class="n">${tu ? money2(tr / tu) : "—"}</td></tr></tbody></table>`;
+}
+const money2 = (n) => "$" + n.toFixed(2);
+function ownerFuel() {
+  const crews = ["c1", "c2", "c3", "c4"];
+  const week = crews.map((c) => {
+    const km = sum(LW_KM[c]), vis = sum(LW_VIS[c]), eL = estL(c, km, vis), aL = actL(c), diff = (eL - aL) / aL;
+    const sugg = (aL - vis * S.idleMin / 60 * S.trucks[c].idle) / km * 100;
+    return `<tr><td>${S.trucks[c].n} <span class="muted">· ${t(c + "n")}</span></td><td class="n">${fDist(km)}</td><td class="n">${fVol(eL)}</td><td class="n">${money2(eL * S.price)}</td><td class="n">${fVol(aL)}</td><td class="n">${money2(aL * PAID_PER_L)}</td><td class="n ${Math.abs(diff) > 0.04 ? "flag" : ""}">${diff > 0 ? "+" : ""}${(diff * 100).toFixed(1)}%</td><td>${Math.abs(diff) > 0.04 ? `<button class="small-btn" data-act="calib" data-c="${c}" data-v="${sugg.toFixed(1)}">${t("fUse", { v: fEcon(sugg) })}</button>` : ""}</td></tr>`;
+  }).join("");
+  const days = ["mon", "tue", "wed", "thu", "fri", "sat"];
+  const cols = days.map((d, i) => ({ d: t(d), v: sum(crews.map((c) => estL(c, LW_KM[c][i], LW_VIS[c][i]))) * S.price }));
+  const cs = crewSummary();
+  cols.push({ d: t("today"), v: sum(cs.map((c) => estL(c.id, S.dev[c.id].km, c.done))) * S.price, today: true });
+  const cmax = Math.max(...cols.map((c) => c.v), 1);
+  const pts = [YARD, ...S.stops.filter((x) => x.status !== "moved")];
+  const legs = pts.slice(1).map((st, i) => {
+    const a = pts[i], km = (Math.abs(st.x - a.x) + Math.abs(st.y - a.y)) * UNIT_M / 1000, cost = km * S.trucks.c2.l100 / 100 * S.price, share = st.price ? cost / st.price : 0;
+    return `<tr><td>${esc(a.addr || t("yard"))} → ${esc(st.addr)}</td><td class="n">${fDist(km)}</td><td class="n">${money2(cost)}</td><td class="n">${money(st.price)}</td><td class="n ${share > 0.05 ? "flag" : ""}">${st.price ? (share * 100).toFixed(1) + "%" : "—"}</td></tr>`;
+  }).join("");
+  const odo = crews.map((c) => { const g = sum(LW_KM[c]), o = LW_ODO[c]; return `<tr><td>${S.trucks[c].n}</td><td class="n">${fDist(g)}</td><td class="n">${fDist(o)}</td><td class="n">${((g - o) / o * 100).toFixed(1)}%</td></tr>`; }).join("");
+  const econRows = crews.map((c) => `<div class="setrow"><label for="ec-${c}">${S.trucks[c].n} · ${t("fEcon")} (${isMi() ? "mpg" : "L/100 km"})</label><input id="ec-${c}" data-truck="${c}" type="number" step="0.1" min="1" value="${isMi() ? (235.215 / S.trucks[c].l100).toFixed(1) : S.trucks[c].l100}"></div>`).join("");
+  const rec = S.receipts.length ? `<div class="panel"><h2>${t("fReceiptsToday")}</h2>${S.receipts.map((r) => `<div class="item"><span class="stripe acc"></span><div><div class="k">${r.at} · Truck 12</div><b>${fVol(r.L)} · ${money2(r.amt)}</b><p>${isMi() ? money2(r.amt / Math.max(r.L * 0.264172, 0.1)) + " / gal" : money2(r.amt / Math.max(r.L, 0.1)) + " / L"}</p>${r.photo ? `<img class="thumb" src="${r.photo}" alt="">` : ""}</div></div>`).join("")}</div>` : "";
+  return `<div class="o-grid"><div class="col">
+    <div class="panel"><h2>${t("fToday")}</h2><div class="tbl-wrap" id="fueltoday">${fuelTodayTable()}</div><p class="note-sm">${t("fHowEst")}</p></div>
+    <div class="panel"><h2>${t("fWeek")}</h2><div class="tbl-wrap"><table><thead><tr><th>${t("truck")}</th><th class="n">${t("fKm")}</th><th class="n">${t("fEstL")}</th><th class="n">${t("fEstCost")}</th><th class="n">${t("fRecL")}</th><th class="n">${t("fRecCost")}</th><th class="n">${t("fDiff")}</th><th></th></tr></thead><tbody>${week}</tbody></table></div></div>
+    <div class="panel"><h2>${t("fLegs")}</h2><div class="tbl-wrap"><table><thead><tr><th>${t("fLeg")}</th><th class="n">${t("fKm")}</th><th class="n">${t("fEstCost")}</th><th class="n">${t("fVisitPrice")}</th><th class="n">${t("fShare")}</th></tr></thead><tbody>${legs}</tbody></table></div></div>
+  </div><div class="col">
+    <div class="panel"><h2>${t("fDaily")}</h2><div class="cols">${cols.map((c) => `<div class="c ${c.today ? "today" : ""}"><span class="v">${money(c.v)}</span><div class="bar" style="height:${(c.v / cmax) * 130}px"></div><span>${c.d}</span></div>`).join("")}</div></div>
+    ${rec}
+    <div class="panel"><h2>${t("fOdo")}</h2><div class="tbl-wrap"><table><thead><tr><th>${t("truck")}</th><th class="n">${t("fOdoGps")}</th><th class="n">${t("fOdoOdo")}</th><th class="n">${t("fDiff")}</th></tr></thead><tbody>${odo}</tbody></table></div>${S.odoNew ? `<p class="note-sm"><b>${t("fNewOdo", { t: S.odoNew.at, r: S.odoNew.reading.toLocaleString("en-CA") })}</b></p>` : ""}</div>
+    <div class="panel"><h2>${t("fSettings")}</h2>
+      <div class="setrow"><label for="fuel-price">${t("fPrice")} ($/${isMi() ? "gal" : "L"})</label><input id="fuel-price" type="number" step="0.01" min="0.1" value="${isMi() ? (S.price * 3.78541).toFixed(2) : S.price.toFixed(2)}"></div>
+      <div class="setrow"><label for="units">${t("fUnits")}</label><select id="units"><option value="km" ${isMi() ? "" : "selected"}>${t("unitKm")}</option><option value="mi" ${isMi() ? "selected" : ""}>${t("unitMi")}</option></select></div>
+      <div class="setrow"><label for="idle-min">${t("fIdle")}</label><input id="idle-min" type="number" step="1" min="0" value="${S.idleMin}"></div>
+      ${econRows}
+      <p class="note-sm">${t("fRetention")}</p></div>
+  </div></div>`;
+}
+function doReceipt() {
+  let photo = null;
+  sheet(`<h2>${t("receiptBtn")}</h2><p class="muted">Truck 12</p>
+    <div class="field"><label for="r-l">${t("litres")}</label><input id="r-l" inputmode="decimal" value="68.4" autocomplete="off"></div>
+    <div class="field"><label for="r-amt">${t("totalPaid")} ($)</label><input id="r-amt" inputmode="decimal" value="106.02" autocomplete="off"></div>
+    <button class="ph" id="r-ph" style="aspect-ratio:auto;min-height:64px"><div>${I.cam}${t("addPhotoOpt")}</div></button>
+    <div class="sheet-acts"><button data-act="closeSheet">${t("cancel")}</button><button class="go" id="go">${t("save")}</button></div>`, (sh) => {
+    $("#r-ph", sh).onclick = () => { photoCb = (url) => { photo = url; $("#r-ph", sh).innerHTML = `<img src="${url}" alt="" style="max-height:120px;width:auto">`; }; $("#cam").click(); };
+    $("#go", sh).onclick = () => {
+      const L = parseFloat($("#r-l", sh).value) || 0, amt = parseFloat($("#r-amt", sh).value.replace(/[^0-9.]/g, "")) || 0;
+      if (!L || !amt) return;
+      { const at = fmtT(now()); office(t("lb_receipt"), () => S.receipts.unshift({ at, L, amt, photo }), photo ? "photo" : "data", photo ? 2.4 : 0); } closeSheet(); toast(queued() ? t("t_saved") : t("t_receipt")); render();
+    };
+  });
+}
+function doOdo() {
+  sheet(`<h2>${t("odoBtn")}</h2><p class="muted">Truck 12</p>
+    <button class="ph" id="o-ph" style="aspect-ratio:auto;min-height:64px"><div>${I.cam}${t("tapPhoto")}</div></button>
+    <div class="field"><label for="o-r">${t("odoReading")}</label><input id="o-r" inputmode="numeric" value="${Math.round(84210 + S.dev.c2.km)}" autocomplete="off"></div>
+    <div class="sheet-acts"><button data-act="closeSheet">${t("cancel")}</button><button class="go" id="go">${t("save")}</button></div>`, (sh) => {
+    $("#o-ph", sh).onclick = () => { photoCb = (url) => { $("#o-ph", sh).innerHTML = `<img src="${url}" alt="" style="max-height:120px;width:auto">`; }; $("#cam").click(); };
+    $("#go", sh).onclick = () => { const r = parseInt($("#o-r", sh).value.replace(/\D/g, ""), 10); if (!r) return; { const at = fmtT(now()); office(t("lb_odo"), () => { S.odoNew = { reading: r, at }; }, "photo", 2.4); } closeSheet(); toast(queued() ? t("t_saved") : t("t_odo")); render(); };
+  });
+}
+function doRain() {
+  const left = S.stops.filter((s) => ["todo", "enroute"].includes(s.status));
+  const otherLeft = Object.values(S.oth).reduce((a, c) => a + (c.total - c.done), 0);
+  const v = left.length + otherLeft;
+  const noConsent = left.filter((s) => !s.consent).length + 3;
+  let to = tomorrowDate();
+  sheet(`<h2>${t("rainTitle")}</h2>
+    <div class="field"><label>${t("rainWhich")}</label><div class="opts two"><button class="opt" data-d="1" aria-pressed="true">${t("tomorrow")}<small>${fmtDay(tomorrowDate())}</small></button><button class="opt" data-d="2" aria-pressed="false">${t("nextOpen")}<small id="d2"></small></button></div></div>
+    <p>${t("rainCount", { v, c: 4, s: v - noConsent, n: noConsent })}</p>
+    <div class="field"><label>${t("rainPreview")}</label><div class="sms" id="prev"></div></div>
+    <div class="sheet-acts"><button data-act="closeSheet">${t("cancel")}</button><button class="go" id="go">${t("rainGo")}</button></div>`, (sh) => {
+    const d2 = new Date(START); d2.setDate(d2.getDate() + 2); $("#d2", sh).textContent = fmtDay(d2);
+    const upd = () => { $("#prev", sh).textContent = t("smsRain", { d: fmtDay(to) }); };
+    upd();
+    sh.querySelectorAll("[data-d]").forEach((b) => b.onclick = () => { to = b.dataset.d === "1" ? tomorrowDate() : d2; sh.querySelectorAll("[data-d]").forEach((x) => x.setAttribute("aria-pressed", x === b)); upd(); });
+    $("#go", sh).onclick = () => {
+      S.rain = { to, prev: S.stops.map((s) => s.status), cur: S.cur };
+      S.stops.forEach((s) => { if (["todo", "enroute"].includes(s.status)) s.status = "moved"; });
+      S.cur = null;
+      for (const d of Object.values(S.dev)) { d.queue = sample(d.pos, legWay(d.pos, YARD)); d.home = true; }
+      Object.values(S.oth).forEach((o) => { o.state = "drive"; o.at = t("yard"); });
+      S.texts.unshift({ at: fmtT(now()), to: (v - noConsent) + " customers", what: { en: "Rain day: moved", es: "Lluvia: movido" }, st: "st_sent" });
+      closeSheet(); toast(t("rainDone", { d: fmtDay(to) })); render();
+    };
+  });
+}
+
+/* ================= events ================= */
+document.addEventListener("click", (e) => {
+  const b = e.target.closest("[data-act]"); if (!b) return;
+  const a = b.dataset.act;
+  if (a === "closeSheet") { if (e.target === b || b.tagName === "BUTTON") closeSheet(); return; }
+  if (b.tagName === "A") e.preventDefault();
+  const s = curStop();
+  switch (a) {
+    case "view": S.view = b.dataset.v; break;
+    case "lang": lang = b.dataset.l; document.documentElement.lang = lang; break;
+    case "reset": { const v = S.view; S = freshState(); S.view = v; toast(t("reset")); break; }
+    case "crewTab": S.crewTab = b.dataset.k; window.scrollTo({ top: 0 }); break;
+    case "clock":
+      if (S.shift === "pre") {
+        if (!preDone()) return;
+        if (!S.dev.c2.on) return sheet(`<h2>${t("needLocT")}</h2><p class="muted">${t("locRule")}</p><div class="sheet-acts"><button data-act="closeSheet">${t("cancel")}</button><button class="go" data-act="locOn">${t("locOn")}</button></div>`);
+        office(t("lb_clockin"));
+        S.shift = "on"; S.clockedIn = true; S.clockAt = now(); S.clockOutAt = null; S.dev.c2.lastFix = Date.now(); S.crewTab = "today";
+        toast(t("t_clockIn", { t: fmtT(now()) })); window.scrollTo({ top: 0 }); break;
+      }
+      if (S.shift === "on") return doClockMenu();
+      break;
+    case "pauseStart": { const k = b.dataset.k; office(t("lb_pause", { w: t(k === "lunch" ? "lunch" : "brk") })); S.pause = { type: k, since: Date.now(), at: now() }; closeSheet(); toast(t("t_pauseStart", { w: t(k === "lunch" ? "lunch" : "brk") })); window.scrollTo({ top: 0 }); break; }
+    case "pauseEnd": { office(t("lb_pauseEnd", { w: t(S.pause.type === "lunch" ? "lunch" : "brk") })); const m = Math.max(1, Math.round((Date.now() - S.pause.since) / 60000)); S.breaks.push({ type: S.pause.type, mins: m, at: fmtT(S.pause.at) }); toast(t("t_pauseEnd", { w: t(S.pause.type === "lunch" ? "lunch" : "brk"), m })); S.pause = null; break; }
+    case "coAsk": closeSheet(); S.coConfirm = true; window.scrollTo({ top: 0 }); break;
+    case "coBack": S.coConfirm = false; break;
+    case "coYes": {
+      const left = jobsLeft();
+      S.coConfirm = false; S.shift = "off"; S.clockedIn = false; S.clockOutAt = now();
+      if (!left) office(t("lb_clockout"));
+      if (left) office(t("lb_clockout"), () => S.items.unshift({ id: "co" + Date.now(), k: "k_stuck", tone: "warn", tile: "stuck", title: { en: `Crew 2 clocked out · ${left} jobs left`, es: `Cuadrilla 2 marcó salida · faltan ${left}` }, body: { en: "Reschedule them or move them to another crew.", es: "Reprográmalos o pásalos a otra cuadrilla." }, acts: ["reschedule", "close"], fresh: true }));
+      toast(t("t_clockOut", { t: fmtT(now()) })); window.scrollTo({ top: 0 }); break;
+    }
+    case "newShift": S.shift = "pre"; Object.keys(S.preTrip).forEach((k) => (S.preTrip[k] = false)); S.breaks = []; S.clockAt = null; S.clockOutAt = null; break;
+    case "pick": { const id = b.dataset.id; const st = S.stops.find((x) => x.id === id); if (st.status === "todo" && (!s || s.status === "todo")) { S.cur = id; window.scrollTo({ top: 0, behavior: "smooth" }); } break; }
+    case "onway": return doOnWay();
+    case "here": office(t("lb_here", { a: s.addr })); s.status = "onsite"; s.arrived = now(); if (S.dev.c2.queue.length) { S.dev.c2.queue = []; record(S.dev.c2, { x: s.x, y: s.y }); } addLog(s.id, t("t_here")); toast(t("t_here")); break;
+    case "finish": return doFinish();
+    case "check": { const c = (S.checks[s.id] = S.checks[s.id] || {}); c[b.dataset.k] = !c[b.dataset.k]; if (c[b.dataset.k]) office(t("lb_check", { k: t(b.dataset.k), a: s.addr })); break; }
+    case "photo": { const k = b.dataset.k; return askPhoto({ kind: k, n: S.stops.indexOf(s) + 1 }, (url) => { (S.photos[s.id] = S.photos[s.id] || {})[k] = url; office(t("lb_photo", { k: t(k), a: s.addr }), null, "photo", 2.4); render(); }); }
+    case "cant": return doCant();
+    case "spot": return doSpot();
+    case "mat": return doMat();
+    case "voice": return doVoice();
+    case "pre": S.preTrip[b.dataset.k] = !S.preTrip[b.dataset.k]; break;
+    case "issue": return doIssue(b.dataset.n);
+    case "oTab": S.ownerTab = b.dataset.k; S.lastSub[groupOf(b.dataset.k)] = b.dataset.k; break;
+    case "nsType": { const nx = (S.next[s.id] = S.next[s.id] || {}); nx.type = b.dataset.k; nx.auto = false; break; }
+    case "nsOpen": S.next[s.id].open = true; break;
+    case "prop": return doProp(b.dataset.addr);
+    case "oGroup": { const g = b.dataset.k; S.ownerTab = S.lastSub[g] || GROUPS[g][0]; break; }
+    case "nsDate": { const nx = (S.next[s.id] = S.next[s.id] || {}); const d = new Date(START); d.setDate(d.getDate() + +b.dataset.d); nx.days = +b.dataset.d; nx.date = isoDate(d); break; }
+    case "nsVoice": (S.next[s.id] = S.next[s.id] || {}).note = t("sampleNext"); break;
+    case "aRange": S.aRange = b.dataset.k; break;
+    case "assign": doAssign(S.jobs.find((j) => j.id === b.dataset.id), b.dataset.c); break;
+    case "unassign": doUnassign(S.jobs.find((j) => j.id === b.dataset.id)); break;
+    case "chDay": return doChDay(S.jobs.find((j) => j.id === b.dataset.id));
+    case "filter": S.filter = b.dataset.k && S.filter !== b.dataset.k ? b.dataset.k : null; break;
+    case "resolve": S.items = S.items.filter((i) => i.id !== b.dataset.id); toast(t(b.dataset.a) + " · " + t("resolved")); break;
+    case "rain": return doRain();
+    case "net": if (b.dataset.v === "off") goOffline(); else goOnline(); break;
+    case "outbox": return doOutbox();
+    case "locOff": S.dev.c2.on = false; S.dev.c2.offSince = fmtT(now()); break;
+    case "locOn": S.dev.c2.on = true; S.dev.c2.offSince = null; closeSheet(); break;
+    case "receipt": return doReceipt();
+    case "odo": return doOdo();
+    case "calib": S.trucks[b.dataset.c].l100 = +b.dataset.v; toast(t("t_calib")); break;
+    case "newJob": return doNewJob();
+    case "rainUndo": if (S.rain) { S.stops.forEach((x, i) => x.status = S.rain.prev[i]); S.cur = S.rain.cur; S.rain = null; } break;
+    case "q": S.quality[b.dataset.id] = b.dataset.v; break;
+    case "csv": {
+      const csv = "person,crew,mon,tue,wed,thu,fri,sat,total\n" + PEOPLE.map(([n, c, d]) => [n, c, ...d, d.reduce((x, y) => x + y, 0).toFixed(1)].join(",")).join("\n");
+      try { navigator.clipboard.writeText(csv).then(() => toast(t("copied")), () => toast(t("copied"))); } catch (_) { toast(t("copied")); }
+      break;
+    }
+  }
+  render();
+});
+
+function render() {
+  document.querySelectorAll("[data-t]").forEach((el) => el.textContent = t(el.dataset.t));
+  document.querySelectorAll('[data-act="view"]').forEach((b) => b.setAttribute("aria-pressed", b.dataset.v === S.view));
+  document.querySelectorAll('[data-act="lang"]').forEach((b) => b.setAttribute("aria-pressed", b.dataset.l === lang));
+  document.querySelectorAll('[data-act="net"]').forEach((b) => b.setAttribute("aria-pressed", (b.dataset.v === "on") === S.net.online));
+  $("#crew").hidden = S.view !== "crew"; $("#crew-tabs").hidden = S.view !== "crew"; $("#owner").hidden = S.view === "crew";
+  if (S.view === "crew") renderCrew(); else renderOwner();
+}
+document.addEventListener("input", (e) => {
+  if (e.target.id === "prop-q") { S.propQ = e.target.value; const l = $("#prop-list"); if (l) l.innerHTML = propRows(); return; }
+  if (e.target.id === "ns-note") { const s = curStop(); if (s) { (S.next[s.id] = S.next[s.id] || {}).note = e.target.value; updateGate(); } }
+});
+document.addEventListener("change", (e) => {
+  const el = e.target, v = parseFloat(el.value);
+  if (el.id === "fuel-price" && v > 0) { S.price = isMi() ? v / 3.78541 : v; renderOwner(); return; }
+  if (el.id === "units") { S.units = el.value; renderOwner(); return; }
+  if (el.id === "idle-min" && v >= 0) { S.idleMin = v; renderOwner(); return; }
+  if (el.dataset && el.dataset.truck && v > 0) { S.trucks[el.dataset.truck].l100 = isMi() ? 235.215 / v : v; renderOwner(); return; }
+  if (e.target.id === "ns-date") { const s = curStop(); if (s) { const nx = (S.next[s.id] = S.next[s.id] || {}); nx.date = e.target.value; nx.days = null; render(); } }
+});
+// live ticks: GPS fixes, timers, map, team list
+setInterval(() => {
+  gpsTick();
+  if ($("#layer").innerHTML) return;
+  if (S.pause) { const pt = $("#pause-timer"); if (pt) pt.textContent = mmss(); const hp = $("#hdr-pause"); if (hp) hp.textContent = mmss(); }
+  const tm = $("#site-timer"); const s = curStop();
+  if (tm && s && s.arrived) tm.textContent = `${elapsedMin(s.arrived)} ${t("min")} / ${s.est}`;
+  const gl = $("#gpsline"); if (gl && s) { const tmp = document.createElement("div"); tmp.innerHTML = gpsLine(s); if (tmp.firstChild) gl.replaceWith(tmp.firstChild); }
+  const m = $("#mapsvg");
+  if (m) { const tmp = document.createElement("div"); tmp.innerHTML = mapSVG({ crewOnly: S.view === "crew" }); m.replaceWith(tmp.firstChild); }
+  const tr = $("#teamrows"); if (tr) tr.innerHTML = teamRows();
+  const ft = $("#fueltoday"); if (ft) ft.innerHTML = fuelTodayTable();
+}, 1000);
+render();
+})();
+</script>
+</body>
+</html>
