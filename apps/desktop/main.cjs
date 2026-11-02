@@ -1,4 +1,4 @@
-// Zentek Office desktop app: a window around the office website.
+// Cutting Cost Office desktop app: a window around the office website.
 // The site itself is deployed on Netlify, so every update reaches desktop users at once,
 // with no new installer. Change the address in package.json ("zentek.officeUrl"), or set
 // ZENTEK_OFFICE_URL when testing (e.g. http://127.0.0.1:5173).
@@ -19,7 +19,7 @@ function createWindow() {
     height: 880,
     minWidth: 960,
     minHeight: 640,
-    title: "Zentek Office",
+    title: "Cutting Cost Office",
     autoHideMenuBar: true,
     webPreferences: {
       // The page runs like it would in a browser: no access to the computer.

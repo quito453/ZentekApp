@@ -1,9 +1,9 @@
 {
   "name": "zentek-office-desktop",
-  "productName": "Zentek Office",
+  "productName": "Cutting Cost Office",
   "version": "0.1.0",
   "private": true,
-  "description": "Desktop window for the Zentek office site (owners and dispatchers).",
+  "description": "Desktop window for the Cutting Cost office site (owners and dispatchers).",
   "main": "main.cjs",
   "scripts": {
     "start": "electron .",
@@ -19,7 +19,7 @@
   },
   "build": {
     "appId": "com.zentek.office",
-    "productName": "Zentek Office",
+    "productName": "Cutting Cost Office",
     "files": ["main.cjs", "package.json"],
     "win": { "target": "nsis" },
     "mac": { "target": "dmg", "category": "public.app-category.business" }

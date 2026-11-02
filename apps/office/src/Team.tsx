@@ -40,7 +40,7 @@ export function Team({ companyId, myRole, myId }: { companyId: string; myRole: s
           </span>
         )}
       </div>
-      <p className="muted">To add someone or get more licences, contact your Zentek administrator.</p>
+      <p className="muted">To add someone or get more licences, contact your Cutting Cost administrator.</p>
       <ul className="rows">
         {people.map((p) => (
           <li key={p.user_id} className="team-row">

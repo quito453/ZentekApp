@@ -25,7 +25,7 @@ export function passwordProblem(pw: string): PasswordProblem | null {
 /**
  * Supabase Auth signs people in with an email address. Technicians only ever see a username, so
  * each one gets an internal address on a domain you own that has no mailbox, e.g.
- * `marco.r@users.zentekapp.com`. No email is ever sent to it: passwords are reset by the office.
+ * `marco.r@users.yourdomain.com`. No email is ever sent to it: passwords are reset by the office.
  */
 export function loginEmail(username: string, domain: string): string {
   const d = domain.trim().toLowerCase();

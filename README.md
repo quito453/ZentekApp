@@ -1,4 +1,4 @@
-# Zentek
+# Cutting Cost
 
 Field-service app for lawn care companies: a tablet app for crews and a web app for owners and dispatchers. English and Spanish, phone- and tablet-first, built to work with no signal. Canada first; rules for chemicals, texting and overtime are set per province or state.
 
@@ -22,7 +22,7 @@ The clickable demo of every screen is in [`demo/index.html`](demo/index.html) (o
 - **Only the app owner creates logins and sets licences.** You (a platform admin) use the **App owner** tab in the office app: create a company with a licence count, add crews, and create logins (technician, dispatcher or owner) with a username and temporary password. Each login uses one licence; the database refuses more than the company has.
 - **Owners and dispatchers cannot add or remove people.** They can only **set a new password**: dispatchers for technicians, owners for technicians and dispatchers.
 - **Technicians sign in with a username and password.** "Forgot password" sends a request to the dispatcher's *Needs you* list, where they set a new password and tell the technician. No email is involved.
-- Supabase Auth needs an email for each login, so a username becomes `<username>@<LOGIN_EMAIL_DOMAIN>`. Use a subdomain you own with no mailbox, e.g. `users.zentekapp.com`.
+- Supabase Auth needs an email for each login, so a username becomes `<username>@<LOGIN_EMAIL_DOMAIN>`. Use a subdomain you own with no mailbox, e.g. `users.yourdomain.com`.
 
 ### Make yourself the app owner (once)
 
@@ -45,7 +45,7 @@ Owners open the office app on **Finance**. Dispatchers and technicians can't see
 - **Costs and rates:** people and their hourly cost, trucks (value, years, hours per year, L/100 km), material prices, fixed costs, fuel price, overtime rule, monthly target.
 - **Fixed costs** (insurance, rent, phones, software, loans) are entered per month, prorated to the period, and shared across jobs **in proportion to what each job earns**: a $2,000 job carries ten times the share of a $200 job. Overview shows profit before and after them, "Every $100 you charged" in plain words, and a "What if…" panel with sliders for fuel, crew pay, fixed costs and prices.
 - **Fuel price:** pick the country, province or state, closest city (Canada) and fuel type, and turn on automatic prices. The `fuel-prices` Edge Function checks public averages every day (Statistics Canada monthly by city; U.S. EIA weekly by state or region). Fuel receipts logged by crews override the average for that period, because they're what was actually paid.
-- **Email reports:** weekly on a chosen day and/or monthly on the 1st, to any addresses, plus "Email me … now". Sent by the `finance-report` Edge Function through [Resend](https://resend.com). Set the secrets `RESEND_API_KEY`, `REPORT_FROM` (e.g. `Zentek <reports@zentekapp.com>`, on a domain verified in Resend), `CRON_SECRET` and `OFFICE_URL`, then schedule it with `supabase/cron.example.sql`.
+- **Email reports:** weekly on a chosen day and/or monthly on the 1st, to any addresses, plus "Email me … now". Sent by the `finance-report` Edge Function through [Resend](https://resend.com). Set the secrets `RESEND_API_KEY`, `REPORT_FROM` (e.g. `Cutting Cost <reports@yourdomain.com>`, on a domain verified in Resend), `CRON_SECRET` and `OFFICE_URL`, then schedule it with `supabase/cron.example.sql`.
 
 ## Live updates
 
@@ -83,7 +83,7 @@ Connect to Supabase:
 
 Sign-up is off (`supabase/config.toml`): only the app owner creates logins.
 
-Edge Functions need three secrets: `npx supabase secrets set LOGIN_EMAIL_DOMAIN=users.zentekapp.com ALLOWED_ORIGINS=https://office.zentekapp.com,http://127.0.0.1:5173` (the service role key is provided by Supabase). Deploy them with `npx supabase functions deploy admin-users set-password finance-report fuel-prices`. For automatic U.S. fuel prices also set `EIA_API_KEY` (free from eia.gov/opendata).
+Edge Functions need three secrets: `npx supabase secrets set LOGIN_EMAIL_DOMAIN=users.yourdomain.com ALLOWED_ORIGINS=https://office.yourdomain.com,http://127.0.0.1:5173` (the service role key is provided by Supabase). Deploy them with `npx supabase functions deploy admin-users set-password finance-report fuel-prices`. For automatic U.S. fuel prices also set `EIA_API_KEY` (free from eia.gov/opendata).
 
 ## Deploy
 

@@ -2,7 +2,7 @@
 import { createClient, type SupabaseClient } from "npm:@supabase/supabase-js@2.118.0";
 
 // Browsers (office site, desktop app) call these functions directly.
-// Set ALLOWED_ORIGINS to a comma-separated list, e.g. "https://office.zentekapp.com,http://127.0.0.1:5173".
+// Set ALLOWED_ORIGINS to a comma-separated list, e.g. "https://office.yourdomain.com,http://127.0.0.1:5173".
 const allowed = (Deno.env.get("ALLOWED_ORIGINS") ?? "").split(",").map((s) => s.trim()).filter(Boolean);
 
 export function corsHeaders(req: Request): HeadersInit {

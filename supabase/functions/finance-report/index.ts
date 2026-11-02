@@ -6,7 +6,7 @@
 //   2. "Email me this report now" from the office app: POST { company_id, kind: "week" | "month" }
 //      with the owner's login. Covers the last finished week or month.
 //
-// Secrets: RESEND_API_KEY, REPORT_FROM (e.g. "Zentek <reports@zentekapp.com>"), CRON_SECRET,
+// Secrets: RESEND_API_KEY, REPORT_FROM (e.g. "Cutting Cost <reports@yourdomain.com>"), CRON_SECRET,
 // OFFICE_URL (link in the email), ALLOWED_ORIGINS.
 import type { SupabaseClient } from "npm:@supabase/supabase-js@2.118.0";
 import { lastCompletePeriod, renderReport, reportsDue, shiftPeriod, type FinanceSummary } from "../_shared/report.ts";

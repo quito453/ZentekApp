@@ -180,7 +180,7 @@ ${
 ${crewRows}</table>`
     : ""
 }
-${opts.appUrl ? `<p style="margin:24px 0 0"><a href="${esc(opts.appUrl)}" style="color:#2c6a55;font-weight:600">Open Finance in Zentek</a></p>` : ""}
+${opts.appUrl ? `<p style="margin:24px 0 0"><a href="${esc(opts.appUrl)}" style="color:#1c2733;font-weight:700">Open Finance in Cutting Cost</a></p>` : ""}
 <p style="margin:24px 0 0;color:#5a6962;font-size:12px">Costs use the rates in Finance settings. Payroll and job details are in the app.</p>
 </td></tr></table></td></tr></table></body></html>`;
 

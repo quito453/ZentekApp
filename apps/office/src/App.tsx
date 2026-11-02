@@ -36,7 +36,7 @@ export function App() {
   return (
     <div className="shell">
       <header className="top">
-        <strong>Zentek</strong>
+        <strong>Cutting Cost</strong>
         <div className="row">
           <div className="seg" role="group" aria-label="Language">
             {(["en", "es"] as const).map((l) => (
@@ -81,7 +81,7 @@ function SignIn() {
       <main className="card narrow stack">
         <h1>Forgot password</h1>
         {forgot === "sent" ? (
-          <p className="ok">Your request was sent. A company owner will set a new password and tell you. Owners: contact your Zentek administrator.</p>
+          <p className="ok">Your request was sent. A company owner will set a new password and tell you. Owners: contact your Cutting Cost administrator.</p>
         ) : (
           <form className="stack" onSubmit={requestReset}>
             <label htmlFor="fu">Username</label>
@@ -128,7 +128,7 @@ function Office({ lang, userId }: { lang: Lang; userId: string }) {
   }, [userId]);
 
   if (membership === undefined) return <p className="muted">Loading…</p>;
-  if (membership?.role === "crew") return <main className="card"><p>This login is a technician. Use the Zentek technician app.</p></main>;
+  if (membership?.role === "crew") return <main className="card"><p>This login is a technician. Use the Cutting Cost crew app.</p></main>;
   if (!membership && !isAdmin) return <main className="card"><p className="muted">This login isn't linked to a company yet.</p></main>;
 
   const tabs: [Tab, string][] = [

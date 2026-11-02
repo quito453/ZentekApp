@@ -78,7 +78,7 @@ function SignIn({ lang }: { lang: Lang }) {
   return (
     <main className="login">
       <h1>{t(lang, "techTitle")}</h1>
-      <div className="logo" aria-hidden="true">ZENTEK</div>
+      <div className="logo" aria-hidden="true"><span>Cutting</span><span>Cost</span></div>
       <form className="stack" onSubmit={submit}>
         <label htmlFor="user">{t(lang, "username")}</label>
         <input id="user" autoCapitalize="none" autoCorrect="off" autoComplete="username" spellCheck={false} required value={username} onChange={(e) => setUsername(e.target.value)} />

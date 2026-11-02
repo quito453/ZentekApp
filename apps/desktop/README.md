@@ -1,4 +1,4 @@
-# Zentek Office desktop app
+# Cutting Cost Office desktop app
 
 A desktop window (Windows and Mac) around the office website. Owners and dispatchers get an app icon and their own window. Because it loads the live site, updates on Netlify reach them immediately, with no new installer.
 

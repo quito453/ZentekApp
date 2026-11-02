@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><style>[hidden]{display:none!important} :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)} body{margin:0} img{max-width:100%}</style><title>GreenRoute Crew &amp; Owner</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><style>[hidden]{display:none!important} :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)} body{margin:0} img{max-width:100%}</style><title>Cutting Cost Demo</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -240,7 +240,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .obbar span { display: block; height: 100%; background: var(--c1); transition: width 0.3s; }
 .login { display: grid; gap: 14px; max-width: 420px; margin: 0 auto; width: 100%; padding-top: 8px; }
 .login h1 { font-size: 2rem; }
-.logo { width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--brand); color: var(--accent-text); display: grid; place-items: center; font-family: var(--font-display); font-weight: 700; letter-spacing: 0.08em; justify-self: center; margin: 4px 0 10px; }
+.logo { width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--brand); color: var(--accent-text); display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; line-height: 1; font-size: 1.15rem; letter-spacing: 0.06em; justify-self: center; margin: 4px 0 10px; }
+.logo span:last-child { color: var(--accent-ink); background: var(--accent); padding: 3px 8px 2px; margin-top: 5px; border-radius: 3px; }
 .login .field input { font-size: 1.1rem; min-height: 56px; }
 .linkbtn { background: none; border: 0; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; min-height: 48px; font-size: 1.02rem; justify-self: center; }
 .lg-err { color: var(--bad); font-weight: 600; margin: 0; min-height: 1.2em; }
@@ -765,8 +766,8 @@ const T = {
     badLogin: "Enter your username and password.", demoLogin: "Demo: any username and password works.", signOut: "Sign out", back: "Back",
     k_pw: "Password reset", setpw: "Set new password", pwNew: "New password", pwAgain: "Type it again", pwSave: "Save password", pwShort: "Use at least 8 characters.", pwMatch: "The two passwords don't match.",
     pwDone: "New password set. Tell {n} in person or by phone.", pwReqBody: "Forgot their password. Set a new one, then tell them in person or by phone.",
-    gTeam: "Team", tabTeam: "Team", teamNote: "To add someone or get more licences, contact your Zentek administrator.", seatsUsed: "{u} of {n} licences used", rTech: "Technician", rDisp: "Dispatcher", rOwner: "Owner",
-    appOwner: "App owner", aoWho: "You · Zentek administrator", aoTitle: "Companies and licences", aoLogins: "Logins", aoNewLogin: "New login", aoRole: "Role", aoName: "Full name", aoUser: "Username", aoTemp: "Temporary password", aoCrew: "Crew",
+    gTeam: "Team", tabTeam: "Team", teamNote: "To add someone or get more licences, contact your Cutting Cost administrator.", seatsUsed: "{u} of {n} licences used", rTech: "Technician", rDisp: "Dispatcher", rOwner: "Owner",
+    appOwner: "App owner", aoWho: "You · Cutting Cost administrator", aoTitle: "Companies and licences", aoLogins: "Logins", aoNewLogin: "New login", aoRole: "Role", aoName: "Full name", aoUser: "Username", aoTemp: "Temporary password", aoCrew: "Crew",
     aoCreate: "Create login", aoCreated: "Login created for {n}. Username: {u}", aoNoSeats: "No licences left. Raise the licence count first.", aoSeats: "Licences", aoUsed: "{u} used of", aoRemove: "Remove login", aoRemoved: "{n} can no longer sign in. Their licence is free.",
     aoBadUser: "Usernames are 3–32 lowercase letters, numbers, dots, dashes or underscores.", aoTaken: "That username is taken.", aoOnly: "Only you can create logins and change licences. Owners and dispatchers can only set new passwords.",
     tabOverview: "Overview", tabCosts: "Costs and rates", tabEmail: "Email reports", pDay: "Day", pWeek: "Week", pMonth: "Month",
@@ -941,7 +942,7 @@ const T = {
     badLogin: "Escribe tu usuario y contraseña.", demoLogin: "Demo: cualquier usuario y contraseña funciona.", signOut: "Cerrar sesión", back: "Regresar",
     k_pw: "Cambio de contraseña", setpw: "Poner contraseña nueva", pwNew: "Contraseña nueva", pwAgain: "Escríbela otra vez", pwSave: "Guardar contraseña", pwShort: "Usa al menos 8 caracteres.", pwMatch: "Las dos contraseñas no coinciden.",
     pwDone: "Contraseña nueva lista. Díselo a {n} en persona o por teléfono.", pwReqBody: "Olvidó su contraseña. Pon una nueva y díselo en persona o por teléfono.",
-    gTeam: "Equipo", tabTeam: "Equipo", teamNote: "Para agregar a alguien o más licencias, contacta a tu administrador de Zentek.", seatsUsed: "{u} de {n} licencias usadas", rTech: "Técnico", rDisp: "Despachador", rOwner: "Dueño",
+    gTeam: "Equipo", tabTeam: "Equipo", teamNote: "Para agregar a alguien o más licencias, contacta a tu administrador de Cutting Cost.", seatsUsed: "{u} de {n} licencias usadas", rTech: "Técnico", rDisp: "Despachador", rOwner: "Dueño",
     appOwner: "Admin de la app", tabOverview: "Resumen", tabCosts: "Costos y tarifas", tabEmail: "Reportes por correo", pDay: "Día", pWeek: "Semana", pMonth: "Mes",
     fProfit: "Ganancia", fRevenue: "Ingresos", fCosts: "Costos", fMargin: "Margen", fJobsDone: "Trabajos hechos", fNeedsLook: "Para revisar", payDl: "Descargar nómina (Excel/CSV)",
 
@@ -1195,8 +1196,8 @@ function freshState() {
       pt: [{ n: "Lena H.", role: "owner", user: "lena.h" }, { n: "Cody M.", role: "crew", user: "cody.m" }, { n: "Ravi D.", role: "crew", user: "ravi.d" }],
     },
     hist: {
-      gr: [{ at: "Oct 28", who: "Zentek admin", what: "Licences 10 → 12" }, { at: "Oct 14", who: "Rosa M.", what: "Set a new password for Luis G." }, { at: "Sep 30", who: "Zentek admin", what: "Created login for Kev O. (technician)" }],
-      ns: [{ at: "Oct 2", who: "Zentek admin", what: "Licences 4 → 5" }], pt: [{ at: "Oct 21", who: "Zentek admin", what: "Paused: end of season" }],
+      gr: [{ at: "Oct 28", who: "Cutting Cost admin", what: "Licences 10 → 12" }, { at: "Oct 14", who: "Rosa M.", what: "Set a new password for Luis G." }, { at: "Sep 30", who: "Cutting Cost admin", what: "Created login for Kev O. (technician)" }],
+      ns: [{ at: "Oct 2", who: "Cutting Cost admin", what: "Licences 4 → 5" }], pt: [{ at: "Oct 21", who: "Cutting Cost admin", what: "Paused: end of season" }],
     },
     repLog: [{ at: "Mon, Oct 26 · 7:00 a.m.", kind: "Weekly", to: "owner@greenridgelawn.ca" }, { at: "Thu, Oct 1 · 7:00 a.m.", kind: "Monthly", to: "owner@greenridgelawn.ca" }],
     net: { online: true, since: null, syncing: false, snap: null, total: 0 }, outbox: [],
@@ -1307,7 +1308,7 @@ function doClockMenu() {
 }
 function loginScreen() {
   if (S.forgot) return `<div class="login"><h1>${t("forgotPw")}</h1>${S.forgot === "sent" ? `<p class="okmsg" role="status">${t("forgotSent")}</p>` : `<p>${t("forgotP")}</p><div class="field"><label for="lg-fu">${t("username")}</label><input id="lg-fu" autocapitalize="none" spellcheck="false" value="${esc(S.lgUser)}"></div><button class="big" data-act="lgForgotSend">${t("forgotSend")}</button>`}<button class="linkbtn" data-act="lgBack">${t("back")}</button></div>`;
-  return `<div class="login"><h1>${t("techTitle")}</h1><div class="logo" aria-hidden="true">ZENTEK</div>
+  return `<div class="login"><h1>${t("techTitle")}</h1><div class="logo" aria-hidden="true"><span>Cutting</span><span>Cost</span></div>
     <div class="field"><label for="lg-u">${t("username")}</label><input id="lg-u" autocapitalize="none" spellcheck="false" autocomplete="username" value="${esc(S.lgUser)}"></div>
     <div class="field"><label for="lg-p">${t("password")}</label><input id="lg-p" type="password" autocomplete="current-password"></div>
     <p class="lg-err" id="lg-err" role="alert"></p>
@@ -2296,7 +2297,7 @@ function doSetPw(name, itemId) {
 }
 
 /* ── App owner (you): companies, licences, logins ── */
-const actor = () => (S.view === "admin" ? "Zentek admin" : S.view === "dispatch" ? "Rosa M." : "Gord P.");
+const actor = () => (S.view === "admin" ? "Cutting Cost admin" : S.view === "dispatch" ? "Rosa M." : "Gord P.");
 function histAdd(co, what) { (S.hist[co] = S.hist[co] || []).unshift({ at: fmtT(now()), who: actor(), what }); }
 const coById = (id) => S.companies.find((c) => c.id === id);
 const loginsOf = (id) => (id === "gr" ? logins() : (S.coLogins[id] = S.coLogins[id] || []));
@@ -2313,7 +2314,7 @@ function coRows() {
 }
 function renderAdmin() {
   const co = S.adminCo ? coById(S.adminCo) : null;
-  const band = `<div class="admband"><div><b>Zentek admin</b><span class="co">${co ? esc(co.n) : t("aoAll")}</span></div><span class="r">${t("aoWho")}</span></div>`;
+  const band = `<div class="admband"><div><b>Cutting Cost admin</b><span class="co">${co ? esc(co.n) : t("aoAll")}</span></div><span class="r">${t("aoWho")}</span></div>`;
   if (!co) return `<div class="omain">${band}<div class="panel"><div class="phd"><h2>${t("aoCompanies")} <small class="muted" style="font-family:var(--font-body);font-size:.85rem;font-weight:500">${S.companies.length}</small></h2><div class="ph-r"><label class="sr" for="co-q">${t("aoSearch")}</label><input id="co-q" type="search" placeholder="${t("aoSearch")}" value="${esc(S.coQ)}"><button class="small-btn pri" data-act="aoNewCo">+ ${t("aoNewCo")}</button></div></div>
     <div class="tbl-wrap"><table><thead><tr><th>${t("aoCompanies")}</th><th>${t("aoWhere")}</th><th>${t("aoLic")}</th><th>${t("aoLast")}</th><th>${t("aoStatus")}</th></tr></thead><tbody id="co-rows">${coRows()}</tbody></table></div><p class="note-sm">${t("aoOnly")}</p></div></div>`;
   const id = co.id, L = loginsOf(id), seats = seatsOf(id), draft = S.seatDraft ?? seats, off = S.off[id] || [];
@@ -2517,7 +2518,7 @@ function emailPreview() {
     <table>${row("Revenue", money(d.revenue))}${row("Labour", money(d.labour))}${row("Fuel", money(d.fuel))}${row("Materials", money(d.mat))}${row("Truck wear", money(d.truck))}${row("Profit from jobs", money(d.profit))}${row("Fixed costs", money(d.fixed))}${row("Profit after fixed costs", money(d.net))}</table>
     <p style="margin:14px 0 4px;font-weight:700">Where revenue came from</p><table>${row("Regular customers", money(d.mix[0]))}${row("New customers", money(d.mix[1]))}${row("Extra work from crew leads", money(d.mix[2]))}</table>
     <p style="margin:14px 0 4px;font-weight:700">Needs a look</p><ul style="margin:0;padding-left:20px"><li>${finJobs().filter((j) => j.profit < 0).length} jobs lost money</li><li>${d.leads.open} leads from crews not closed yet</li></ul>
-    <p style="margin:14px 0 0"><span style="color:#2c6a55;font-weight:600;text-decoration:underline">Open Finance in Zentek</span></p></div>`;
+    <p style="margin:14px 0 0"><span style="color:#1c2733;font-weight:700;text-decoration:underline">Open Finance in Cutting Cost</span></p></div>`;
 }
 function ownerEmail() {
   const r = S.rep, kind = S.finKind, html = emailPreview(); S.finKind = kind;
