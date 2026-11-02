@@ -12,7 +12,7 @@
   --warn: #a8670f; --warn-soft: #f7e7cc; --bad: #b0402c; --bad-soft: #f6dfd9;
   --bar: #16201c; --bar-ink: #eef3f0;
   --map-land: #e7ece4; --map-park: #cfe0c8; --map-water: #cfe0ea; --map-road: #ffffff; --map-main: #f6e8c4;
-  --c1: #2f6fb0; --c2: #2c6a55; --c3: #b0402c; --c4: #8a55a8;
+  --c1: #2a78d6; --c2: #8a5cd0; --c3: #0f8f92; --c4: #c2477f;
   --shade: rgba(16, 24, 20, 0.4);
   --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
@@ -26,7 +26,7 @@
     --ok: #6fcf93; --ok-soft: #173326; --warn: #e6ad55; --warn-soft: #3b2c14; --bad: #ee8a75; --bad-soft: #3d1f19;
     --bar: #0b100e; --bar-ink: #dfe7e2;
     --map-land: #1a2420; --map-park: #20332a; --map-water: #1b2a33; --map-road: #2c3a35; --map-main: #4a4230;
-    --c1: #7fb2e6; --c2: #6cc2a3; --c3: #ee8a75; --c4: #c79be0;
+    --c1: #5b9be8; --c2: #a888e6; --c3: #2bb3b5; --c4: #e07aa8;
     --shade: rgba(0, 0, 0, 0.6); color-scheme: dark;
   }
 }
@@ -36,7 +36,7 @@
   --ok: #6fcf93; --ok-soft: #173326; --warn: #e6ad55; --warn-soft: #3b2c14; --bad: #ee8a75; --bad-soft: #3d1f19;
   --bar: #0b100e; --bar-ink: #dfe7e2;
   --map-land: #1a2420; --map-park: #20332a; --map-water: #1b2a33; --map-road: #2c3a35; --map-main: #4a4230;
-  --c1: #7fb2e6; --c2: #6cc2a3; --c3: #ee8a75; --c4: #c79be0;
+  --c1: #5b9be8; --c2: #a888e6; --c3: #2bb3b5; --c4: #e07aa8;
   --shade: rgba(0, 0, 0, 0.6); color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -369,7 +369,7 @@ tr.loss td.pf { color: var(--bad); font-weight: 700; }
 .toast { position: fixed; left: 50%; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 90; background: var(--bar); color: var(--bar-ink); padding: 12px 18px; border-radius: 12px; font-weight: 500; width: max-content; max-width: calc(100% - 32px); box-shadow: 0 8px 30px -8px var(--shade); }
 
 /* ---------- owner screen ---------- */
-#owner { max-width: 1180px; margin: 0 auto; padding-block: 14px 48px; display: flex; flex-direction: column; gap: 16px; }
+#owner { max-width: 1600px; margin: 0 auto; padding-block: 14px 48px; display: flex; flex-direction: column; gap: 16px; }
 .o-head { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
 .o-head .t { flex: 1; min-width: 200px; }
 .o-head h1 { font-size: 1.6rem; }
@@ -401,9 +401,9 @@ tr.loss td.pf { color: var(--bad); font-weight: 700; }
 .item p { margin: 2px 0 0; font-size: 0.93rem; color: var(--muted); }
 .item .acts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; align-items: center; }
 .item img.thumb { width: 96px; border-radius: 8px; margin-top: 8px; display: block; }
-.crewrow { display: grid; grid-template-columns: 14px 1fr auto; gap: 10px; padding: 12px 0; border-top: 1px solid var(--line); align-items: start; }
+.crewrow { display: grid; grid-template-columns: 24px 1fr auto; gap: 10px; padding: 12px 0; border-top: 1px solid var(--line); align-items: start; }
 .crewrow:first-of-type { border-top: 0; padding-top: 2px; }
-.crewrow i { width: 14px; height: 14px; border-radius: 50%; margin-top: 4px; }
+.crewrow i { width: 24px; height: 24px; border-radius: 50%; margin-top: 0; color: #fff; font-style: normal; font-size: 0.78rem; font-weight: 700; display: grid; place-items: center; }
 .crewrow b { display: block; }
 .crewrow .st { font-size: 0.92rem; }
 .crewrow .ppl { font-size: 0.82rem; color: var(--muted); }
@@ -414,7 +414,7 @@ tr.loss td.pf { color: var(--bad); font-weight: 700; }
 .tbl-wrap { overflow-x: auto; }
 table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
 th, td { padding: 8px 8px; border-bottom: 1px solid var(--line); text-align: left; white-space: nowrap; }
-th { font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+th { font-size: 0.82rem; color: var(--muted); font-weight: 600; }
 td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--font-mono); font-size: 0.85rem; }
 tr.tot td { font-weight: 700; border-bottom: 0; }
 .flag { color: var(--warn); font-weight: 600; }
@@ -448,6 +448,155 @@ tr.tot td { font-weight: 700; border-bottom: 0; }
 .foot { font-size: 0.82rem; color: var(--muted); text-align: center; padding-block: 8px; }
 .sms-log div { display: grid; grid-template-columns: 1fr auto; gap: 8px; padding: 8px 0; border-top: 1px solid var(--line); font-size: 0.9rem; }
 .sms-log div:first-child { border-top: 0; }
+/* ── office shell: side menu on desktop, tabs on smaller screens ── */
+.oshell { display: block; }
+.topnav { display: flex; flex-direction: column; gap: 10px; }
+.omain { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.oside { display: none; flex-direction: column; gap: 2px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 64px); }
+.oside .g { border: 0; background: transparent; text-align: left; font-weight: 700; padding: 8px 10px; border-radius: 9px; min-height: 42px; display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 4px; }
+.oside .g:hover, .oside .s:hover { background: var(--sunken); }
+.oside .g[aria-current="true"] { background: var(--ink); color: var(--bg); }
+.oside .s { border: 0; background: transparent; text-align: left; color: var(--muted); font-weight: 600; padding: 6px 10px 6px 22px; border-radius: 8px; min-height: 36px; }
+.oside .s[aria-current="true"] { color: var(--accent); background: var(--accent-soft); }
+.oside .keys { margin-top: 14px; font-size: 0.82rem; color: var(--muted); border: 0; background: none; text-align: left; padding: 6px 10px; }
+.cnt { background: var(--bad); color: #fff; border-radius: 999px; padding: 0 8px; font-size: 0.78rem; font-weight: 700; min-width: 22px; text-align: center; line-height: 1.6; }
+.o-tabs .cnt { margin-left: 6px; }
+@media (min-width: 1100px) {
+  .oshell { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 20px; align-items: start; }
+  .oside { display: flex; }
+  .topnav { display: none; }
+}
+.o-head .who2 { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; color: var(--muted); }
+.live { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: var(--ok-soft); color: var(--ok); }
+.live::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; animation: pulse 2s infinite; }
+.live.re { background: var(--warn-soft); color: var(--warn); }
+.daybtn { border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 3px 12px; font-weight: 600; font-size: 0.9rem; min-height: 34px; display: inline-flex; gap: 6px; align-items: center; }
+.daybtn svg { width: 16px; height: 16px; }
+.iconbtn { border: 1.5px solid var(--line); background: var(--surface); border-radius: 12px; min-height: 48px; padding: 8px 14px; font-weight: 700; display: inline-flex; gap: 8px; align-items: center; }
+.iconbtn svg { width: 20px; height: 20px; }
+kbd { font-family: var(--font-mono); font-size: 0.72rem; border: 1px solid currentColor; border-radius: 4px; padding: 0 4px; opacity: 0.7; margin-left: 4px; }
+@media (max-width: 899px) { .newjob kbd { display: none; } }
+
+/* ── Needs you, grouped by urgency ── */
+.ugrp { display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 0.9rem; padding: 12px 0 2px; }
+.ugrp em { font-style: normal; color: var(--muted); font-weight: 600; }
+.ugrp.now span { color: var(--bad); } .ugrp.today span { color: var(--warn); } .ugrp.later span { color: var(--muted); }
+.panel > .ugrp:first-of-type { padding-top: 0; }
+.item.u-now .stripe { background: var(--bad); } .item.u-today .stripe { background: var(--warn); } .item.u-later .stripe { background: var(--line); }
+.ugrp + .item { border-top: 0; }
+.k2 { display: flex; gap: 6px; align-items: center; font-size: 0.85rem; font-weight: 600; color: var(--muted); }
+.k2 svg { width: 16px; height: 16px; flex: none; }
+.newtag { font-style: normal; color: var(--accent); }
+.item[data-act="focusItem"] { cursor: pointer; border-radius: 6px; }
+.item:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.item.fresh { animation: freshin 3s ease-out; }
+@keyframes freshin { from { background: var(--accent-soft); } to { background: transparent; } }
+.folded { width: 100%; border: 0; background: var(--sunken); border-radius: 10px; padding: 12px 14px; display: flex; justify-content: space-between; font-weight: 600; margin-top: 6px; min-height: 48px; align-items: center; }
+.folded span:last-child { color: var(--accent); }
+
+/* ── crew rows ── */
+button.crewrow { width: 100%; background: transparent; border: 0; border-top: 1px solid var(--line); text-align: left; color: inherit; border-radius: 0; }
+button.crewrow:first-of-type { border-top: 0; }
+button.crewrow:hover { background: var(--sunken); }
+button.crewrow.sel { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); }
+.okt { color: var(--ok); font-weight: 600; }
+.pbar { position: relative; height: 6px; background: var(--sunken); border-radius: 3px; margin-top: 8px; }
+.pbar span { position: absolute; inset: 0 auto 0 0; background: var(--muted); border-radius: 3px; }
+.pbar b { position: absolute; top: -3px; width: 3px; height: 12px; background: var(--bad); border-radius: 1px; transform: translateX(-1px); }
+
+/* ── dispatcher board: Needs you, crews, map ── */
+.board { display: grid; gap: 16px; }
+.board .needs { order: -1; }
+@media (min-width: 900px) { .board { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; } .board .b-map { grid-column: 1 / -1; } }
+@media (min-width: 1100px) {
+  .board { grid-template-columns: 250px minmax(0, 1fr) 330px; }
+  .board .b-crews { order: 1; } .board .b-map { order: 2; grid-column: auto; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 64px); } .board .needs { order: 3; }
+  .board .b-crews .crewrow .r { display: none; }
+  .board .b-crews .crewrow { grid-template-columns: 24px 1fr; }
+}
+.focusbar { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 0.88rem; margin-top: 8px; }
+
+/* ── assign: tray + crew lanes ── */
+.tray { display: grid; gap: 10px; }
+.jcard { border: 1.5px solid var(--line); border-radius: 12px; padding: 10px 12px; background: var(--surface); display: grid; grid-template-columns: 18px 1fr; gap: 10px; cursor: grab; }
+.jcard.dragging { opacity: 0.45; }
+.jcard .grip { color: var(--muted); padding-top: 2px; }
+.jcard .grip svg { width: 18px; height: 18px; }
+.jcard p { margin: 2px 0 0; font-size: 0.92rem; color: var(--muted); }
+.jcard.src_redo { border-left: 4px solid var(--bad); }
+.sugg { display: inline-flex; gap: 6px; align-items: center; background: var(--ok-soft); color: var(--ok); border-radius: 999px; padding: 3px 10px; font-size: 0.82rem; font-weight: 600; margin-top: 6px; }
+.jcard .acts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.jcard select { min-height: 40px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); padding: 4px 8px; font: inherit; font-size: 0.9rem; }
+.lane { padding: 10px; border-radius: 12px; border: 2px solid transparent; }
+.lane + .lane { margin-top: 4px; }
+.lane.over { border-color: var(--accent); border-style: dashed; background: var(--accent-soft); }
+.lane-h { display: flex; justify-content: space-between; gap: 8px; font-size: 0.92rem; margin-bottom: 6px; }
+.lane-h i { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+.lane-h .cap { font-weight: 600; font-variant-numeric: tabular-nums; }
+.lane-h .cap.o { color: var(--bad); }
+.ltrack { display: flex; gap: 2px; height: 30px; background: var(--sunken); border-radius: 8px; overflow: hidden; }
+.ltrack .blk { color: #fff; font-size: 0.74rem; font-weight: 600; padding: 6px 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 6px; }
+.ltrack .blk.add { opacity: 0.8; }
+.ltrack .ghostblk { border: 2px dashed var(--accent); color: var(--accent); background: transparent; border-radius: 6px; font-size: 0.74rem; font-weight: 700; padding: 4px 6px; white-space: nowrap; overflow: hidden; }
+.ltrack .cut { margin-left: auto; width: 2px; background: var(--bad); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ── quality ── */
+.qcard .pair { cursor: zoom-in; border: 0; padding: 0; width: 100%; }
+.cmp { position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4 / 3; max-width: 100%; background: var(--sunken); }
+.cmp img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cmp .bf { clip-path: inset(0 calc(100% - var(--x, 50%)) 0 0); }
+.cmp .ln { position: absolute; top: 0; bottom: 0; left: var(--x, 50%); width: 3px; background: #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.25); }
+.cmp .tg { position: absolute; top: 8px; background: var(--bar); color: var(--bar-ink); font-size: 0.75rem; font-weight: 600; padding: 2px 8px; border-radius: 5px; }
+.cmp input { width: 100%; }
+
+/* ── owner ── */
+.handled { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 6px; }
+.handled li { display: flex; gap: 8px; align-items: center; }
+.handled svg { width: 18px; height: 18px; color: var(--muted); flex: none; }
+.watch button { border: 0; background: none; padding: 0; text-align: left; color: var(--ink); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; font: inherit; }
+.watch button:hover { text-decoration-color: currentColor; }
+.spark { display: block; margin-top: 6px; color: var(--accent); }
+.spark text { fill: var(--muted); font-size: 10px; font-family: var(--font-body); }
+@media (max-width: 600px) { .hide-sm { display: none; } }
+@media (min-width: 601px) { .show-sm { display: none; } }
+.ccards { display: grid; gap: 8px; }
+.ccard { background: var(--sunken); border-radius: 12px; padding: 10px 12px; display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; }
+.ccard b { font-size: 1rem; }
+.ccard .big2 { font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; text-align: right; font-variant-numeric: tabular-nums; }
+.ccard span { color: var(--muted); font-size: 0.85rem; }
+.ccard.loss .big2 { color: var(--bad); }
+.filterline { display: flex; justify-content: space-between; align-items: center; gap: 8px; background: var(--accent-soft); color: var(--accent); border-radius: 10px; padding: 8px 12px; font-weight: 600; margin-bottom: 8px; }
+.filterline button { border: 0; background: none; color: inherit; text-decoration: underline; font-weight: 600; }
+.replog { display: grid; gap: 0; }
+.replog div { display: flex; justify-content: space-between; gap: 10px; padding: 8px 0; border-top: 1px solid var(--line); font-size: 0.92rem; }
+.replog div:first-child { border-top: 0; }
+
+/* ── app owner ── */
+.admband { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; background: var(--bar); color: var(--bar-ink); border-radius: 14px; padding: 14px 18px; }
+.admband b { font-family: var(--font-display); font-size: 1.05rem; display: block; opacity: 0.8; }
+.admband .co { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; display: block; line-height: 1.2; }
+.admband .r { opacity: 0.8; font-size: 0.9rem; }
+.phd { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px; }
+.phd h2 { font-size: 1.15rem; }
+.ph-r { display: flex; gap: 8px; flex-wrap: wrap; }
+.ph-r input { min-height: 44px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); padding: 6px 12px; font: inherit; min-width: 0; width: 220px; max-width: 100%; }
+.cobtn { border: 0; background: none; padding: 0; font: inherit; font-weight: 700; color: var(--ink); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; text-align: left; }
+.seatbar { width: 90px; height: 8px; background: var(--sunken); border-radius: 4px; overflow: hidden; display: inline-block; vertical-align: middle; margin-right: 8px; }
+.seatbar i { display: block; height: 100%; background: var(--accent); }
+.seatbar.full i { background: var(--bad); }
+.seatstep { display: grid; grid-template-columns: 52px 90px 52px; gap: 8px; align-items: center; }
+.seatstep button { min-height: 48px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--surface); font-size: 1.4rem; font-weight: 700; }
+.seatstep button:disabled { opacity: 0.4; }
+.seatstep output { text-align: center; font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; }
+.cred { display: grid; grid-template-columns: auto 1fr auto; gap: 8px 12px; align-items: center; background: var(--sunken); border-radius: 12px; padding: 12px; }
+.cred code { font-family: var(--font-mono); font-size: 1.05rem; font-weight: 500; overflow-wrap: anywhere; }
+.pwrow { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+.pwrow input { min-width: 0; }
+.hist { grid-template-columns: 96px 1fr; }
+.danger-go { background: var(--bad) !important; border-color: var(--bad) !important; color: #fff !important; }
+.keys-t td { padding: 6px 8px; }
+.keys-t kbd { opacity: 1; font-size: 0.85rem; padding: 1px 6px; }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 </style></head><body>
 
@@ -482,6 +631,13 @@ tr.tot td { font-weight: 700; border-bottom: 0; }
 "use strict";
 /* ================= icons ================= */
 const I = {
+  chat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg>',
+  key: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M15 8l2 2"/></svg>',
+  leaf: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19c0-9 6-14 15-14 0 9-5 15-14 15"/><path d="M5 19l8-8"/></svg>',
+  cal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>',
+  gear: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>',
+  grip: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>',
+  more: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>',
   gate: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>',
   dog: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10l-1-5 4 2h6l4-2-1 5"/><path d="M5 10c0 6 3 9 7 9s7-3 7-9"/><circle cx="9.5" cy="12" r=".6" fill="currentColor"/><circle cx="14.5" cy="12" r=".6" fill="currentColor"/><path d="M11 15.5h2"/></svg>',
   drop: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg>',
@@ -604,6 +760,23 @@ const T = {
     erP: "A short email with profit, revenue, costs, where revenue came from, crews and anything that needs a look. Weekly reports cover the last full week; monthly reports arrive on the 1st.",
     erWeekly: "Weekly report", erDay: "Send it on", erMonthly: "Monthly report (on the 1st)", erTo: "Send to (separate addresses with commas)", erNowW: "Email me last week's report now", erNowM: "Email me last month's report now",
     erPreview: "What the email looks like", erSent: "Demo: the report would go to {e}. Nothing is sent.", payDl: "Download payroll (Excel/CSV)",
+
+    u_now: "Now", u_today: "Today", u_later: "When you can", leadsToQuote: "{n} leads to quote", open: "Open", hideLeads: "Fold leads away", newTag: "new",
+    liveOn: "Live", liveRe: "Reconnecting…", dayMenu: "Day", dayRain: "Rain day: move today's jobs", dayRainP: "Shows what moves and the customer text before anything changes.", dayWeek: "Plan next week", dayUndo: "Undo rain day",
+    showing: "Showing {c} on the map", showAll: "Show all crews", gpsGap: "No GPS for {m} min",
+    dragHint: "Drag a job onto a crew, or use Send to.", sendTo: "Send to…", suggWhy: "Suggested: {c} · {h} h free, {km} km away", visits: "{n} visits", dropHere: "+{m} min", onDay: "on {d}",
+    allGood: "All look good", allGoodT: "Marked {n} as looking good", qOpen: "Open photos", qPrev: "Previous", qNext: "Next", qKeys: "Keys: ← → to move, G good, F flag",
+    gSettings: "Settings", openSettings: "Settings", onPace: "On pace for {v} today", crewsBehind: "{n} crews behind", rosaHandling: "Rosa is handling {n} items", owNeeds: "Needs you",
+    owNothing: "Nothing needs you right now.", openDisp: "Open the dispatcher view", compEsc: "Regular since 2023, about $2,860 a year. Rosa is on it.", callCust: "Call the customer", callDemo: "Demo: this would call the customer.",
+    lostWeek: "{n} jobs lost money last week", seeJobs: "See the jobs", trend: "Last 8 {p}", trendW: "weeks", trendD: "days", trendM: "months",
+    fShowAll: "Show all jobs", fOnlyLoss: "Only jobs that lost money", fOnlyComp: "Only jobs with complaints", fOpenLeadsT: "Open leads from crews",
+    erTest: "Send a test to me", erTestSent: "Demo: a test would go to {e}. Nothing is sent.", erLog: "Last sent", erTestK: "Test",
+    aoAll: "All companies", aoCompanies: "Companies", aoSearch: "Search companies", aoNewCo: "New company", aoWhere: "Province or state", aoLast: "Last sign-in", aoStatus: "Status", aoActive: "Active", aoPaused: "Paused",
+    aoBack: "All companies", aoLic: "Licences", aoLicSave: "Save licences", aoLicChange: "{a} → {b} licences", aoLicFloor: "Can't go below the {n} logins in use.", aoMake: "Make one for me",
+    aoHand: "Login made for {n}", aoHandP: "Tell {n} in person or by phone. They'll choose their own password the first time they sign in.", aoAnother: "Make another login", copy: "Copy", copied2: "Copied",
+    aoMore: "More for {n}", aoOff: "Turn off login", aoOffQ: "Turn off {n}'s login?", aoOffP: "{n} won't be able to sign in. Their jobs, hours and photos stay. You can turn the login back on later.", aoOffDone: "{n} can no longer sign in. Their licence is free.",
+    aoOffList: "Turned off", aoOn: "Turn back on", aoOnDone: "{n} can sign in again.", aoHist: "History", aoHistP: "Logins, licences and passwords set. Passwords themselves are never shown.", aoCoName: "Company name", aoCreateCo: "Create company", aoCoMade: "{n} created. Add its first login.",
+    keysT: "Keyboard shortcuts", kNew: "New job", kSearch: "Search properties", kPages: "Go to a page in the side menu", kMove: "Next / previous item in Needs you", kHelp: "Show this list", kEsc: "Close a window", kShort: "Shortcuts",
     tabFuel: "Fuel & km", gpsArrived: "GPS: you're at {a}", gpsHere: "GPS shows you here since {t}", gpsLeft: "GPS: {d} to go",
     locOffT: "Location is off", locOffP: "This company phone has to share its location while you're clocked in. Turn it back on to keep working. It stops when you clock out.", locOn: "Turn location on", needLocT: "Turn on location to clock in",
     locCard: "Location", locDevice: "Company tablet · Truck 12", locRule: "Shared only while you're clocked in. It stops when you clock out.", locToday: "Today: {d} driven · {h} driving", demoOff: "Demo: turn location off",
@@ -731,6 +904,9 @@ const T = {
     gTeam: "Equipo", tabTeam: "Equipo", teamNote: "Para agregar a alguien o más licencias, contacta a tu administrador de Zentek.", seatsUsed: "{u} de {n} licencias usadas", rTech: "Técnico", rDisp: "Despachador", rOwner: "Dueño",
     appOwner: "Admin de la app", tabOverview: "Resumen", tabCosts: "Costos y tarifas", tabEmail: "Reportes por correo", pDay: "Día", pWeek: "Semana", pMonth: "Mes",
     fProfit: "Ganancia", fRevenue: "Ingresos", fCosts: "Costos", fMargin: "Margen", fJobsDone: "Trabajos hechos", fNeedsLook: "Para revisar", payDl: "Descargar nómina (Excel/CSV)",
+
+    u_now: "Ahora", u_today: "Hoy", u_later: "Cuando puedas", leadsToQuote: "{n} oportunidades por cotizar", open: "Abrir", hideLeads: "Ocultar oportunidades", newTag: "nuevo",
+    liveOn: "En vivo", liveRe: "Reconectando…", dayMenu: "Día", gSettings: "Ajustes", openSettings: "Ajustes", owNeeds: "Para ti", aoAll: "Todas las empresas", aoCompanies: "Empresas",
     tabFuel: "Combustible y km", gpsArrived: "GPS: estás en {a}", gpsHere: "El GPS te ubica aquí desde las {t}", gpsLeft: "GPS: faltan {d}",
     locOffT: "La ubicación está apagada", locOffP: "Este teléfono de la empresa debe compartir su ubicación mientras estás en turno. Vuelve a encenderla para seguir trabajando. Se detiene al marcar salida.", locOn: "Encender ubicación", needLocT: "Enciende la ubicación para marcar entrada",
     locCard: "Ubicación", locDevice: "Tableta de la empresa · Camión 12", locRule: "Se comparte solo mientras estás en turno. Se detiene al marcar salida.", locToday: "Hoy: {d} recorridos · {h} manejando", demoOff: "Demo: apagar ubicación",
@@ -936,7 +1112,7 @@ const propNotes = (x) => (S.props && S.props[x.addr] ? S.props[x.addr].notes : x
 let S;
 function freshState() {
   const st = {
-    view: "crew", crewTab: "today", ownerTab: "today", filter: null,
+    view: "crew", crewTab: "today", ownerTab: "today", filter: null, focusCrew: null, leadsOpen: false, finFilter: null, scrollTo: null, adminCo: null, coQ: "", seatDraft: null, handoff: null, qv: null,
     clockedIn: false, clockAt: null, shift: "login", forgot: null, lgUser: "", pause: null, breaks: [], coConfirm: false, clockOutAt: null,
     stops: freshStops(), cur: "s1", checks: {}, photos: {}, mats: {}, log: {},
     preTrip: { p_oil: false, p_blades: false, p_line: false, p_fuel: false, p_bags: false, p_ppe: false, p_aid: false, p_trailer: false, p_tablet: false },
@@ -946,13 +1122,13 @@ function freshState() {
       { at: "10:05 AM", to: "Reyes (Crew 3)", what: { en: "On the way", es: "En camino" }, st: "st_skip" },
     ],
     items: [
-      { id: "i1", k: "k_skip", tone: "warn", tile: "wait", title: { en: "88 Willow Dr · Crew 3", es: "88 Willow Dr · Cuadrilla 3" }, body: { en: "Customer asked to skip this week (texted the crew lead).", es: "El cliente pidió saltar esta semana (le escribió al jefe de cuadrilla)." }, acts: ["skipNoCharge", "reschedule"] },
-      { id: "i2", k: "k_time", tone: "warn", tile: "wait", title: { en: "Priya S. · Crew 1 · Saturday", es: "Priya S. · Cuadrilla 1 · sábado" }, body: { en: "Phone shows clock-out at 9:58 PM. Last job ended 5:02 PM.", es: "El teléfono marca salida a las 9:58 PM. El último trabajo terminó a las 5:02 PM." }, acts: ["setTime", "keep"] },
-      { id: "i3", k: "k_lead", tone: "brass", tile: "leads", title: { en: "Needs aeration · 5 Oak Ln", es: "Necesita aireación · 5 Oak Ln" }, body: { en: "Spotted by Crew 4. Compacted soil along the driveway.", es: "Lo vio la Cuadrilla 4. Suelo compactado junto a la entrada." }, acts: ["quote", "notNow"], photo: 21 },
-      { id: "i4", k: "k_comp", tone: "bad", tile: "comp", title: { en: "41 Spruce St · Crew 1 · Thu", es: "41 Spruce St · Cuadrilla 1 · jue" }, body: { en: "\"Clippings left all over the driveway.\" After photo shows the driveway not blown.", es: "\"Dejaron pasto por toda la entrada.\" La foto de después muestra la entrada sin soplar." }, acts: ["redo", "call"] },
-      { id: "i5", k: "k_late", tone: "bad", tile: "late", title: { en: "Crew 3 · 35 min behind", es: "Cuadrilla 3 · 35 min atrasada" }, body: { en: "Lost time at 2 Elm St (mower wouldn't start). 4 visits left.", es: "Perdió tiempo en 2 Elm St (la podadora no arrancaba). Faltan 4 visitas." }, acts: ["call"] },
-      { id: "i6", k: "k_late", tone: "bad", tile: "late", title: { en: "Crew 4 · 48 min at 5 Oak Ln (planned 30)", es: "Cuadrilla 4 · 48 min en 5 Oak Ln (plan: 30)" }, body: { en: "Heavy leaf load. 20 min behind.", es: "Mucha hoja. 20 min atrasada." }, acts: ["call"] },
-      { id: "i7", k: "k_lead", tone: "brass", tile: "leads", title: { en: "Dead cedar · 63 Aspen Ave", es: "Cedro muerto · 63 Aspen Ave" }, body: { en: "Spotted by Crew 1. Front corner of the house.", es: "Lo vio la Cuadrilla 1. Esquina delantera de la casa." }, acts: ["quote", "notNow"], photo: 33 },
+      { id: "i1", crew: "c3", k: "k_skip", tone: "warn", tile: "wait", title: { en: "88 Willow Dr · Crew 3", es: "88 Willow Dr · Cuadrilla 3" }, body: { en: "Customer asked to skip this week (texted the crew lead).", es: "El cliente pidió saltar esta semana (le escribió al jefe de cuadrilla)." }, acts: ["skipNoCharge", "reschedule"] },
+      { id: "i2", crew: "c1", k: "k_time", tone: "warn", tile: "wait", title: { en: "Priya S. · Crew 1 · Saturday", es: "Priya S. · Cuadrilla 1 · sábado" }, body: { en: "Phone shows clock-out at 9:58 PM. Last job ended 5:02 PM.", es: "El teléfono marca salida a las 9:58 PM. El último trabajo terminó a las 5:02 PM." }, acts: ["setTime", "keep"] },
+      { id: "i3", crew: "c4", k: "k_lead", tone: "brass", tile: "leads", title: { en: "Needs aeration · 5 Oak Ln", es: "Necesita aireación · 5 Oak Ln" }, body: { en: "Spotted by Crew 4. Compacted soil along the driveway.", es: "Lo vio la Cuadrilla 4. Suelo compactado junto a la entrada." }, acts: ["quote", "notNow"], photo: 21 },
+      { id: "i4", crew: "c1", k: "k_comp", tone: "bad", tile: "comp", title: { en: "41 Spruce St · Crew 1 · Thu", es: "41 Spruce St · Cuadrilla 1 · jue" }, body: { en: "\"Clippings left all over the driveway.\" After photo shows the driveway not blown.", es: "\"Dejaron pasto por toda la entrada.\" La foto de después muestra la entrada sin soplar." }, acts: ["redo", "call"] },
+      { id: "i5", crew: "c3", k: "k_late", tone: "bad", tile: "late", title: { en: "Crew 3 · 35 min behind", es: "Cuadrilla 3 · 35 min atrasada" }, body: { en: "Lost time at 2 Elm St (mower wouldn't start). 4 visits left.", es: "Perdió tiempo en 2 Elm St (la podadora no arrancaba). Faltan 4 visitas." }, acts: ["call"] },
+      { id: "i6", crew: "c4", k: "k_late", tone: "bad", tile: "late", title: { en: "Crew 4 · 48 min at 5 Oak Ln (planned 30)", es: "Cuadrilla 4 · 48 min en 5 Oak Ln (plan: 30)" }, body: { en: "Heavy leaf load. 20 min behind.", es: "Mucha hoja. 20 min atrasada." }, acts: ["call"] },
+      { id: "i7", crew: "c1", k: "k_lead", tone: "brass", tile: "leads", title: { en: "Dead cedar · 63 Aspen Ave", es: "Cedro muerto · 63 Aspen Ave" }, body: { en: "Spotted by Crew 1. Front corner of the house.", es: "Lo vio la Cuadrilla 1. Esquina delantera de la casa." }, acts: ["quote", "notNow"], photo: 33 },
     ],
     quality: {}, next: {}, jobs: freshJobs(), aRange: "today",
     equipLog: [], gpsAt: {}, receipts: [], odoNew: null,
@@ -963,7 +1139,21 @@ function freshState() {
     truckVal: { c1: [62000, 6, 1800], c2: [58000, 6, 1800], c3: [71000, 7, 1800], c4: [55000, 6, 1800] },
     matPrices: [["Fall fertilizer 24-0-12", "kg", 1.2], ["Iron-based weed control (FeHEDTA)", "L", 14.5], ["Leaf bags", "bag", 0.45]],
     otAfter: 44, otx: 1.5, target: 18000, rep: { weekly: true, day: 1, monthly: true, to: "owner@greenridgelawn.ca" },
-    logins: null,
+    logins: null, off: { gr: [], ns: [], pt: [] },
+    companies: [
+      { id: "gr", n: "Green Ridge Lawn & Snow", where: "ON", last: "2 min ago", status: "active" },
+      { id: "ns", n: "Northside Lawn Co.", where: "ON", seats: 5, last: "Yesterday", status: "active" },
+      { id: "pt", n: "Prairie Turf", where: "AB", seats: 10, last: "12 days ago", status: "paused" },
+    ],
+    coLogins: {
+      ns: [{ n: "Dana W.", role: "owner", user: "dana.w" }, { n: "Jules P.", role: "dispatcher", user: "jules.p" }, { n: "Tom B.", role: "crew", user: "tom.b" }, { n: "Ivan S.", role: "crew", user: "ivan.s" }, { n: "Rae K.", role: "crew", user: "rae.k" }],
+      pt: [{ n: "Lena H.", role: "owner", user: "lena.h" }, { n: "Cody M.", role: "crew", user: "cody.m" }, { n: "Ravi D.", role: "crew", user: "ravi.d" }],
+    },
+    hist: {
+      gr: [{ at: "Oct 28", who: "Zentek admin", what: "Licences 10 → 12" }, { at: "Oct 14", who: "Rosa M.", what: "Set a new password for Luis G." }, { at: "Sep 30", who: "Zentek admin", what: "Created login for Kev O. (technician)" }],
+      ns: [{ at: "Oct 2", who: "Zentek admin", what: "Licences 4 → 5" }], pt: [{ at: "Oct 21", who: "Zentek admin", what: "Paused: end of season" }],
+    },
+    repLog: [{ at: "Mon, Oct 26 · 7:00 a.m.", kind: "Weekly", to: "owner@greenridgelawn.ca" }, { at: "Thu, Oct 1 · 7:00 a.m.", kind: "Monthly", to: "owner@greenridgelawn.ca" }],
     net: { online: true, since: null, syncing: false, snap: null, total: 0 }, outbox: [],
   };
   st.dev = makeDevs(st);
@@ -987,7 +1177,7 @@ function sheet(html, onMount) {
   if (onMount) onMount(sh);
   const f = sh.querySelector("button, input, select"); if (f) f.focus({ preventScroll: true });
 }
-const closeSheet = () => { $("#layer").innerHTML = ""; };
+const closeSheet = () => { $("#layer").innerHTML = ""; S.qv = null; };
 
 /* photo capture */
 let photoCb = null;
@@ -1221,16 +1411,18 @@ function mapSVG({ crewOnly }) {
   g += `<text x="610" y="500" font-size="20" fill="var(--muted)" opacity=".8">Birchwood Park</text>`;
   // yard
   g += `<rect x="${YARD.x - 16}" y="${YARD.y - 16}" width="32" height="32" rx="6" fill="var(--ink)"/><text x="${YARD.x}" y="${YARD.y + 6}" text-anchor="middle" font-size="16" font-weight="700" fill="var(--bg)">Y</text>`;
+  const op = (id) => (!crewOnly && S.focusCrew && S.focusCrew !== id ? 0.15 : 1);
   if (!crewOnly) {
     for (const [id, c] of Object.entries(S.oth)) {
       const pts = c.route.map((p) => p.join(",")).join(" ");
-      g += `<polyline points="${pts}" fill="none" stroke="var(${c.color})" stroke-width="5" stroke-dasharray="2 10" stroke-linecap="round" opacity=".7"/>`;
-      c.route.slice(1).forEach((p, i) => { g += `<circle cx="${p[0]}" cy="${p[1]}" r="9" fill="${i < c.done ? `var(${c.color})` : "var(--surface)"}" stroke="var(${c.color})" stroke-width="3"/>`; });
+      g += `<polyline points="${pts}" fill="none" stroke="var(${c.color})" stroke-width="5" stroke-dasharray="2 10" stroke-linecap="round" opacity="${0.7 * op(id)}"/>`;
+      c.route.slice(1).forEach((p, i) => { g += `<circle cx="${p[0]}" cy="${p[1]}" r="9" fill="${i < c.done ? `var(${c.color})` : "var(--surface)"}" stroke="var(${c.color})" stroke-width="3" opacity="${op(id)}"/>`; });
     }
   }
   const pts = [YARD, ...S.stops].map((p) => p.x + "," + p.y).join(" ");
-  g += `<polyline points="${pts}" fill="none" stroke="var(--c2)" stroke-width="4" stroke-dasharray="2 10" stroke-linecap="round" opacity=".7"/>`;
-  for (const d of Object.values(S.dev)) if (!crewOnly || d.id === "c2") g += `<polyline points="${(!crewOnly && d.id === "c2" && S.net.snap ? d.trail.slice(0, S.net.snap.trailLen) : d.trail).map((q) => q.x.toFixed(0) + "," + q.y.toFixed(0)).join(" ")}" fill="none" stroke="var(${d.color})" stroke-width="5" stroke-linejoin="round" stroke-linecap="round" opacity=".6"/>`;
+  g += `<polyline points="${pts}" fill="none" stroke="var(--c2)" stroke-width="4" stroke-dasharray="2 10" stroke-linecap="round" opacity="${0.7 * (crewOnly ? 1 : op("c2"))}"/>`;
+  for (const d of Object.values(S.dev)) if (!crewOnly || d.id === "c2") g += `<polyline points="${(!crewOnly && d.id === "c2" && S.net.snap ? d.trail.slice(0, S.net.snap.trailLen) : d.trail).map((q) => q.x.toFixed(0) + "," + q.y.toFixed(0)).join(" ")}" fill="none" stroke="var(${d.color})" stroke-width="5" stroke-linejoin="round" stroke-linecap="round" opacity="${0.6 * (crewOnly ? 1 : op(d.id))}"/>`;
+  g += `<g opacity="${crewOnly ? 1 : op("c2")}">`;
   S.stops.forEach((s, i) => {
     const isCur = s.id === S.cur;
     const fill = s.status === "done" ? "var(--ok)" : isCur ? "var(--c2)" : s.status === "blocked" ? "var(--warn)" : s.status === "moved" ? "var(--map-land)" : "var(--surface)";
@@ -1239,12 +1431,13 @@ function mapSVG({ crewOnly }) {
     g += `<circle cx="${s.x}" cy="${s.y}" r="${crewOnly ? 21 : 16}" fill="${fill}" stroke="var(--c2)" stroke-width="3"/><text x="${s.x}" y="${s.y + (crewOnly ? 7 : 6)}" text-anchor="middle" font-size="${crewOnly ? 19 : 15}" font-weight="700" fill="${txt}">${i + 1}</text>`;
     if (crewOnly) g += `<text x="${s.x}" y="${s.y - 30}" text-anchor="middle" font-size="17" fill="var(--ink)" font-weight="600">${esc(s.addr.split(" ").slice(0, 2).join(" "))}</text>`;
   });
+  g += `</g>`;
   // crew dots
   for (const d of Object.values(S.dev)) {
     if (crewOnly && d.id !== "c2") continue;
     const live = devLive(d) && !(!crewOnly && d.id === "c2" && S.net.snap);
     const pos = !crewOnly && d.id === "c2" && S.net.snap ? S.net.snap.pos : d.pos;
-    g += `<g><circle cx="${pos.x.toFixed(0)}" cy="${pos.y.toFixed(0)}" r="17" fill="${live ? `var(${d.color})` : "var(--muted)"}" stroke="var(--surface)" stroke-width="4"/><text x="${pos.x.toFixed(0)}" y="${(pos.y + 6).toFixed(0)}" text-anchor="middle" font-size="15" font-weight="700" fill="var(--surface)">${live ? d.id.slice(1) : "!"}</text></g>`;
+    g += `<g opacity="${crewOnly ? 1 : op(d.id)}"><circle cx="${pos.x.toFixed(0)}" cy="${pos.y.toFixed(0)}" r="17" fill="${live ? `var(${d.color})` : "var(--muted)"}" stroke="var(--surface)" stroke-width="4"/><text x="${pos.x.toFixed(0)}" y="${(pos.y + 6).toFixed(0)}" text-anchor="middle" font-size="15" font-weight="700" fill="var(--surface)">${live ? d.id.slice(1) : "!"}</text></g>`;
   }
   return `<svg class="map" id="mapsvg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${t("map")}">${g}</svg>`;
 }
@@ -1485,8 +1678,8 @@ function crewSummary() {
 }
 function allItems() {
   const d = S.dev.c2;
-  const sig = S.net.snap ? [{ id: "sig", k: "k_sig", tone: "warn", tile: "wait", title: { en: "Crew 2 · no signal", es: "Cuadrilla 2 · sin señal" }, body: { en: `Their work is saved on the tablet and shows up here when they're back in range. Last contact: ${S.net.since}`, es: `Su trabajo se guarda en la tableta y aparece aquí cuando vuelvan a tener señal. Último contacto: ${S.net.since}` }, acts: ["call"] }] : [];
-  const loc = S.clockedIn && !d.on ? [{ id: "loc", k: "k_loc", tone: "bad", tile: "wait", title: { en: "Crew 2 · location off", es: "Cuadrilla 2 · ubicación apagada" }, body: { en: `Since ${d.offSince}. The crew screen is blocked until it's back on.`, es: `Desde las ${d.offSince}. La pantalla de la cuadrilla está bloqueada hasta que se encienda.` }, acts: ["call"] }] : [];
+  const sig = S.net.snap ? [{ id: "sig", crew: "c2", k: "k_sig", tone: "warn", tile: "wait", title: { en: "Crew 2 · no signal", es: "Cuadrilla 2 · sin señal" }, body: { en: `Their work is saved on the tablet and shows up here when they're back in range. Last contact: ${S.net.since}`, es: `Su trabajo se guarda en la tableta y aparece aquí cuando vuelvan a tener señal. Último contacto: ${S.net.since}` }, acts: ["call"] }] : [];
+  const loc = S.clockedIn && !d.on ? [{ id: "loc", crew: "c2", k: "k_loc", tone: "bad", tile: "wait", title: { en: "Crew 2 · location off", es: "Cuadrilla 2 · ubicación apagada" }, body: { en: `Since ${d.offSince}. The crew screen is blocked until it's back on.`, es: `Desde las ${d.offSince}. La pantalla de la cuadrilla está bloqueada hasta que se encienda.` }, acts: ["call"] }] : [];
   return [...sig, ...loc, ...S.items];
 }
 function tileCounts() {
@@ -1504,61 +1697,108 @@ function tileCounts() {
 }
 function renderOwner() {
   const el = $("#owner");
-  if (S.view === "admin") { el.innerHTML = renderAdmin() + `<p class="foot">${t("sample")}</p>`; return; }
+  if (S.view === "admin") { el.innerHTML = renderAdmin() + `<p class="foot">${t("sample")}</p>`; afterRender(); return; }
   const isD = S.view === "dispatch";
-  const groups = isD ? ["today", "schedule", "team", "records"] : ["money", "today", "schedule", "team", "records"];
-  if (!groups.flatMap((g) => GROUPS[g]).includes(S.ownerTab)) S.ownerTab = "today";
+  const groups = officeGroups();
+  if (!groups.flatMap((g) => GROUPS[g]).includes(S.ownerTab)) S.ownerTab = GROUPS[groups[0]][0];
   const grp = groupOf(S.ownerTab);
-  let h = `<div class="o-head"><div class="t"><h1>${t("ownerCo")}</h1><span>${isD ? t("dispWho") + " · " : ""}${fmtDay(START)} · ${fmtT(now())}</span></div>
-    <button class="rainbtn newjob" data-act="newJob">+ ${t("nj")}</button>${S.rain ? "" : `<button class="rainbtn" data-act="rain">${I.rain}${t("rainDay")}</button>`}</div>`;
+  const need = allItems().length;
+  const cnt = (g) => (g === "today" && isD && need ? `<span class="cnt">${need}</span>` : "");
+  const subLbl = (k) => (k === "records" ? t("tabRecSub") : t("tab" + Cap(k)));
+  const live = `<span class="live${navigator.onLine === false ? " re" : ""}" role="status">${navigator.onLine === false ? t("liveRe") : t("liveOn")}</span>`;
+  let h = `<div class="o-head"><div class="t"><h1>${t("ownerCo")}</h1><div class="who2">${isD ? `<span>${t("dispWho")}</span>` : ""}${isD ? `<button class="daybtn" data-act="dayMenu" aria-haspopup="dialog">${I.cal}${fmtDay(START)} <span aria-hidden="true">▾</span></button>` : `<span>${fmtDay(START)}</span>`}<span>${fmtT(now())}</span>${live}</div></div>
+    ${isD ? `<button class="rainbtn newjob" data-act="newJob" title="${t("nj")} (N)">+ ${t("nj")}<kbd>N</kbd></button>` : `<button class="iconbtn" data-act="oGroup" data-k="settings">${I.gear}${t("openSettings")}</button>`}</div>`;
   if (S.rain) h += `<div class="banner rain">${I.rain.replace("<svg", '<svg width="24" height="24"')}<div><b>${t("rainDay")}</b>${t("rainCrewTxt", { d: fmtDay(S.rain.to) })}</div><button data-act="rainUndo">${t("rainUndo")}</button></div>`;
-  h += `<div class="o-tabs" role="group">${groups.map((g) => `<button data-act="oGroup" data-k="${g}" aria-pressed="${grp === g}">${t("g" + Cap(g))}</button>`).join("")}</div>`;
-  if (GROUPS[grp].length > 1) h += `<div class="subtabs" role="group">${GROUPS[grp].map((k) => `<button data-act="oTab" data-k="${k}" aria-pressed="${S.ownerTab === k}">${k === "records" ? t("tabRecSub") : t("tab" + Cap(k))}</button>`).join("")}</div>`;
+  const side = `<nav class="oside" aria-label="Pages">${groups.map((g) => `<button class="g" data-act="oGroup" data-k="${g}" aria-current="${grp === g && GROUPS[g].length === 1}">${t("g" + Cap(g))}${cnt(g)}</button>${GROUPS[g].length > 1 ? GROUPS[g].map((k) => `<button class="s" data-act="oTab" data-k="${k}" aria-current="${S.ownerTab === k}">${subLbl(k)}</button>`).join("") : ""}`).join("")}<button class="keys" data-act="keys">${t("kShort")} <kbd>?</kbd></button></nav>`;
+  const topGroups = groups.filter((g) => !(g === "settings" && grp !== "settings"));
+  let top = `<div class="topnav"><div class="o-tabs" role="group">${topGroups.map((g) => `<button data-act="oGroup" data-k="${g}" aria-pressed="${grp === g}">${t("g" + Cap(g))}${cnt(g)}</button>`).join("")}</div>`;
+  if (GROUPS[grp].length > 1) top += `<div class="subtabs" role="group">${GROUPS[grp].map((k) => `<button data-act="oTab" data-k="${k}" aria-pressed="${S.ownerTab === k}">${subLbl(k)}</button>`).join("")}</div>`;
+  top += `</div>`;
   const tab = S.ownerTab;
-  if (tab === "today") h += ownerToday();
-  if (tab === "assign") h += ownerAssign();
-  if (tab === "map") h += `<div class="panel">${mapSVG({ crewOnly: false })}<div class="legend">${crewSummary().map((c) => `<span><i style="background:var(${c.color})"></i>${t(c.id + "n")}</span>`).join("")}<span><i style="background:var(--ink);border-radius:3px"></i>${t("yard")}</span></div></div><div class="panel"><h2>${t("team")}</h2><div id="teamrows">${teamRows()}</div></div>`;
-  if (tab === "hours") h += ownerHours();
-  if (tab === "money") h += ownerMoney();
-  if (tab === "fuel" && !isD) h += ownerFuel();
-  if (tab === "quality") h += ownerQuality();
-  if (tab === "records") h += ownerRecords();
-  if (tab === "props") h += ownerProps();
-  if (tab === "texts") h += ownerTexts();
-  if (tab === "team") h += ownerTeam();
-  if (tab === "overview" && !isD) h += ownerOverview();
-  if (tab === "costs" && !isD) h += ownerCosts();
-  if (tab === "email" && !isD) h += ownerEmail();
-  h += `<p class="foot">${t("sample")}</p>`;
+  let m = top;
+  if (tab === "today") m += isD ? ownerToday() : ownerTodayRO();
+  if (tab === "assign") m += ownerAssign();
+  if (tab === "map") m += `<div class="panel">${mapSVG({ crewOnly: false })}${mapLegend()}</div><div class="panel"><h2>${t("team")}</h2><div id="teamrows">${teamRows()}</div></div>`;
+  if (tab === "hours") m += ownerHours();
+  if (tab === "fuel" && !isD) m += ownerFuel();
+  if (tab === "quality") m += ownerQuality();
+  if (tab === "records") m += ownerRecords();
+  if (tab === "props") m += ownerProps();
+  if (tab === "texts") m += ownerTexts();
+  if (tab === "team") m += ownerTeam();
+  if (tab === "overview" && !isD) m += ownerOverview();
+  if (tab === "costs" && !isD) m += ownerCosts();
+  if (tab === "email" && !isD) m += ownerEmail();
+  h += `<div class="oshell">${side}<div class="omain">${m}</div></div><p class="foot">${t("sample")}</p>`;
   el.innerHTML = h;
+  afterRender();
+}
+function afterRender() {
+  // new items get a brief tint the first time they're shown
+  setTimeout(() => S.items.forEach((i) => (i.fresh = false)), 0);
+  if (S.scrollTo) { const target = document.getElementById(S.scrollTo); S.scrollTo = null; if (target) setTimeout(() => target.scrollIntoView({ behavior: "smooth", block: "start" }), 30); }
+}
+function mapLegend() {
+  const f = S.focusCrew;
+  return `<div class="legend">${crewSummary().map((c) => `<span><i style="background:var(${c.color})"></i>${t(c.id + "n")}</span>`).join("")}<span><i style="background:var(--ink);border-radius:3px"></i>${t("yard")}</span></div>${f ? `<div class="focusbar"><span>${t("showing", { c: t(f + "n") })}</span><button class="small-btn" data-act="focusCrew" data-c="">${t("showAll")}</button></div>` : ""}`;
 }
 function gpsTxt(id) {
   const d = S.dev[id];
   if (id === "c2" && S.net.snap) return `<span class="gpschip off">${I.wifiOff}${t("noSigSince", { t: S.net.since })}</span>`;
   if (id === "c2" && !d.on && S.clockedIn) return `<span class="gpschip off">${I.nav}${t("locOffSince", { t: d.offSince })}</span>`;
   if (!devLive(d)) return `<span class="gpschip off">${I.nav}${t("gpsPaused")}</span>`;
-  return `<span class="gpschip">${I.nav}${t("gpsAgo", { s: Math.max(0, Math.round((Date.now() - d.lastFix) / 1000)), d: fDist(d.km) })}</span>`;
+  const gap = Math.round((Date.now() - d.lastFix) / 60000);
+  return gap >= 3 ? `<span class="gpschip off">${I.nav}${t("gpsGap", { m: gap })}</span>` : "";
 }
 function teamRows() {
   return crewSummary().map((c) => {
     let st = c.state === "pause" ? c.pauseTxt : c.state === "off" ? t("clockedOut") : c.state === "out" ? t("notIn") : c.state === "fin" ? t("finished") : c.state === "drive" ? t("driving", { a: c.at }) : t("atStop", { a: c.at, m: Math.round(c.mins) });
     if (S.rain) st = t("rainDay");
-    const lateTxt = c.late > 0 && !S.rain ? `<span class="flag">${t("behind", { m: c.late })}</span>` : `<span style="color:var(--ok)">${t("onTrack")}</span>`;
-    return `<div class="crewrow"><i style="background:var(${c.color})"></i><div style="min-width:0"><b>${t(c.id + "n")}</b><div class="st">${esc(st)}</div><div class="ppl">${c.ppl} · ${lateTxt}</div><div class="ppl">${gpsTxt(c.id)}</div><div class="minibar"><span style="width:${(c.done / c.total) * 100}%;background:var(${c.color})"></span></div></div><div class="r">${S.view === "dispatch" ? "" : `<strong class="num">${money(c.rev)}</strong>`}${t("jobs", { d: c.done, n: c.total })}</div></div>`;
+    const behind = c.late > 0 && !S.rain;
+    const frac = c.total ? c.done / c.total : 0, exp = behind ? Math.min(1, (c.done + c.late / 40) / c.total) : frac;
+    const status = behind ? `<span class="chip bad">${t("behind", { m: c.late })}</span>` : `<span class="okt">${t("onTrack")}</span>`;
+    const gps = gpsTxt(c.id);
+    return `<button class="crewrow${S.focusCrew === c.id ? " sel" : ""}" data-act="focusCrew" data-c="${c.id}" aria-pressed="${S.focusCrew === c.id}"><i style="background:var(${c.color})">${c.id.slice(1)}</i><div style="min-width:0"><b>${t(c.id + "n")}</b><div class="st">${esc(st)}</div><div class="ppl">${c.ppl}</div><div class="ppl" style="margin-top:4px">${status}${gps ? " " + gps : ""}</div><div class="pbar" title="${t("jobs", { d: c.done, n: c.total })}"><span style="width:${frac * 100}%"></span>${behind ? `<b style="left:${exp * 100}%"></b>` : ""}</div></div><div class="r">${S.view === "dispatch" ? "" : `<strong class="num">${money(c.rev)}</strong>`}${t("jobs", { d: c.done, n: c.total })}</div></button>`;
   }).join("");
 }
+const NOWK = ["k_late", "k_comp", "k_pw", "k_loc"], LATERK = ["k_lead"];
+const urg = (i) => (NOWK.includes(i.k) ? "now" : LATERK.includes(i.k) ? "later" : "today");
+const KICON = { k_late: I.clock, k_comp: I.chat, k_pw: I.key, k_loc: I.nav, k_sig: I.wifiOff, k_lead: I.leaf, k_skip: I.cal, k_time: I.clock, k_stuck: I.truck };
+function itemHTML(i) {
+  return `<div class="item u-${urg(i)}${i.fresh ? " fresh" : ""}" tabindex="0" data-act="focusItem" data-c="${i.crew || ""}"><span class="stripe"></span><div style="min-width:0"><div class="k2">${KICON[i.k] || I.info}<span>${t(i.k)}</span>${i.fresh ? `<em class="newtag">· ${t("newTag")}</em>` : ""}</div><b>${esc(L(i.title))}</b><p>${esc(L(i.body))}</p>${i.photoUrl ? `<img class="thumb" src="${i.photoUrl}" alt="">` : i.photo ? `<img class="thumb" src="${lawnPhoto("before", i.photo)}" alt="">` : ""}<div class="acts">${i.acts.map((a, j) => `<button class="small-btn ${j === 0 ? "pri" : ""}" data-act="resolve" data-id="${i.id}" data-a="${a}">${t(a)}</button>`).join("")}</div></div></div>`;
+}
+function needsPanel() {
+  const all = allItems(), g = { now: [], today: [], later: [] };
+  all.forEach((i) => g[urg(i)].push(i));
+  let h = `<div class="panel needs" id="needs"><h2>${t("needsYou")} <small>${all.length}</small></h2>`;
+  if (!all.length) return h + `<p class="muted">${t("allClear")}</p></div>`;
+  for (const k of ["now", "today"]) if (g[k].length) h += `<div class="ugrp ${k}"><span>${t("u_" + k)}</span><em>${g[k].length}</em></div>` + g[k].map(itemHTML).join("");
+  if (g.later.length) {
+    h += `<div class="ugrp later"><span>${t("u_later")}</span><em>${g.later.length}</em></div>`;
+    h += S.leadsOpen ? g.later.map(itemHTML).join("") + `<button class="linkbtn" data-act="leads" style="justify-self:start;min-height:40px">${t("hideLeads")}</button>` : `<button class="folded" data-act="leads" aria-expanded="false"><span>${t("leadsToQuote", { n: g.later.length })}</span><span>${t("open")}</span></button>`;
+  }
+  return h + `</div>`;
+}
 function ownerToday() {
-  const c = tileCounts(), cs = crewSummary(), all = allItems();
+  const cs = crewSummary(), all = allItems();
   const onTrack = cs.filter((x) => !(x.late > 0) && !(x.id === "c2" && S.clockedIn && !S.dev.c2.on)).length;
-  const done = cs.reduce((a, x) => a + x.done, 0), total = cs.reduce((a, x) => a + x.total, 0), rev = cs.reduce((a, x) => a + x.rev, 0);
-  const cats = [["late", "tLate"], ["stuck", "tStuck"], ["wait", "tWait"], ["comp", "tComp"], ["leads", "tLeads"]];
-  const items = S.filter ? all.filter((i) => i.tile === S.filter) : all;
-  let h = `<div class="headline"><div><b>${t("hlCrews", { a: S.rain ? cs.length : onTrack, n: cs.length })}</b><span>${t("hlJobs", { d: done, n: total })}${S.view === "dispatch" ? "" : ` · ${money(rev)} ${t("hlSoFar")}`}</span></div><div class="hl-need ${all.length ? "" : "ok"}"><b>${all.length}</b><span>${t("hlNeed")}</span></div></div>`;
-  h += `<div class="o-grid"><div class="col"><div class="panel"><h2>${t("needsYou")}</h2>
-    <div class="fchips" role="group"><button data-act="filter" data-k="" aria-pressed="${!S.filter}">${t("allF")}<em>${all.length}</em></button>${cats.filter(([k]) => c[k] > 0 || S.filter === k).map(([k, l]) => `<button data-act="filter" data-k="${k}" aria-pressed="${S.filter === k}">${t(l)}<em>${c[k]}</em></button>`).join("")}</div>`;
-  h += items.length ? items.map((i) => `<div class="item"><span class="stripe ${i.tone}"></span><div style="min-width:0"><div class="k">${t(i.k)}${i.fresh ? ` · <span style="color:var(--accent)">new</span>` : ""}</div><b>${esc(L(i.title))}</b><p>${esc(L(i.body))}</p>${i.photoUrl ? `<img class="thumb" src="${i.photoUrl}" alt="">` : i.photo ? `<img class="thumb" src="${lawnPhoto("before", i.photo)}" alt="">` : ""}<div class="acts">${i.acts.map((a, j) => `<button class="small-btn ${j === 0 ? "pri" : ""}" data-act="resolve" data-id="${i.id}" data-a="${a}">${t(a)}</button>`).join("")}</div></div></div>`).join("") : `<p class="muted">${t("allClear")}</p>`;
-  h += `</div></div><div class="col"><div class="panel"><h2>${t("team")}</h2><div id="teamrows">${teamRows()}</div></div></div></div>`;
+  const done = cs.reduce((a, x) => a + x.done, 0), total = cs.reduce((a, x) => a + x.total, 0);
+  let h = `<div class="headline"><div><b>${t("hlCrews", { a: S.rain ? cs.length : onTrack, n: cs.length })}</b><span>${t("hlJobs", { d: done, n: total })}</span></div><div class="hl-need ${all.length ? "" : "ok"}"><b>${all.length}</b><span>${t("hlNeed")}</span></div></div>`;
+  h += `<div class="board"><div class="panel b-crews"><h2>${t("team")}</h2><div id="teamrows">${teamRows()}</div></div><div class="panel b-map">${mapSVG({ crewOnly: false })}${mapLegend()}</div>${needsPanel()}</div>`;
   return h;
+}
+function ownerTodayRO() {
+  const cs = crewSummary(), all = allItems();
+  const done = cs.reduce((a, x) => a + x.done, 0), total = cs.reduce((a, x) => a + x.total, 0), rev = cs.reduce((a, x) => a + x.rev, 0);
+  const pace = done ? (rev / done) * total : 0, behind = cs.filter((x) => x.late > 0 && !S.rain).length;
+  const byK = {}; all.forEach((i) => (byK[i.k] = (byK[i.k] || 0) + 1));
+  const comps = all.filter((i) => i.k === "k_comp"), lost = finJobs().filter((j) => j.profit < 0).length;
+  let esc2 = comps.map((i) => `<div class="item u-now"><span class="stripe"></span><div><div class="k2">${I.chat}<span>${t("k_comp")}</span></div><b>${esc(L(i.title))}</b><p>${t("compEsc")}</p><div class="acts"><button class="small-btn" data-act="callCust">${t("callCust")}</button></div></div></div>`).join("");
+  if (lost) esc2 += `<div class="item u-today"><span class="stripe"></span><div><div class="k2">${I.bag}<span>${t("gMoney")}</span></div><b>${t("lostWeek", { n: lost })}</b><div class="acts"><button class="small-btn" data-act="finGo" data-k="loss">${t("seeJobs")}</button></div></div></div>`;
+  return `<div class="headline"><div><b>${t("onPace", { v: money(pace) })}</b><span>${t("hlJobs", { d: done, n: total })} · ${t("crewsBehind", { n: behind })}</span></div></div>
+  <div class="o-grid"><div class="col"><div class="panel"><h2>${t("owNeeds")}</h2>${esc2 || `<p class="muted">${t("owNothing")}</p>`}</div>
+    <div class="panel"><h2>${t("rosaHandling", { n: all.length })}</h2><ul class="handled">${Object.entries(byK).map(([k, n]) => `<li>${KICON[k] || I.info}<span>${n} × ${t(k)}</span></li>`).join("")}</ul><button class="small-btn" data-act="view" data-v="dispatch">${t("openDisp")}</button></div></div>
+  <div class="col"><div class="panel">${mapSVG({ crewOnly: false })}${mapLegend()}</div><div class="panel"><h2>${t("team")}</h2><div id="teamrows">${teamRows()}</div></div></div></div>`;
 }
 const PEOPLE = [
   ["Dave K.", "c1", [9.5, 9.2, 10, 9.8, 9.6, 5.2]], ["Priya S.", "c1", [9.5, 9.1, 10, 9.8, 9.6, 12.1]],
@@ -1600,21 +1840,42 @@ function ownerMoney() {
     <p class="muted" style="font-size:.85rem;margin:10px 0 0">${t("revHour")}: ${cs.map((c) => `${t(c.id + "n")} ${money(c.rev / Math.max(c.hrs, 0.1))}`).join(" · ")}</p></div>
     <div class="panel"><h2>${t("revDay")}</h2><div class="cols">${cols.map((c) => `<div class="c ${c.today ? "today" : ""}"><span class="v">${money(c.v)}</span><div class="bar" style="height:${(c.v / cmax) * 130}px"></div><span>${c.d}</span></div>`).join("")}</div></div></div>`;
 }
-function ownerQuality() {
-  const jobs = [
+function qualityJobs() {
+  return [
     ...S.stops.filter((s) => s.status === "done" && (!S.net.snap || S.net.snap.doneIds.includes(s.id))).map((s, i) => ({ id: s.id, addr: s.addr, crew: "c2", b: S.photos[s.id]?.before || lawnPhoto("before", 3 + i), a: S.photos[s.id]?.after || lawnPhoto("after", 3 + i), mins: s.mins, next: S.next[s.id] })),
     { id: "q1", addr: "63 Aspen Ave", crew: "c1", b: lawnPhoto("before", 11), a: lawnPhoto("after", 11), mins: 31 },
     { id: "q2", addr: "17 Aspen Ave", crew: "c1", b: lawnPhoto("before", 12), a: lawnPhoto("before", 13), mins: 12 },
     { id: "q3", addr: "2 Elm St", crew: "c3", b: lawnPhoto("before", 14), a: lawnPhoto("after", 14), mins: 44 },
     { id: "q4", addr: "8 Oak Ln", crew: "c4", b: lawnPhoto("before", 15), a: lawnPhoto("after", 15), mins: 27 },
   ];
-  return `<div class="panel"><h2>${t("qualH")} <small>${jobs.length}</small></h2><div class="qgrid">${jobs.map((j) => {
+}
+function ownerQuality() {
+  const jobs = qualityJobs(), left = jobs.filter((j) => !S.quality[j.id]).length;
+  return `<div class="panel"><div class="phd"><h2>${t("qualH")} <small style="font-family:var(--font-body);font-weight:500;color:var(--muted);font-size:.85rem">${jobs.length}</small></h2>${left ? `<button class="small-btn pri" data-act="qAll">${t("allGood")} (${left})</button>` : ""}</div><div class="qgrid">${jobs.map((j, idx) => {
     const q = S.quality[j.id];
-    return `<div class="qcard"><div class="pair"><div><img src="${j.b}" alt="${t("before")}"><span class="tag">${t("before")}</span></div><div><img src="${j.a}" alt="${t("after")}"><span class="tag">${t("after")}</span></div></div>
+    return `<div class="qcard"><button class="pair" data-act="qView" data-i="${idx}" aria-label="${t("qOpen")}: ${esc(j.addr)}"><div><img src="${j.b}" alt=""><span class="tag">${t("before")}</span></div><div><img src="${j.a}" alt=""><span class="tag">${t("after")}</span></div></button>
     <div class="meta"><div><b>${esc(j.addr)}</b><span>${t(j.crew + "n")} · ${t("totalTime", { m: j.mins })}</span>${j.next ? `<span style="display:block;margin-top:4px"><b style="display:inline">${t("nextLbl")}:</b> ${t(j.next.type)} · ${fmtDay(parseIso(j.next.date))}${(j.next.note || "").trim() ? ` · “${esc(j.next.note)}”` : ""}</span>` : ""}</div>
     ${q ? `<span class="chip ${q === "good" ? "ok" : "bad"}">${q === "good" ? t("approved") : t("flagged")}</span>` : `<div class="acts"><button class="small-btn pri" data-act="q" data-id="${j.id}" data-v="good">${t("looksGood")}</button><button class="small-btn bad" data-act="q" data-id="${j.id}" data-v="flag">${t("flagIt")}</button></div>`}</div></div>`;
-  }).join("")}</div></div>`;
+  }).join("")}</div><p class="note-sm">${t("qKeys")}</p></div>`;
 }
+function qView(i) {
+  const jobs = qualityJobs(); if (!jobs.length) return;
+  i = (i + jobs.length) % jobs.length; S.qv = i; const j = jobs[i], q = S.quality[j.id];
+  sheet(`<h2>${esc(j.addr)} <small class="muted" style="font-family:var(--font-body);font-size:.9rem;font-weight:500">${i + 1} / ${jobs.length}</small></h2>
+    <p class="muted">${t(j.crew + "n")} · ${t("totalTime", { m: j.mins })}</p>
+    <div class="cmp" id="cmp"><img src="${j.a}" alt="${t("after")}"><img class="bf" src="${j.b}" alt="${t("before")}"><span class="ln"></span><span class="tg" style="left:8px">${t("before")}</span><span class="tg" style="right:8px">${t("after")}</span></div>
+    <label class="sr" for="cmp-x">${t("before")} / ${t("after")}</label><input id="cmp-x" type="range" min="0" max="100" value="50">
+    ${q ? `<p><span class="chip ${q === "good" ? "ok" : "bad"}">${q === "good" ? t("approved") : t("flagged")}</span></p>` : ""}
+    <div class="sheet-acts" style="grid-template-columns:auto auto 1fr 1fr"><button id="qp" aria-label="${t("qPrev")}">‹</button><button id="qn" aria-label="${t("qNext")}">›</button><button id="qf" class="small-btn bad" style="min-height:56px">${t("flagIt")} <kbd>F</kbd></button><button id="qg" class="go">${t("looksGood")} <kbd>G</kbd></button></div>
+    <p class="note-sm" style="margin:0">${t("qKeys")}</p>`, (sh) => {
+    sh.style.maxWidth = "760px";
+    const cmp = $("#cmp", sh); $("#cmp-x", sh).oninput = (e) => cmp.style.setProperty("--x", e.target.value + "%");
+    $("#qp", sh).onclick = () => qView(i - 1); $("#qn", sh).onclick = () => qView(i + 1);
+    $("#qg", sh).onclick = () => qMark("good"); $("#qf", sh).onclick = () => qMark("flag");
+    setTimeout(() => { const g = $("#qg", sh); if (g) g.focus({ preventScroll: true }); }, 0);
+  });
+}
+function qMark(v) { const jobs = qualityJobs(); const j = jobs[S.qv]; if (!j) return; S.quality[j.id] = v; render(); qView(S.qv + 1); }
 function ownerRecords() {
   const recs = [
     { at: "Oct 30", addr: "14 Aspen Ave", prod: "Iron-based weed control (FeHEDTA)", reg: "Reg. No. on label", amt: "0.75 L", area: "410 m²", who: "Dave K. (lic. sample)", wx: "9 °C · 6 km/h" },
@@ -1659,19 +1920,43 @@ function jobRow(j) {
   }
   return h + `</div></div>`;
 }
+function suggestFor(j) {
+  const c = j.sugg || CREWS.slice().sort((a, b) => load(a, j.date) - load(b, j.date))[0];
+  const free = Math.max(0, (CAP - load(c, j.date)) / 60);
+  const dv = S.dev[c], km = j.x && dv ? (Math.hypot(dv.pos.x - j.x, dv.pos.y - j.y) * UNIT_M) / 1000 : 1 + ((j.id.charCodeAt(1) * 7 + c.charCodeAt(1)) % 50) / 10;
+  return { c, free, km };
+}
+function jcard(j) {
+  const sg = suggestFor(j);
+  return `<div class="jcard ${j.src}" draggable="true" data-job="${j.id}"><span class="grip" aria-hidden="true">${I.grip}</span><div style="min-width:0"><div class="k2">${t(j.src)} · ${fmtDay(j.date)} · ${j.est} ${t("min")}</div><button class="linkb" data-act="prop" data-addr="${esc(j.addr)}">${esc(j.addr)}</button><p>${esc(j.n)} · ${esc(t(j.svc))}${j.note ? ` · “${esc(j.note)}”` : ""}</p>${propNotes(j).length ? `<div class="nchips">${propNotes(j).map((n) => `<span class="nchip" title="${esc(L(n.tx).replace(/<[^>]+>/g, ""))}">${NOTE_ICON[n.i]}${esc(n.short ? L(n.short) : t(NOTE_LBL[n.i]))}</span>`).join("")}</div>` : ""}
+    <span class="sugg">${t("suggWhy", { c: t(sg.c + "n"), h: sg.free.toFixed(1), km: sg.km.toFixed(1) })}</span>
+    <div class="acts"><label class="sr" for="send-${j.id}">${t("sendTo")} ${esc(j.addr)}</label><select id="send-${j.id}" class="sendto" data-job="${j.id}"><option value="">${t("sendTo")}</option>${CREWS.map((c) => `<option value="${c}">${t(c + "n")} · ${hrs(load(c, j.date) + j.est)} / 8 h</option>`).join("")}</select>${S.aRange !== "today" ? `<button class="small-btn" data-act="chDay" data-id="${j.id}">${t("changeDay")}</button>` : ""}</div></div></div>`;
+}
+function laneHTML(c, days) {
+  const one = days.length === 1, d = days[0];
+  let track, cap;
+  if (one) {
+    const base = baseLoad(c, d), added = S.jobs.filter((j) => j.crew === c && isoDate(j.date) === isoDate(d) && !j.stopId), tot = load(c, d);
+    const nv = c === "c2" ? S.stops.filter((x) => x.status !== "moved").length : S.oth[c].total;
+    track = `<span class="blk" style="flex:${base};background:var(--${c})">${t("visits", { n: nv })}</span>${added.map((j) => `<span class="blk add" style="flex:${j.est};background:var(--${c})" title="${esc(j.addr)}">${esc(j.addr)}</span>`).join("")}<span class="ghostblk" hidden></span><span style="flex:${Math.max(0, CAP - tot)}"></span>`;
+    cap = `<span class="cap ${tot > CAP ? "o" : ""}" data-cap="${c}">${hrs(tot)} / 8 h</span>`;
+  } else {
+    const b = days.reduce((a, x) => a + load(c, x), 0), cp = days.filter((x) => x.getDay() !== 0).length * CAP;
+    track = `<span class="blk" style="flex:${b};background:var(--${c})"></span><span class="ghostblk" hidden></span><span style="flex:${Math.max(0, cp - b)}"></span>`;
+    cap = `<span class="cap ${b > cp ? "o" : ""}" data-cap="${c}">${t("booked", { b: hrs(b), c: hrs(cp) })}</span>`;
+  }
+  const cells = one ? "" : `<div class="cells">${days.map((x) => { const p = load(c, x) / CAP; return `<span title="${fmtDay(x)} · ${hrs(load(c, x))} h" class="${x.getDay() === 0 ? "off" : p > 1 ? "o" : p > 0.85 ? "f" : ""}"></span>`; }).join("")}</div>`;
+  return `<div class="lane" data-lane="${c}"><div class="lane-h"><b><i style="background:var(--${c})"></i>${t(c + "n")}</b>${cap}</div><div class="ltrack">${track}</div>${cells}</div>`;
+}
 function ownerAssign() {
   const days = rangeDays(); const keys = new Set(days.map(isoDate));
   const inR = S.jobs.filter((j) => keys.has(isoDate(j.date))).sort((a, b) => a.date - b.date);
   const un = inR.filter((j) => !j.crew), as = inR.filter((j) => j.crew);
   const lbl = days.length === 1 ? fmtDay(days[0]) : fmtDay(days[0]) + " – " + fmtDay(days[days.length - 1]);
   let h = `<div class="o-tabs" role="group">${["today", "week", "month"].map((k) => `<button data-act="aRange" data-k="${k}" aria-pressed="${S.aRange === k}">${t("a" + Cap(k))}</button>`).join("")}</div><p class="muted" style="margin:-6px 0 0">${lbl}</p>`;
-  h += `<div class="o-grid"><div class="col"><div class="panel"><h2>${t("notAssigned")} <small>${un.length}</small></h2>${un.length ? un.map(jobRow).join("") : `<p class="muted">${t("allAssigned")}</p>`}</div>`;
+  h += `<div class="o-grid"><div class="col"><div class="panel"><h2>${t("notAssigned")} <small>${un.length}</small></h2>${un.length ? `<p class="note-sm" style="margin:0 0 10px">${t("dragHint")}</p><div class="tray">${un.map(jcard).join("")}</div>` : `<p class="muted">${t("allAssigned")}</p>`}</div>`;
   if (as.length) h += `<div class="panel"><h2>${t("assignedH")} <small>${as.length}</small></h2>${as.map(jobRow).join("")}</div>`;
-  h += `</div><div class="col"><div class="panel"><h2>${t("crewLoad")}</h2>${CREWS.map((c) => {
-    const b = days.reduce((a, d) => a + load(c, d), 0), cap = days.filter((d) => d.getDay() !== 0).length * CAP, pct = b / Math.max(cap, 1);
-    const cells = days.length > 1 ? `<div class="cells">${days.map((d) => { const p = load(c, d) / CAP; return `<span title="${fmtDay(d)} · ${hrs(load(c, d))} h" class="${d.getDay() === 0 ? "off" : p > 1 ? "o" : p > 0.85 ? "f" : ""}"></span>`; }).join("")}</div>` : "";
-    return `<div class="ld"><div class="ld-h"><b><i style="background:var(--${c})"></i>${t(c + "n")}</b><span class="${pct > 1 ? "flag" : "muted"}">${t("booked", { b: hrs(b), c: hrs(cap) })}${pct > 1 ? " · " + t("over", { h: hrs(b - cap) }) : ""}</span></div><div class="minibar"><span style="width:${Math.min(100, pct * 100)}%;background:var(--${c})"></span></div>${cells}</div>`;
-  }).join("")}${days.length > 1 ? `<p class="muted" style="font-size:.82rem;margin:10px 0 0">${t("legLoad")}</p>` : ""}</div></div></div>`;
+  h += `</div><div class="col"><div class="panel" id="lanes"><h2>${t("crewLoad")}</h2>${CREWS.map((c) => laneHTML(c, days)).join("")}${days.length > 1 ? `<p class="muted" style="font-size:.82rem;margin:10px 0 0">${t("legLoad")}</p>` : ""}</div></div></div>`;
   return h;
 }
 function doAssign(j, c) {
@@ -1785,7 +2070,8 @@ function ownerProps() {
 function ownerTexts() {
   return `<div class="panel"><h2>${t("textsToday")} <small>${S.texts.length}</small></h2><div class="sms-log">${S.texts.map((x) => `<div><span><span class="mono muted">${x.at}</span> · ${esc(x.to)} · ${esc(L(x.what))}</span><span class="chip ${x.st === "st_sent" ? "ok" : x.st === "st_held" ? "app" : ""}">${t(x.st)}</span></div>`).join("")}</div></div>`;
 }
-const GROUPS = { today: ["today"], schedule: ["assign", "map", "props"], money: ["overview", "money", "fuel", "hours", "costs", "email"], team: ["team"], records: ["quality", "records", "texts"] };
+const GROUPS = { today: ["today"], schedule: ["assign", "map", "props"], money: ["overview", "hours", "fuel"], team: ["team"], records: ["quality", "records", "texts"], settings: ["costs", "email"] };
+const officeGroups = () => (S.view === "dispatch" ? ["today", "schedule", "team", "records"] : ["money", "today", "team", "records", "settings"]);
 const groupOf = (k) => Object.keys(GROUPS).find((g) => GROUPS[g].includes(k));
 const SVC_TASKS = { ns_reg: ["mow", "edge", "trim", "blow"], ns_leaves: ["leaves", "beds", "haul"], ns_aer: ["aerate"], ns_fert: ["fert"], ns_over: ["over"], ns_shrub: ["shrub", "haul"], ns_snow: ["stakes"], j_gutter: ["gutter"], j_sprk: ["sprk"] };
 function doNewJob() {
@@ -1957,42 +2243,64 @@ function doSetPw(name, itemId) {
       if (a.length < 8) return ($("#pw-err", sh).textContent = t("pwShort"));
       if (a !== b) return ($("#pw-err", sh).textContent = t("pwMatch"));
       if (itemId) S.items = S.items.filter((i) => i.id !== itemId);
+      const co = S.view === "admin" && S.adminCo ? S.adminCo : "gr";
+      histAdd(co, `Set a new password for ${name}`);
       closeSheet(); toast(t("pwDone", { n: name })); render();
     };
   });
 }
 
 /* ── App owner (you): companies, licences, logins ── */
+const actor = () => (S.view === "admin" ? "Zentek admin" : S.view === "dispatch" ? "Rosa M." : "Gord P.");
+function histAdd(co, what) { (S.hist[co] = S.hist[co] || []).unshift({ at: fmtT(now()), who: actor(), what }); }
+const coById = (id) => S.companies.find((c) => c.id === id);
+const loginsOf = (id) => (id === "gr" ? logins() : (S.coLogins[id] = S.coLogins[id] || []));
+const seatsOf = (id) => (id === "gr" ? S.seats : coById(id).seats);
+function setSeats(id, v) { if (id === "gr") S.seats = v; else coById(id).seats = v; }
+const roleName = (r) => t(r === "crew" ? "rTech" : r === "dispatcher" ? "rDisp" : "rOwner");
+const makePw = () => { const w = ["maple", "river", "cedar", "stone", "birch", "meadow", "pine", "harbour", "willow", "prairie", "summit", "lake"]; const r = () => w[Math.floor(Math.random() * w.length)]; let a = r(), b = r(); while (b === a) b = r(); return `${a}-${b}-${10 + Math.floor(Math.random() * 90)}`; };
+function coRows() {
+  const q = S.coQ.trim().toLowerCase();
+  return S.companies.filter((c) => !q || c.n.toLowerCase().includes(q) || c.where.toLowerCase().includes(q)).map((c) => {
+    const used = loginsOf(c.id).length, seats = seatsOf(c.id), full = used >= seats;
+    return `<tr><td><button class="cobtn" data-act="aoOpen" data-id="${c.id}">${esc(c.n)}</button></td><td>${esc(c.where)}</td><td><span class="seatbar ${full ? "full" : ""}"><i style="width:${Math.min(100, (used / Math.max(1, seats)) * 100)}%"></i></span>${used} / ${seats}</td><td>${esc(c.last)}</td><td><span class="chip ${c.status === "active" ? "ok" : ""}">${t(c.status === "active" ? "aoActive" : "aoPaused")}</span></td></tr>`;
+  }).join("") || `<tr><td colspan="5" class="muted">—</td></tr>`;
+}
 function renderAdmin() {
-  const L = logins();
-  return `<div class="o-head"><div class="t"><h1>${t("appOwner")}</h1><span>${t("aoWho")}</span></div></div>
-  <div class="panel"><h2>${t("aoTitle")}</h2>
-    <div class="adminrow"><div><b>Green Ridge Lawn &amp; Snow</b> <span class="muted">· ON</span></div><div class="row" style="display:flex;gap:8px;align-items:center"><span class="muted">${t("aoUsed", { u: L.length })}</span><input id="ao-seats" type="number" min="${L.length}" value="${S.seats}" style="width:80px;min-height:44px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:6px 10px" aria-label="${t("aoSeats")}"><button class="small-btn" data-act="aoSeats">${t("save")}</button></div></div>
-    <div class="adminrow"><div><b>Northside Lawn Co.</b> <span class="muted">· ON</span></div><span class="muted">${t("aoUsed", { u: 4 })} 5</span></div>
-    <p class="note-sm">${t("aoOnly")}</p></div>
-  <div class="o-grid"><div class="col"><div class="panel"><h2>Green Ridge · ${t("aoLogins")} <small>${L.length}</small></h2>
-    ${L.map((p, i) => `<div class="adminrow"><div><b>${esc(p.n)}</b><div class="muted" style="font-size:.88rem">${t(p.role === "crew" ? "rTech" : p.role === "dispatcher" ? "rDisp" : "rOwner")}${p.crew ? " · " + t(p.crew + "n") : ""} · <span class="mono">${esc(p.user)}</span></div></div><div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end"><button class="small-btn" data-act="teamPw" data-n="${esc(p.n)}">${t("setpw")}</button>${p.role !== "owner" ? `<button class="small-btn bad" data-act="aoRemove" data-i="${i}">${t("aoRemove")}</button>` : ""}</div></div>`).join("")}</div></div>
-  <div class="col"><div class="panel"><h2>${t("aoNewLogin")}</h2>
+  const co = S.adminCo ? coById(S.adminCo) : null;
+  const band = `<div class="admband"><div><b>Zentek admin</b><span class="co">${co ? esc(co.n) : t("aoAll")}</span></div><span class="r">${t("aoWho")}</span></div>`;
+  if (!co) return `<div class="omain">${band}<div class="panel"><div class="phd"><h2>${t("aoCompanies")} <small class="muted" style="font-family:var(--font-body);font-size:.85rem;font-weight:500">${S.companies.length}</small></h2><div class="ph-r"><label class="sr" for="co-q">${t("aoSearch")}</label><input id="co-q" type="search" placeholder="${t("aoSearch")}" value="${esc(S.coQ)}"><button class="small-btn pri" data-act="aoNewCo">+ ${t("aoNewCo")}</button></div></div>
+    <div class="tbl-wrap"><table><thead><tr><th>${t("aoCompanies")}</th><th>${t("aoWhere")}</th><th>${t("aoLic")}</th><th>${t("aoLast")}</th><th>${t("aoStatus")}</th></tr></thead><tbody id="co-rows">${coRows()}</tbody></table></div><p class="note-sm">${t("aoOnly")}</p></div></div>`;
+  const id = co.id, L = loginsOf(id), seats = seatsOf(id), draft = S.seatDraft ?? seats, off = S.off[id] || [];
+  const lic = `<div class="panel"><h2>${t("aoLic")} <small>${t("seatsUsed", { u: L.length, n: seats })}</small></h2>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center"><div class="seatstep"><button data-act="seatStep" data-d="-1" aria-label="−1" ${draft <= L.length ? "disabled" : ""}>−</button><output aria-live="polite">${draft}</output><button data-act="seatStep" data-d="1" aria-label="+1">+</button></div>
+    ${draft !== seats ? `<b>${t("aoLicChange", { a: seats, b: draft })}</b><button class="small-btn pri" data-act="seatSave">${t("aoLicSave")}</button><button class="small-btn" data-act="seatCancel">${t("cancel")}</button>` : draft <= L.length ? `<span class="muted">${t("aoLicFloor", { n: L.length })}</span>` : ""}</div></div>`;
+  const rows = `<div class="panel"><h2>${t("aoLogins")} <small>${L.length}</small></h2>${L.map((p, i) => `<div class="adminrow"><div><b>${esc(p.n)}</b><div class="muted" style="font-size:.88rem">${roleName(p.role)}${p.crew ? " · " + t(p.crew + "n") : ""} · <span class="mono">${esc(p.user)}</span></div></div><button class="small-btn" data-act="aoRow" data-i="${i}" aria-label="${t("aoMore", { n: esc(p.n) })}">${I.more.replace("<svg", '<svg width="20" height="20"')}</button></div>`).join("")}</div>`;
+  const offP = off.length ? `<div class="panel"><h2>${t("aoOffList")} <small>${off.length}</small></h2>${off.map((p, i) => `<div class="adminrow"><div><b>${esc(p.n)}</b><div class="muted" style="font-size:.88rem">${roleName(p.role)} · <span class="mono">${esc(p.user)}</span></div></div><button class="small-btn" data-act="aoOn" data-i="${i}">${t("aoOn")}</button></div>`).join("")}</div>` : "";
+  const form = S.handoff ? `<div class="panel"><h2>${t("aoHand", { n: esc(S.handoff.n) })}</h2><div class="cred"><span class="muted">${t("aoUser")}</span><code>${esc(S.handoff.u)}</code><button class="small-btn" data-act="copy" data-v="${esc(S.handoff.u)}">${t("copy")}</button><span class="muted">${t("password")}</span><code>${esc(S.handoff.pw)}</code><button class="small-btn" data-act="copy" data-v="${esc(S.handoff.pw)}">${t("copy")}</button></div><p class="note-sm">${t("aoHandP", { n: esc(S.handoff.n) })}</p><button class="small-btn pri" data-act="aoAnother" style="margin-top:10px">${t("aoAnother")}</button></div>`
+    : `<div class="panel"><h2>${t("aoNewLogin")}</h2>
     <div class="setrow"><label for="ao-role">${t("aoRole")}</label><select id="ao-role"><option value="crew">${t("rTech")}</option><option value="dispatcher">${t("rDisp")}</option><option value="owner">${t("rOwner")}</option></select></div>
     <div class="setrow"><label for="ao-name">${t("aoName")}</label><input id="ao-name" autocomplete="off"></div>
     <div class="setrow"><label for="ao-user">${t("aoUser")}</label><input id="ao-user" autocapitalize="none" spellcheck="false" autocomplete="off"></div>
-    <div class="setrow"><label for="ao-pw">${t("aoTemp")}</label><input id="ao-pw" autocomplete="off"></div>
-    <div class="setrow"><label for="ao-crew">${t("aoCrew")}</label><select id="ao-crew">${["c1", "c2", "c3", "c4"].map((c) => `<option value="${c}">${t(c + "n")}</option>`).join("")}</select></div>
+    <div class="field" style="padding:8px 0;border-top:1px solid var(--line)"><label for="ao-pw">${t("aoTemp")}</label><div class="pwrow"><input id="ao-pw" autocomplete="off"><button class="small-btn" data-act="aoMake">${t("aoMake")}</button></div></div>
+    ${id === "gr" ? `<div class="setrow"><label for="ao-crew">${t("aoCrew")}</label><select id="ao-crew">${CREWS.map((c) => `<option value="${c}">${t(c + "n")}</option>`).join("")}</select></div>` : ""}
     <p class="lg-err" id="ao-err" role="alert"></p>
-    <button class="small-btn pri" data-act="aoCreate" style="width:100%;min-height:48px">${t("aoCreate")}</button></div></div></div>`;
+    <button class="small-btn pri" data-act="aoCreate" style="width:100%;min-height:48px">${t("aoCreate")}</button></div>`;
+  const hist = `<div class="panel"><h2>${t("aoHist")}</h2><p class="note-sm" style="margin:0 0 6px">${t("aoHistP")}</p>${(S.hist[id] || []).map((x) => `<div class="hist"><span class="muted">${esc(x.at)}</span><div><b>${esc(x.what)}</b><span>${esc(x.who)}</span></div></div>`).join("")}</div>`;
+  return `<div class="omain">${band}<div><button class="small-btn" data-act="aoBack">‹ ${t("aoBack")}</button></div><div class="o-grid"><div class="col">${lic}${rows}${offP}</div><div class="col">${form}${hist}</div></div></div>`;
 }
 function aoCreate() {
-  const L = logins(), err = (m) => ($("#ao-err").textContent = m);
+  const id = S.adminCo, L = loginsOf(id), err = (m) => ($("#ao-err").textContent = m);
   const role = $("#ao-role").value, n = $("#ao-name").value.trim(), u = $("#ao-user").value.trim().toLowerCase(), pw = $("#ao-pw").value;
   if (!n) return err(t("aoName"));
   if (!/^[a-z0-9][a-z0-9._-]{2,31}$/.test(u)) return err(t("aoBadUser"));
-  if (L.some((p) => p.user === u)) return err(t("aoTaken"));
+  if (Object.keys(S.coLogins).concat(["gr"]).some((c) => loginsOf(c).some((p) => p.user === u))) return err(t("aoTaken"));
   if (pw.length < 8) return err(t("pwShort"));
-  if (L.length >= S.seats) return err(t("aoNoSeats"));
-  L.push({ n, role, user: u, crew: role === "crew" ? $("#ao-crew").value : undefined });
-  toast(t("aoCreated", { n, u })); render();
+  if (L.length >= seatsOf(id)) return err(t("aoNoSeats"));
+  L.push({ n, role, user: u, crew: role === "crew" && $("#ao-crew") ? $("#ao-crew").value : undefined });
+  histAdd(id, `Created login for ${n} (${T.en[role === "crew" ? "rTech" : role === "dispatcher" ? "rDisp" : "rOwner"].toLowerCase()})`);
+  S.handoff = { n, u, pw }; render();
 }
-
 /* ── Finance overview (owners) ──
    Sample numbers shaped like the real app's finance_summary. Labour follows the hourly costs
    entered under Costs and rates, so changing a rate changes the profit. */
@@ -2033,26 +2341,43 @@ function splitBar(title, parts, total) {
   return `<div class="panel"><h2>${title}</h2><div class="splitbar" role="img" aria-label="${esc(title)}">${parts.map(([k, v], i) => (v > 0 ? `<span class="sg-${i + 1}" style="flex-grow:${v}" title="${esc(t(k))}: ${money(v)}"></span>` : "")).join("")}</div>
     <table class="legend-t"><tbody>${parts.map(([k, v], i) => `<tr><td><i class="sg-${i + 1}"></i>${t(k)}</td><td class="n" style="text-align:right">${money(v)}</td><td style="text-align:right" class="muted">${total ? Math.round((v / total) * 1000) / 10 : 0}%</td></tr>`).join("")}</tbody></table></div>`;
 }
+function sparkHTML() {
+  const was = S.finOff, vals = [];
+  for (let o = was + 7; o >= was; o--) { S.finOff = o; vals.push(finData().profit); }
+  S.finOff = was;
+  const W = 180, H = 40, mn = Math.min(...vals), mx = Math.max(...vals), sx = (i) => 4 + (i * (W - 8)) / (vals.length - 1), sy = (v) => H - 6 - ((v - mn) / Math.max(1, mx - mn)) * (H - 14);
+  const pts = vals.map((v, i) => `${sx(i).toFixed(1)},${sy(v).toFixed(1)}`).join(" ");
+  const p = S.finKind === "day" ? "trendD" : S.finKind === "week" ? "trendW" : "trendM";
+  return `<svg class="spark" width="${W}" height="${H + 12}" viewBox="0 0 ${W} ${H + 12}" role="img" aria-label="${t("trend", { p: t(p) })}"><polyline points="${pts}" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="${sx(vals.length - 1)}" cy="${sy(vals[vals.length - 1])}" r="3.5" fill="currentColor"/><text x="4" y="${H + 10}">${t("trend", { p: t(p) })}</text></svg>`;
+}
 function ownerOverview() {
   const d = finData(); S.finOff++; const p = finData(); S.finOff--;
   const cost = d.labour + d.fuel + d.mat + d.truck, pcost = p.labour + p.fuel + p.mat + p.truck, margin = d.revenue ? Math.round((d.profit / d.revenue) * 1000) / 10 : 0;
-  const jobs = finJobs(), losing = jobs.filter((j) => j.profit < 0).length, compRate = d.jobs ? Math.round((d.comp / d.jobs) * 1000) / 10 : 0;
+  const all = finJobs(), losing = all.filter((j) => j.profit < 0).length, compRate = d.jobs ? Math.round((d.comp / d.jobs) * 1000) / 10 : 0;
+  const jobs = S.finFilter === "loss" ? all.filter((j) => j.profit < 0) : S.finFilter === "comp" ? all.filter((j) => j.comp) : all;
   const watch = [];
-  if (losing) watch.push(["bad", t("fLosing", { n: losing })]);
-  if (compRate >= 5) watch.push([compRate >= 10 ? "bad" : "warn", t("fComplaintRate", { p: compRate, n: d.comp })]);
-  if (d.leads.open) watch.push(["warn", t("fOpenLeads", { n: d.leads.open })]);
-  const tgt = S.finKind === "month" ? `<div class="target"><div style="display:flex;justify-content:space-between"><span>${t("fTarget", { t: money(S.target * 100 / 100) })}</span><b>${Math.round((d.revenue / S.target) * 100)}%</b></div><div class="meter"><span style="width:${Math.min(100, (d.revenue / S.target) * 100)}%"></span></div></div>` : "";
+  if (losing) watch.push(["bad", t("fLosing", { n: losing }), "finFilter", "loss"]);
+  if (compRate >= 5) watch.push([compRate >= 10 ? "bad" : "warn", t("fComplaintRate", { p: compRate, n: d.comp }), "finFilter", "comp"]);
+  if (d.leads.open) watch.push(["warn", t("fOpenLeads", { n: d.leads.open }), "leadsSheet", ""]);
+  const tgt = S.finKind === "month" ? `<div class="target"><div style="display:flex;justify-content:space-between"><span>${t("fTarget", { t: money(S.target) })}</span><b>${Math.round((d.revenue / S.target) * 100)}%</b></div><div class="meter"><span style="width:${Math.min(100, (d.revenue / S.target) * 100)}%"></span></div></div>` : "";
+  const crews = d.rows.slice().sort((a, b) => b.profit - a.profit);
+  const pct = (a, b) => (b ? Math.round((a / b) * 1000) / 10 : 0);
   return `<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
       <div class="o-tabs" role="group" style="margin:0">${["day", "week", "month"].map((k) => `<button data-act="finKind" data-k="${k}" aria-pressed="${S.finKind === k}">${t("p" + Cap(k))}</button>`).join("")}</div>
       <div style="display:flex;gap:8px;align-items:center"><button class="small-btn" data-act="finPrev" aria-label="Previous">‹</button><b>${finLabel()}</b><button class="small-btn" data-act="finNext" aria-label="Next" ${S.finOff === 0 ? "disabled" : ""}>›</button></div></div>
-    <div class="panel fhero"><div><p class="eyebrow">${t("fProfit")}</p><p class="hero-num">${money(d.profit)}</p>${deltaHtml(d.profit, p.profit)}</div>
+    <div class="panel fhero"><div><p class="eyebrow">${t("fProfit")}</p><p class="hero-num">${money(d.profit)}</p>${deltaHtml(d.profit, p.profit)}${sparkHTML()}</div>
       <div class="hero-side"><div><span>${t("fRevenue")}</span><b>${money(d.revenue)}</b>${deltaHtml(d.revenue, p.revenue)}</div><div><span>${t("fCosts")}</span><b>${money(cost)}</b>${deltaHtml(cost, pcost, true)}</div><div><span>${t("fMargin")}</span><b>${margin}%</b></div><div><span>${t("fJobsDone")}</span><b>${d.jobs}</b></div></div>${tgt}</div>
-    ${watch.length ? `<div class="panel"><h2>${t("fNeedsLook")}</h2><ul class="watch">${watch.map(([lv, txt]) => `<li class="${lv}"><i aria-hidden="true"></i>${esc(txt)}</li>`).join("")}</ul></div>` : ""}
+    ${watch.length ? `<div class="panel"><h2>${t("fNeedsLook")}</h2><ul class="watch">${watch.map(([lv, txt, act, k]) => `<li class="${lv}"><i aria-hidden="true"></i><button data-act="${act}" data-k="${k}">${esc(txt)}</button></li>`).join("")}</ul></div>` : ""}
     <div class="o-grid">${splitBar(t("fWent"), [["cLabour", d.labour], ["cFuel", d.fuel], ["cMat", d.mat], ["cTruck", d.truck]], cost)}${splitBar(t("fCame"), [["mReg", d.mix[0]], ["mNew", d.mix[1]], ["mUp", d.mix[2]], ["mOther", d.mix[3]]], d.revenue)}</div>
-    <div class="panel"><h2>${t("crew")}</h2><div class="tbl-wrap"><table><thead><tr><th>${t("crew")}</th><th class="n">${t("fJobsDone")}</th><th class="n">${t("fRevenue")}</th><th class="n">${t("fProfit")}</th><th class="n">${t("fPph")}</th><th class="n">${t("fLeadsWS")}</th><th class="n">${t("fComplaints")}</th></tr></thead><tbody>
-      ${d.rows.slice().sort((a, b) => b.profit - a.profit).map((r) => `<tr><td><b>${t(r.id + "n")}</b></td><td class="n">${r.jobs}</td><td class="n">${money(r.rev)}</td><td class="n">${money(r.profit)}</td><td class="n">${r.mins ? money((r.profit / r.mins) * 60) : "–"}</td><td class="n">${r.lw} / ${r.lc}</td><td class="n ${r.jobs && r.comp / r.jobs >= 0.1 ? "flag" : ""}">${r.jobs ? Math.round((r.comp / r.jobs) * 1000) / 10 : 0}%</td></tr>`).join("")}</tbody></table></div></div>
-    <div class="panel"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h2>${t("fJobsH")}</h2><button class="small-btn" data-act="finDl">${t("fDownload")}</button></div><div class="tbl-wrap"><table><thead><tr><th>${t("fJob")}</th><th>${t("crew")}</th><th class="n">${t("fRevenue")}</th><th class="n">${t("cLabour")}</th><th class="n">${t("cFuel")}</th><th class="n">${t("cMat")}</th><th class="n">${t("cTruck")}</th><th class="n">${t("fProfit")}</th></tr></thead><tbody>
-      ${jobs.map((j) => `<tr class="${j.profit < 0 ? "loss" : ""}"><td><b>${esc(j.a)}</b><div class="muted" style="font-size:.8rem">${esc(j.c)} · ${t(j.src)}${j.comp ? `<span class="ctag">${t("k_comp")}</span>` : ""}</div></td><td>${t(j.crew + "n")}</td><td class="n">${money2(j.price)}</td><td class="n">${money2(j.labour)}</td><td class="n">${money2(j.fu)}</td><td class="n">${money2(j.mt)}</td><td class="n">${money2(j.tr)}</td><td class="n pf">${money2(j.profit)}</td></tr>`).join("")}</tbody></table></div></div>`;
+    <div class="panel"><h2>${t("crew")}</h2>
+      <div class="tbl-wrap hide-sm"><table><thead><tr><th>${t("crew")}</th><th class="n">${t("fJobsDone")}</th><th class="n">${t("fRevenue")}</th><th class="n">${t("fProfit")}</th><th class="n">${t("fPph")}</th><th class="n">${t("fLeadsWS")}</th><th class="n">${t("fComplaints")}</th></tr></thead><tbody>
+      ${crews.map((r) => `<tr><td><b>${t(r.id + "n")}</b></td><td class="n">${r.jobs}</td><td class="n">${money(r.rev)}</td><td class="n">${money(r.profit)}</td><td class="n">${r.mins ? money((r.profit / r.mins) * 60) : "–"}</td><td class="n">${r.lw} / ${r.lc}</td><td class="n ${r.jobs && r.comp / r.jobs >= 0.1 ? "flag" : ""}">${pct(r.comp, r.jobs)}%</td></tr>`).join("")}</tbody></table></div>
+      <div class="ccards show-sm">${crews.map((r) => `<div class="ccard"><b>${t(r.id + "n")}</b><span class="big2">${money(r.profit)}</span><span>${r.jobs} ${t("fJobsDone").toLowerCase()} · ${money(r.rev)}</span><span style="text-align:right">${r.mins ? money((r.profit / r.mins) * 60) : "–"}/h</span><span style="grid-column:1/-1">${t("fLeadsWS")} ${r.lw} / ${r.lc} · ${t("fComplaints")} ${pct(r.comp, r.jobs)}%</span></div>`).join("")}</div></div>
+    <div class="panel" id="fjobs"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h2>${t("fJobsH")}</h2><button class="small-btn" data-act="finDl">${t("fDownload")}</button></div>
+      ${S.finFilter ? `<div class="filterline"><span>${t(S.finFilter === "loss" ? "fOnlyLoss" : "fOnlyComp")}</span><button data-act="finFilter" data-k="">${t("fShowAll")}</button></div>` : ""}
+      <div class="tbl-wrap hide-sm"><table><thead><tr><th>${t("fJob")}</th><th>${t("crew")}</th><th class="n">${t("fRevenue")}</th><th class="n">${t("cLabour")}</th><th class="n">${t("cFuel")}</th><th class="n">${t("cMat")}</th><th class="n">${t("cTruck")}</th><th class="n">${t("fProfit")}</th></tr></thead><tbody>
+      ${jobs.map((j) => `<tr class="${j.profit < 0 ? "loss" : ""}"><td><b>${esc(j.a)}</b><div class="muted" style="font-size:.8rem">${esc(j.c)} · ${t(j.src)}${j.comp ? `<span class="ctag">${t("k_comp")}</span>` : ""}</div></td><td>${t(j.crew + "n")}</td><td class="n">${money2(j.price)}</td><td class="n">${money2(j.labour)}</td><td class="n">${money2(j.fu)}</td><td class="n">${money2(j.mt)}</td><td class="n">${money2(j.tr)}</td><td class="n pf">${money2(j.profit)}</td></tr>`).join("")}</tbody></table></div>
+      <div class="ccards show-sm">${jobs.map((j) => `<div class="ccard ${j.profit < 0 ? "loss" : ""}"><b>${esc(j.a)}</b><span class="big2">${money2(j.profit)}</span><span>${esc(j.c)} · ${t(j.crew + "n")} · ${t(j.src)}${j.comp ? `<span class="ctag">${t("k_comp")}</span>` : ""}</span><span style="text-align:right">${money2(j.price)}</span></div>`).join("")}</div></div>`;
 }
 function ownerCosts() {
   const crewOf = Object.fromEntries(PEOPLE.map(([n, c]) => [n, c]));
@@ -2088,7 +2413,8 @@ function ownerEmail() {
       ${r.weekly ? `<div class="setrow"><label for="er-day">${t("erDay")}</label><select id="er-day">${days.map((d, i) => `<option value="${i}" ${r.day === i ? "selected" : ""}>${d}</option>`).join("")}</select></div>` : ""}
       <label class="switch"><input type="checkbox" id="er-m" ${r.monthly ? "checked" : ""}>${t("erMonthly")}</label>
       <div class="field"><label for="er-to">${t("erTo")}</label><input id="er-to" value="${esc(r.to)}"></div>
-      <div style="display:grid;gap:8px;margin-top:12px"><button class="small-btn" data-act="erNow">${t("erNowW")}</button><button class="small-btn" data-act="erNow">${t("erNowM")}</button></div></div></div>
+      <div style="display:grid;gap:8px;margin-top:12px"><button class="small-btn pri" data-act="erTest">${t("erTest")}</button><button class="small-btn" data-act="erNow" data-k="Weekly">${t("erNowW")}</button><button class="small-btn" data-act="erNow" data-k="Monthly">${t("erNowM")}</button></div></div>
+      <div class="panel"><h2>${t("erLog")}</h2><div class="replog">${S.repLog.map((x) => `<div><span><b>${esc(x.kind)}</b> · ${esc(x.at)}</span><span class="muted">${esc(x.to)}</span></div>`).join("")}</div></div></div>
     <div class="col"><div class="panel"><h2>${t("erPreview")}</h2>${html}</div></div></div>`;
 }
 function downloadText(name, text) {
@@ -2123,6 +2449,100 @@ function doRain() {
   });
 }
 
+function doDayMenu() {
+  sheet(`<h2>${fmtDay(START)}</h2><div class="opts">
+    ${S.rain ? `<button class="opt" data-act="rainUndo">${I.rain.replace("<svg", '<svg width="28" height="28"')}<span>${t("dayUndo")}</span></button>` : `<button class="opt" id="dm-rain">${I.rain.replace("<svg", '<svg width="28" height="28"')}<span>${t("dayRain")}<small>${t("dayRainP")}</small></span></button>`}
+    <button class="opt" id="dm-week">${I.cal.replace("<svg", '<svg width="28" height="28"')}<span>${t("dayWeek")}</span></button></div>
+    <div class="sheet-acts" style="grid-template-columns:1fr"><button data-act="closeSheet">${t("cancel")}</button></div>`, (sh) => {
+    const r = $("#dm-rain", sh); if (r) r.onclick = () => doRain();
+    $("#dm-week", sh).onclick = () => { closeSheet(); S.ownerTab = "assign"; S.aRange = "week"; render(); };
+    const u = sh.querySelector('[data-act="rainUndo"]'); if (u) u.addEventListener("click", () => closeSheet());
+  });
+}
+function showKeys() {
+  const isD = S.view === "dispatch";
+  const rows = [...(isD ? [["N", t("kNew")], ["/", t("kSearch")]] : []), ["1 – " + officeGroups().length, t("kPages")], ...(isD ? [["J / K", t("kMove")]] : []), ["?", t("kHelp")], ["Esc", t("kEsc")]];
+  sheet(`<h2>${t("keysT")}</h2><table class="keys-t"><tbody>${rows.map(([k, v]) => `<tr><td>${k.split(" ").map((x) => (x.length <= 3 && x !== "–" && x !== "/" ? `<kbd>${x}</kbd>` : x === "/" ? `<kbd>/</kbd>` : x)).join(" ")}</td><td>${v}</td></tr>`).join("")}</tbody></table><div class="sheet-acts" style="grid-template-columns:1fr"><button data-act="closeSheet">${t("cancel")}</button></div>`);
+}
+function doLoginMenu(i) {
+  const id = S.adminCo, p = loginsOf(id)[i]; if (!p) return;
+  sheet(`<h2>${esc(p.n)}</h2><p class="muted">${roleName(p.role)} · <span class="mono">${esc(p.user)}</span></p><div class="opts">
+    <button class="opt" id="lm-pw">${I.key.replace("<svg", '<svg width="26" height="26"')}<span>${t("setpw")}</span></button>
+    ${p.role !== "owner" ? `<button class="opt" id="lm-off" style="color:var(--bad)">${I.stop.replace("<svg", '<svg width="26" height="26"')}<span>${t("aoOff")}</span></button>` : ""}</div>
+    <div class="sheet-acts" style="grid-template-columns:1fr"><button data-act="closeSheet">${t("cancel")}</button></div>`, (sh) => {
+    $("#lm-pw", sh).onclick = () => doSetPw(p.n);
+    const off = $("#lm-off", sh);
+    if (off) off.onclick = () => sheet(`<h2>${t("aoOffQ", { n: esc(p.n) })}</h2><p>${t("aoOffP", { n: esc(p.n) })}</p><div class="sheet-acts"><button data-act="closeSheet">${t("cancel")}</button><button class="go danger-go" id="go">${t("aoOff")}</button></div>`, (s2) => {
+      $("#go", s2).onclick = () => {
+        const L = loginsOf(id), k = L.indexOf(p); if (k >= 0) L.splice(k, 1);
+        (S.off[id] = S.off[id] || []).push(p); histAdd(id, `Turned off ${p.n}'s login`);
+        closeSheet(); toast(t("aoOffDone", { n: p.n })); render();
+      };
+    });
+  });
+}
+function doNewCo() {
+  sheet(`<h2>${t("aoNewCo")}</h2>
+    <div class="field"><label for="nc-n">${t("aoCoName")}</label><input id="nc-n" autocomplete="off"></div>
+    <div class="field"><label for="nc-w">${t("aoWhere")}</label><input id="nc-w" placeholder="ON" autocomplete="off"></div>
+    <div class="field"><label for="nc-s">${t("aoLic")}</label><input id="nc-s" type="number" min="1" value="5"></div>
+    <p class="lg-err" id="nc-err" role="alert"></p>
+    <div class="sheet-acts"><button data-act="closeSheet">${t("cancel")}</button><button class="go" id="go">${t("aoCreateCo")}</button></div>`, (sh) => {
+    $("#go", sh).onclick = () => {
+      const n = $("#nc-n", sh).value.trim(), w = $("#nc-w", sh).value.trim().toUpperCase() || "ON", seats = parseInt($("#nc-s", sh).value, 10) || 1;
+      if (!n) return ($("#nc-err", sh).textContent = t("aoCoName"));
+      const id = "co" + Date.now();
+      S.companies.push({ id, n, where: w, seats, last: "—", status: "active" }); S.coLogins[id] = []; S.off[id] = []; S.hist[id] = [];
+      histAdd(id, `Company created with ${seats} licences`);
+      S.adminCo = id; S.handoff = null; S.seatDraft = null; closeSheet(); toast(t("aoCoMade", { n })); render();
+    };
+  });
+}
+/* drag a job onto a crew lane */
+let dragJob = null;
+function lanePreview(lane, on) {
+  const c = lane.dataset.lane, j = S.jobs.find((x) => x.id === dragJob); if (!j) return;
+  lane.classList.toggle("over", on);
+  const g = lane.querySelector(".ghostblk"), cap = lane.querySelector("[data-cap]");
+  if (g) { g.hidden = !on; g.style.flex = String(j.est); g.textContent = t("dropHere", { m: j.est }); }
+  if (cap) {
+    const tot = load(c, j.date) + (on ? j.est : 0);
+    cap.textContent = rangeDays().length === 1 ? `${hrs(tot)} / 8 h` : `${hrs(tot)} h ${t("onDay", { d: fmtDay(j.date) })}`;
+    cap.classList.toggle("o", tot > CAP);
+  }
+}
+document.addEventListener("dragstart", (e) => { const c = e.target.closest && e.target.closest(".jcard"); if (!c) return; dragJob = c.dataset.job; c.classList.add("dragging"); try { e.dataTransfer.setData("text/plain", dragJob); e.dataTransfer.effectAllowed = "move"; } catch (_) {} });
+document.addEventListener("dragend", (e) => { const c = e.target.closest && e.target.closest(".jcard"); if (c) c.classList.remove("dragging"); document.querySelectorAll(".lane.over").forEach((l) => lanePreview(l, false)); dragJob = null; });
+document.addEventListener("dragover", (e) => { const l = e.target.closest && e.target.closest("[data-lane]"); if (!l || !dragJob) return; e.preventDefault(); if (!l.classList.contains("over")) { document.querySelectorAll(".lane.over").forEach((x) => x !== l && lanePreview(x, false)); lanePreview(l, true); } });
+document.addEventListener("dragleave", (e) => { const l = e.target.closest && e.target.closest("[data-lane]"); if (l && !l.contains(e.relatedTarget)) lanePreview(l, false); });
+document.addEventListener("drop", (e) => { const l = e.target.closest && e.target.closest("[data-lane]"); if (!l || !dragJob) return; e.preventDefault(); const j = S.jobs.find((x) => x.id === dragJob); dragJob = null; if (j) { doAssign(j, l.dataset.lane); render(); } });
+/* keyboard shortcuts for the office */
+document.addEventListener("keydown", (e) => {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const inField = e.target.closest && e.target.closest("input, select, textarea");
+  if ($("#layer").innerHTML) {
+    if (e.key === "Escape") { closeSheet(); S.qv = null; return; }
+    if (inField || S.qv === null || !$("#cmp")) return;
+    const k = e.key.toLowerCase();
+    if (e.key === "ArrowLeft") qView(S.qv - 1); else if (e.key === "ArrowRight") qView(S.qv + 1); else if (k === "g") qMark("good"); else if (k === "f") qMark("flag"); else return;
+    e.preventDefault(); return;
+  }
+  if (inField || S.view === "crew" || S.view === "admin") return;
+  const isD = S.view === "dispatch", k = e.key;
+  if (k === "?") showKeys();
+  else if ((k === "n" || k === "N") && isD) doNewJob();
+  else if (k === "/" && isD) { S.ownerTab = "props"; render(); const q = $("#prop-q"); if (q) q.focus(); }
+  else if (/^[1-9]$/.test(k) && officeGroups()[+k - 1]) { const g = officeGroups()[+k - 1]; S.ownerTab = S.lastSub[g] || GROUPS[g][0]; render(); }
+  else if ((k === "j" || k === "k") && isD) {
+    const its = [...document.querySelectorAll("#needs .item")]; if (!its.length) return;
+    const cur = its.indexOf(document.activeElement); const nx = k === "j" ? Math.min(its.length - 1, cur + 1) : Math.max(0, cur - 1);
+    its[cur < 0 ? 0 : nx].focus();
+  } else return;
+  e.preventDefault();
+});
+window.addEventListener("online", () => S.view !== "crew" && renderOwner());
+window.addEventListener("offline", () => S.view !== "crew" && renderOwner());
+
 /* ================= events ================= */
 document.addEventListener("click", (e) => {
   const b = e.target.closest("[data-act]"); if (!b) return;
@@ -2131,7 +2551,30 @@ document.addEventListener("click", (e) => {
   if (b.tagName === "A") e.preventDefault();
   const s = curStop();
   switch (a) {
-    case "view": S.view = b.dataset.v; if (S.view === "owner") S.ownerTab = "overview"; break;
+    case "view": S.view = b.dataset.v; S.focusCrew = null; if (S.view === "owner") S.ownerTab = "overview"; if (S.view === "dispatch") S.ownerTab = "today"; window.scrollTo({ top: 0 }); break;
+    case "focusCrew": S.focusCrew = b.dataset.c && S.focusCrew !== b.dataset.c ? b.dataset.c : null; break;
+    case "focusItem": if (b.dataset.c) S.focusCrew = b.dataset.c; break;
+    case "leads": S.leadsOpen = !S.leadsOpen; break;
+    case "dayMenu": return doDayMenu();
+    case "keys": return showKeys();
+    case "qAll": { const left = qualityJobs().filter((j) => !S.quality[j.id]); left.forEach((j) => (S.quality[j.id] = "good")); toast(t("allGoodT", { n: left.length })); break; }
+    case "qView": return qView(+b.dataset.i);
+    case "callCust": toast(t("callDemo")); return;
+    case "finGo": S.ownerTab = "overview"; S.finKind = "week"; S.finOff = 1; S.finFilter = b.dataset.k; S.scrollTo = "fjobs"; break;
+    case "finFilter": S.finFilter = b.dataset.k || null; if (S.finFilter) S.scrollTo = "fjobs"; break;
+    case "leadsSheet": { const ls = allItems().filter((i) => i.k === "k_lead"); return sheet(`<h2>${t("fOpenLeadsT")}</h2>${ls.map((i) => `<div class="item u-later"><span class="stripe"></span><div><b>${esc(L(i.title))}</b><p>${esc(L(i.body))}</p></div></div>`).join("") || `<p class="muted">—</p>`}<div class="sheet-acts" style="grid-template-columns:1fr"><button data-act="closeSheet">${t("cancel")}</button></div>`); }
+    case "erTest": S.repLog.unshift({ at: fmtDay(START) + " · " + fmtT(now()), kind: t("erTestK"), to: S.rep.to || "—" }); toast(t("erTestSent", { e: S.rep.to || "—" })); break;
+    case "aoOpen": S.adminCo = b.dataset.id; S.seatDraft = null; S.handoff = null; window.scrollTo({ top: 0 }); break;
+    case "aoBack": S.adminCo = null; S.seatDraft = null; S.handoff = null; break;
+    case "aoNewCo": return doNewCo();
+    case "seatStep": { const L = loginsOf(S.adminCo).length; S.seatDraft = Math.max(L, (S.seatDraft ?? seatsOf(S.adminCo)) + +b.dataset.d); break; }
+    case "seatCancel": S.seatDraft = null; break;
+    case "seatSave": { const was = seatsOf(S.adminCo); setSeats(S.adminCo, S.seatDraft); histAdd(S.adminCo, `Licences ${was} → ${S.seatDraft}`); toast(t("aoLicChange", { a: was, b: S.seatDraft })); S.seatDraft = null; break; }
+    case "aoMake": { const f = $("#ao-pw"); if (f) f.value = makePw(); return; }
+    case "aoAnother": S.handoff = null; break;
+    case "copy": { const v = b.dataset.v; try { navigator.clipboard.writeText(v).then(() => toast(t("copied2")), () => toast(v)); } catch (_) { toast(v); } return; }
+    case "aoRow": return doLoginMenu(+b.dataset.i);
+    case "aoOn": { const id = S.adminCo, p = S.off[id][+b.dataset.i]; if (loginsOf(id).length >= seatsOf(id)) { toast(t("aoNoSeats")); return; } S.off[id].splice(+b.dataset.i, 1); loginsOf(id).push(p); histAdd(id, `Turned ${p.n}'s login back on`); toast(t("aoOnDone", { n: p.n })); break; }
     case "lgIn": { const u = $("#lg-u").value.trim(), pw = $("#lg-p").value; if (!u || !pw) { $("#lg-err").textContent = t("badLogin"); return; } S.lgUser = u; S.shift = "pre"; break; }
     case "lgForgot": S.lgUser = ($("#lg-u") || {}).value || S.lgUser; S.forgot = "form"; break;
     case "lgBack": S.forgot = null; break;
@@ -2144,17 +2587,15 @@ document.addEventListener("click", (e) => {
     }
     case "signOut": S.shift = "login"; S.forgot = null; break;
     case "teamPw": return doSetPw(b.dataset.n);
-    case "aoSeats": { const v = parseInt($("#ao-seats").value, 10); if (v >= logins().length) { S.seats = v; toast(t("saved")); } else toast(t("aoNoSeats")); break; }
     case "aoCreate": return aoCreate();
-    case "aoRemove": { const p = logins()[+b.dataset.i]; S.logins = logins().filter((_, i) => i !== +b.dataset.i); toast(t("aoRemoved", { n: p.n })); break; }
     case "finKind": S.finKind = b.dataset.k; S.finOff = 0; break;
     case "finPrev": S.finOff++; break;
     case "finNext": S.finOff = Math.max(0, S.finOff - 1); break;
     case "finDl": downloadText("Green Ridge jobs.csv", toCsvText([["Address", "Customer", "Crew", "Type", "Revenue", "Labour", "Fuel", "Materials", "Truck wear", "Profit"], ...finJobs().map((j) => [j.a, j.c, T.en[j.crew + "n"], T.en[j.src], j.price, j.labour.toFixed(2), j.fu, j.mt, j.tr, j.profit.toFixed(2)])])); toast(t("fDownload")); break;
     case "payDl": downloadText("Payroll last week.csv", toCsvText([["Name", "Crew", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Paid hours", "Hourly cost", "Cost"], ...PEOPLE.map(([n, c, d]) => { const h = d.reduce((x, y) => x + y, 0), r = S.rates[n] || 25, reg = Math.min(h, S.otAfter), ot = Math.max(0, h - S.otAfter); return [n, T.en[c + "n"], ...d, h.toFixed(1), r, (r * (reg + ot * S.otx)).toFixed(2)]; })])); toast(t("payDl")); break;
-    case "erNow": toast(t("erSent", { e: S.rep.to || "—" })); break;
+    case "erNow": S.repLog.unshift({ at: fmtDay(START) + " · " + fmtT(now()), kind: b.dataset.k || "Report", to: S.rep.to || "—" }); toast(t("erSent", { e: S.rep.to || "—" })); break;
     case "lang": lang = b.dataset.l; document.documentElement.lang = lang; break;
-    case "reset": { const v = S.view; S = freshState(); S.view = v; toast(t("reset")); break; }
+    case "reset": { const v = S.view; S = freshState(); S.view = v; if (v === "owner") S.ownerTab = "overview"; toast(t("reset")); break; }
     case "crewTab": S.crewTab = b.dataset.k; window.scrollTo({ top: 0 }); break;
     case "clock":
       if (S.shift === "pre") {
@@ -2174,7 +2615,7 @@ document.addEventListener("click", (e) => {
       const left = jobsLeft();
       S.coConfirm = false; S.shift = "off"; S.clockedIn = false; S.clockOutAt = now();
       if (!left) office(t("lb_clockout"));
-      if (left) office(t("lb_clockout"), () => S.items.unshift({ id: "co" + Date.now(), k: "k_stuck", tone: "warn", tile: "stuck", title: { en: `Crew 2 clocked out · ${left} jobs left`, es: `Cuadrilla 2 marcó salida · faltan ${left}` }, body: { en: "Reschedule them or move them to another crew.", es: "Reprográmalos o pásalos a otra cuadrilla." }, acts: ["reschedule", "close"], fresh: true }));
+      if (left) office(t("lb_clockout"), () => S.items.unshift({ id: "co" + Date.now(), crew: "c2", k: "k_stuck", tone: "warn", tile: "stuck", title: { en: `Crew 2 clocked out · ${left} jobs left`, es: `Cuadrilla 2 marcó salida · faltan ${left}` }, body: { en: "Reschedule them or move them to another crew.", es: "Reprográmalos o pásalos a otra cuadrilla." }, acts: ["reschedule", "close"], fresh: true }));
       toast(t("t_clockOut", { t: fmtT(now()) })); window.scrollTo({ top: 0 }); break;
     }
     case "newShift": S.shift = "pre"; Object.keys(S.preTrip).forEach((k) => (S.preTrip[k] = false)); S.breaks = []; S.clockAt = null; S.clockOutAt = null; break;
@@ -2233,6 +2674,7 @@ function render() {
   if (S.view === "crew") renderCrew(); else renderOwner();
 }
 document.addEventListener("input", (e) => {
+  if (e.target.id === "co-q") { S.coQ = e.target.value; const r = $("#co-rows"); if (r) r.innerHTML = coRows(); return; }
   if (e.target.id === "prop-q") { S.propQ = e.target.value; const l = $("#prop-list"); if (l) l.innerHTML = propRows(); return; }
   if (e.target.id === "ns-note") { const s = curStop(); if (s) { (S.next[s.id] = S.next[s.id] || {}).note = e.target.value; updateGate(); } }
 });
@@ -2240,6 +2682,7 @@ document.addEventListener("change", (e) => {
   const el = e.target, v = parseFloat(el.value);
   if (el.id === "fuel-price" && v > 0) { S.price = isMi() ? v / 3.78541 : v; renderOwner(); return; }
   if (el.id === "units") { S.units = el.value; renderOwner(); return; }
+  if (el.classList && el.classList.contains("sendto") && el.value) { const j = S.jobs.find((x) => x.id === el.dataset.job); if (j) { doAssign(j, el.value); render(); } return; }
   if (el.dataset && el.dataset.rate && v >= 0) { S.rates[el.dataset.rate] = v; toast(t("saved")); return; }
   if (el.id === "ot-after" && v > 0) { S.otAfter = v; toast(t("saved")); return; }
   if (el.id === "ot-x" && v >= 1) { S.otx = v; toast(t("saved")); return; }
@@ -2252,6 +2695,7 @@ document.addEventListener("change", (e) => {
   if (el.dataset && el.dataset.truck && v > 0) { S.trucks[el.dataset.truck].l100 = isMi() ? 235.215 / v : v; renderOwner(); return; }
   if (e.target.id === "ns-date") { const s = curStop(); if (s) { const nx = (S.next[s.id] = S.next[s.id] || {}); nx.date = e.target.value; nx.days = null; render(); } }
 });
+document.addEventListener("keydown", (e) => { if (e.key === "Enter" && e.target.matches && e.target.matches('.item[data-act="focusItem"]')) e.target.click(); });
 // live ticks: GPS fixes, timers, map, team list
 setInterval(() => {
   gpsTick();
