@@ -619,6 +619,55 @@ button.crewrow.sel { background: var(--accent-soft); box-shadow: inset 3px 0 0 v
 .big-price { font-family: var(--font-display); font-size: 1.6rem; }
 .fxadd { display: grid; grid-template-columns: 1fr 110px auto; gap: 8px; margin-top: 10px; }
 .fxadd input { min-height: 44px; border-radius: 6px; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); padding: 6px 10px; font: inherit; min-width: 0; }
+.fixbar { padding: 14px 16px; }
+.fixtop { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; font-weight: 700; }
+.fixtop output { font-family: var(--font-display); font-size: 1.15rem; }
+.fixbar input[type="range"] { width: 100%; min-height: 40px; accent-color: var(--brand); }
+.fixends { display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--muted); margin-top: -4px; }
+button.crewblock { display: grid; gap: 4px; width: 100%; text-align: left; background: var(--surface); border: 1.5px solid var(--line); border-radius: 8px; padding: 10px 12px; color: inherit; margin-top: 8px; }
+button.crewblock:first-child { margin-top: 0; }
+button.crewblock.sel { border-color: var(--brand); box-shadow: inset 4px 0 0 var(--accent); }
+.cb-h { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.cb-h i { width: 24px; height: 24px; border-radius: 6px; color: #fff; font-style: normal; font-weight: 700; font-size: 0.8rem; display: grid; place-items: center; }
+.cb-h b { font-family: var(--font-display); font-size: 1.15rem; }
+.cb-eq { color: var(--muted); font-size: 0.85rem; }
+.cb-ppl { display: flex; gap: 6px; flex-wrap: wrap; }
+.cb-ppl span { background: var(--sunken); border-radius: 4px; padding: 1px 8px; font-size: 0.85rem; font-weight: 600; }
+.cb-st { display: flex; gap: 6px; align-items: center; font-size: 0.92rem; }
+.cb-row { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; font-size: 0.85rem; }
+.cb-r { margin-left: auto; color: var(--muted); }
+.board .b-crews .crewblock .cb-r { display: none; }
+.mapchips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+.mapchips button { border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 6px; padding: 5px 10px; font-weight: 600; font-size: 0.85rem; min-height: 36px; display: inline-flex; gap: 6px; align-items: center; }
+.mapchips button[aria-pressed="true"] { background: var(--brand); color: var(--brand-ink); border-color: var(--brand); }
+.mapchips i { width: 10px; height: 10px; border-radius: 50%; }
+tr.crewhead td { background: var(--sunken); font-family: var(--font-display); font-weight: 700; font-size: 1rem; }
+tr.crewhead i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; }
+.cdot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; vertical-align: 0; }
+.eqcrew { border-top: 1px solid var(--line); padding: 10px 0; }
+.eqcrew:first-of-type { border-top: 0; }
+.eqhead { display: flex; gap: 8px; align-items: center; margin-bottom: 4px; }
+.eqhead i { width: 22px; height: 22px; border-radius: 5px; color: #fff; font-style: normal; font-weight: 700; font-size: 0.75rem; display: grid; place-items: center; }
+.eqm { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; font-size: 0.88rem; }
+.conn h2 { font-size: 1.1rem; }
+.o-tabs { flex-wrap: wrap; }
+.field:has(.bignum) { min-width: 0; }
+.bignum { width: 100%; min-width: 0; box-sizing: border-box; font-family: var(--font-display); font-size: 1.8rem !important; font-weight: 700; letter-spacing: 0.04em; min-height: 64px !important; }
+.slimstat { border-radius: 8px; padding: 16px; display: grid; gap: 4px; margin: 12px 0; border: 2px solid var(--brand); background: var(--surface); }
+.slimstat .lbl { font-size: 0.9rem; font-weight: 700; color: var(--muted); }
+.slimstat b { font-family: var(--font-display); font-size: 1.6rem; line-height: 1.15; }
+.slimstat .big-n { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; margin-top: 6px; }
+.slimstat .sub { font-size: 0.95rem; color: var(--muted); }
+.slimstat.on { border-color: var(--ok); box-shadow: inset 6px 0 0 var(--ok); }
+.slimstat.drive { box-shadow: inset 6px 0 0 var(--accent); }
+.slimstat.done { border-color: var(--line); }
+.osperm { text-align: center; display: grid; gap: 12px; }
+.osperm .nic { margin: 0 auto; }
+.osq { font-size: 1.1rem; font-weight: 600; margin: 0; }
+.osbtns { display: grid; gap: 8px; }
+.osbtns button { min-height: 52px; border-radius: 6px; border: 1.5px solid var(--line); background: var(--surface); color: var(--accent-text); font-weight: 700; font-size: 1rem; }
+.steps { background: var(--sunken); border-radius: 6px; padding: 10px; }
+.impmap { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0 16px; }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 </style></head><body>
 
@@ -745,6 +794,14 @@ const T = {
     useSample: "Use a sample photo", openCam: "Open camera", photoTitle: "Add photo",
     totalTime: "{m} min on site",
     crewName: "Crew 2", crewPpl: "Marco R. · Luis G.",
+    lcT: "Turn on location", lcP: "Cutting Cost records drive time, kilometres and time at each stop by itself. It only uses location while you're clocked in.", lcBtn: "Turn on location",
+    lcOsQ: "Allow Cutting Cost Crew to access this device's location?", lcAlways: "Allow all the time", lcWhile: "Only while using the app", lcDeny: "Don't allow",
+    lcDeniedT: "Location is needed", lcDeniedP: "Without location the app can't record your stops. Turn it on in the tablet's settings:", lcSteps: "Settings › Apps › Cutting Cost Crew › Location › Allow all the time", lcRetry: "Try again",
+    lcWhileNote: "Choose \"Allow all the time\" so stops are still recorded when the screen is off.",
+    slGm: "Good morning", slToday: "{n} stops today · from {s}", slOdo: "Truck 12 odometer", slOdoP: "Type the number on the dashboard.", slStart: "Start my day",
+    slDriving: "Driving to", slAt: "At", slLeft: "{d} to go · arrival is recorded automatically", slArr: "Arrived {t} · recorded automatically", slOnSite: "{m} min on site", slAllDone: "All stops done", slHome: "Head back to the yard.",
+    slStops: "Today's stops", slDone: "{a} – {l} · {m} min", slNext: "Next", slBreak: "Break, lunch or end my day", slEndT: "End my day", slOdoEnd: "Truck 12 odometer now", slEnd: "End my day", slBack: "Go back",
+    slSum: "Today", slGpsKm: "GPS", slOdoKm: "Odometer", slProblem: "Report a problem", slDemoOff: "Demo: turn location off",
     dispatch: "Dispatcher", dispWho: "Rosa M. · Team lead / dispatcher",
     nextSvc: "Next recommended service", nextWhen: "When", nextNote: "Short note for the office", nextPh: "e.g. Leaves still falling, needs a 2nd pass", needNext: "Pick the next service, a date and write a short note",
     ns_reg: "Regular visit", ns_leaves: "Leaf cleanup", ns_aer: "Aeration", ns_fert: "Fertilizer", ns_over: "Overseeding", ns_shrub: "Shrubs / hedges", ns_snow: "Snow stakes",
@@ -808,16 +865,43 @@ const T = {
     fsInUse: "Price in use", fsCheck: "Check the price now", fsChecked: "Checked {t}", fsTyped: "Typed in by you.", fsUpdated: "Demo: sample price {p}/L from {s}.", fsYou: "Fuel price you pay ($/L)",
     fxH: "Fixed costs", fxP: "What you pay every month whether you do 10 jobs or 100. Each job carries a share in proportion to what it earns: a $2,000 job carries ten times the share of a $200 job.",
     fxMonth: "{v} a month", fxTotal: "Total", fxName: "What it is", fxAmt: "$ a month", fxAdd: "Add", fxAdded: "Added", fxRemove: "Remove",
-    plainKept: "{w} you kept {v} of every $100 you charged, after paying crews, fuel, materials, truck wear and your fixed costs.", plainLost: "{w} you lost {v} on every $100 you charged. Costs were higher than what the jobs brought in.",
+    plainKept: "{w} you kept {v} of every $100 you charged, after paying crews, fuel, materials, maintenance and your fixed costs.", plainLost: "{w} you lost {v} on every $100 you charged. Costs were higher than what the jobs brought in.",
     wToday: "Today", wWeek: "This week", wMonth: "This month", wIn: "In {p}",
-    fNet: "Profit after fixed costs", fJobCosts: "Job costs", fFixed: "Fixed costs", p100: "Every $100 you charged", p100Job: "Job costs (crews, fuel, materials, truck wear)", p100Fixed: "Fixed costs (insurance, rent, phones…)", p100Kept: "Kept", p100Lost: "Lost",
+    fNet: "Profit after fixed costs", fJobCosts: "Job costs", fFixed: "Fixed costs", p100: "Every $100 you charged", p100Job: "Job costs (crews, fuel, materials, maintenance)", p100Fixed: "Fixed costs (insurance, rent, phones…)", p100Kept: "Kept", p100Lost: "Lost",
     fWentJob: "Job costs: where the money went", jobProfit: "Job profit", fixedShare: "Fixed share", afterFixed: "After fixed",
     wiH: "What if…", wiP: "Slide to see what this period would look like if costs or prices changed. Nothing is saved.", wiFuel: "Fuel price", wiLabour: "Crew pay", wiFixed: "Fixed costs", wiPrices: "Your prices", wiReset: "Reset",
     wiSame: "Move a slider to compare with the {v} you kept.", wiNew: "You'd keep {v} instead of {o} ({d}).",
-    glH: "What do these words mean?", glRev: "Everything you charged for finished jobs.", glJob: "Costs that grow with every job: crew pay (including drive time), fuel, materials and truck wear.",
-    glFixed: "What you pay every month no matter how many jobs you do: insurance, rent, phones, software, loans. Each job carries a share in proportion to what it earns.",
+    glH: "What do these words mean?", glRev: "Everything you charged for finished jobs.", glJob: "Costs that grow with every job: crew pay (including drive time), fuel for trucks and mowers, materials and maintenance.",
+    glFixed: "What you pay every month no matter how many jobs you do: insurance, subscriptions, marketing, licences, depreciation of trucks and mowers, rent. Each customer carries a share in proportion to what they pay you.",
     glNet: "What's left for you after all of the above.", glTruck: "What the truck loses in value for every hour it's out: its price ÷ years you'll keep it ÷ hours it works a year.",
     glFuel: "Kilometres from GPS × the truck's litres per 100 km × the fuel price. This period used {p} per litre, from {s}.", glFuelRcpt: "your crews' fuel receipts",
+    pSeason: "Season", wSeason: "This season", trendS: "seasons", seasonLbl: "{y} season (Apr – Nov)",
+    fixH: "Fixed costs in this view", fix0: "Off · profit from jobs only", fixAll: "All of them · true profit", fixSome: "{p}% of them", fixP: "Your fixed costs are {m} a month ({v} for this period). Each customer carries a share in proportion to what they pay you.",
+    netJobs: "Profit from jobs", netTrue: "True profit (after all fixed costs)", netSome: "Profit after {p}% of fixed costs",
+    plainKept0: "{w} you kept {v} of every $100 you charged, after paying crews, fuel, materials and maintenance. Slide fixed costs in at the top to see your true profit.",
+    cTruck: "Maintenance", glTruck: "Wear and tear on trucks and mowers: a set amount per kilometre driven and per mower hour. Truck and mower depreciation is a fixed cost.",
+    tabCustomers: "Customers", cvCust: "By customer", cvArea: "By area", csLow: "Least profitable first", csHigh: "Most profitable first", csRev: "Most revenue", csSearch: "Search customers",
+    cCust: "Customer", cArea: "Area", cVisits: "Visits", cOnsite: "On site", cDrive: "Drive to reach", cJobCosts: "Job costs", cProfit: "Profit", cFixShare: "Fixed share", cTrue: "True profit", cPerHour: "$ / hour on site", cPerVisit: "Profit per visit", cCustomers: "Customers", cDriveShare: "Driving share",
+    cSample: "18 sample customers. With Jobber connected, every customer shows up here.", cOpen: "Open {n}",
+    chH: "History", chDate: "Date", chSvc: "Service", chPrice: "Price", chOn: "On site", chDr: "Drive", chCost: "Costs", chProf: "Profit",
+    chRaise: "This customer earns {a}/hour on site, against {b}/hour on average. Charging {p} per visit would bring them up to average.", chOk: "This customer earns {a}/hour on site, against {b}/hour on average.",
+    chSeason: "This season", chPer: "per visit", chFrom: "From {s}", chFreq: "Plan", chCrew: "Crew",
+    perDay: "Profit per day", payOn: "On site", payDrive: "Driving", payOther: "Other", payCost: "Cost",
+    trH: "Today's trips (GPS)", trP: "Recorded automatically: when the truck leaves one stop and reaches the next, and how long it stays.", trCrew: "Crew", trLeg: "From → to", trLeft: "Left", trArr: "Arrived", trDrive: "Drive", trKm: "Distance", trFuel: "Fuel to get there", trSite: "Time at client", trNone: "Crew 2 hasn't started driving yet. Sign in on the crew tablet and start the day.",
+    odH: "GPS compared with the odometer", yesterday: "Yesterday", odP: "The crew types the odometer when they start and end the day. A gap of more than 10% usually means the truck moved with the tablet off, or the tablet was left behind.", odStart: "Odometer start", odEnd: "End", odKm: "Odometer km", odGps: "GPS km", odDiff: "Gap", odOk: "Matches", odCheck: "Check", odWait: "Waiting for end of day",
+    fDlDay: "Download today's fuel (CSV)", fDlWeek: "Download last week by day (CSV)", fLegsPlan: "Cost to reach each stop (planned)",
+    mowFuel: "Mower fuel", mowH: "{h} h × {l} L/h",
+    eqH: "Trucks and mowers", eqP: "Attach each truck and mower to the crew that uses it. Truck fuel comes from GPS kilometres; mower fuel is estimated from engine hours × litres per hour (an estimate: gas cans aren't metered). Depreciation of both goes into fixed costs.", eqTruck: "Truck", eqMowers: "Mowers", eqLph: "L / hour", eqNone: "Not attached", eqSpare: "Not attached to a crew", eqMaint: "Maintenance (wear and tear)", eqMaintKm: "$ per km (trucks)", eqMaintH: "$ per mower hour",
+    fxDepr: "Depreciation of trucks and mowers", fxAuto: "from Trucks and mowers",
+    erSeason: "Season report (Dec 1, for April to November)", erNowS: "Email me this season's report now",
+    tabConnect: "Connections", mdH: "How you use Cutting Cost", mdFin: "Finance only", mdFinP: "Jobs, customers and invoices come from the software you already use. Crews just sign in once; GPS does the rest.", mdAll: "Everything", mdAllP: "Also use Cutting Cost for scheduling, checklists, photos and customer texts.",
+    cnJobber: "Jobber", cnJobberP: "Reads clients, properties, jobs, visits, invoices, timesheets and expenses. Nothing in Jobber is changed.", cnConnect: "Connect", cnConnected: "Connected · synced {t}", cnSync: "Sync now", cnDisc: "Disconnect", cnCounts: "212 clients · 1,382 visits · 1,190 invoices · 3,410 timesheet entries",
+    cnJobberAsk: "Cutting Cost wants to read your Jobber account", cnJobberList: "Clients and properties|Jobs and visits|Invoices and payments|Timesheets and expenses", cnJobberNote: "It can't create, change or delete anything in Jobber. Demo: nothing is connected.", cnAllow: "Allow",
+    cnYard: "Yardbook", cnYardP: "Yardbook has no direct connection. Zapier sends each completed job to Cutting Cost. For prices, export your invoices from Yardbook and import the spreadsheet below.", cnYardBtn: "Open Yardbook on Zapier",
+    cnZap: "Zapier (any other software)", cnZapP: "Connect any software that works with Zapier. Actions: Add completed job, Add customer, Add invoice, Add expense.", cnKey: "Your Cutting Cost key", cnKeyShow: "Show key", cnZapOn: "Turn on",
+    cnSheet: "Spreadsheet import", cnSheetP: "Works with any software that can export to Excel or CSV: completed jobs with date, customer, address, service, price and crew.", cnFile: "Choose a CSV file", cnSample: "Use a sample file", cnMap: "Match the columns", cnPreview: "First rows", cnImport: "Import {n} jobs", cnImported: "Imported {n} jobs from {f}", cnLast: "Last import: {n} jobs from {f}",
+    cnQb: "QuickBooks (coming later)", cnQbP: "Pull fixed costs like insurance and rent straight from your books.", cnSkip: "(skip)",
+    impF: { date: "Date", customer: "Customer", address: "Address", service: "Service", price: "Price", crew: "Crew" },
     tabFuel: "Fuel & km", gpsArrived: "GPS: you're at {a}", gpsHere: "GPS shows you here since {t}", gpsLeft: "GPS: {d} to go",
     locOffT: "Location is off", locOffP: "This company phone has to share its location while you're clocked in. Turn it back on to keep working. It stops when you clock out.", locOn: "Turn location on", needLocT: "Turn on location to clock in",
     locCard: "Location", locDevice: "Company tablet · Truck 12", locRule: "Shared only while you're clocked in. It stops when you clock out.", locToday: "Today: {d} driven · {h} driving", demoOff: "Demo: turn location off",
@@ -921,6 +1005,15 @@ const T = {
     useSample: "Usar foto de ejemplo", openCam: "Abrir cámara", photoTitle: "Agregar foto",
     totalTime: "{m} min en el sitio",
     crewName: "Cuadrilla 2", crewPpl: "Marco R. · Luis G.",
+    lcT: "Activa la ubicación", lcP: "Cutting Cost registra solo el tiempo de manejo, los kilómetros y el tiempo en cada parada. Solo usa la ubicación mientras estás en turno.", lcBtn: "Activar ubicación",
+    lcOsQ: "¿Permitir que Cutting Cost Crew acceda a la ubicación de este dispositivo?", lcAlways: "Permitir siempre", lcWhile: "Solo mientras se usa la app", lcDeny: "No permitir",
+    lcDeniedT: "Se necesita la ubicación", lcDeniedP: "Sin ubicación la app no puede registrar tus paradas. Actívala en los ajustes de la tableta:", lcSteps: "Ajustes › Apps › Cutting Cost Crew › Ubicación › Permitir siempre", lcRetry: "Intentar de nuevo",
+    lcWhileNote: "Elige \"Permitir siempre\" para que se registren las paradas con la pantalla apagada.",
+    slGm: "Buenos días", slToday: "{n} paradas hoy · de {s}", slOdo: "Odómetro del Camión 12", slOdoP: "Escribe el número del tablero.", slStart: "Empezar mi día",
+    slDriving: "Manejando a", slAt: "En", slLeft: "Faltan {d} · la llegada se registra sola", slArr: "Llegó {t} · registrado solo", slOnSite: "{m} min en sitio", slAllDone: "Todas las paradas listas", slHome: "Regresa al patio.",
+    slStops: "Paradas de hoy", slDone: "{a} – {l} · {m} min", slNext: "Siguiente", slBreak: "Descanso, almuerzo o terminar el día", slEndT: "Terminar mi día", slOdoEnd: "Odómetro del Camión 12 ahora", slEnd: "Terminar mi día", slBack: "Regresar",
+    slSum: "Hoy", slGpsKm: "GPS", slOdoKm: "Odómetro", slProblem: "Reportar un problema", slDemoOff: "Demo: apagar la ubicación",
+    pSeason: "Temporada", wSeason: "Esta temporada", tabCustomers: "Clientes", tabConnect: "Conexiones", fixH: "Costos fijos en esta vista",
     dispatch: "Despachador", dispWho: "Rosa M. · Jefa de equipo / despacho",
     nextSvc: "Próximo servicio recomendado", nextWhen: "Cuándo", nextNote: "Nota corta para la oficina", nextPh: "ej. Siguen cayendo hojas, falta otra pasada", needNext: "Elige el próximo servicio, una fecha y escribe una nota corta",
     ns_reg: "Visita regular", ns_leaves: "Limpieza de hojas", ns_aer: "Aireación", ns_fert: "Fertilizante", ns_over: "Resiembra", ns_shrub: "Arbustos / setos", ns_snow: "Estacas de nieve",
@@ -1028,7 +1121,7 @@ const now = () => new Date(START.getTime() + (Date.now() - LOAD));
 const fmtT = (d) => d.toLocaleTimeString(lang === "es" ? "es" : "en-CA", { hour: "numeric", minute: "2-digit" });
 const tomorrowDate = () => { const d = new Date(START); d.setDate(d.getDate() + 1); return d; };
 const fmtDay = (d) => d.toLocaleDateString(lang === "es" ? "es" : "en-CA", { weekday: "short", month: "short", day: "numeric" });
-const money = (n) => "$" + Math.round(n).toLocaleString("en-CA");
+const money = (n) => (Math.round(n) < 0 ? "−$" : "$") + Math.abs(Math.round(n)).toLocaleString("en-CA");
 
 function freshStops() {
   return [
@@ -1182,9 +1275,18 @@ function freshState() {
     truckVal: { c1: [62000, 6, 1800], c2: [58000, 6, 1800], c3: [71000, 7, 1800], c4: [55000, 6, 1800] },
     matPrices: [["Fall fertilizer 24-0-12", "kg", 1.2], ["Iron-based weed control (FeHEDTA)", "L", 14.5], ["Leaf bags", "bag", 0.45]],
     fuelLoc: { country: "CA", region: "ON", city: "Toronto", type: "regular", auto: true, src: "Statistics Canada · Toronto · regular, self-serve", period: "September 2026", checked: "Today, 6:00 a.m." },
-    fixed: [["Insurance", 650], ["Shop and yard rent", 1800], ["Phones and internet", 240], ["Software", 180], ["Truck and equipment loans", 2400]],
+    fixed: [["Insurance", 650], ["Shop and yard rent", 1800], ["Software subscriptions", 180], ["Marketing", 400], ["Licences and permits", 120], ["Phones and internet", 240]],
+    fixPct: 0, maintKm: 0.15, maintMowerH: 1.5,
+    mowers: [
+      { id: "m1", n: 'Mower #1 · 60"', crew: "c1", lph: 3.2, val: 14500, yrs: 5, h: 6.1 }, { id: "m2", n: 'Mower #2 · 60"', crew: "c2", lph: 3.2, val: 14500, yrs: 5, h: 5.4 },
+      { id: "m3", n: 'Mower #3 · 52"', crew: "c3", lph: 2.8, val: 11800, yrs: 5, h: 4.9 }, { id: "m4", n: 'Mower #4 · 60"', crew: "c4", lph: 3.2, val: 14500, yrs: 5, h: 5.8 },
+      { id: "m5", n: 'Push mower P-1 · 21"', crew: "c2", lph: 0.6, val: 900, yrs: 3, h: 1.2 }, { id: "m6", n: 'Spare mower #5 · 48"', crew: null, lph: 2.6, val: 9800, yrs: 5, h: 0 },
+    ],
+    mode: "finance", custView: "cust", custSort: "low", custQ: "", mapCrew: "",
+    conn: { jobber: false, jobberAt: null, zapier: false, sheet: null }, impRows: null, impName: "",
+    locPerm: "need", odoStart: null, odoEnd: null, simMin: 0, legs: [], legStart: null, dwell: 0,
     wi: { fuel: 0, labour: 0, fixed: 0, prices: 0 },
-    otAfter: 44, otx: 1.5, target: 18000, rep: { weekly: true, day: 1, monthly: true, to: "owner@greenridgelawn.ca" },
+    otAfter: 44, otx: 1.5, target: 18000, rep: { weekly: true, day: 1, monthly: true, season: true, to: "owner@greenridgelawn.ca" },
     logins: null, off: { gr: [], ns: [], pt: [] },
     companies: [
       { id: "gr", n: "Green Ridge Lawn & Snow", where: "ON", last: "2 min ago", status: "active" },
@@ -1319,6 +1421,7 @@ function loginScreen() {
 function renderCrew() {
   const el = $("#crew"), dv = S.dev.c2;
   if (S.shift === "login") { el.innerHTML = loginScreen() + `<p class="foot">${t("sample")}</p>`; $("#crew-tabs").hidden = true; return; }
+  if (S.mode === "finance") { el.innerHTML = slimCrew() + `<p class="foot">${t("sample")}</p>`; $("#crew-tabs").hidden = true; return; }
   let h = `<div class="crew-head"><div class="who"><h1>${t("crewName")}</h1><span>${t("crewPpl")} · ${fmtDay(START)} · <span class="gpschip ${devLive(dv) ? "" : "off"}">${I.nav}GPS</span></span></div>${headerClock()}</div>`;
   if (S.shift !== "pre" && (queued() || S.outbox.length)) h += `<div style="display:flex;justify-content:flex-end;margin-top:-6px">${netChip()}</div>`;
   if (S.rain && S.shift !== "pre") h += `<div class="banner rain">${I.rain.replace("<svg", '<svg width="24" height="24"')}<div><b>${t("rainCrew")}</b>${t("rainCrewTxt", { d: fmtDay(S.rain.to) })}</div></div>`;
@@ -1490,6 +1593,7 @@ function mapSVG({ crewOnly }) {
 function lerp(a, b, f) { return { x: a.x + (b.x - a.x) * f, y: a.y + (b.y - a.y) * f }; }
 const devLive = (d) => (d.id === "c2" ? S.clockedIn && d.on : true);
 function gpsTick() {
+  slimTick();
   for (const d of Object.values(S.dev)) {
     if (!devLive(d)) continue;
     if (d.queue.length) { record(d, d.queue.shift()); if (!d.queue.length) onArrive(d); }
@@ -1497,6 +1601,7 @@ function gpsTick() {
   }
 }
 function onArrive(d) {
+  if (d.id === "c2" && S.mode === "finance") return slimArrive(d);
   if (d.id === "c2") {
     const s = curStop();
     if (s && s.status === "enroute" && Math.hypot(s.x - d.pos.x, s.y - d.pos.y) < 8) { S.gpsAt[s.id] = fmtT(now()); toast(t("gpsArrived", { a: s.addr })); if (S.view === "crew" && !$("#layer").innerHTML) render(); }
@@ -1711,7 +1816,7 @@ function crewSummary() {
   let state = "drive", at = cur ? cur.addr : "", mins = 0, late = 0;
   if (S.shift === "pre") state = "out"; else if (S.shift === "off") state = "off"; else if (S.pause) state = "pause";
   else if (!cur) state = "fin";
-  else if (cur.status === "onsite") { state = "at"; mins = elapsedMin(cur.arrived); late = Math.max(0, mins - cur.est); }
+  else if (cur.status === "onsite") { state = "at"; mins = S.mode === "finance" && cur.simArr != null ? S.simMin - cur.simArr : elapsedMin(cur.arrived); late = Math.max(0, mins - cur.est); }
   else if (cur.status === "enroute") state = "drive";
   else { state = "at"; at = S.stops.filter((s) => s.status === "done").slice(-1)[0]?.addr || at; mins = 0; }
   const list = [
@@ -1746,19 +1851,19 @@ function renderOwner() {
   if (S.view === "admin") { el.innerHTML = renderAdmin() + `<p class="foot">${t("sample")}</p>`; afterRender(); return; }
   const isD = S.view === "dispatch";
   const groups = officeGroups();
-  if (!groups.flatMap((g) => GROUPS[g]).includes(S.ownerTab)) S.ownerTab = GROUPS[groups[0]][0];
+  if (!groups.flatMap((g) => subsOf(g)).includes(S.ownerTab)) S.ownerTab = subsOf(groups[0])[0];
   const grp = groupOf(S.ownerTab);
   const need = allItems().length;
   const cnt = (g) => (g === "today" && isD && need ? `<span class="cnt">${need}</span>` : "");
   const subLbl = (k) => (k === "records" ? t("tabRecSub") : t("tab" + Cap(k)));
   const live = `<span class="live${navigator.onLine === false ? " re" : ""}" role="status">${navigator.onLine === false ? t("liveRe") : t("liveOn")}</span>`;
-  let h = `<div class="o-head"><div class="t"><h1>${t("ownerCo")}</h1><div class="who2">${isD ? `<span>${t("dispWho")}</span>` : ""}${isD ? `<button class="daybtn" data-act="dayMenu" aria-haspopup="dialog">${I.cal}${fmtDay(START)} <span aria-hidden="true">▾</span></button>` : `<span>${fmtDay(START)}</span>`}<span>${fmtT(now())}</span>${live}</div></div>
-    ${isD ? `<button class="rainbtn newjob" data-act="newJob" title="${t("nj")} (N)">+ ${t("nj")}<kbd>N</kbd></button>` : `<button class="iconbtn" data-act="oGroup" data-k="settings">${I.gear}${t("openSettings")}</button>`}</div>`;
+  let h = `<div class="o-head"><div class="t"><h1>${t("ownerCo")}</h1><div class="who2">${isD ? `<span>${t("dispWho")}</span>` : ""}${isD && S.mode !== "finance" ? `<button class="daybtn" data-act="dayMenu" aria-haspopup="dialog">${I.cal}${fmtDay(START)} <span aria-hidden="true">▾</span></button>` : `<span>${fmtDay(START)}</span>`}<span>${fmtT(now())}</span>${live}</div></div>
+    ${isD && S.mode !== "finance" ? `<button class="rainbtn newjob" data-act="newJob" title="${t("nj")} (N)">+ ${t("nj")}<kbd>N</kbd></button>` : isD ? "" : `<button class="iconbtn" data-act="oGroup" data-k="settings">${I.gear}${t("openSettings")}</button>`}</div>`;
   if (S.rain) h += `<div class="banner rain">${I.rain.replace("<svg", '<svg width="24" height="24"')}<div><b>${t("rainDay")}</b>${t("rainCrewTxt", { d: fmtDay(S.rain.to) })}</div><button data-act="rainUndo">${t("rainUndo")}</button></div>`;
-  const side = `<nav class="oside" aria-label="Pages">${groups.map((g) => `<button class="g" data-act="oGroup" data-k="${g}" aria-current="${grp === g && GROUPS[g].length === 1}">${t("g" + Cap(g))}${cnt(g)}</button>${GROUPS[g].length > 1 ? GROUPS[g].map((k) => `<button class="s" data-act="oTab" data-k="${k}" aria-current="${S.ownerTab === k}">${subLbl(k)}</button>`).join("") : ""}`).join("")}<button class="keys" data-act="keys">${t("kShort")} <kbd>?</kbd></button></nav>`;
+  const side = `<nav class="oside" aria-label="Pages">${groups.map((g) => `<button class="g" data-act="oGroup" data-k="${g}" aria-current="${grp === g && subsOf(g).length === 1}">${t("g" + Cap(g))}${cnt(g)}</button>${subsOf(g).length > 1 ? subsOf(g).map((k) => `<button class="s" data-act="oTab" data-k="${k}" aria-current="${S.ownerTab === k}">${subLbl(k)}</button>`).join("") : ""}`).join("")}<button class="keys" data-act="keys">${t("kShort")} <kbd>?</kbd></button></nav>`;
   const topGroups = groups.filter((g) => !(g === "settings" && grp !== "settings"));
   let top = `<div class="topnav"><div class="o-tabs" role="group">${topGroups.map((g) => `<button data-act="oGroup" data-k="${g}" aria-pressed="${grp === g}">${t("g" + Cap(g))}${cnt(g)}</button>`).join("")}</div>`;
-  if (GROUPS[grp].length > 1) top += `<div class="subtabs" role="group">${GROUPS[grp].map((k) => `<button data-act="oTab" data-k="${k}" aria-pressed="${S.ownerTab === k}">${subLbl(k)}</button>`).join("")}</div>`;
+  if (subsOf(grp).length > 1) top += `<div class="subtabs" role="group">${subsOf(grp).map((k) => `<button data-act="oTab" data-k="${k}" aria-pressed="${S.ownerTab === k}">${subLbl(k)}</button>`).join("")}</div>`;
   top += `</div>`;
   const tab = S.ownerTab;
   let m = top;
@@ -1775,6 +1880,8 @@ function renderOwner() {
   if (tab === "overview" && !isD) m += ownerOverview();
   if (tab === "costs" && !isD) m += ownerCosts();
   if (tab === "email" && !isD) m += ownerEmail();
+  if (tab === "customers" && !isD) m += ownerCustomers();
+  if (tab === "connect" && !isD) m += ownerConnect();
   h += `<div class="oshell">${side}<div class="omain">${m}</div></div><p class="foot">${t("sample")}</p>`;
   el.innerHTML = h;
   afterRender();
@@ -1786,6 +1893,8 @@ function afterRender() {
 }
 function mapLegend() {
   const f = S.focusCrew;
+  const chips = `<div class="mapchips" role="group" aria-label="${t("map")}"><button data-act="focusCrew" data-c="" aria-pressed="${!f}">${t("showAll")}</button>${CREWS.map((c) => `<button data-act="focusCrew" data-c="${c}" aria-pressed="${f === c}"><i style="background:var(--${c})"></i>${t(c + "n")}</button>`).join("")}</div>`;
+  if (true) return chips + (f ? `<div class="focusbar"><span>${t("showing", { c: t(f + "n") })} · ${S.trucks[f].n}</span></div>` : "");
   return `<div class="legend">${crewSummary().map((c) => `<span><i style="background:var(${c.color})"></i>${t(c.id + "n")}</span>`).join("")}<span><i style="background:var(--ink);border-radius:3px"></i>${t("yard")}</span></div>${f ? `<div class="focusbar"><span>${t("showing", { c: t(f + "n") })}</span><button class="small-btn" data-act="focusCrew" data-c="">${t("showAll")}</button></div>` : ""}`;
 }
 function gpsTxt(id) {
@@ -1804,7 +1913,13 @@ function teamRows() {
     const frac = c.total ? c.done / c.total : 0, exp = behind ? Math.min(1, (c.done + c.late / 40) / c.total) : frac;
     const status = behind ? `<span class="chip bad">${t("behind", { m: c.late })}</span>` : `<span class="okt">${t("onTrack")}</span>`;
     const gps = gpsTxt(c.id);
-    return `<button class="crewrow${S.focusCrew === c.id ? " sel" : ""}" data-act="focusCrew" data-c="${c.id}" aria-pressed="${S.focusCrew === c.id}"><i style="background:var(${c.color})">${c.id.slice(1)}</i><div style="min-width:0"><b>${t(c.id + "n")}</b><div class="st">${esc(st)}</div><div class="ppl">${c.ppl}</div><div class="ppl" style="margin-top:4px">${status}${gps ? " " + gps : ""}</div><div class="pbar" title="${t("jobs", { d: c.done, n: c.total })}"><span style="width:${frac * 100}%"></span>${behind ? `<b style="left:${exp * 100}%"></b>` : ""}</div></div><div class="r">${S.view === "dispatch" ? "" : `<strong class="num">${money(c.rev)}</strong>`}${t("jobs", { d: c.done, n: c.total })}</div></button>`;
+    const mow = S.mowers.filter((m) => m.crew === c.id).map((m) => m.n.split(" · ")[0]).join(", ");
+    return `<button class="crewblock${S.focusCrew === c.id ? " sel" : ""}" data-act="focusCrew" data-c="${c.id}" aria-pressed="${S.focusCrew === c.id}">
+      <span class="cb-h"><i style="background:var(${c.color})">${c.id.slice(1)}</i><b>${t(c.id + "n")}</b><span class="cb-eq">${S.trucks[c.id].n}${mow ? " · " + mow : ""}</span></span>
+      <span class="cb-ppl">${c.ppl.split(" · ").map((n) => `<span>${n}</span>`).join("")}</span>
+      <span class="cb-st">${I.truck.replace("<svg", '<svg width="16" height="16"')}${esc(st)}</span>
+      <span class="cb-row">${status}${gps ? " " + gps : ""}<span class="cb-r">${S.view === "dispatch" ? "" : `<b class="num">${money(c.rev)}</b> · `}${t("jobs", { d: c.done, n: c.total })}</span></span>
+      <span class="pbar"><span style="width:${frac * 100}%"></span>${behind ? `<b style="left:${exp * 100}%"></b>` : ""}</span></button>`;
   }).join("");
 }
 const NOWK = ["k_late", "k_comp", "k_pw", "k_loc"], LATERK = ["k_lead"];
@@ -1855,15 +1970,19 @@ const PEOPLE = [
 function ownerHours() {
   const days = ["mon", "tue", "wed", "thu", "fri", "sat"];
   const onsite = { c1: 74, c2: 78, c3: 69, c4: 72 };
+  const drv = { c1: 17, c2: 15, c3: 22, c4: 18 };
+  let lastC = null;
   let rows = PEOPLE.map(([n, c, d]) => {
     const tot = d.reduce((a, b) => a + b, 0);
+    const head = c !== lastC ? `<tr class="crewhead"><td colspan="${days.length + 6}"><i style="background:var(--${c})"></i>${t(c + "n")} <span class="muted">· ${S.trucks[c].n}</span></td></tr>` : ""; lastC = c;
+    const on = tot * onsite[c] / 100, dr = tot * drv[c] / 100, other = tot - on - dr, rate = S.rates[n] || 25;
     const fl = [];
     if (n === "Priya S.") fl.push(t("missedOut"));
     if (tot > 44) fl.push("OT " + (tot - 44).toFixed(1) + " h");
-    return `<tr><td><i style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--${c});margin-right:6px"></i>${n}</td>${d.map((x) => `<td class="n">${x ? x.toFixed(1) : "—"}</td>`).join("")}<td class="n"><b>${tot.toFixed(1)}</b></td><td class="n">${onsite[c]}%</td><td class="${fl.length ? "flag" : ""}">${fl.join(" · ")}</td></tr>`;
+    return `${head}<tr><td style="padding-left:18px">${n}</td>${d.map((x) => `<td class="n">${x ? x.toFixed(1) : "—"}</td>`).join("")}<td class="n"><b>${tot.toFixed(1)}</b></td><td class="n">${on.toFixed(1)}</td><td class="n">${dr.toFixed(1)}</td><td class="n">${other.toFixed(1)}</td><td class="n">${money(tot * rate)}</td><td class="${fl.length ? "flag" : ""}">${fl.join(" · ")}</td></tr>`;
   }).join("");
   const cs = crewSummary();
-  return `<div class="panel"><h2>${t("hoursH")} <small>${t("hoursSub")}</small></h2><div class="tbl-wrap"><table><thead><tr><th>${t("person")}</th>${days.map((d) => `<th class="n">${t(d)}</th>`).join("")}<th class="n">${t("total")}</th><th class="n">${t("onsitePct")}</th><th>${t("flags")}</th></tr></thead><tbody>${rows}</tbody></table></div>
+  return `<div class="panel"><h2>${t("hoursH")} <small>${t("hoursSub")}</small></h2><div class="tbl-wrap"><table><thead><tr><th>${t("person")}</th>${days.map((d) => `<th class="n">${t(d)}</th>`).join("")}<th class="n">${t("total")}</th><th class="n">${t("payOn")}</th><th class="n">${t("payDrive")}</th><th class="n">${t("payOther")}</th><th class="n">${t("payCost")}</th><th>${t("flags")}</th></tr></thead><tbody>${rows}</tbody></table></div>
     <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="small-btn pri" data-act="payDl">${t("payDl")}</button><button class="small-btn" data-act="csv">${t("copyCsv")}</button></div></div>
     <div class="panel"><h2>${t("brkH")}</h2><div class="tbl-wrap"><table><thead><tr><th>${t("crew")}</th><th>${t("clockInAt")}</th><th class="n">${t("breaksCol")}</th><th class="n">${t("lunchCol")}</th></tr></thead><tbody>
       <tr><td>${t("c1n")}</td><td>6:58 a.m.</td><td class="n">2 · 24 min</td><td class="n">—</td></tr>
@@ -2116,8 +2235,11 @@ function ownerProps() {
 function ownerTexts() {
   return `<div class="panel"><h2>${t("textsToday")} <small>${S.texts.length}</small></h2><div class="sms-log">${S.texts.map((x) => `<div><span><span class="mono muted">${x.at}</span> · ${esc(x.to)} · ${esc(L(x.what))}</span><span class="chip ${x.st === "st_sent" ? "ok" : x.st === "st_held" ? "app" : ""}">${t(x.st)}</span></div>`).join("")}</div></div>`;
 }
-const GROUPS = { today: ["today"], schedule: ["assign", "map", "props"], money: ["overview", "hours", "fuel"], team: ["team"], records: ["quality", "records", "texts"], settings: ["costs", "email"] };
-const officeGroups = () => (S.view === "dispatch" ? ["today", "schedule", "team", "records"] : ["today", "money", "team", "records", "settings"]);
+const GROUPS = { today: ["today"], schedule: ["assign", "map", "props"], money: ["overview", "customers", "hours", "fuel"], team: ["team"], records: ["quality", "records", "texts"], settings: ["connect", "costs", "email"] };
+// In "Finance only" mode the screens a CRM already covers are hidden.
+const CRM_TABS = ["assign", "map", "props", "texts", "quality"];
+const subsOf = (g) => GROUPS[g].filter((k) => !(S.mode === "finance" && CRM_TABS.includes(k)));
+const officeGroups = () => (S.view === "dispatch" ? ["today", "schedule", "team", "records"] : ["today", "money", "team", "records", "settings"]).filter((g) => subsOf(g).length);
 const groupOf = (k) => Object.keys(GROUPS).find((g) => GROUPS[g].includes(k));
 const SVC_TASKS = { ns_reg: ["mow", "edge", "trim", "blow"], ns_leaves: ["leaves", "beds", "haul"], ns_aer: ["aerate"], ns_fert: ["fert"], ns_over: ["over"], ns_shrub: ["shrub", "haul"], ns_snow: ["stakes"], j_gutter: ["gutter"], j_sprk: ["sprk"] };
 function doNewJob() {
@@ -2202,7 +2324,7 @@ function fuelTodayTable() {
   return `<table><thead><tr><th>${t("crew")}</th><th class="n">${t("fKm")}</th><th class="n">${t("fDrive")}</th><th class="n">${t("fVisits")}</th><th class="n">${t("fEstL")}</th><th class="n">${t("fEstCost")}</th><th class="n">${t("fPerVisit")}</th><th class="n">${t("fPctRev")}</th><th class="n">${t("fRevKm", { u: isMi() ? "mi" : "km" })}</th></tr></thead><tbody>${rows}
     <tr class="tot"><td>${t("fTotal")}</td><td class="n">${fDist(tk)}</td><td class="n">${hm(Math.round(tdr / 60))}</td><td class="n">${tv}</td><td class="n">${fVol(tL)}</td><td class="n">${money2(tc)}</td><td class="n">${tv ? money2(tc / tv) : "—"}</td><td class="n">${tr ? (tc / tr * 100).toFixed(1) + "%" : "—"}</td><td class="n">${tu ? money2(tr / tu) : "—"}</td></tr></tbody></table>`;
 }
-const money2 = (n) => "$" + n.toFixed(2);
+const money2 = (n) => (n < -0.004 ? "−$" : "$") + Math.abs(n).toFixed(2);
 function ownerFuel() {
   const crews = ["c1", "c2", "c3", "c4"];
   const week = crews.map((c) => {
@@ -2223,10 +2345,13 @@ function ownerFuel() {
   const odo = crews.map((c) => { const g = sum(LW_KM[c]), o = LW_ODO[c]; return `<tr><td>${S.trucks[c].n}</td><td class="n">${fDist(g)}</td><td class="n">${fDist(o)}</td><td class="n">${((g - o) / o * 100).toFixed(1)}%</td></tr>`; }).join("");
   const econRows = crews.map((c) => `<div class="setrow"><label for="ec-${c}">${S.trucks[c].n} · ${t("fEcon")} (${isMi() ? "mpg" : "L/100 km"})</label><input id="ec-${c}" data-truck="${c}" type="number" step="0.1" min="1" value="${isMi() ? (235.215 / S.trucks[c].l100).toFixed(1) : S.trucks[c].l100}"></div>`).join("");
   const rec = S.receipts.length ? `<div class="panel"><h2>${t("fReceiptsToday")}</h2>${S.receipts.map((r) => `<div class="item"><span class="stripe acc"></span><div><div class="k">${r.at} · Truck 12</div><b>${fVol(r.L)} · ${money2(r.amt)}</b><p>${isMi() ? money2(r.amt / Math.max(r.L * 0.264172, 0.1)) + " / gal" : money2(r.amt / Math.max(r.L, 0.1)) + " / L"}</p>${r.photo ? `<img class="thumb" src="${r.photo}" alt="">` : ""}</div></div>`).join("")}</div>` : "";
-  return `<div class="o-grid"><div class="col">
+  return `<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="small-btn pri" data-act="fuelDl" data-k="day">${t("fDlDay")}</button><button class="small-btn" data-act="fuelDl" data-k="week">${t("fDlWeek")}</button></div>
+  ${tripsPanel()}
+  <div class="o-grid"><div class="col">
     <div class="panel"><h2>${t("fToday")}</h2><div class="tbl-wrap" id="fueltoday">${fuelTodayTable()}</div><p class="note-sm">${t("fHowEst")}</p></div>
+    ${odoTodayPanel()}
     <div class="panel"><h2>${t("fWeek")}</h2><div class="tbl-wrap"><table><thead><tr><th>${t("truck")}</th><th class="n">${t("fKm")}</th><th class="n">${t("fEstL")}</th><th class="n">${t("fEstCost")}</th><th class="n">${t("fRecL")}</th><th class="n">${t("fRecCost")}</th><th class="n">${t("fDiff")}</th><th></th></tr></thead><tbody>${week}</tbody></table></div></div>
-    <div class="panel"><h2>${t("fLegs")}</h2><div class="tbl-wrap"><table><thead><tr><th>${t("fLeg")}</th><th class="n">${t("fKm")}</th><th class="n">${t("fEstCost")}</th><th class="n">${t("fVisitPrice")}</th><th class="n">${t("fShare")}</th></tr></thead><tbody>${legs}</tbody></table></div></div>
+    <div class="panel"><h2>${t("fLegsPlan")}</h2><div class="tbl-wrap"><table><thead><tr><th>${t("fLeg")}</th><th class="n">${t("fKm")}</th><th class="n">${t("fEstCost")}</th><th class="n">${t("fVisitPrice")}</th><th class="n">${t("fShare")}</th></tr></thead><tbody>${legs}</tbody></table></div></div>
   </div><div class="col">
     <div class="panel"><h2>${t("fDaily")}</h2><div class="cols">${cols.map((c) => `<div class="c ${c.today ? "today" : ""}"><span class="v">${money(c.v)}</span><div class="bar" style="height:${(c.v / cmax) * 130}px"></div><span>${c.d}</span></div>`).join("")}</div></div>
     ${rec}
@@ -2238,6 +2363,260 @@ function ownerFuel() {
       ${econRows}
       <p class="note-sm">${t("fRetention")}</p></div>
   </div></div>`;
+}
+function simClock(min) { return S.clockAt ? new Date(S.clockAt.getTime() + min * 60000) : now(); }
+const SAMPLE_TRIPS = {
+  c1: [["Yard", "8 Aspen Ave", "7:12", "7:26", 14, 5.8, 31], ["8 Aspen Ave", "17 Aspen Ave", "7:57", "8:01", 4, 0.9, 58], ["17 Aspen Ave", "21 Aspen Ave", "8:59", "9:02", 3, 0.6, 29]],
+  c3: [["Yard", "2 Elm St", "7:20", "7:41", 21, 9.2, 77], ["2 Elm St", "11 Elm St", "8:58", "9:03", 5, 1.4, 33], ["11 Elm St", "88 Willow Dr", "9:36", "9:52", 16, 6.8, 49]],
+  c4: [["Yard", "12 Pine Ct", "7:05", "7:16", 11, 4.9, 36], ["12 Pine Ct", "8 Oak Ln", "7:52", "7:58", 6, 2.2, 27], ["8 Oak Ln", "5 Oak Ln", "8:25", "8:28", 3, 0.7, 48]],
+};
+function tripRows() {
+  const rows = [];
+  S.legs.forEach((l) => { const st = S.stops.find((x) => x.id === l.id); rows.push(["c2", l.from, l.to, fmtT(l.left), fmtT(l.arr), l.min, l.km, st && st.status === "done" ? st.mins : st && st.status === "onsite" ? S.simMin - st.simArr : null]); });
+  for (const [c, list] of Object.entries(SAMPLE_TRIPS)) list.forEach(([a, b, lf, ar, mn, km, site]) => rows.push([c, a, b, lf + " a.m.", ar + " a.m.", mn, km, site]));
+  return rows;
+}
+function tripsPanel() {
+  const rows = tripRows();
+  return `<div class="panel"><h2>${t("trH")}</h2><p class="note-sm" style="margin:-4px 0 10px">${t("trP")}</p>${S.legs.length ? "" : `<p class="note-sm" style="margin:0 0 10px"><b>${t("trNone")}</b></p>`}
+    <div class="tbl-wrap"><table><thead><tr><th>${t("trCrew")}</th><th>${t("trLeg")}</th><th class="n">${t("trLeft")}</th><th class="n">${t("trArr")}</th><th class="n">${t("trDrive")}</th><th class="n">${t("trKm")}</th><th class="n">${t("trFuel")}</th><th class="n">${t("trSite")}</th></tr></thead><tbody>
+    ${rows.map(([c, a, b, lf, ar, mn, km, site]) => `<tr><td><i class="cdot" style="background:var(--${c})"></i>${t(c + "n")}</td><td>${esc(a)} → <b>${esc(b)}</b></td><td class="n">${lf}</td><td class="n">${ar}</td><td class="n">${mn} min</td><td class="n">${fDist(km)}</td><td class="n">${money2((km * S.trucks[c].l100) / 100 * S.price)}</td><td class="n">${site == null ? "—" : Math.round(site) + " min"}</td></tr>`).join("")}</tbody></table></div></div>`;
+}
+function odoTodayPanel() {
+  const dv = S.dev.c2;
+  const rows = [["c1", 61752, 61811, 58.2, "yesterday"], ["c3", 102385, 102455, 61.0, "yesterday"], ["c4", 61175, 61230, 54.6, "yesterday"]];
+  const c2 = S.odoStart != null ? ["c2", S.odoStart, S.odoEnd, dv.km, "today"] : null;
+  const all = [...(c2 ? [c2] : []), ...rows];
+  return `<div class="panel"><h2>${t("odH")}</h2><p class="note-sm" style="margin:-4px 0 10px">${t("odP")}</p><div class="tbl-wrap"><table><thead><tr><th>${t("truck")}</th><th>${t("chDate")}</th><th class="n">${t("odStart")}</th><th class="n">${t("odEnd")}</th><th class="n">${t("odKm")}</th><th class="n">${t("odGps")}</th><th class="n">${t("odDiff")}</th></tr></thead><tbody>
+    ${all.map(([c, a, b, g, day]) => { const ok = b != null, ok2 = ok && b - a > 0; const odoKm = ok2 ? b - a : null; const gap = odoKm ? (odoKm - g) / odoKm : null;
+      return `<tr><td>${S.trucks[c].n} <span class="muted">· ${t(c + "n")}</span></td><td>${t(day)}</td><td class="n">${Math.round(a).toLocaleString("en-CA")}</td><td class="n">${ok ? Math.round(b).toLocaleString("en-CA") : "—"}</td><td class="n">${odoKm != null ? fDist(odoKm) : "—"}</td><td class="n">${fDist(g)}</td><td class="n">${gap == null ? `<span class="muted" title="${t("odWait")}">—</span>` : Math.abs(gap) > 0.1 ? `<span class="chip bad">${t("odCheck")} ${(gap * 100).toFixed(0)}%</span>` : `<span class="okt">${t("odOk")} · ${(gap * 100).toFixed(1)}%</span>`}</td></tr>`; }).join("")}</tbody></table></div></div>`;
+}
+function fuelCsv(kind) {
+  const head = ["Date", "Crew", "Truck", "GPS km", "Truck fuel (L, est.)", "Mower hours", "Mower fuel (L, est.)", "Fuel cost ($)", "Fuel price ($/L)", "Receipts ($)"];
+  const mowFor = (c) => S.mowers.filter((m) => m.crew === c);
+  if (kind === "day") {
+    return [head, ...CREWS.map((c) => { const km = S.dev[c].km, tl = (km * S.trucks[c].l100) / 100, mh = mowFor(c).reduce((a, m) => a + m.h, 0), ml = mowFor(c).reduce((a, m) => a + m.h * m.lph, 0);
+      return [isoDate(START), T.en[c + "n"], S.trucks[c].n, km.toFixed(1), tl.toFixed(1), mh.toFixed(1), ml.toFixed(1), ((tl + ml) * S.price).toFixed(2), S.price.toFixed(3), c === "c2" ? S.receipts.reduce((a, r) => a + r.amt, 0).toFixed(2) : ""]; })];
+  }
+  const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], mon = new Date(START); mon.setDate(mon.getDate() - ((mon.getDay() + 6) % 7) - 7);
+  const out = [head];
+  days.forEach((_, i) => { const d = new Date(mon); d.setDate(mon.getDate() + i); CREWS.forEach((c) => { const km = LW_KM[c][i], tl = (km * S.trucks[c].l100) / 100, mh = km ? mowFor(c).reduce((a, m) => a + m.h, 0) : 0, ml = km ? mowFor(c).reduce((a, m) => a + m.h * m.lph, 0) : 0; out.push([isoDate(d), T.en[c + "n"], S.trucks[c].n, km.toFixed(1), tl.toFixed(1), mh.toFixed(1), ml.toFixed(1), ((tl + ml) * S.price).toFixed(2), S.price.toFixed(3), ""]); }); });
+  return out;
+}
+
+/* ═══════════ customers: what each one brings in ═══════════ */
+// [name, address, area, crew, plan, visits per week, price, min on site, min to drive there, km to drive there, materials $]
+const CUSTS = [
+  ["Hendricks", "12 Maple Grove Rd", "Maple Grove", "c2", "weekly", 1, 55, 32, 6, 2.4, 0], ["Okafor", "30 Maple Grove Rd", "Maple Grove", "c2", "weekly", 1, 55, 29, 3, 0.8, 0],
+  ["Chen", "14 Maple Grove Rd", "Maple Grove", "c2", "weekly", 1, 60, 30, 2, 0.6, 0], ["Tremblay", "7 Birch Cres", "Birch Crescent", "c2", "fall", 0.5, 145, 62, 7, 2.9, 3],
+  ["Nguyen", "19 Birch Cres", "Birch Crescent", "c2", "weekly", 1, 120, 41, 4, 1.3, 12], ["Silva", "4 Cedar Ct", "Cedar Court", "c2", "biweekly", 0.5, 55, 52, 6, 2.1, 0],
+  ["Patel", "22 Cedar Ct", "Cedar Court", "c2", "fall", 0.4, 160, 58, 3, 0.9, 4], ["MacLeod", "90 Spruce St", "Spruce Street", "c2", "biweekly", 0.5, 55, 31, 8, 3.3, 0],
+  ["Dubois", "115 Spruce St", "Spruce Street", "c2", "weekly", 1, 105, 38, 5, 1.6, 9], ["Kowalski", "41 Spruce St", "Spruce Street", "c1", "weekly", 1, 55, 58, 9, 3.6, 0],
+  ["Wong", "63 Aspen Ave", "Aspen Avenue", "c1", "weekly", 1, 95, 44, 4, 1.2, 0], ["Singh", "40 Aspen Ave", "Aspen Avenue", "c1", "weekly", 1, 70, 33, 3, 0.9, 0],
+  ["Reyes", "88 Willow Dr", "Elm & Willow", "c3", "weekly", 1, 60, 49, 14, 6.8, 0], ["Roy", "3 Elm St", "Elm & Willow", "c3", "weekly", 1, 65, 35, 5, 1.8, 0],
+  ["Fraser", "5 Oak Ln", "Oak Lane", "c4", "weekly", 1, 85, 48, 6, 2.2, 0], ["Leblanc", "12 Pine Ct", "Oak Lane", "c4", "biweekly", 0.5, 70, 36, 11, 4.9, 0],
+  ["Haddad", "301 Lakeshore Rd", "Lakeshore", "c2", "weekly", 1, 140, 61, 16, 7.4, 0], ["Northgate Plaza", "Northgate Plaza lot", "Lakeshore", "c4", "weekly", 1, 320, 95, 12, 5.2, 15],
+];
+function custData() {
+  const k = S.finKind, d = finData();
+  const avgRate = Object.values(S.rates).reduce((a, b) => a + b, 0) / Object.keys(S.rates).length;
+  const visitsFor = (vpw) => (k === "day" ? (vpw >= 1 ? 1 : 0) : k === "week" ? Math.max(vpw >= 0.5 ? 1 : 0, Math.round(vpw)) : k === "month" ? Math.round(vpw * 4.3) : Math.round(vpw * 30));
+  const list = CUSTS.map(([n, addr, area, crew, plan, vpw, price, on, dr, km, mat], i) => {
+    const ppl = crew === "c3" ? 3 : 2, mow = S.mowers.filter((m) => m.crew === crew), lph = mow.length ? Math.max(...mow.map((m) => m.lph)) : 0;
+    const labour = ((on + dr) / 60) * ppl * avgRate, fuel = (km * S.trucks[crew].l100) / 100 * S.price + (on / 60) * lph * S.price * 0.7;
+    const maint = km * S.maintKm + (on / 60) * S.maintMowerH, cost = labour + fuel + maint + mat;
+    const v = visitsFor(vpw);
+    return { i, n, addr, area, crew, plan, price, on, dr, km, v, rev: v * price, cost: v * cost, perVisitCost: cost, labour: v * labour, fuel: v * fuel, maint: v * maint, mat: v * mat, onMin: v * on, drMin: v * dr };
+  });
+  const totRev = list.reduce((a, c) => a + c.rev, 0);
+  // fixed costs follow the revenue share of the whole business, so a $2,000 customer carries 10× the share of a $200 one
+  const fixRate = d.revenue ? d.fixedIn / d.revenue : 0;
+  list.forEach((c) => { c.profit = c.rev - c.cost; c.fix = c.rev * fixRate; c.net = c.profit - c.fix; c.perH = c.onMin ? (c.net / c.onMin) * 60 : 0; });
+  const avgH = list.reduce((a, c) => a + c.net, 0) / Math.max(1, list.reduce((a, c) => a + c.onMin, 0)) * 60;
+  return { list, totRev, avgH, fixRate };
+}
+function ownerCustomers() {
+  const { list, avgH } = custData();
+  const q = S.custQ.trim().toLowerCase();
+  let rows = list.filter((c) => !q || (c.n + " " + c.addr + " " + c.area).toLowerCase().includes(q));
+  const showFix = S.fixPct > 0;
+  const hdr = `${periodBar()}<div class="phd" style="margin:0"><div class="o-tabs" role="group" style="margin:0"><button data-act="custView" data-k="cust" aria-pressed="${S.custView === "cust"}">${t("cvCust")}</button><button data-act="custView" data-k="area" aria-pressed="${S.custView === "area"}">${t("cvArea")}</button></div>
+    <span class="muted" style="font-size:.9rem">${t("fixH")}: <b>${fixLabel()}</b></span></div>`;
+  if (S.custView === "area") {
+    const A = {};
+    list.forEach((c) => { const a = (A[c.area] = A[c.area] || { area: c.area, n: 0, v: 0, rev: 0, net: 0, on: 0, dr: 0 }); a.n++; a.v += c.v; a.rev += c.rev; a.net += c.net; a.on += c.onMin; a.dr += c.drMin; });
+    const areas = Object.values(A).sort((x, y) => (S.custSort === "high" ? y.net - x.net : S.custSort === "rev" ? y.rev - x.rev : x.net - y.net));
+    return hdr + `<div class="panel"><div class="phd"><h2>${t("cvArea")}</h2>${sortChips()}</div><div class="tbl-wrap"><table><thead><tr><th>${t("cArea")}</th><th class="n">${t("cCustomers")}</th><th class="n">${t("cVisits")}</th><th class="n">${t("fRevenue")}</th><th class="n">${showFix ? t("cTrue") : t("cProfit")}</th><th class="n">${t("cPerHour")}</th><th class="n">${t("cDriveShare")}</th></tr></thead><tbody>
+      ${areas.map((a) => `<tr class="${a.net < 0 ? "loss" : ""}"><td><b>${esc(a.area)}</b></td><td class="n">${a.n}</td><td class="n">${a.v}</td><td class="n">${money(a.rev)}</td><td class="n pf">${money(a.net)}</td><td class="n">${a.on ? money((a.net / a.on) * 60) : "–"}</td><td class="n ${a.dr / Math.max(1, a.dr + a.on) > 0.2 ? "flag" : ""}">${Math.round((a.dr / Math.max(1, a.dr + a.on)) * 100)}%</td></tr>`).join("")}</tbody></table></div><p class="note-sm">${t("cSample")}</p></div>`;
+  }
+  rows = rows.sort((x, y) => (S.custSort === "high" ? y.net - x.net : S.custSort === "rev" ? y.rev - x.rev : x.net - y.net));
+  return hdr + `<div class="panel"><div class="phd"><h2>${t("cvCust")} <small class="muted" style="font-family:var(--font-body);font-size:.85rem;font-weight:500">${rows.length}</small></h2><div class="ph-r"><label class="sr" for="cust-q">${t("csSearch")}</label><input id="cust-q" type="search" placeholder="${t("csSearch")}" value="${esc(S.custQ)}">${sortChips()}</div></div>
+    <div class="tbl-wrap hide-sm"><table><thead><tr><th>${t("cCust")}</th><th class="n">${t("cVisits")}</th><th class="n">${t("fRevenue")}</th><th class="n">${t("cOnsite")}</th><th class="n">${t("cDrive")}</th><th class="n">${t("cProfit")}</th>${showFix ? `<th class="n">${t("cFixShare")}</th><th class="n">${t("cTrue")}</th>` : ""}<th class="n">${t("cPerHour")}</th></tr></thead><tbody id="cust-rows">
+    ${rows.map((c) => `<tr class="${c.net < 0 ? "loss" : ""}"><td><button class="cobtn" data-act="custOpen" data-i="${c.i}" aria-label="${t("cOpen", { n: esc(c.n) })}">${esc(c.n)}</button><div class="muted" style="font-size:.8rem"><i class="cdot" style="background:var(--${c.crew})"></i>${esc(c.addr)} · ${esc(c.area)}</div></td><td class="n">${c.v}</td><td class="n">${money(c.rev)}</td><td class="n">${(c.onMin / 60).toFixed(1)} h</td><td class="n">${(c.drMin / 60).toFixed(1)} h</td><td class="n ${showFix ? "" : "pf"}">${money(c.profit)}</td>${showFix ? `<td class="n muted">${money(c.fix)}</td><td class="n pf">${money(c.net)}</td>` : ""}<td class="n ${c.v && c.perH < avgH * 0.6 ? "flag" : ""}">${c.v ? money(c.perH) : "–"}</td></tr>`).join("")}</tbody></table></div>
+    <div class="ccards show-sm">${rows.map((c) => `<button class="ccard ${c.net < 0 ? "loss" : ""}" data-act="custOpen" data-i="${c.i}" style="text-align:left;border:0;width:100%"><b>${esc(c.n)}</b><span class="big2">${money(c.net)}</span><span>${esc(c.addr)} · ${c.v} ${t("cVisits").toLowerCase()}</span><span style="text-align:right">${c.v ? money(c.perH) + "/h" : "–"}</span></button>`).join("")}</div>
+    <p class="note-sm">${t("cSample")}</p></div>`;
+}
+function sortChips() {
+  return `<div class="o-tabs" role="group" style="margin:0">${[["low", "csLow"], ["high", "csHigh"], ["rev", "csRev"]].map(([k, l]) => `<button data-act="custSort" data-k="${k}" aria-pressed="${S.custSort === k}">${t(l)}</button>`).join("")}</div>`;
+}
+function doCustomer(i) {
+  const { list, avgH } = custData(), c = list.find((x) => x.i === i); if (!c) return;
+  const season = (() => { const was = S.finKind; S.finKind = "season"; const x = custData().list.find((y) => y.i === i); S.finKind = was; return x; })();
+  const r = rnd(i + 7), hist = [];
+  const step = c.plan === "biweekly" ? 14 : c.plan === "weekly" ? 7 : 21;
+  for (let k = 0; k < 8; k++) {
+    const d = new Date(START); d.setDate(d.getDate() - 1 - k * step);
+    const on = Math.round(c.on * (0.85 + r() * 0.35)), dr = Math.round(c.dr * (0.8 + r() * 0.5)), cost = c.perVisitCost * ((on + dr) / (c.on + c.dr));
+    hist.push([d, c.plan === "fall" ? t("leaves") : t("mow"), c.price, on, dr, cost, c.price - cost]);
+  }
+  const perH = season.onMin ? (season.net / season.onMin) * 60 : 0;
+  const target = c.perVisitCost + (avgH * c.on) / 60 + (season.fix / Math.max(1, season.v));
+  const advice = perH < avgH * 0.85 ? t("chRaise", { a: money(perH), b: money(avgH), p: money(Math.ceil(target / 5) * 5) }) : t("chOk", { a: money(perH), b: money(avgH) });
+  sheet(`<h2>${esc(c.n)}</h2><p class="muted" style="margin:-6px 0 10px">${esc(c.addr)} · ${esc(c.area)} · <i class="cdot" style="background:var(--${c.crew})"></i>${t(c.crew + "n")} · ${t(c.plan === "fall" ? "fall" : c.plan)} · ${money(c.price)} ${t("chPer")}${S.conn.jobber ? " · " + t("chFrom", { s: "Jobber" }) : ""}</p>
+    <div class="kv" style="margin-bottom:10px"><div><b>${money(season.rev)}</b><span>${t("chSeason")} · ${t("fRevenue")}</span></div><div><b>${money(season.net)}</b><span>${netTitle()}</span></div><div><b>${season.v ? money(season.net / season.v) : "–"}</b><span>${t("cPerVisit")}</span></div><div><b>${money(perH)}</b><span>${t("cPerHour")}</span></div></div>
+    <p class="plain small" style="margin:0 0 12px">${advice}</p>
+    <h3 style="margin:0 0 6px">${t("chH")}</h3><div class="tbl-wrap"><table><thead><tr><th>${t("chDate")}</th><th>${t("chSvc")}</th><th class="n">${t("chPrice")}</th><th class="n">${t("chOn")}</th><th class="n">${t("chDr")}</th><th class="n">${t("chCost")}</th><th class="n">${t("chProf")}</th></tr></thead><tbody>
+    ${hist.map(([d, sv, p, on, dr, co, pr]) => `<tr class="${pr < 0 ? "loss" : ""}"><td>${fmtDay(d)}</td><td>${sv}</td><td class="n">${money(p)}</td><td class="n">${on} min</td><td class="n">${dr} min</td><td class="n">${money2(co)}</td><td class="n pf">${money2(pr)}</td></tr>`).join("")}</tbody></table></div>
+    <div class="sheet-acts" style="grid-template-columns:1fr"><button data-act="closeSheet">${t("cancel")}</button></div>`, (sh) => { sh.style.maxWidth = "760px"; });
+}
+
+/* ═══════════ trucks and mowers ═══════════ */
+function equipPanel() {
+  return `<div class="panel"><h2>${t("eqH")}</h2><p class="note-sm" style="margin:0 0 8px">${t("eqP")}</p>
+    ${CREWS.map((c) => { const mw = S.mowers.filter((m) => m.crew === c), mh = mw.reduce((a, m) => a + m.h, 0), ml = mw.reduce((a, m) => a + m.h * m.lph, 0);
+      return `<div class="eqcrew"><div class="eqhead"><i style="background:var(--${c})">${c.slice(1)}</i><b>${t(c + "n")}</b></div>
+      <div class="setrow"><label for="eqt-${c}">${t("eqTruck")}</label><select id="eqt-${c}" data-eqtruck="${c}">${CREWS.map((o) => `<option value="${o}" ${o === c ? "selected" : ""}>${S.trucks[o].n}${o !== c ? " (" + t(o + "n") + ")" : ""}</option>`).join("")}</select></div>
+      <div class="eqm"><span class="muted">${t("eqMowers")}</span>${mw.map((m) => `<span class="nchip">${esc(m.n)} · ${m.lph} ${t("eqLph")}</span>`).join("") || `<span class="muted">${t("eqNone")}</span>`}</div>
+      ${mw.length ? `<p class="note-sm" style="margin:4px 0 0">${t("mowFuel")}: ${t("mowH", { h: mh.toFixed(1), l: (ml / Math.max(mh, 0.1)).toFixed(1) })} = ${fVol(ml)} ≈ ${money2(ml * S.price)}</p>` : ""}</div>`; }).join("")}
+    <h3 style="margin:12px 0 6px">${t("eqMowers")}</h3>
+    ${S.mowers.map((m) => `<div class="setrow"><label for="eqm-${m.id}">${esc(m.n)}</label><select id="eqm-${m.id}" data-eqmower="${m.id}"><option value="">${t("eqSpare")}</option>${CREWS.map((c) => `<option value="${c}" ${m.crew === c ? "selected" : ""}>${t(c + "n")}</option>`).join("")}</select></div>`).join("")}
+    <h3 style="margin:12px 0 6px">${t("eqMaint")}</h3>
+    <div class="setrow"><label for="mt-km">${t("eqMaintKm")}</label><input id="mt-km" type="number" step="0.01" min="0" value="${S.maintKm}"></div>
+    <div class="setrow"><label for="mt-h">${t("eqMaintH")}</label><input id="mt-h" type="number" step="0.1" min="0" value="${S.maintMowerH}"></div></div>`;
+}
+
+/* ═══════════ connections ═══════════ */
+const SAMPLE_CSV = "Date,Client,Service address,Line item,Total,Assigned to\n2026-10-26,Hendricks,12 Maple Grove Rd,Weekly mow,55.00,Crew 2\n2026-10-26,Okafor,30 Maple Grove Rd,Weekly mow,55.00,Crew 2\n2026-10-26,Wong,63 Aspen Ave,Weekly mow + edging,95.00,Crew 1\n2026-10-27,Nguyen,19 Birch Cres,Weekly mow + fertilizer,120.00,Crew 2\n2026-10-27,Reyes,88 Willow Dr,Weekly mow,60.00,Crew 3\n2026-10-28,Northgate Plaza,Northgate Plaza lot,Commercial mow,320.00,Crew 4\n2026-10-28,Fraser,5 Oak Ln,Weekly mow,85.00,Crew 4";
+function parseCsv(text) {
+  const rows = []; let row = [], cur = "", q = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (q) { if (ch === '"' && text[i + 1] === '"') { cur += '"'; i++; } else if (ch === '"') q = false; else cur += ch; }
+    else if (ch === '"') q = true; else if (ch === ",") { row.push(cur); cur = ""; } else if (ch === "\n" || ch === "\r") { if (ch === "\r" && text[i + 1] === "\n") i++; row.push(cur); cur = ""; if (row.some((x) => x.trim())) rows.push(row); row = []; } else cur += ch;
+  }
+  row.push(cur); if (row.some((x) => x.trim())) rows.push(row);
+  return rows;
+}
+function guessMap(head) {
+  const g = (re) => head.findIndex((h) => re.test(h.toLowerCase()));
+  return { date: g(/date|day|completed/), customer: g(/client|customer|name/), address: g(/address|property|location/), service: g(/service|item|job|description/), price: g(/total|price|amount|revenue/), crew: g(/crew|team|assigned|employee/) };
+}
+function importPanel() {
+  const R = S.impRows;
+  let h = `<div class="panel"><h2>${t("cnSheet")}</h2><p class="note-sm" style="margin:0 0 10px">${t("cnSheetP")}</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><label class="small-btn" for="imp-file" style="cursor:pointer">${t("cnFile")}</label><input id="imp-file" type="file" accept=".csv,text/csv" class="sr"><button class="small-btn" data-act="impSample">${t("cnSample")}</button></div>
+    ${S.conn.sheet ? `<p class="note-sm">${t("cnLast", { n: S.conn.sheet.n, f: esc(S.conn.sheet.f) })}</p>` : ""}`;
+  if (R && R.length > 1) {
+    const head = R[0], map = S.impMap || (S.impMap = guessMap(head));
+    h += `<h3 style="margin:14px 0 6px">${t("cnMap")}</h3><div class="impmap">${Object.keys(map).map((k) => `<div class="setrow"><label for="im-${k}">${t("impF")[k]}</label><select id="im-${k}" data-imp="${k}"><option value="-1">${t("cnSkip")}</option>${head.map((hh, i) => `<option value="${i}" ${map[k] === i ? "selected" : ""}>${esc(hh)}</option>`).join("")}</select></div>`).join("")}</div>
+      <h3 style="margin:14px 0 6px">${t("cnPreview")}</h3><div class="tbl-wrap"><table><thead><tr>${Object.keys(map).map((k) => `<th>${t("impF")[k]}</th>`).join("")}</tr></thead><tbody>${R.slice(1, 6).map((r) => `<tr>${Object.keys(map).map((k) => `<td>${map[k] >= 0 ? esc(r[map[k]] || "") : "—"}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
+      <button class="small-btn pri" data-act="impGo" style="margin-top:10px;min-height:48px">${t("cnImport", { n: R.length - 1 })}</button>`;
+  }
+  return h + `</div>`;
+}
+function ownerConnect() {
+  const J = S.conn;
+  return `<div class="panel"><h2>${t("mdH")}</h2><div class="opts" style="margin-top:6px">
+      <button class="opt" data-act="mode" data-k="finance" aria-pressed="${S.mode === "finance"}"><span><b>${t("mdFin")}</b><small>${t("mdFinP")}</small></span></button>
+      <button class="opt" data-act="mode" data-k="full" aria-pressed="${S.mode === "full"}"><span><b>${t("mdAll")}</b><small>${t("mdAllP")}</small></span></button></div></div>
+  <div class="o-grid"><div class="col">
+    <div class="panel conn"><div class="phd"><h2>${t("cnJobber")}</h2>${J.jobber ? `<span class="chip ok">${t("cnConnected", { t: J.jobberAt })}</span>` : ""}</div><p class="note-sm" style="margin:0 0 10px">${t("cnJobberP")}</p>
+      ${J.jobber ? `<p style="margin:0 0 10px;font-weight:600">${t("cnCounts")}</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="small-btn pri" data-act="jobSync">${t("cnSync")}</button><button class="small-btn" data-act="jobOff">${t("cnDisc")}</button></div>` : `<button class="small-btn pri" data-act="jobOn" style="min-height:48px">${t("cnConnect")}</button>`}</div>
+    <div class="panel conn"><h2>${t("cnYard")}</h2><p class="note-sm" style="margin:0 0 10px">${t("cnYardP")}</p><a class="small-btn" href="https://zapier.com/apps/yardbook/integrations" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex">${t("cnYardBtn")}</a></div>
+    <div class="panel conn"><div class="phd"><h2>${t("cnZap")}</h2>${J.zapier ? `<span class="chip ok">${t("aoActive")}</span>` : ""}</div><p class="note-sm" style="margin:0 0 10px">${t("cnZapP")}</p>
+      ${J.zapier ? `<div class="cred" style="grid-template-columns:auto 1fr auto"><span class="muted">${t("cnKey")}</span><code>cc_live_7Qm2…x9Fk</code><button class="small-btn" data-act="copy" data-v="cc_live_7Qm2demo00x9Fk">${t("copy")}</button></div>` : `<button class="small-btn pri" data-act="zapOn">${t("cnZapOn")}</button>`}</div>
+    <div class="panel conn" style="opacity:.75"><h2>${t("cnQb")}</h2><p class="note-sm" style="margin:0">${t("cnQbP")}</p></div>
+  </div><div class="col">${importPanel()}</div></div>`;
+}
+
+/* ═══════════ crew app, finance-only mode: sign in once, location on, GPS does the rest ═══════════ */
+function locScreen() {
+  if (S.locPerm === "denied") return `<div class="card locoff"><div class="nic">${I.nav}</div><h2>${t("lcDeniedT")}</h2><p>${t("lcDeniedP")}</p><p class="steps"><b>${t("lcSteps")}</b></p><button class="big" data-act="locAsk">${t("lcRetry")}</button></div>`;
+  return `<div class="card locoff"><div class="nic">${I.nav}</div><h2>${t("lcT")}</h2><p>${t("lcP")}</p><button class="big" data-act="locAsk">${t("lcBtn")}</button></div>`;
+}
+function doLocAsk() {
+  sheet(`<div class="osperm"><div class="nic">${I.nav}</div><p class="osq">${t("lcOsQ")}</p>
+    <div class="osbtns"><button data-perm="always">${t("lcAlways")}</button><button data-perm="while">${t("lcWhile")}</button><button data-perm="denied">${t("lcDeny")}</button></div></div>`, (sh) => {
+    sh.querySelectorAll("[data-perm]").forEach((b) => (b.onclick = () => { S.locPerm = b.dataset.perm; S.dev.c2.on = b.dataset.perm !== "denied"; closeSheet(); render(); }));
+  });
+}
+function slimCrew() {
+  const dv = S.dev.c2;
+  let h = `<div class="crew-head"><div class="who"><h1>${t("crewName")}</h1><span>${t("crewPpl")} · ${fmtDay(START)} · <span class="gpschip ${devLive(dv) ? "" : "off"}">${I.nav}GPS</span></span></div>${S.shift === "on" ? headerClock() : ""}</div>`;
+  if (S.shift !== "pre" && (queued() || S.outbox.length)) h += `<div style="display:flex;justify-content:flex-end;margin-top:-6px">${netChip()}</div>`;
+  if (!S.net.online) h += `<div class="banner offline">${I.wifiOff.replace("<svg", '<svg width="26" height="26"')}<div><b>${t("offT")}</b>${t("offP")}</div></div>`;
+  if (S.locPerm === "need" || S.locPerm === "denied") return h + locScreen();
+  if (S.locPerm === "while" && S.shift === "pre") h += `<div class="banner" style="background:var(--warn-soft);color:var(--warn)">${I.nav.replace("<svg", '<svg width="22" height="22"')}<div>${t("lcWhileNote")} <button class="linkbtn" data-act="locAsk" style="min-height:0;padding:0;color:inherit">${t("lcRetry")}</button></div></div>`;
+  if (S.shift === "pre") {
+    return h + `<div class="shift-hero"><h2>${t("slGm")}</h2><p>${t("slToday", { n: S.stops.length, s: S.conn.jobber ? "Jobber" : "Jobber (demo)" })}</p></div>
+      <div class="card"><div class="field"><label for="odo-s" style="font-size:1.1rem">${t("slOdo")}</label><input id="odo-s" class="bignum" inputmode="numeric" value="${Math.round(84210 + dv.km)}" autocomplete="off"></div><p class="hint" style="margin:6px 0 0;text-align:left">${t("slOdoP")}</p></div>
+      <button class="big" data-act="slimStart" ${dv.on ? "" : "disabled"}>${I.clock.replace("<svg", '<svg width="28" height="28"')}${t("slStart")}</button>
+      <button class="linkbtn" data-act="signOut">${t("signOut")}</button>`;
+  }
+  if (S.shift === "off") return h + offScreen().replace(`<button class="small-btn" data-act="newShift"`, `${odoSum()}<button class="small-btn" data-act="newShift"`);
+  if (S.coConfirm) return h + `<div class="card cocard"><h2>${t("slEndT")}</h2>${shiftSummary()}
+      <div class="field"><label for="odo-e" style="font-size:1.1rem">${t("slOdoEnd")}</label><input id="odo-e" class="bignum" inputmode="numeric" value="${Math.round((S.odoStart || 84210) + dv.km * 1.03)}" autocomplete="off"></div>
+      <button class="big" data-act="slimEnd">${t("slEnd")}</button><button class="big ghostbig" data-act="coBack">${t("slBack")}</button></div>`;
+  if (S.pause) return h + pauseScreen();
+  if (!dv.on) return h + `<div class="card locoff"><div class="nic">${I.nav}</div><h2>${t("locOffT")}</h2><p>${t("locOffP")}</p><button class="big" data-act="locOn">${t("locOn")}</button></div>`;
+  const c = curStop();
+  let status;
+  if (!c) status = `<div class="slimstat done"><span class="lbl">${t("slAllDone")}</span><b>${t("slHome")}</b></div>`;
+  else if (c.status === "onsite") status = `<div class="slimstat on"><span class="lbl">${t("slAt")}</span><b>${esc(c.addr)}</b><span>${esc(c.n)}</span><span class="big-n" id="slim-site">${t("slOnSite", { m: S.simMin - c.simArr })}</span><span class="sub">${t("slArr", { t: fmtT(simClock(c.simArr)) })}</span></div>`;
+  else status = `<div class="slimstat drive"><span class="lbl">${t("slDriving")}</span><b>${esc(c.addr)}</b><span>${esc(c.n)}</span><span class="sub" id="slim-left">${t("slLeft", { d: fDist(dv.queue.length * STEP * UNIT_M / 1000) })}</span></div>`;
+  h += crewProgress() + status;
+  h += `<div class="list-h">${t("slStops")}</div>` + S.stops.map((s, i) => {
+    const r = s.status === "done" ? t("slDone", { a: fmtT(simClock(s.simArr)), l: fmtT(simClock(s.simArr + s.mins)), m: s.mins }) : s.status === "onsite" ? `<span class="chip ok">${t("slAt")}</span>` : s.id === S.cur ? `<span class="chip blue">${t("slNext")}</span>` : "";
+    return `<div class="row ${s.status}" style="cursor:default"><span class="stopno">${s.status === "done" ? I.check : i + 1}</span><div style="min-width:0"><b>${esc(s.addr)}</b><span>${esc(s.n)}</span></div><div class="r">${r}</div></div>`;
+  }).join("");
+  h += `<button class="big ghostbig" data-act="clock" style="margin-top:14px">${t("slBreak")}</button>
+    <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:6px"><button class="linkbtn" data-act="issue" data-n="Truck 12">${t("slProblem")}</button><button class="linkbtn" data-act="locOff">${t("slDemoOff")}</button></div>`;
+  return h;
+}
+function odoSum() {
+  if (S.odoStart == null || S.odoEnd == null) return "";
+  const o = S.odoEnd - S.odoStart, g = S.dev.c2.km;
+  return `<div class="sumgrid" style="margin-top:0"><div><span>${t("slGpsKm")}</span><b>${fDist(g)}</b></div><div><span>${t("slOdoKm")}</span><b>${fDist(o)}</b></div></div>`;
+}
+// GPS drives the finance-only crew flow: leave a stop, arrive at the next, stay, leave.
+function slimTick() {
+  const d = S.dev.c2;
+  if (S.mode !== "finance" || S.shift !== "on" || !S.clockedIn || S.pause || !d.on) return;
+  const c = curStop();
+  if (d.queue.length) { S.simMin += 1; return; }
+  if (!c) { if (!d.home && Math.hypot(d.pos.x - YARD.x, d.pos.y - YARD.y) > 8) { d.queue = sample(d.pos, legWay(d.pos, YARD)); d.home = true; } return; }
+  if (c.status === "onsite") {
+    S.simMin += 3;
+    if (--S.dwell <= 0) {
+      c.status = "done"; c.mins = S.simMin - c.simArr;
+      office(t("lb_done", { a: c.addr }));
+      nextStop(); const n = curStop();
+      if (n) { S.legStart = { from: c.addr, km: d.km, driveS: d.driveS, min: S.simMin }; n.status = "enroute"; d.queue = sample(d.pos, legWay(d.pos, n)); }
+      if (S.view === "crew" && !$("#layer").innerHTML) render();
+    }
+    return;
+  }
+  if (c.status === "todo") { S.legStart = { from: S.legStart ? S.legStart.from : t("yard"), km: d.km, driveS: d.driveS, min: S.simMin }; c.status = "enroute"; d.queue = sample(d.pos, legWay(d.pos, c)); }
+}
+function slimArrive(d) {
+  const c = curStop(); if (!c || c.status !== "enroute" || Math.hypot(c.x - d.pos.x, c.y - d.pos.y) > 8) return;
+  const L0 = S.legStart || { from: t("yard"), km: 0, driveS: 0, min: 0 };
+  S.legs.push({ id: c.id, from: L0.from, to: c.addr, left: simClock(L0.min), arr: simClock(S.simMin), min: Math.round((d.driveS - L0.driveS) / 60), km: d.km - L0.km });
+  c.status = "onsite"; c.arrived = now(); c.simArr = S.simMin; S.gpsAt[c.id] = fmtT(simClock(S.simMin));
+  S.dwell = Math.max(3, Math.round((c.est * (0.85 + Math.random() * 0.35)) / 3));
+  office(t("lb_here", { a: c.addr }));
+  toast(t("gpsArrived", { a: c.addr }));
+  if (S.view === "crew" && !$("#layer").innerHTML) render();
 }
 function doReceipt() {
   let photo = null;
@@ -2351,34 +2730,37 @@ function aoCreate() {
    Sample numbers shaped like the real app's finance_summary. Labour follows the hourly costs
    entered under Costs and rates, so changing a rate changes the profit. */
 function finData() {
-  const k = S.finKind, scale = k === "day" ? 1 : k === "week" ? 5.6 : 23, drift = 1 - 0.035 * S.finOff;
+  const k = S.finKind, scale = k === "day" ? 1 : k === "week" ? 5.6 : k === "month" ? 23 : 170, drift = 1 - 0.035 * S.finOff;
   const avgRate = Object.values(S.rates).reduce((a, b) => a + b, 0) / Object.keys(S.rates).length;
   // per crew per working day: revenue $, paid hours, jobs, leads spotted / won per week, complaints per week
   const crews = [["c2", 1720, 8.6, 9, 4, 2, 0], ["c1", 1600, 8.5, 8, 3, 2, 1], ["c4", 1400, 8.1, 8, 2, 1, 0], ["c3", 1180, 8.9, 6, 2, 0, 1]];
   const wk = scale / 5.6;
   const rows = crews.map(([id, rev, hrs, jobs, lc, lw, comp]) => {
     const r = rev * scale * drift, h = hrs * scale, labour = h * 2.6 * avgRate;
-    return { id, rev: r, labour, fuel: r * 0.045 * (S.price / 1.55), mat: r * 0.07, truck: h * 4.1, jobs: Math.round(jobs * scale), mins: Math.round(h * 0.78 * 60), lc: Math.round(lc * wk), lw: Math.round(lw * wk), comp: Math.round(comp * wk) };
+    const mow = S.mowers.filter((m) => m.crew === id), mowFuel = mow.reduce((a, m) => a + m.h * m.lph, 0) * scale * S.price * drift;
+    const km = (S.dev[id] ? 60 : 60) * scale, maint = km * S.maintKm + mow.reduce((a, m) => a + m.h, 0) * scale * S.maintMowerH;
+    return { id, rev: r, labour, fuel: (km / 100) * S.trucks[id].l100 * S.price + mowFuel, mat: r * 0.07, truck: maint, jobs: Math.round(jobs * scale), mins: Math.round(h * 0.78 * 60), lc: Math.round(lc * wk), lw: Math.round(lw * wk), comp: Math.round(comp * wk) };
   });
   const sum = (f) => rows.reduce((a, r) => a + f(r), 0);
   const revenue = sum((r) => r.rev), labour = sum((r) => r.labour), fuel = sum((r) => r.fuel), mat = sum((r) => r.mat), truck = sum((r) => r.truck);
   rows.forEach((r) => (r.profit = r.rev - r.labour - r.fuel - r.mat - r.truck));
   const jobs = sum((r) => r.jobs), comp = sum((r) => r.comp);
-  const days = k === "day" ? 1 : k === "week" ? 7 : 30;
-  const fixed = (S.fixed.reduce((a, [, v]) => a + v, 0) * 12) / 365.25 * days;
-  return { revenue, labour, fuel, mat, truck, profit: revenue - labour - fuel - mat - truck, fixed, net: revenue - labour - fuel - mat - truck - fixed, jobs, comp, rows,
+  const days = k === "day" ? 1 : k === "week" ? 7 : k === "month" ? 30 : 244;
+  const fixed = (fixedMonthly() * 12) / 365.25 * days, fixedIn = (fixed * S.fixPct) / 100;
+  return { revenue, labour, fuel, mat, truck, profit: revenue - labour - fuel - mat - truck, fixed, fixedIn, net: revenue - labour - fuel - mat - truck - fixedIn, jobs, comp, rows,
     mix: [revenue * 0.723, revenue * 0.148, revenue * 0.107, revenue * 0.022], leads: { created: sum((r) => r.lc), won: sum((r) => r.lw), open: Math.max(0, sum((r) => r.lc) - sum((r) => r.lw) - 1) } };
 }
 function finLabel() {
   const d = new Date(START); const k = S.finKind;
   if (k === "day") { d.setDate(d.getDate() - S.finOff); return fmtDay(d); }
   if (k === "week") { const m = new Date(d); m.setDate(d.getDate() - ((d.getDay() + 6) % 7) - 7 * S.finOff); const e = new Date(m); e.setDate(m.getDate() + 6); return `${fmtDay(m)} – ${fmtDay(e)}`; }
+  if (k === "season") return t("seasonLbl", { y: d.getFullYear() - S.finOff });
   const m = new Date(d.getFullYear(), d.getMonth() - S.finOff, 1); return m.toLocaleDateString(lang === "es" ? "es" : "en-CA", { month: "long", year: "numeric" });
 }
 function finJobs() {
   const base = [["88 Willow Dr", "Reyes", "c3", "mOther", 0, 41, 3.1, 0, 6.2, false], ["41 Spruce St", "Kowalski", "c1", "mReg", 55, 58, 3.3, 0, 7, true], ["4 Cedar Ct", "Silva", "c2", "mReg", 55, 52, 3, 0, 6.5, false], ["19 Birch Cres", "Nguyen", "c2", "mReg", 120, 49, 3.2, 12, 6.1, false], ["5 Oak Ln", "Fraser", "c4", "mUp", 85, 39, 2.9, 0, 5.1, false], ["7 Birch Cres", "Tremblay", "c2", "mReg", 145, 82, 3.2, 0, 9, false], ["301 Lakeshore Rd", "Haddad", "c2", "mNew", 140, 61, 3.4, 0, 7.6, false]];
   const avgRate = Object.values(S.rates).reduce((a, b) => a + b, 0) / Object.keys(S.rates).length;
-  return base.map(([a, c, crew, src, price, lab, fu, mt, tr, comp]) => { const labour = lab * avgRate / 26.3; return { a, c, crew, src, price, labour, fu, mt, tr, comp, profit: price - labour - fu - mt - tr }; }).sort((x, y) => x.profit - y.profit);
+  return base.map(([a, c, crew, src, price, lab, fu, mt, tr, comp]) => { const labour = lab * avgRate / 26.3; tr = +(tr * 0.55).toFixed(2); return { a, c, crew, src, price, labour, fu, mt, tr, comp, profit: price - labour - fu - mt - tr }; }).sort((x, y) => x.profit - y.profit);
 }
 function deltaHtml(now, before, invert) {
   if (!before) return "";
@@ -2391,8 +2773,8 @@ function splitBar(title, parts, total) {
 }
 function per100Html(d, cost) {
   if (!d.revenue) return "";
-  const kept = d.revenue - cost - d.fixed;
-  const parts = [["p100Job", cost, "sg-1"], ["p100Fixed", d.fixed, "sg-4"], [kept >= 0 ? "p100Kept" : "p100Lost", Math.abs(kept), kept >= 0 ? "sg-3" : "sg-2"]];
+  const kept = d.revenue - cost - d.fixedIn;
+  const parts = [["p100Job", cost, "sg-1"], ...(d.fixedIn ? [["p100Fixed", d.fixedIn, "sg-4"]] : []), [kept >= 0 ? "p100Kept" : "p100Lost", Math.abs(kept), kept >= 0 ? "sg-3" : "sg-2"]];
   const v = (x) => "$" + Math.round((x / d.revenue) * 100);
   return `<div class="panel"><h2>${t("p100")}</h2><div class="splitbar" style="height:30px" role="img" aria-label="${parts.map(([k, x]) => t(k) + " " + v(x)).join(", ")}">${parts.map(([, x, c]) => (x > 0 ? `<span class="${c}" style="flex-grow:${x}"></span>` : "")).join("")}</div>
     <table class="legend-t"><tbody>${parts.map(([k, x, c]) => `<tr><td><i class="${c}"></i>${t(k)}</td><td class="n" style="text-align:right;font-weight:700">${v(x)}</td></tr>`).join("")}</tbody></table></div>`;
@@ -2400,7 +2782,7 @@ function per100Html(d, cost) {
 function whatIfHtml(d) {
   if (!d.revenue) return "";
   const f = S.wi, k = (n) => 1 + n / 100;
-  const net = d.revenue * k(f.prices) - d.labour * k(f.labour) - d.fuel * k(f.fuel) - d.mat - d.truck - d.fixed * k(f.fixed);
+  const net = d.revenue * k(f.prices) - d.labour * k(f.labour) - d.fuel * k(f.fuel) - d.mat - d.truck - d.fixedIn * k(f.fixed);
   const changed = Object.values(f).some((x) => x !== 0);
   const sl = [["fuel", "wiFuel", -30, 60], ["labour", "wiLabour", -10, 30], ["fixed", "wiFixed", -30, 50], ["prices", "wiPrices", -10, 25]];
   const diff = net - d.net;
@@ -2445,16 +2827,32 @@ function fixedPanel() {
   const tot = S.fixed.reduce((a, [, v]) => a + v, 0);
   return `<div class="panel"><h2>${t("fxH")}</h2><p class="note-sm" style="margin:0 0 8px">${t("fxP")}</p>
     ${S.fixed.map(([n, v], i) => `<div class="adminrow"><span><b>${esc(n)}</b> <span class="muted">· ${t("fxMonth", { v: money(v) })}</span></span><button class="small-btn bad" data-act="fxDel" data-i="${i}">${t("fxRemove")}</button></div>`).join("")}
-    <div class="adminrow"><b>${t("fxTotal")}</b><b>${t("fxMonth", { v: money(tot) })}</b></div>
+    <div class="adminrow"><span><b>${t("fxDepr")}</b> <span class="muted">· ${t("fxMonth", { v: money(deprMonthly()) })} · ${t("fxAuto")}</span></span><span></span></div>
+    <div class="adminrow"><b>${t("fxTotal")}</b><b>${t("fxMonth", { v: money(tot + deprMonthly()) })}</b></div>
     <div class="fxadd"><label class="sr" for="fx-n">${t("fxName")}</label><input id="fx-n" placeholder="${t("fxName")}" list="fx-ideas"><datalist id="fx-ideas"><option value="Insurance"><option value="Shop or yard rent"><option value="Phones and internet"><option value="Software"><option value="Office pay"><option value="Accountant"></datalist><label class="sr" for="fx-v">${t("fxAmt")}</label><input id="fx-v" inputmode="decimal" placeholder="${t("fxAmt")}"><button class="small-btn pri" data-act="fxAdd">${t("fxAdd")}</button></div></div>`;
 }
+const deprMonthly = () => Object.values(S.truckVal).reduce((a, [v, y]) => a + v / y / 12, 0) + S.mowers.reduce((a, m) => a + m.val / m.yrs / 12, 0);
+const fixedMonthly = () => S.fixed.reduce((a, [, v]) => a + v, 0) + deprMonthly();
+function periodBar() {
+  return `<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+      <div class="o-tabs" role="group" style="margin:0">${["day", "week", "month", "season"].map((k) => `<button data-act="finKind" data-k="${k}" aria-pressed="${S.finKind === k}">${t("p" + Cap(k))}</button>`).join("")}</div>
+      <div style="display:flex;gap:8px;align-items:center;min-width:0;flex-wrap:wrap"><button class="small-btn" data-act="finPrev" aria-label="Previous">‹</button><b>${finLabel()}</b><button class="small-btn" data-act="finNext" aria-label="Next" ${S.finOff === 0 ? "disabled" : ""}>›</button></div></div>`;
+}
+function fixLabel() { return S.fixPct === 0 ? t("fix0") : S.fixPct === 100 ? t("fixAll") : t("fixSome", { p: S.fixPct }); }
+function fixBar(d) {
+  return `<div class="panel fixbar"><div class="fixtop"><label for="fix-pct">${t("fixH")}</label><output id="fix-out">${fixLabel()}</output></div>
+    <input id="fix-pct" type="range" min="0" max="100" step="5" value="${S.fixPct}" aria-describedby="fix-p">
+    <div class="fixends" aria-hidden="true"><span>${t("netJobs")}</span><span>${t("netTrue")}</span></div>
+    <p class="note-sm" id="fix-p" style="margin:6px 0 0">${t("fixP", { m: money(fixedMonthly()), v: money(d.fixed) })}</p></div>`;
+}
+const netTitle = () => (S.fixPct === 0 ? t("netJobs") : S.fixPct === 100 ? t("netTrue") : t("netSome", { p: S.fixPct }));
 function sparkHTML() {
   const was = S.finOff, vals = [];
   for (let o = was + 7; o >= was; o--) { S.finOff = o; vals.push(finData().net); }
   S.finOff = was;
   const W = 180, H = 40, mn = Math.min(...vals), mx = Math.max(...vals), sx = (i) => 4 + (i * (W - 8)) / (vals.length - 1), sy = (v) => H - 6 - ((v - mn) / Math.max(1, mx - mn)) * (H - 14);
   const pts = vals.map((v, i) => `${sx(i).toFixed(1)},${sy(v).toFixed(1)}`).join(" ");
-  const p = S.finKind === "day" ? "trendD" : S.finKind === "week" ? "trendW" : "trendM";
+  const p = S.finKind === "day" ? "trendD" : S.finKind === "week" ? "trendW" : S.finKind === "month" ? "trendM" : "trendS";
   return `<svg class="spark" width="${W}" height="${H + 12}" viewBox="0 0 ${W} ${H + 12}" role="img" aria-label="${t("trend", { p: t(p) })}"><polyline points="${pts}" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="${sx(vals.length - 1)}" cy="${sy(vals[vals.length - 1])}" r="3.5" fill="currentColor"/><text x="4" y="${H + 10}">${t("trend", { p: t(p) })}</text></svg>`;
 }
 function ownerOverview() {
@@ -2468,28 +2866,26 @@ function ownerOverview() {
   if (d.leads.open) watch.push(["warn", t("fOpenLeads", { n: d.leads.open }), "leadsSheet", ""]);
   const per100 = d.revenue ? Math.round((d.net / d.revenue) * 100) : 0;
   const w = S.finOff ? t("wIn", { p: finLabel() }) : t("w" + Cap(S.finKind));
-  const plain = d.net >= 0 ? t("plainKept", { w, v: "$" + per100 }) : t("plainLost", { w, v: "$" + -per100 });
-  const fixRate = d.revenue ? d.fixed / d.revenue : 0;
+  const plain = d.net >= 0 ? t(S.fixPct ? "plainKept" : "plainKept0", { w, v: "$" + per100 }) : t("plainLost", { w, v: "$" + -per100 });
+  const fixRate = d.revenue ? d.fixedIn / d.revenue : 0;
   const tgt = S.finKind === "month" ? `<div class="target"><div style="display:flex;justify-content:space-between"><span>${t("fTarget", { t: money(S.target) })}</span><b>${Math.round((d.revenue / S.target) * 100)}%</b></div><div class="meter"><span style="width:${Math.min(100, (d.revenue / S.target) * 100)}%"></span></div></div>` : "";
   const crews = d.rows.slice().sort((a, b) => b.profit - a.profit);
   const pct = (a, b) => (b ? Math.round((a / b) * 1000) / 10 : 0);
-  return `<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
-      <div class="o-tabs" role="group" style="margin:0">${["day", "week", "month"].map((k) => `<button data-act="finKind" data-k="${k}" aria-pressed="${S.finKind === k}">${t("p" + Cap(k))}</button>`).join("")}</div>
-      <div style="display:flex;gap:8px;align-items:center;min-width:0;flex-wrap:wrap"><button class="small-btn" data-act="finPrev" aria-label="Previous">‹</button><b>${finLabel()}</b><button class="small-btn" data-act="finNext" aria-label="Next" ${S.finOff === 0 ? "disabled" : ""}>›</button></div></div>
+  return `${periodBar()}${fixBar(d)}
     <p class="plain">${plain}</p>
-    <div class="panel fhero"><div><p class="eyebrow">${t("fNet")}</p><p class="hero-num">${money(d.net)}</p>${deltaHtml(d.net, p.net)}${sparkHTML()}</div>
-      <div class="hero-side"><div><span>${t("fRevenue")}</span><b>${money(d.revenue)}</b>${deltaHtml(d.revenue, p.revenue)}</div><div><span>${t("fJobCosts")}</span><b>${money(cost)}</b>${deltaHtml(cost, pcost, true)}</div><div><span>${t("fFixed")}</span><b>${money(d.fixed)}</b></div><div><span>${t("fJobsDone")}</span><b>${d.jobs}</b></div></div>${tgt}</div>
+    <div class="panel fhero"><div><p class="eyebrow">${netTitle()}</p><p class="hero-num">${money(d.net)}</p>${deltaHtml(d.net, p.net)}${sparkHTML()}</div>
+      <div class="hero-side"><div><span>${t("fRevenue")}</span><b>${money(d.revenue)}</b>${deltaHtml(d.revenue, p.revenue)}</div><div><span>${t("fJobCosts")}</span><b>${money(cost)}</b>${deltaHtml(cost, pcost, true)}</div><div><span>${t("fFixed")}${S.fixPct && S.fixPct < 100 ? ` (${S.fixPct}%)` : ""}</span><b>${money(d.fixedIn)}</b></div><div><span>${t("fJobsDone")}</span><b>${d.jobs}</b></div></div>${tgt}</div>
     ${watch.length ? `<div class="panel"><h2>${t("fNeedsLook")}</h2><ul class="watch">${watch.map(([lv, txt, act, k]) => `<li class="${lv}"><i aria-hidden="true"></i><button data-act="${act}" data-k="${k}">${esc(txt)}</button></li>`).join("")}</ul></div>` : ""}
     ${per100Html(d, cost)}
     <div class="o-grid">${splitBar(t("fWentJob"), [["cLabour", d.labour], ["cFuel", d.fuel], ["cMat", d.mat], ["cTruck", d.truck]], cost)}${splitBar(t("fCame"), [["mReg", d.mix[0]], ["mNew", d.mix[1]], ["mUp", d.mix[2]], ["mOther", d.mix[3]]], d.revenue)}</div>
     <div class="panel"><h2>${t("crew")}</h2>
-      <div class="tbl-wrap hide-sm"><table><thead><tr><th>${t("crew")}</th><th class="n">${t("fJobsDone")}</th><th class="n">${t("fRevenue")}</th><th class="n">${t("fProfit")}</th><th class="n">${t("fPph")}</th><th class="n">${t("fLeadsWS")}</th><th class="n">${t("fComplaints")}</th></tr></thead><tbody>
-      ${crews.map((r) => `<tr><td><b>${t(r.id + "n")}</b></td><td class="n">${r.jobs}</td><td class="n">${money(r.rev)}</td><td class="n">${money(r.profit)}</td><td class="n">${r.mins ? money((r.profit / r.mins) * 60) : "–"}</td><td class="n">${r.lw} / ${r.lc}</td><td class="n ${r.jobs && r.comp / r.jobs >= 0.1 ? "flag" : ""}">${pct(r.comp, r.jobs)}%</td></tr>`).join("")}</tbody></table></div>
+      <div class="tbl-wrap hide-sm"><table><thead><tr><th>${t("crew")}</th><th class="n">${t("fJobsDone")}</th><th class="n">${t("fRevenue")}</th><th class="n">${t("fProfit")}</th><th class="n">${t("fPph")}</th><th class="n">${t("perDay")}</th><th class="n">${t("fLeadsWS")}</th><th class="n">${t("fComplaints")}</th></tr></thead><tbody>
+      ${crews.map((r) => `<tr><td><b>${t(r.id + "n")}</b></td><td class="n">${r.jobs}</td><td class="n">${money(r.rev)}</td><td class="n">${money(r.profit)}</td><td class="n">${r.mins ? money((r.profit / r.mins) * 60) : "–"}</td><td class="n">${money(r.profit / ({ day: 1, week: 5.6, month: 23, season: 170 }[S.finKind]))}</td><td class="n">${r.lw} / ${r.lc}</td><td class="n ${r.jobs && r.comp / r.jobs >= 0.1 ? "flag" : ""}">${pct(r.comp, r.jobs)}%</td></tr>`).join("")}</tbody></table></div>
       <div class="ccards show-sm">${crews.map((r) => `<div class="ccard"><b>${t(r.id + "n")}</b><span class="big2">${money(r.profit)}</span><span>${r.jobs} ${t("fJobsDone").toLowerCase()} · ${money(r.rev)}</span><span style="text-align:right">${r.mins ? money((r.profit / r.mins) * 60) : "–"}/h</span><span style="grid-column:1/-1">${t("fLeadsWS")} ${r.lw} / ${r.lc} · ${t("fComplaints")} ${pct(r.comp, r.jobs)}%</span></div>`).join("")}</div></div>
     <div class="panel" id="fjobs"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h2>${t("fJobsH")}</h2><button class="small-btn" data-act="finDl">${t("fDownload")}</button></div>
       ${S.finFilter ? `<div class="filterline"><span>${t(S.finFilter === "loss" ? "fOnlyLoss" : "fOnlyComp")}</span><button data-act="finFilter" data-k="">${t("fShowAll")}</button></div>` : ""}
-      <div class="tbl-wrap hide-sm"><table><thead><tr><th>${t("fJob")}</th><th>${t("crew")}</th><th class="n">${t("fRevenue")}</th><th class="n">${t("cLabour")}</th><th class="n">${t("cFuel")}</th><th class="n">${t("cMat")}</th><th class="n">${t("cTruck")}</th><th class="n">${t("jobProfit")}</th><th class="n">${t("fixedShare")}</th><th class="n">${t("afterFixed")}</th></tr></thead><tbody>
-      ${jobs.map((j) => `<tr class="${j.profit - j.price * fixRate < 0 ? "loss" : ""}"><td><b>${esc(j.a)}</b><div class="muted" style="font-size:.8rem">${esc(j.c)} · ${t(j.src)}${j.comp ? `<span class="ctag">${t("k_comp")}</span>` : ""}</div></td><td>${t(j.crew + "n")}</td><td class="n">${money2(j.price)}</td><td class="n">${money2(j.labour)}</td><td class="n">${money2(j.fu)}</td><td class="n">${money2(j.mt)}</td><td class="n">${money2(j.tr)}</td><td class="n">${money2(j.profit)}</td><td class="n muted">${money2(j.price * fixRate)}</td><td class="n pf">${money2(j.profit - j.price * fixRate)}</td></tr>`).join("")}</tbody></table></div>
+      <div class="tbl-wrap hide-sm"><table><thead><tr><th>${t("fJob")}</th><th>${t("crew")}</th><th class="n">${t("fRevenue")}</th><th class="n">${t("cLabour")}</th><th class="n">${t("cFuel")}</th><th class="n">${t("cMat")}</th><th class="n">${t("cTruck")}</th><th class="n">${t("jobProfit")}</th>${S.fixPct ? `<th class="n">${t("fixedShare")}</th><th class="n">${t("afterFixed")}</th>` : ""}</tr></thead><tbody>
+      ${jobs.map((j) => `<tr class="${j.profit - j.price * fixRate < 0 ? "loss" : ""}"><td><b>${esc(j.a)}</b><div class="muted" style="font-size:.8rem">${esc(j.c)} · ${t(j.src)}${j.comp ? `<span class="ctag">${t("k_comp")}</span>` : ""}</div></td><td>${t(j.crew + "n")}</td><td class="n">${money2(j.price)}</td><td class="n">${money2(j.labour)}</td><td class="n">${money2(j.fu)}</td><td class="n">${money2(j.mt)}</td><td class="n">${money2(j.tr)}</td><td class="n ${S.fixPct ? "" : "pf"}">${money2(j.profit)}</td>${S.fixPct ? `<td class="n muted">${money2(j.price * fixRate)}</td><td class="n pf">${money2(j.profit - j.price * fixRate)}</td>` : ""}</tr>`).join("")}</tbody></table></div>
       <div class="ccards show-sm">${jobs.map((j) => `<div class="ccard ${j.profit < 0 ? "loss" : ""}"><b>${esc(j.a)}</b><span class="big2">${money2(j.profit - j.price * fixRate)}</span><span>${esc(j.c)} · ${t(j.crew + "n")} · ${t(j.src)}${j.comp ? `<span class="ctag">${t("k_comp")}</span>` : ""}</span><span style="text-align:right">${money2(j.price)}</span></div>`).join("")}</div></div>
     ${whatIfHtml(d)}${glossaryHtml()}`;
 }
@@ -2499,6 +2895,7 @@ function ownerCosts() {
     <div class="panel"><h2>${t("cpPeople")}</h2><p class="note-sm" style="margin:0 0 8px">${t("cpPeopleP")}</p>
       ${Object.keys(S.rates).map((n) => `<div class="setrow"><label for="rt-${esc(n)}">${esc(n)} <span class="muted">· ${t(crewOf[n] + "n")}</span></label><input id="rt-${esc(n)}" class="money" data-rate="${esc(n)}" inputmode="decimal" value="${S.rates[n].toFixed(2)}" aria-label="${t("cpPerHour")}"></div>`).join("")}</div>
     ${fixedPanel()}
+    ${equipPanel()}
     <div class="panel"><h2>${t("cpMat")}</h2><p class="note-sm" style="margin:0 0 8px">${t("cpMatP")}</p>
       ${S.matPrices.map(([pr, u, v]) => `<div class="adminrow"><span><b>${esc(pr)}</b></span><span class="muted">$${v.toFixed(2)} / ${u}</span></div>`).join("")}</div></div>
   <div class="col"><div class="panel"><h2>${t("cpTrucks")}</h2><p class="note-sm" style="margin:0 0 8px">${t("cpTrucksP")}</p>
@@ -2527,8 +2924,9 @@ function ownerEmail() {
       <label class="switch"><input type="checkbox" id="er-w" ${r.weekly ? "checked" : ""}>${t("erWeekly")}</label>
       ${r.weekly ? `<div class="setrow"><label for="er-day">${t("erDay")}</label><select id="er-day">${days.map((d, i) => `<option value="${i}" ${r.day === i ? "selected" : ""}>${d}</option>`).join("")}</select></div>` : ""}
       <label class="switch"><input type="checkbox" id="er-m" ${r.monthly ? "checked" : ""}>${t("erMonthly")}</label>
+      <label class="switch"><input type="checkbox" id="er-s" ${r.season ? "checked" : ""}>${t("erSeason")}</label>
       <div class="field"><label for="er-to">${t("erTo")}</label><input id="er-to" value="${esc(r.to)}"></div>
-      <div style="display:grid;gap:8px;margin-top:12px"><button class="small-btn pri" data-act="erTest">${t("erTest")}</button><button class="small-btn" data-act="erNow" data-k="Weekly">${t("erNowW")}</button><button class="small-btn" data-act="erNow" data-k="Monthly">${t("erNowM")}</button></div></div>
+      <div style="display:grid;gap:8px;margin-top:12px"><button class="small-btn pri" data-act="erTest">${t("erTest")}</button><button class="small-btn" data-act="erNow" data-k="Weekly">${t("erNowW")}</button><button class="small-btn" data-act="erNow" data-k="Monthly">${t("erNowM")}</button><button class="small-btn" data-act="erNow" data-k="Season">${t("erNowS")}</button></div></div>
       <div class="panel"><h2>${t("erLog")}</h2><div class="replog">${S.repLog.map((x) => `<div><span><b>${esc(x.kind)}</b> · ${esc(x.at)}</span><span class="muted">${esc(x.to)}</span></div>`).join("")}</div></div></div>
     <div class="col"><div class="panel"><h2>${t("erPreview")}</h2>${html}</div></div></div>`;
 }
@@ -2645,9 +3043,9 @@ document.addEventListener("keydown", (e) => {
   if (inField || S.view === "crew" || S.view === "admin") return;
   const isD = S.view === "dispatch", k = e.key;
   if (k === "?") showKeys();
-  else if ((k === "n" || k === "N") && isD) doNewJob();
-  else if (k === "/" && isD) { S.ownerTab = "props"; render(); const q = $("#prop-q"); if (q) q.focus(); }
-  else if (/^[1-9]$/.test(k) && officeGroups()[+k - 1]) { const g = officeGroups()[+k - 1]; S.ownerTab = S.lastSub[g] || GROUPS[g][0]; render(); }
+  else if ((k === "n" || k === "N") && isD && S.mode !== "finance") doNewJob();
+  else if (k === "/" && isD && S.mode !== "finance") { S.ownerTab = "props"; render(); const q = $("#prop-q"); if (q) q.focus(); }
+  else if (/^[1-9]$/.test(k) && officeGroups()[+k - 1]) { const g = officeGroups()[+k - 1]; S.ownerTab = subsOf(g).includes(S.lastSub[g]) ? S.lastSub[g] : subsOf(g)[0]; render(); }
   else if ((k === "j" || k === "k") && isD) {
     const its = [...document.querySelectorAll("#needs .item")]; if (!its.length) return;
     const cur = its.indexOf(document.activeElement); const nx = k === "j" ? Math.min(its.length - 1, cur + 1) : Math.max(0, cur - 1);
@@ -2667,7 +3065,7 @@ document.addEventListener("click", (e) => {
   const s = curStop();
   switch (a) {
     case "view": S.view = b.dataset.v; S.focusCrew = null; if (S.view === "owner" || S.view === "dispatch") S.ownerTab = "today"; window.scrollTo({ top: 0 }); break;
-    case "focusCrew": S.focusCrew = b.dataset.c && S.focusCrew !== b.dataset.c ? b.dataset.c : null; break;
+    case "focusCrew": S.focusCrew = b.dataset.c && (S.focusCrew !== b.dataset.c || b.closest(".mapchips")) ? b.dataset.c : null; break;
     case "focusItem": if (b.dataset.c) S.focusCrew = b.dataset.c; break;
     case "leads": S.leadsOpen = !S.leadsOpen; break;
     case "dayMenu": return doDayMenu();
@@ -2679,6 +3077,21 @@ document.addEventListener("click", (e) => {
     case "finFilter": S.finFilter = b.dataset.k || null; if (S.finFilter) S.scrollTo = "fjobs"; break;
     case "leadsSheet": { const ls = allItems().filter((i) => i.k === "k_lead"); return sheet(`<h2>${t("fOpenLeadsT")}</h2>${ls.map((i) => `<div class="item u-later"><span class="stripe"></span><div><b>${esc(L(i.title))}</b><p>${esc(L(i.body))}</p></div></div>`).join("") || `<p class="muted">—</p>`}<div class="sheet-acts" style="grid-template-columns:1fr"><button data-act="closeSheet">${t("cancel")}</button></div>`); }
     case "fuelCheck": fuelCheck(); break;
+    case "locAsk": return doLocAsk();
+    case "slimStart": { const v = parseInt(($("#odo-s") || {}).value, 10); if (!v) return; S.odoStart = v; office(t("lb_clockin")); S.shift = "on"; S.clockedIn = true; S.clockAt = now(); S.clockOutAt = null; S.simMin = 0; S.legStart = null; S.dev.c2.lastFix = Date.now(); toast(t("t_clockIn", { t: fmtT(now()) })); window.scrollTo({ top: 0 }); break; }
+    case "slimEnd": { const v = parseInt(($("#odo-e") || {}).value, 10); if (!v) return; S.odoEnd = v; S.coConfirm = false; S.shift = "off"; S.clockedIn = false; S.clockOutAt = now(); office(t("lb_clockout")); toast(t("t_clockOut", { t: fmtT(now()) })); window.scrollTo({ top: 0 }); break; }
+    case "custView": S.custView = b.dataset.k; break;
+    case "custSort": S.custSort = b.dataset.k; break;
+    case "custOpen": return doCustomer(+b.dataset.i);
+    case "fuelDl": downloadText(b.dataset.k === "day" ? "Fuel today.csv" : "Fuel last week by day.csv", toCsvText(fuelCsv(b.dataset.k))); toast(t(b.dataset.k === "day" ? "fDlDay" : "fDlWeek")); return;
+    case "mode": S.mode = b.dataset.k; break;
+    case "jobOn": return sheet(`<div class="osperm"><p class="osq" style="text-align:left">${t("cnJobberAsk")}</p><ul class="handled" style="margin:8px 0">${t("cnJobberList").split("|").map((x) => `<li>${I.check}<span>${x}</span></li>`).join("")}</ul><p class="note-sm">${t("cnJobberNote")}</p></div><div class="sheet-acts"><button data-act="closeSheet">${t("cancel")}</button><button class="go" data-act="jobAllow">${t("cnAllow")}</button></div>`);
+    case "jobAllow": closeSheet(); S.conn.jobber = true; S.conn.jobberAt = fmtT(now()); toast(t("cnConnected", { t: fmtT(now()) })); break;
+    case "jobSync": S.conn.jobberAt = fmtT(now()); toast(t("cnConnected", { t: S.conn.jobberAt })); break;
+    case "jobOff": S.conn.jobber = false; break;
+    case "zapOn": S.conn.zapier = true; break;
+    case "impSample": S.impRows = parseCsv(SAMPLE_CSV); S.impMap = null; S.impName = "jobber-export-sample.csv"; break;
+    case "impGo": { const n = S.impRows.length - 1; S.conn.sheet = { n, f: S.impName }; S.impRows = null; S.impMap = null; toast(t("cnImported", { n, f: S.impName })); break; }
     case "fxAdd": { const n = ($("#fx-n").value || "").trim(), v = parseFloat(($("#fx-v").value || "").replace(/[$,\s]/g, "")); if (!n || !(v >= 0)) return; S.fixed.push([n, v]); toast(t("fxAdded")); break; }
     case "fxDel": S.fixed.splice(+b.dataset.i, 1); break;
     case "wiReset": S.wi = { fuel: 0, labour: 0, fixed: 0, prices: 0 }; break;
@@ -2794,6 +3207,8 @@ function render() {
 }
 document.addEventListener("input", (e) => {
   if (e.target.dataset && e.target.dataset.wi) { S.wi[e.target.dataset.wi] = +e.target.value; const v = $("#wiv-" + e.target.dataset.wi); if (v) v.textContent = (+e.target.value > 0 ? "+" : "") + e.target.value + "%"; const d = finData(); const tmp = document.createElement("div"); tmp.innerHTML = whatIfHtml(d); const o = $("#wi-out"); if (o) o.innerHTML = tmp.querySelector("#wi-out").innerHTML; const ph = $(".whatif"); if (ph && !ph.parentElement.querySelector('[data-act="wiReset"]')) { /* show Reset on next full render */ } return; }
+  if (e.target.id === "fix-pct") { S.fixPct = +e.target.value; const o = $("#fix-out"); if (o) o.textContent = fixLabel(); return; }
+  if (e.target.id === "cust-q") { S.custQ = e.target.value; const pos = e.target.selectionStart; renderOwner(); const q = $("#cust-q"); if (q) { q.focus(); try { q.setSelectionRange(pos, pos); } catch (_) {} } return; }
   if (e.target.id === "co-q") { S.coQ = e.target.value; const r = $("#co-rows"); if (r) r.innerHTML = coRows(); return; }
   if (e.target.id === "prop-q") { S.propQ = e.target.value; const l = $("#prop-list"); if (l) l.innerHTML = propRows(); return; }
   if (e.target.id === "ns-note") { const s = curStop(); if (s) { (S.next[s.id] = S.next[s.id] || {}).note = e.target.value; updateGate(); } }
@@ -2802,6 +3217,13 @@ document.addEventListener("change", (e) => {
   const el = e.target, v = parseFloat(el.value);
   if (el.id === "fuel-price" && v > 0) { S.price = isMi() ? v / 3.78541 : v; renderOwner(); return; }
   if (el.id === "units") { S.units = el.value; renderOwner(); return; }
+  if (el.id === "fix-pct") { renderOwner(); return; }
+  if (el.dataset && el.dataset.eqmower) { const m = S.mowers.find((x) => x.id === el.dataset.eqmower); if (m) m.crew = el.value || null; renderOwner(); return; }
+  if (el.dataset && el.dataset.eqtruck) { const a = el.dataset.eqtruck, b2 = el.value; if (a !== b2) { [S.trucks[a], S.trucks[b2]] = [S.trucks[b2], S.trucks[a]]; [S.truckVal[a], S.truckVal[b2]] = [S.truckVal[b2], S.truckVal[a]]; } renderOwner(); return; }
+  if (el.id === "mt-km") { S.maintKm = Math.max(0, +el.value || 0); toast(t("saved")); return; }
+  if (el.id === "mt-h") { S.maintMowerH = Math.max(0, +el.value || 0); toast(t("saved")); return; }
+  if (el.dataset && el.dataset.imp) { S.impMap[el.dataset.imp] = +el.value; renderOwner(); return; }
+  if (el.id === "imp-file" && el.files && el.files[0]) { const f = el.files[0]; f.text().then((txt) => { S.impRows = parseCsv(txt); S.impMap = null; S.impName = f.name; renderOwner(); }); return; }
   if (el.dataset && el.dataset.fs) {
     const L = S.fuelLoc, k = el.dataset.fs; L[k] = el.value;
     if (k === "country") { L.region = el.value === "CA" ? "ON" : el.value === "US" ? "NY" : ""; L.city = el.value === "CA" ? "Toronto" : ""; if (el.value === "OTHER") L.auto = false; }
@@ -2818,6 +3240,7 @@ document.addEventListener("change", (e) => {
   if (el.id === "fin-target" && v > 0) { S.target = v; toast(t("saved")); return; }
   if (el.id === "er-w") { S.rep.weekly = el.checked; renderOwner(); return; }
   if (el.id === "er-m") { S.rep.monthly = el.checked; return; }
+  if (el.id === "er-s") { S.rep.season = el.checked; return; }
   if (el.id === "er-day") { S.rep.day = +el.value; return; }
   if (el.id === "er-to") { S.rep.to = el.value; return; }
   if (el.id === "idle-min" && v >= 0) { S.idleMin = v; renderOwner(); return; }
@@ -2837,6 +3260,7 @@ setInterval(() => {
   if (m) { const tmp = document.createElement("div"); tmp.innerHTML = mapSVG({ crewOnly: S.view === "crew" }); m.replaceWith(tmp.firstChild); }
   const tr = $("#teamrows"); if (tr) tr.innerHTML = teamRows();
   const ft = $("#fueltoday"); if (ft) ft.innerHTML = fuelTodayTable();
+  if (S.view === "crew" && S.mode === "finance") { const c = curStop(), ss = $("#slim-site"), sl = $("#slim-left"); if (ss && c && c.simArr != null) ss.textContent = t("slOnSite", { m: S.simMin - c.simArr }); if (sl) sl.textContent = t("slLeft", { d: fDist(S.dev.c2.queue.length * STEP * UNIT_M / 1000) }); }
 }, 1000);
 render();
 })();
