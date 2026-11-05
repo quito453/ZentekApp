@@ -668,6 +668,34 @@ tr.crewhead i { display: inline-block; width: 10px; height: 10px; border-radius:
 .osbtns button { min-height: 52px; border-radius: 6px; border: 1.5px solid var(--line); background: var(--surface); color: var(--accent-text); font-weight: 700; font-size: 1rem; }
 .steps { background: var(--sunken); border-radius: 6px; padding: 10px; }
 .impmap { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0 16px; }
+.rtgrid { display: grid; gap: 16px; }
+@media (min-width: 1000px) { .rtgrid { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); align-items: start; } .rtmapp { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 64px); } }
+.rtmap .rtpin { cursor: pointer; }
+.rtmap .rtpin:hover circle { stroke-width: 5; }
+.rttools { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.rtlist { display: grid; gap: 6px; }
+.rtrow { display: grid; grid-template-columns: 18px 30px 1fr auto; gap: 10px; align-items: center; border: 1.5px solid var(--line); border-radius: 8px; padding: 8px 10px; background: var(--surface); cursor: grab; }
+.rtrow.pend, .rtrow.avail { grid-template-columns: 30px 1fr auto; cursor: default; border-style: dashed; }
+.rtrow.sel { border-color: var(--brand); box-shadow: inset 4px 0 0 var(--accent); }
+.rtrow.skip { opacity: 0.6; }
+.rtrow.skip b { text-decoration: line-through; }
+.rtrow.dragging { opacity: 0.4; }
+.rtrow.dropa { box-shadow: 0 -3px 0 var(--brand); }
+.rtrow.dropb { box-shadow: 0 3px 0 var(--brand); }
+.rtrow .grip { color: var(--muted); }
+.rtrow .grip svg { width: 18px; height: 18px; }
+.rtrow b { display: block; }
+.rtrow span { font-size: 0.86rem; color: var(--muted); }
+.rtno { width: 30px; height: 30px; border-radius: 6px; display: grid; place-items: center; font-weight: 700; font-size: 0.92rem; color: #fff !important; }
+.rtleg { display: block; font-size: 0.8rem !important; margin-top: 2px; }
+.rtbtns { display: flex; gap: 4px; align-items: center; }
+.rtbtns .small-btn { min-height: 36px; min-width: 36px; padding: 4px 8px; }
+.rtsel { min-height: 36px; border-radius: 6px; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; font-size: 0.85rem; padding: 2px 4px; }
+.xtag { font-style: normal; font-weight: 600; color: var(--warn); }
+.rtkv { grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); }
+.rtkv b { font-size: 1.3rem; white-space: nowrap; }
+.mapchips button[aria-pressed="true"] { box-shadow: inset 0 -3px 0 var(--accent); }
+@media (max-width: 560px) { .rtrow { grid-template-columns: 18px 30px 1fr; } .rtbtns { grid-column: 2 / -1; } }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 </style></head><body>
 
@@ -902,6 +930,17 @@ const T = {
     cnSheet: "Spreadsheet import", cnSheetP: "Works with any software that can export to Excel or CSV: completed jobs with date, customer, address, service, price and crew.", cnFile: "Choose a CSV file", cnSample: "Use a sample file", cnMap: "Match the columns", cnPreview: "First rows", cnImport: "Import {n} jobs", cnImported: "Imported {n} jobs from {f}", cnLast: "Last import: {n} jobs from {f}",
     cnQb: "QuickBooks (coming later)", cnQbP: "Pull fixed costs like insurance and rent straight from your books.", cnSkip: "(skip)",
     impF: { date: "Date", customer: "Customer", address: "Address", service: "Service", price: "Price", crew: "Crew" },
+    gRoutes: "Routes", tabRoutes: "Routes", rtTomorrow: "Tomorrow", rtRegular: "Regular week", rtCode: "Route code {c}",
+    rtHow: "Tap the stops on the map in the order the crew should drive them, or drag the list. Tap a faded stop to move it from another crew.",
+    rtTap: "Tap stops in order", rtTapOn: "Tapping: {n} of {m} placed. Tap the next stop on the map.", rtTapDone: "Done tapping", rtBest: "Shortest order", rtReset: "Start from the regular {d} route", rtUndo: "Undo", rtSave: "Save route",
+    rtSaved: "Saved. {c}'s tablet gets this route tomorrow at 6 a.m.", rtSavedReg: "Saved as {c}'s regular {d} route. Every {d} starts from this order; extras and skips are added each week.",
+    rtStops: "Stops", rtDrive: "Driving", rtSite: "On site", rtFinish: "Back at the yard", rtFuel: "Fuel", rtStart: "Leaves the yard 7:00 a.m.",
+    rtVs: "Compared with the saved route: {km} and {m} min {w} driving a day, about {f} in fuel per season.", rtLess: "less", rtMore: "more", rtSame: "Same driving as the saved route.",
+    rtFrom: "{km} · {m} min from the last stop", rtFromYard: "{km} · {m} min from the yard", rtNotYet: "Not placed yet", rtExtra: "Extra this week", rtSkip: "Skip this week (customer asked)", rtSkipped: "Skipped",
+    rtMoveQ: "Move {a} to {c}?", rtMoveP: "It's on {o}'s route now. It will be added to the end of {c}'s route; drag it where it fits.", rtMove: "Move to {c}", rtMoved: "Moved {a} to {c}",
+    rtAvail: "Not on a route yet", rtDay: "Day", rtMoveDay: "Move to another day", rtMovedDay: "{a} moved to {d}",
+    rtUp: "Move up", rtDown: "Move down", rtRemove: "Take off this route", rtRemoved: "{a} is off the route. It shows as not on a route yet.",
+    rtLegend: "Faded: other crews · Grey dashed: not on a route yet",
     tabFuel: "Fuel & km", gpsArrived: "GPS: you're at {a}", gpsHere: "GPS shows you here since {t}", gpsLeft: "GPS: {d} to go",
     locOffT: "Location is off", locOffP: "This company phone has to share its location while you're clocked in. Turn it back on to keep working. It stops when you clock out.", locOn: "Turn location on", needLocT: "Turn on location to clock in",
     locCard: "Location", locDevice: "Company tablet · Truck 12", locRule: "Shared only while you're clocked in. It stops when you clock out.", locToday: "Today: {d} driven · {h} driving", demoOff: "Demo: turn location off",
@@ -1013,7 +1052,7 @@ const T = {
     slDriving: "Manejando a", slAt: "En", slLeft: "Faltan {d} · la llegada se registra sola", slArr: "Llegó {t} · registrado solo", slOnSite: "{m} min en sitio", slAllDone: "Todas las paradas listas", slHome: "Regresa al patio.",
     slStops: "Paradas de hoy", slDone: "{a} – {l} · {m} min", slNext: "Siguiente", slBreak: "Descanso, almuerzo o terminar el día", slEndT: "Terminar mi día", slOdoEnd: "Odómetro del Camión 12 ahora", slEnd: "Terminar mi día", slBack: "Regresar",
     slSum: "Hoy", slGpsKm: "GPS", slOdoKm: "Odómetro", slProblem: "Reportar un problema", slDemoOff: "Demo: apagar la ubicación",
-    pSeason: "Temporada", wSeason: "Esta temporada", tabCustomers: "Clientes", tabConnect: "Conexiones", fixH: "Costos fijos en esta vista",
+    gRoutes: "Rutas", tabRoutes: "Rutas", pSeason: "Temporada", wSeason: "Esta temporada", tabCustomers: "Clientes", tabConnect: "Conexiones", fixH: "Costos fijos en esta vista",
     dispatch: "Despachador", dispWho: "Rosa M. · Jefa de equipo / despacho",
     nextSvc: "Próximo servicio recomendado", nextWhen: "Cuándo", nextNote: "Nota corta para la oficina", nextPh: "ej. Siguen cayendo hojas, falta otra pasada", needNext: "Elige el próximo servicio, una fecha y escribe una nota corta",
     ns_reg: "Visita regular", ns_leaves: "Limpieza de hojas", ns_aer: "Aireación", ns_fert: "Fertilizante", ns_over: "Resiembra", ns_shrub: "Arbustos / setos", ns_snow: "Estacas de nieve",
@@ -1282,6 +1321,7 @@ function freshState() {
       { id: "m3", n: 'Mower #3 · 52"', crew: "c3", lph: 2.8, val: 11800, yrs: 5, h: 4.9 }, { id: "m4", n: 'Mower #4 · 60"', crew: "c4", lph: 3.2, val: 14500, yrs: 5, h: 5.8 },
       { id: "m5", n: 'Push mower P-1 · 21"', crew: "c2", lph: 0.6, val: 900, yrs: 3, h: 1.2 }, { id: "m6", n: 'Spare mower #5 · 48"', crew: null, lph: 2.6, val: 9800, yrs: 5, h: 0 },
     ],
+    rt: null,
     mode: "finance", custView: "cust", custSort: "low", custQ: "", mapCrew: "",
     conn: { jobber: false, jobberAt: null, zapier: false, sheet: null }, impRows: null, impName: "",
     locPerm: "need", odoStart: null, odoEnd: null, simMin: 0, legs: [], legStart: null, dwell: 0,
@@ -1881,6 +1921,7 @@ function renderOwner() {
   if (tab === "costs" && !isD) m += ownerCosts();
   if (tab === "email" && !isD) m += ownerEmail();
   if (tab === "customers" && !isD) m += ownerCustomers();
+  if (tab === "routes") m += ownerRoutes();
   if (tab === "connect" && !isD) m += ownerConnect();
   h += `<div class="oshell">${side}<div class="omain">${m}</div></div><p class="foot">${t("sample")}</p>`;
   el.innerHTML = h;
@@ -2235,11 +2276,11 @@ function ownerProps() {
 function ownerTexts() {
   return `<div class="panel"><h2>${t("textsToday")} <small>${S.texts.length}</small></h2><div class="sms-log">${S.texts.map((x) => `<div><span><span class="mono muted">${x.at}</span> · ${esc(x.to)} · ${esc(L(x.what))}</span><span class="chip ${x.st === "st_sent" ? "ok" : x.st === "st_held" ? "app" : ""}">${t(x.st)}</span></div>`).join("")}</div></div>`;
 }
-const GROUPS = { today: ["today"], schedule: ["assign", "map", "props"], money: ["overview", "customers", "hours", "fuel"], team: ["team"], records: ["quality", "records", "texts"], settings: ["connect", "costs", "email"] };
+const GROUPS = { today: ["today"], routes: ["routes"], schedule: ["assign", "map", "props"], money: ["overview", "customers", "hours", "fuel"], team: ["team"], records: ["quality", "records", "texts"], settings: ["connect", "costs", "email"] };
 // In "Finance only" mode the screens a CRM already covers are hidden.
 const CRM_TABS = ["assign", "map", "props", "texts", "quality"];
 const subsOf = (g) => GROUPS[g].filter((k) => !(S.mode === "finance" && CRM_TABS.includes(k)));
-const officeGroups = () => (S.view === "dispatch" ? ["today", "schedule", "team", "records"] : ["today", "money", "team", "records", "settings"]).filter((g) => subsOf(g).length);
+const officeGroups = () => (S.view === "dispatch" ? ["today", "routes", "schedule", "team", "records"] : ["today", "routes", "money", "team", "records", "settings"]).filter((g) => subsOf(g).length);
 const groupOf = (k) => Object.keys(GROUPS).find((g) => GROUPS[g].includes(k));
 const SVC_TASKS = { ns_reg: ["mow", "edge", "trim", "blow"], ns_leaves: ["leaves", "beds", "haul"], ns_aer: ["aerate"], ns_fert: ["fert"], ns_over: ["over"], ns_shrub: ["shrub", "haul"], ns_snow: ["stakes"], j_gutter: ["gutter"], j_sprk: ["sprk"] };
 function doNewJob() {
@@ -2403,6 +2444,161 @@ function fuelCsv(kind) {
   days.forEach((_, i) => { const d = new Date(mon); d.setDate(mon.getDate() + i); CREWS.forEach((c) => { const km = LW_KM[c][i], tl = (km * S.trucks[c].l100) / 100, mh = km ? mowFor(c).reduce((a, m) => a + m.h, 0) : 0, ml = km ? mowFor(c).reduce((a, m) => a + m.h * m.lph, 0) : 0; out.push([isoDate(d), T.en[c + "n"], S.trucks[c].n, km.toFixed(1), tl.toFixed(1), mh.toFixed(1), ml.toFixed(1), ((tl + ml) * S.price).toFixed(2), S.price.toFixed(3), ""]); }); });
   return out;
 }
+
+/* ═══════════ routes: plan tomorrow or a regular weekday by tapping stops or dragging the list ═══════════ */
+const RT_DAYS = ["mon", "tue", "wed", "thu", "fri", "sat"];
+const RT_SURN = ["Hendricks", "Okafor", "Tremblay", "Nguyen", "Silva", "Patel", "MacLeod", "Dubois", "Wong", "Singh", "Roy", "Fraser", "Leblanc", "Chen", "Morin", "Ali", "Gagnon", "Kaur", "Rossi", "Murphy", "Bauer", "Lam", "Costa", "Novak", "Hughes", "Diaz", "Park", "Walsh", "Khan", "Moreau"];
+function rtTomorrowIdx() { const d = new Date(START); d.setDate(d.getDate() + 1); const w = (d.getDay() + 6) % 7; return w > 5 ? 0 : w; }
+function rtInit() {
+  if (S.rt) return S.rt;
+  const stops = {}, orders = {};
+  const base = {
+    c2: freshStops().map((x) => ({ addr: x.addr, n: x.n, x: x.x, y: x.y, est: x.est, price: x.price })),
+    c1: OTHER.c1.route.slice(1).map((p, i) => ({ addr: ROUTE_NAMES.c1[i + 1], x: p[0], y: p[1] })),
+    c3: OTHER.c3.route.slice(1).map((p, i) => ({ addr: ROUTE_NAMES.c3[i + 1], x: p[0], y: p[1] })),
+    c4: OTHER.c4.route.slice(1).map((p, i) => ({ addr: ROUTE_NAMES.c4[i + 1], x: p[0], y: p[1] })),
+  };
+  const r = rnd(41);
+  RT_DAYS.forEach((day, d) => {
+    for (const c of CREWS) {
+      const ids = [];
+      base[c].forEach((b, i) => {
+        const id = `${day}-${c}-${i}`;
+        const num = parseInt(b.addr, 10), street = b.addr.replace(/^\d+\s*/, "");
+        const addr = d === 3 || !num ? b.addr : `${num + 2 * d + (i % 3)} ${street}`;
+        stops[id] = { id, addr, n: b.n && d === 3 ? b.n : RT_SURN[(i * 7 + d * 5 + c.charCodeAt(1)) % RT_SURN.length], x: Math.round(b.x + (d === 3 ? 0 : (r() - 0.5) * 40)), y: Math.round(b.y + (d === 3 ? 0 : (r() - 0.5) * 30)), est: b.est || 25 + Math.round(r() * 7) * 5, price: b.price || 50 + Math.round(r() * 10) * 10, crew: c, day: d };
+        ids.push(id);
+      });
+      // regular routes start in the order the crew drove them, which isn't always the shortest
+      if (c !== "c2") ids.sort((a, b) => (stops[a].x * 0.6 + stops[a].y) - (stops[b].x * 0.6 + stops[b].y));
+      orders["r|" + d + "|" + c] = ids;
+    }
+  });
+  // tomorrow starts from tomorrow's regular routes; this week's extras and skips are added on top
+  const td = rtTomorrowIdx();
+  for (const c of CREWS) orders["t|" + c] = [...orders["r|" + td + "|" + c]];
+  stops.x1 = { id: "x1", addr: "301 Lakeshore Rd", n: "Haddad", x: 900, y: 300, est: 60, price: 140, crew: null, extra: "New customer · first cut" };
+  stops.x2 = { id: "x2", addr: "41 Spruce St", n: "Kowalski", x: 800, y: 390, est: 20, price: 0, crew: null, extra: "Redo · blow the driveway" };
+  const skipId = orders["t|c3"][3]; stops[skipId].skip = true;
+  const saved = {}; Object.keys(orders).forEach((k) => (saved[k] = [...orders[k]]));
+  S.rt = { day: "t", crew: "c2", stops, orders, saved, avail: ["x1", "x2"], tap: null, sel: null, hist: [] };
+  return S.rt;
+}
+const rtKey = (R, c) => (R.day === "t" ? "t|" + (c || R.crew) : "r|" + R.day + "|" + (c || R.crew));
+const rtDayName = (d) => t(RT_DAYS[d]);
+function rtLegs(ids) {
+  const R = S.rt, pts = [YARD, ...ids.map((id) => R.stops[id]).filter((x) => !x.skip), YARD];
+  const legs = [];
+  for (let i = 1; i < pts.length; i++) { const km = (Math.abs(pts[i].x - pts[i - 1].x) + Math.abs(pts[i].y - pts[i - 1].y)) * UNIT_M / 1000; legs.push({ km, min: Math.round((km / 28) * 60) + 2 }); }
+  return legs;
+}
+function rtTotals(ids) {
+  const R = S.rt, legs = rtLegs(ids), live = ids.filter((id) => !R.stops[id].skip);
+  const km = legs.reduce((a, l) => a + l.km, 0), drive = legs.reduce((a, l) => a + l.min, 0), site = live.reduce((a, id) => a + R.stops[id].est, 0);
+  const crew = R.crew;
+  return { km, drive, site, fuel: (km * S.trucks[crew].l100) / 100 * S.price, finish: 7 * 60 + drive + site, n: live.length };
+}
+function rtBest(ids) {
+  const R = S.rt, live = ids.filter((id) => !R.stops[id].skip), skipped = ids.filter((id) => R.stops[id].skip);
+  const d = (a, b) => Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
+  let left = [...live], cur = YARD, out = [];
+  while (left.length) { left.sort((a, b) => d(cur, R.stops[a]) - d(cur, R.stops[b])); const nx = left.shift(); out.push(nx); cur = R.stops[nx]; }
+  // 2-opt: undo crossings
+  const len = (o) => rtLegs(o).reduce((a, l) => a + l.km, 0);
+  for (let improved = true, guard = 0; improved && guard < 50; guard++) {
+    improved = false;
+    for (let i = 0; i < out.length - 1; i++) for (let k = i + 1; k < out.length; k++) {
+      const cand = [...out.slice(0, i), ...out.slice(i, k + 1).reverse(), ...out.slice(k + 1)];
+      if (len(cand) + 1e-9 < len(out)) { out = cand; improved = true; }
+    }
+  }
+  return [...out, ...skipped];
+}
+function rtCode(R) {
+  const d = new Date(START); d.setDate(d.getDate() + (R.day === "t" ? 1 : 0));
+  const tmp = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())); const dn = tmp.getUTCDay() || 7; tmp.setUTCDate(tmp.getUTCDate() + 4 - dn);
+  const wk = Math.ceil(((tmp - new Date(Date.UTC(tmp.getUTCFullYear(), 0, 1))) / 86400000 + 1) / 7);
+  const day = R.day === "t" ? RT_DAYS[rtTomorrowIdx()] : RT_DAYS[R.day];
+  return `${R.crew.toUpperCase()}-${day.toUpperCase()}${R.day === "t" ? "-W" + wk : ""}`;
+}
+function rtMap(R) {
+  const W = 1000, H = 700, key = rtKey(R), mine = R.orders[key], pend = R.tap ? R.tap.pending : [];
+  let g = `<rect width="${W}" height="${H}" fill="var(--map-land)"/><path d="M0 640 C 200 610, 300 690, 520 660 S 860 690, 1000 650 L1000 700 L0 700Z" fill="var(--map-water)"/>`;
+  for (let x = 80; x < W; x += 110) g += `<line x1="${x}" y1="0" x2="${x}" y2="${H}" stroke="var(--map-road)" stroke-width="7"/>`;
+  for (let y = 70; y < H - 60; y += 95) g += `<line x1="0" y1="${y}" x2="${W}" y2="${y}" stroke="var(--map-road)" stroke-width="7"/>`;
+  g += `<path d="M0 520 L 1000 180" stroke="var(--map-main)" stroke-width="14"/>`;
+  g += `<rect x="${YARD.x - 16}" y="${YARD.y - 16}" width="32" height="32" rx="6" fill="var(--ink)"/><text x="${YARD.x}" y="${YARD.y + 6}" text-anchor="middle" font-size="16" font-weight="700" fill="var(--bg)">Y</text>`;
+  // other crews, faded
+  for (const c of CREWS) if (c !== R.crew) for (const id of R.orders[rtKey(R, c)]) { const st = R.stops[id]; g += `<g class="rtpin" data-act="rtPick" data-id="${id}" tabindex="-1"><circle cx="${st.x}" cy="${st.y}" r="11" fill="var(--surface)" stroke="var(--${c})" stroke-width="3" opacity=".45"/></g>`; }
+  // not on a route yet (tomorrow only)
+  if (R.day === "t") for (const id of R.avail) { const st = R.stops[id]; g += `<g class="rtpin" data-act="rtPick" data-id="${id}"><circle cx="${st.x}" cy="${st.y}" r="15" fill="var(--surface)" stroke="var(--muted)" stroke-width="3" stroke-dasharray="5 4"/><text x="${st.x}" y="${st.y + 5}" text-anchor="middle" font-size="14" font-weight="700" fill="var(--muted)">+</text></g>`; }
+  // this crew's route
+  const live = mine.filter((id) => !R.stops[id].skip), path = [YARD, ...live.map((id) => R.stops[id]), ...(R.tap ? [] : [YARD])];
+  let pts = [`${YARD.x},${YARD.y}`];
+  for (let i = 1; i < path.length; i++) { const a = path[i - 1], b = path[i]; pts.push(`${b.x},${a.y}`, `${b.x},${b.y}`); }
+  g += `<polyline points="${pts.join(" ")}" fill="none" stroke="var(--${R.crew})" stroke-width="5" stroke-linejoin="round" opacity=".85"/>`;
+  mine.forEach((id, i) => { const st = R.stops[id], sel = R.sel === id;
+    g += `<g class="rtpin" data-act="rtPick" data-id="${id}">${sel ? `<circle cx="${st.x}" cy="${st.y}" r="27" fill="none" stroke="var(--ink)" stroke-width="3"/>` : ""}<circle cx="${st.x}" cy="${st.y}" r="19" fill="${st.skip ? "var(--sunken)" : `var(--${R.crew})`}" stroke="var(--surface)" stroke-width="3"/><text x="${st.x}" y="${st.y + 6}" text-anchor="middle" font-size="16" font-weight="700" fill="${st.skip ? "var(--muted)" : "#fff"}">${st.skip ? "–" : i + 1}</text></g>`; });
+  pend.forEach((id) => { const st = R.stops[id]; g += `<g class="rtpin" data-act="rtPick" data-id="${id}"><circle cx="${st.x}" cy="${st.y}" r="19" fill="var(--surface)" stroke="var(--${R.crew})" stroke-width="4"/><text x="${st.x}" y="${st.y + 6}" text-anchor="middle" font-size="16" font-weight="700" fill="var(--${R.crew})">?</text></g>`; });
+  return `<svg class="map rtmap" viewBox="0 0 ${W} ${H}" role="img" aria-label="${t("map")}">${g}</svg>`;
+}
+function ownerRoutes() {
+  const R = rtInit(), key = rtKey(R), ids = R.orders[key], tot = rtTotals(ids), was = rtTotals(R.saved[key] || ids);
+  const legs = rtLegs(ids);
+  const dayLbl = R.day === "t" ? `${t("rtTomorrow")} · ${(() => { const d = new Date(START); d.setDate(d.getDate() + 1); return fmtDay(d); })()}` : rtDayName(R.day);
+  const dKm = was.km - tot.km, dMin = was.drive - tot.drive, seasonFuel = Math.abs((dKm * S.trucks[R.crew].l100) / 100 * S.price * 30);
+  const vs = Math.abs(dKm) < 0.05 ? t("rtSame") : t("rtVs", { km: fDist(Math.abs(dKm)), m: Math.abs(dMin), w: dKm > 0 ? t("rtLess") : t("rtMore"), f: money(seasonFuel) });
+  const hmT = (m) => { const h = Math.floor(m / 60), mm = m % 60; return `${((h + 11) % 12) + 1}:${pad2(mm)} ${h < 12 ? "a.m." : "p.m."}`; };
+  let li = 0;
+  const rows = ids.map((id, i) => {
+    const st = R.stops[id]; const leg = st.skip ? null : legs[li++];
+    return `<div class="rtrow ${st.skip ? "skip" : ""} ${R.sel === id ? "sel" : ""}" draggable="true" data-rid="${id}">
+      <span class="grip" aria-hidden="true">${I.grip}</span><span class="rtno" style="background:${st.skip ? "var(--sunken)" : `var(--${R.crew})`};color:${st.skip ? "var(--muted)" : "#fff"}">${st.skip ? "–" : i + 1 - ids.slice(0, i).filter((x) => R.stops[x].skip).length}</span>
+      <div style="min-width:0"><b>${esc(st.addr)}</b><span>${esc(st.n)} · ${st.est} ${t("min")} · ${money(st.price)}${st.extra ? ` · <em class="xtag">${t("rtExtra")}: ${esc(st.extra)}</em>` : ""}${st.skip ? ` · <em class="xtag">${t("rtSkip")}</em>` : ""}</span>
+      ${leg ? `<span class="rtleg">${t(i === 0 ? "rtFromYard" : "rtFrom", { km: fDist(leg.km), m: leg.min })}</span>` : ""}</div>
+      <div class="rtbtns"><button class="small-btn" data-act="rtMv" data-id="${id}" data-d="-1" aria-label="${t("rtUp")}: ${esc(st.addr)}" ${i === 0 ? "disabled" : ""}>↑</button><button class="small-btn" data-act="rtMv" data-id="${id}" data-d="1" aria-label="${t("rtDown")}: ${esc(st.addr)}" ${i === ids.length - 1 ? "disabled" : ""}>↓</button>
+      ${R.day === "t" ? `<button class="small-btn" data-act="rtOff" data-id="${id}" aria-label="${t("rtRemove")}: ${esc(st.addr)}">✕</button>` : `<label class="sr" for="rtd-${id}">${t("rtMoveDay")}</label><select id="rtd-${id}" data-rtday="${id}" class="rtsel">${RT_DAYS.map((d, k) => `<option value="${k}" ${k === R.day ? "selected" : ""}>${t(d)}</option>`).join("")}</select>`}</div></div>`;
+  }).join("");
+  const pending = R.tap ? R.tap.pending.map((id) => `<div class="rtrow pend"><span class="rtno" style="background:var(--surface);color:var(--${R.crew});border:2px solid var(--${R.crew})">?</span><div><b>${esc(R.stops[id].addr)}</b><span>${t("rtNotYet")}</span></div></div>`).join("") : "";
+  const avail = R.day === "t" && R.avail.length ? `<div class="list-h" style="margin-top:12px">${t("rtAvail")}</div>${R.avail.map((id) => `<div class="rtrow avail"><span class="rtno" style="background:var(--sunken);color:var(--muted)">+</span><div><b>${esc(R.stops[id].addr)}</b><span>${esc(R.stops[id].n)} · ${R.stops[id].est} ${t("min")} · ${esc(R.stops[id].extra)}</span></div><button class="small-btn pri" data-act="rtPick" data-id="${id}">${t("rtMove", { c: t(R.crew + "n") })}</button></div>`).join("")}` : "";
+  return `<div class="phd" style="margin:0"><div class="o-tabs" role="group" style="margin:0"><button data-act="rtDay" data-k="t" aria-pressed="${R.day === "t"}">${t("rtTomorrow")}</button>${RT_DAYS.map((d, k) => `<button data-act="rtDay" data-k="${k}" aria-pressed="${R.day === k}">${t(d)}</button>`).join("")}</div><span class="muted">${R.day === "t" ? "" : t("rtRegular") + " · "}${t("rtCode", { c: `<b class="mono">${rtCode(R)}</b>` })}</span></div>
+    <div class="mapchips" role="group" aria-label="${t("crew")}" style="margin-top:0">${CREWS.map((c) => `<button data-act="rtCrew" data-k="${c}" aria-pressed="${R.crew === c}"><i style="background:var(--${c})"></i>${t(c + "n")} · ${S.trucks[c].n}</button>`).join("")}</div>
+    <div class="rtgrid"><div class="panel rtmapp"><h2>${t(R.crew + "n")} · ${dayLbl}</h2><p class="note-sm" style="margin:-4px 0 8px">${R.tap ? `<b>${t("rtTapOn", { n: ids.length, m: ids.length + R.tap.pending.length })}</b>` : t("rtHow")}</p>
+      ${rtMap(R)}<p class="note-sm" style="margin:6px 0 0">${t("rtLegend")}</p>
+      <div class="rttools">${R.tap ? `<button class="small-btn pri" data-act="rtTapEnd">${t("rtTapDone")}</button>` : `<button class="small-btn" data-act="rtTap">${t("rtTap")}</button>`}<button class="small-btn" data-act="rtBest">${t("rtBest")}</button>${R.day === "t" ? `<button class="small-btn" data-act="rtRegular">${t("rtReset", { d: rtDayName(rtTomorrowIdx()) })}</button>` : ""}<button class="small-btn" data-act="rtUndo" ${R.hist.length ? "" : "disabled"}>${t("rtUndo")}</button></div></div>
+    <div class="col"><div class="panel"><div class="kv rtkv"><div><b>${tot.n}</b><span>${t("rtStops")}</span></div><div><b>${fDist(tot.km)}</b><span>${t("rtDrive")} · ${hm(tot.drive)}</span></div><div><b>${hm(tot.site)}</b><span>${t("rtSite")}</span></div><div><b>${hmT(tot.finish)}</b><span>${t("rtFinish")}</span></div><div><b>${money2(tot.fuel)}</b><span>${t("rtFuel")}</span></div></div>
+      <p class="plain small" style="margin:10px 0 0">${vs}</p><p class="note-sm" style="margin:4px 0 0">${t("rtStart")}</p>
+      <button class="big" data-act="rtSave" style="margin-top:12px">${t("rtSave")}</button></div>
+      <div class="panel"><h2>${t("rtStops")}</h2><div class="rtlist" id="rtlist">${rows}${pending}</div>${avail}</div></div></div>`;
+}
+function rtPush() { const R = S.rt, k = rtKey(R); R.hist.push({ k, o: [...R.orders[k]], avail: [...R.avail], other: Object.fromEntries(CREWS.map((c) => [rtKey(R, c), [...R.orders[rtKey(R, c)]]])) }); if (R.hist.length > 30) R.hist.shift(); }
+function rtPick(id) {
+  const R = S.rt, key = rtKey(R), mine = R.orders[key];
+  if (R.tap && R.tap.pending.includes(id)) { R.tap.pending = R.tap.pending.filter((x) => x !== id); mine.push(id); if (!R.tap.pending.length) R.tap = null; return render(); }
+  if (mine.includes(id)) { R.sel = R.sel === id ? null : id; render(); const row = document.querySelector(`[data-rid="${id}"]`); if (row) row.scrollIntoView({ block: "nearest", behavior: "smooth" }); return; }
+  if (R.avail.includes(id)) { rtPush(); R.avail = R.avail.filter((x) => x !== id); mine.push(id); R.stops[id].crew = R.crew; toast(t("rtMoved", { a: R.stops[id].addr, c: t(R.crew + "n") })); return render(); }
+  const from = CREWS.find((c) => R.orders[rtKey(R, c)].includes(id)); if (!from) return;
+  const st = R.stops[id];
+  sheet(`<h2>${t("rtMoveQ", { a: esc(st.addr), c: t(R.crew + "n") })}</h2><p class="muted">${t("rtMoveP", { o: t(from + "n"), c: t(R.crew + "n") })}</p>
+    <div class="sheet-acts"><button data-act="closeSheet">${t("cancel")}</button><button class="go" id="go">${t("rtMove", { c: t(R.crew + "n") })}</button></div>`, (sh) => {
+    $("#go", sh).onclick = () => { rtPush(); const fk = rtKey(R, from); R.orders[fk] = R.orders[fk].filter((x) => x !== id); R.orders[key].push(id); st.crew = R.crew; closeSheet(); toast(t("rtMoved", { a: st.addr, c: t(R.crew + "n") })); render(); };
+  });
+}
+/* drag a row to reorder */
+let rtDrag = null;
+document.addEventListener("dragstart", (e) => { const r = e.target.closest && e.target.closest(".rtrow[data-rid]"); if (!r) return; rtDrag = r.dataset.rid; r.classList.add("dragging"); try { e.dataTransfer.setData("text/plain", rtDrag); e.dataTransfer.effectAllowed = "move"; } catch (_) {} });
+document.addEventListener("dragover", (e) => {
+  if (!rtDrag) return; const r = e.target.closest && e.target.closest(".rtrow[data-rid]"); if (!r) return; e.preventDefault();
+  document.querySelectorAll(".rtrow.dropa, .rtrow.dropb").forEach((x) => x.classList.remove("dropa", "dropb"));
+  const box = r.getBoundingClientRect(); r.classList.add(e.clientY < box.top + box.height / 2 ? "dropa" : "dropb");
+});
+document.addEventListener("drop", (e) => {
+  if (!rtDrag) return; const r = e.target.closest && e.target.closest(".rtrow[data-rid]"); if (!r) return; e.preventDefault();
+  const R = S.rt, key = rtKey(R), o = R.orders[key], target = r.dataset.rid, before = r.classList.contains("dropa");
+  if (target !== rtDrag) { rtPush(); const list = o.filter((x) => x !== rtDrag); const at = list.indexOf(target) + (before ? 0 : 1); list.splice(at, 0, rtDrag); R.orders[key] = list; }
+  rtDrag = null; render();
+});
+document.addEventListener("dragend", () => { rtDrag = null; document.querySelectorAll(".rtrow.dragging, .rtrow.dropa, .rtrow.dropb").forEach((x) => x.classList.remove("dragging", "dropa", "dropb")); });
 
 /* ═══════════ customers: what each one brings in ═══════════ */
 // [name, address, area, crew, plan, visits per week, price, min on site, min to drive there, km to drive there, materials $]
@@ -3081,6 +3277,17 @@ document.addEventListener("click", (e) => {
     case "slimStart": { const v = parseInt(($("#odo-s") || {}).value, 10); if (!v) return; S.odoStart = v; office(t("lb_clockin")); S.shift = "on"; S.clockedIn = true; S.clockAt = now(); S.clockOutAt = null; S.simMin = 0; S.legStart = null; S.dev.c2.lastFix = Date.now(); toast(t("t_clockIn", { t: fmtT(now()) })); window.scrollTo({ top: 0 }); break; }
     case "slimEnd": { const v = parseInt(($("#odo-e") || {}).value, 10); if (!v) return; S.odoEnd = v; S.coConfirm = false; S.shift = "off"; S.clockedIn = false; S.clockOutAt = now(); office(t("lb_clockout")); toast(t("t_clockOut", { t: fmtT(now()) })); window.scrollTo({ top: 0 }); break; }
     case "custView": S.custView = b.dataset.k; break;
+    case "rtDay": { const R = rtInit(); R.day = b.dataset.k === "t" ? "t" : +b.dataset.k; R.tap = null; R.sel = null; break; }
+    case "rtCrew": { const R = rtInit(); R.crew = b.dataset.k; R.tap = null; R.sel = null; break; }
+    case "rtPick": rtPick(b.dataset.id); return;
+    case "rtTap": { const R = S.rt, k = rtKey(R); rtPush(); R.tap = { pending: R.orders[k].filter((id) => !R.stops[id].skip) }; R.orders[k] = R.orders[k].filter((id) => R.stops[id].skip); R.sel = null; break; }
+    case "rtTapEnd": { const R = S.rt; R.orders[rtKey(R)].push(...R.tap.pending); R.tap = null; break; }
+    case "rtBest": { const R = S.rt, k = rtKey(R); if (R.tap) { R.orders[k].push(...R.tap.pending); R.tap = null; } rtPush(); R.orders[k] = rtBest(R.orders[k]); break; }
+    case "rtRegular": { const R = S.rt; rtPush(); const reg = R.orders["r|" + rtTomorrowIdx() + "|" + R.crew]; const extras = R.orders[rtKey(R)].filter((id) => R.stops[id].extra); R.orders[rtKey(R)] = [...reg, ...extras]; R.tap = null; break; }
+    case "rtUndo": { const R = S.rt, h = R.hist.pop(); if (!h) return; Object.assign(R.orders, h.other); R.orders[h.k] = h.o; R.avail = h.avail; R.tap = null; break; }
+    case "rtMv": { const R = S.rt, k = rtKey(R), o = R.orders[k], i = o.indexOf(b.dataset.id), j = i + +b.dataset.d; if (j < 0 || j >= o.length) return; rtPush(); [o[i], o[j]] = [o[j], o[i]]; R.sel = b.dataset.id; break; }
+    case "rtOff": { const R = S.rt, k = rtKey(R), id = b.dataset.id; rtPush(); R.orders[k] = R.orders[k].filter((x) => x !== id); R.avail.push(id); toast(t("rtRemoved", { a: R.stops[id].addr })); break; }
+    case "rtSave": { const R = S.rt, k = rtKey(R); if (R.tap) { R.orders[k].push(...R.tap.pending); R.tap = null; } R.saved[k] = [...R.orders[k]]; toast(R.day === "t" ? t("rtSaved", { c: t(R.crew + "n") }) : t("rtSavedReg", { c: t(R.crew + "n"), d: rtDayName(R.day) })); break; }
     case "custSort": S.custSort = b.dataset.k; break;
     case "custOpen": return doCustomer(+b.dataset.i);
     case "fuelDl": downloadText(b.dataset.k === "day" ? "Fuel today.csv" : "Fuel last week by day.csv", toCsvText(fuelCsv(b.dataset.k))); toast(t(b.dataset.k === "day" ? "fDlDay" : "fDlWeek")); return;
@@ -3218,6 +3425,7 @@ document.addEventListener("change", (e) => {
   if (el.id === "fuel-price" && v > 0) { S.price = isMi() ? v / 3.78541 : v; renderOwner(); return; }
   if (el.id === "units") { S.units = el.value; renderOwner(); return; }
   if (el.id === "fix-pct") { renderOwner(); return; }
+  if (el.dataset && el.dataset.rtday) { const R = S.rt, id = el.dataset.rtday, to = +el.value; if (to === R.day) return; rtPush(); const k = rtKey(R); R.orders[k] = R.orders[k].filter((x) => x !== id); R.orders["r|" + to + "|" + R.crew].push(id); R.stops[id].day = to; toast(t("rtMovedDay", { a: R.stops[id].addr, d: rtDayName(to) })); renderOwner(); return; }
   if (el.dataset && el.dataset.eqmower) { const m = S.mowers.find((x) => x.id === el.dataset.eqmower); if (m) m.crew = el.value || null; renderOwner(); return; }
   if (el.dataset && el.dataset.eqtruck) { const a = el.dataset.eqtruck, b2 = el.value; if (a !== b2) { [S.trucks[a], S.trucks[b2]] = [S.trucks[b2], S.trucks[a]]; [S.truckVal[a], S.truckVal[b2]] = [S.truckVal[b2], S.truckVal[a]]; } renderOwner(); return; }
   if (el.id === "mt-km") { S.maintKm = Math.max(0, +el.value || 0); toast(t("saved")); return; }
