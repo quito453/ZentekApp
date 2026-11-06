@@ -1,34 +1,66 @@
-// Finance (owners only): how the business is doing today, this week or this month.
+// Finance (owners only): how the business is doing today, this week, this month or this season.
 // The database works out every number (public.finance_summary, public.job_profit); this screen
 // lays them out so the owner can read the answer in seconds.
 import { useEffect, useState } from "react";
-import { change, costs, money, pct, periodContaining, periodLabel, shiftPeriod, toCsv, type FinanceSummary, type Period, type PeriodKind } from "@zentek/shared";
+import { change, costs, money, pct, periodContaining, periodLabel, shiftPeriod, toCsv, DEFAULT_SEASON, type FinanceSummary, type Period, type PeriodKind, type Season } from "@zentek/shared";
 import { supabase } from "../supabase";
 import { download } from "./download";
 import { Payroll } from "./Payroll";
 import { CostSettings } from "./CostSettings";
 import { ReportSettings } from "./ReportSettings";
+import { Customers } from "./Customers";
+import { FuelKm } from "./FuelKm";
+import { Connections } from "./Connections";
 
 type Job = {
   visit_id: string; day: string; address: string; customer: string; crew: string | null; source: string;
-  revenue_cents: number; labour_cents: number; fuel_cents: number; materials_cents: number; truck_cents: number;
+  revenue_cents: number; labour_cents: number; fuel_cents: number; materials_cents: number; maintenance_cents: number;
   profit_cents: number; minutes: number; complaint: boolean; fixed_share_cents: number; net_cents: number;
 };
-type View = "overview" | "payroll" | "costs" | "email";
+type View = "overview" | "customers" | "payroll" | "fuel" | "costs" | "connect" | "email";
 
 const today = () => new Date().toLocaleDateString("en-CA");
 const SOURCE: Record<string, string> = { plan: "Regular", new_customer: "New customer", lead_won: "Lead won", crew_recommended: "Crew recommended", redo: "Redo", rescheduled: "Rescheduled" };
 
+// The fixed-cost slider and period are kept per browser so the owner's view sticks.
+const remember = <T,>(k: string, v: T) => {
+  try {
+    localStorage.setItem(`cc.${k}`, JSON.stringify(v));
+  } catch {
+    /* private mode */
+  }
+};
+const recall = <T,>(k: string, fallback: T): T => {
+  try {
+    const v = localStorage.getItem(`cc.${k}`);
+    return v ? (JSON.parse(v) as T) : fallback;
+  } catch {
+    return fallback;
+  }
+};
+
 export function Finance({ companyId, companyName }: { companyId: string; companyName: string }) {
   const [view, setView] = useState<View>("overview");
+  const [season, setSeason] = useState<Season>(DEFAULT_SEASON);
+  useEffect(() => {
+    supabase!
+      .from("companies")
+      .select("season_start_month, season_end_month")
+      .eq("id", companyId)
+      .single<{ season_start_month: number; season_end_month: number }>()
+      .then(({ data }) => data && setSeason({ start: data.season_start_month, end: data.season_end_month }));
+  }, [companyId]);
   return (
     <div className="stack">
       <nav className="subtabs" aria-label="Finance">
         {(
           [
             ["overview", "Overview"],
+            ["customers", "Customers"],
             ["payroll", "Payroll"],
-            ["costs", "Costs and rates"],
+            ["fuel", "Fuel & km"],
+            ["costs", "Costs"],
+            ["connect", "Connections"],
             ["email", "Email reports"],
           ] as [View, string][]
         ).map(([k, label]) => (
@@ -37,16 +69,84 @@ export function Finance({ companyId, companyName }: { companyId: string; company
           </button>
         ))}
       </nav>
-      {view === "overview" && <Overview companyId={companyId} companyName={companyName} />}
+      {view === "overview" && <Overview companyId={companyId} companyName={companyName} season={season} />}
+      {view === "customers" && <Customers companyId={companyId} companyName={companyName} season={season} />}
       {view === "payroll" && <Payroll companyId={companyId} />}
+      {view === "fuel" && <FuelKm companyId={companyId} companyName={companyName} season={season} />}
       {view === "costs" && <CostSettings companyId={companyId} />}
+      {view === "connect" && <Connections companyId={companyId} />}
       {view === "email" && <ReportSettings companyId={companyId} />}
     </div>
   );
 }
 
-function Overview({ companyId, companyName }: { companyId: string; companyName: string }) {
-  const [period, setPeriod] = useState<Period>(() => periodContaining("week", today()));
+/** Day / Week / Month / Season, with back and forward. Shared by the finance screens. */
+export function PeriodBar({ period, setPeriod, season }: { period: Period; setPeriod: (p: Period) => void; season: Season }) {
+  const isCurrent = period.to >= today();
+  return (
+    <div className="row-between wrap">
+      <div className="seg big-seg" role="group" aria-label="Period">
+        {(["day", "week", "month", "season"] as PeriodKind[]).map((k) => (
+          <button key={k} aria-pressed={period.kind === k} onClick={() => setPeriod(periodContaining(k, today(), season))}>
+            {{ day: "Day", week: "Week", month: "Month", season: "Season" }[k]}
+          </button>
+        ))}
+      </div>
+      <div className="row">
+        <button className="small" aria-label="Previous period" onClick={() => setPeriod(shiftPeriod(period, -1))}>‹</button>
+        <strong>{periodLabel(period)}</strong>
+        <button className="small" aria-label="Next period" disabled={isCurrent} onClick={() => setPeriod(shiftPeriod(period, 1))}>›</button>
+      </div>
+    </div>
+  );
+}
+
+export function usePeriod(season: Season, key: string): [Period, (p: Period) => void] {
+  const [kind, setKind] = useState<PeriodKind>(() => recall<PeriodKind>(`${key}.kind`, "week"));
+  const [period, setPeriodState] = useState<Period>(() => periodContaining(kind, today(), season));
+  useEffect(() => setPeriodState(periodContaining(kind, today(), season)), [season.start, season.end]);
+  return [
+    period,
+    (p: Period) => {
+      setPeriodState(p);
+      setKind(p.kind);
+      remember(`${key}.kind`, p.kind);
+    },
+  ];
+}
+
+/**
+ * How much of the fixed costs to count. 0% = profit from the jobs alone (the default: what the work
+ * itself earns). 100% = true profit after insurance, rent, depreciation and the rest.
+ */
+export function FixedSlider({ value, onChange, fixed }: { value: number; onChange: (n: number) => void; fixed: number }) {
+  return (
+    <section className="card fixbar">
+      <label className="fixbar-label" htmlFor="fixpct">
+        <span>
+          <b>Fixed costs counted: {value}%</b>
+          <span className="muted small-text">
+            {value === 0 ? " Profit from the jobs alone." : value === 100 ? " True profit: everything paid." : ` ${money(Math.round((fixed * value) / 100), { whole: true })} of ${money(fixed, { whole: true })}.`}
+          </span>
+        </span>
+        <span className="row">
+          <button type="button" className="small" aria-pressed={value === 0} onClick={() => onChange(0)}>Jobs only</button>
+          <button type="button" className="small" aria-pressed={value === 100} onClick={() => onChange(100)}>True profit</button>
+        </span>
+      </label>
+      <input id="fixpct" type="range" min={0} max={100} step={5} value={value} onChange={(e) => onChange(Number(e.target.value))} />
+    </section>
+  );
+}
+
+export function useFixedPct(): [number, (n: number) => void] {
+  const [v, setV] = useState(() => recall("fixPct", 0));
+  return [v, (n) => { setV(n); remember("fixPct", n); }];
+}
+
+function Overview({ companyId, companyName, season }: { companyId: string; companyName: string; season: Season }) {
+  const [period, setPeriod] = usePeriod(season, "overview");
+  const [fixPct, setFixPct] = useFixedPct();
   const [now, setNow] = useState<FinanceSummary | null>(null);
   const [prev, setPrev] = useState<FinanceSummary | null>(null);
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -66,48 +166,33 @@ function Overview({ companyId, companyName }: { companyId: string; companyName: 
       setError("");
       setNow(a.data as FinanceSummary);
       setPrev((b.data as FinanceSummary) ?? null);
-      setJobs(((j.data as Job[]) ?? []).sort((x, y) => x.net_cents - y.net_cents));
+      setJobs((j.data as Job[]) ?? []);
     })();
     return () => {
       live = false;
     };
   }, [companyId, period]);
 
-  const setKind = (k: PeriodKind) => setPeriod(periodContaining(k, today()));
-  const isCurrent = period.to >= today();
+  const share = fixPct / 100;
+  const net = (j: Job) => j.profit_cents - Math.round(j.fixed_share_cents * share);
 
+  const sorted = [...jobs].sort((x, y) => net(x) - net(y));
   function exportJobs() {
     download(
       `${companyName} jobs ${period.from} to ${period.to}.csv`,
       toCsv(
-        ["Date", "Address", "Customer", "Crew", "Type", "Revenue", "Labour", "Fuel", "Materials", "Truck wear", "Profit from the job", "Share of fixed costs", "Profit after fixed costs", "Minutes on site", "Complaint"],
-        jobs.map((j) => [j.day, j.address, j.customer, j.crew, SOURCE[j.source] ?? j.source, j.revenue_cents / 100, j.labour_cents / 100, j.fuel_cents / 100, j.materials_cents / 100, j.truck_cents / 100, j.profit_cents / 100, j.fixed_share_cents / 100, j.net_cents / 100, j.minutes, j.complaint ? "yes" : ""]),
+        ["Date", "Address", "Customer", "Crew", "Type", "Revenue", "Labour", "Fuel", "Materials", "Maintenance", "Profit from the job", "Share of fixed costs", "Profit after fixed costs", "Minutes on site", "Complaint"],
+        jobs.map((j) => [j.day, j.address, j.customer, j.crew, SOURCE[j.source] ?? j.source, j.revenue_cents / 100, j.labour_cents / 100, j.fuel_cents / 100, j.materials_cents / 100, j.maintenance_cents / 100, j.profit_cents / 100, j.fixed_share_cents / 100, j.net_cents / 100, j.minutes, j.complaint ? "yes" : ""]),
       ),
     );
   }
 
   return (
     <div className="stack">
-      <div className="row-between wrap">
-        <div className="seg big-seg" role="group" aria-label="Period">
-          {(["day", "week", "month"] as PeriodKind[]).map((k) => (
-            <button key={k} aria-pressed={period.kind === k} onClick={() => setKind(k)}>
-              {k === "day" ? "Day" : k === "week" ? "Week" : "Month"}
-            </button>
-          ))}
-        </div>
-        <div className="row">
-          <button className="small" aria-label="Previous period" onClick={() => setPeriod(shiftPeriod(period, -1))}>
-            ‹
-          </button>
-          <strong>{periodLabel(period)}</strong>
-          <button className="small" aria-label="Next period" disabled={isCurrent} onClick={() => setPeriod(shiftPeriod(period, 1))}>
-            ›
-          </button>
-        </div>
-      </div>
+      <FixedSlider value={fixPct} onChange={setFixPct} fixed={now?.fixed_cents ?? 0} />
+      <PeriodBar period={period} setPeriod={setPeriod} season={season} />
       {error && <p className="error">{error}</p>}
-      {now && <Report s={now} prev={prev} period={period} />}
+      {now && <Report s={now} prev={prev} period={period} share={share} />}
       <section className="card">
         <div className="row-between">
           <h2>Jobs, least profitable first</h2>
@@ -115,19 +200,19 @@ function Overview({ companyId, companyName }: { companyId: string; companyName: 
             Download (Excel/CSV)
           </button>
         </div>
-        {jobs.length === 0 ? (
+        {sorted.length === 0 ? (
           <p className="muted">No finished jobs in this period.</p>
         ) : (
           <div className="table-wrap">
             <table className="fin">
               <thead>
                 <tr>
-                  <th>Job</th><th>Crew</th><th className="n">Revenue</th><th className="n">Labour</th><th className="n">Fuel</th><th className="n">Materials</th><th className="n">Truck</th><th className="n">Job profit</th><th className="n">Fixed share</th><th className="n">After fixed</th>
+                  <th>Job</th><th>Crew</th><th className="n">Revenue</th><th className="n">Labour</th><th className="n">Fuel</th><th className="n">Materials</th><th className="n">Maint.</th><th className="n">Job profit</th>{share > 0 && <><th className="n">Fixed share</th><th className="n">After fixed</th></>}
                 </tr>
               </thead>
               <tbody>
-                {jobs.slice(0, 50).map((j) => (
-                  <tr key={j.visit_id} className={j.net_cents < 0 ? "loss" : ""}>
+                {sorted.slice(0, 50).map((j) => (
+                  <tr key={j.visit_id} className={net(j) < 0 ? "loss" : ""}>
                     <td>
                       <b>{j.address}</b>
                       <div className="muted small-text">
@@ -140,10 +225,14 @@ function Overview({ companyId, companyName }: { companyId: string; companyName: 
                     <td className="n">{money(j.labour_cents)}</td>
                     <td className="n">{money(j.fuel_cents)}</td>
                     <td className="n">{money(j.materials_cents)}</td>
-                    <td className="n">{money(j.truck_cents)}</td>
-                    <td className="n">{money(j.profit_cents)}</td>
-                    <td className="n muted">{money(j.fixed_share_cents)}</td>
-                    <td className="n strong">{money(j.net_cents)}</td>
+                    <td className="n">{money(j.maintenance_cents)}</td>
+                    <td className={`n ${share ? "" : "strong"}`}>{money(j.profit_cents)}</td>
+                    {share > 0 && (
+                      <>
+                        <td className="n muted">{money(Math.round(j.fixed_share_cents * share))}</td>
+                        <td className="n strong">{money(net(j))}</td>
+                      </>
+                    )}
                   </tr>
                 ))}
               </tbody>
@@ -163,12 +252,14 @@ function Delta({ now, before, invert }: { now: number; before?: number; invert?:
   return <span className={`delta ${up !== !!invert ? "good" : "bad"}`}>{up ? "▲" : "▼"} {c.replace("-", "")} vs previous</span>;
 }
 
-const PERIOD_WORD: Record<PeriodKind, string> = { day: "Today", week: "This week", month: "This month" };
+const PERIOD_WORD: Record<PeriodKind, string> = { day: "Today", week: "This week", month: "This month", season: "This season" };
 
-function Report({ s, prev, period }: { s: FinanceSummary; prev: FinanceSummary | null; period: Period }) {
+function Report({ s, prev, period, share }: { s: FinanceSummary; prev: FinanceSummary | null; period: Period; share: number }) {
   const totalCost = costs(s);
-  const fixed = s.fixed_cents ?? 0;
-  const net = s.net_profit_cents ?? s.profit_cents - fixed;
+  const fixedAll = s.fixed_cents ?? 0;
+  const fixed = Math.round(fixedAll * share);
+  const net = s.profit_cents - fixed;
+  const prevNet = prev ? prev.profit_cents - Math.round((prev.fixed_cents ?? 0) * share) : undefined;
   const margin = pct(net, s.revenue_cents);
   const per100 = s.revenue_cents ? Math.round((net / s.revenue_cents) * 100) : 0;
   const isPast = period.to < new Date().toLocaleDateString("en-CA");
@@ -176,14 +267,14 @@ function Report({ s, prev, period }: { s: FinanceSummary; prev: FinanceSummary |
   const sentence = !s.revenue_cents
     ? `${when}: no finished jobs yet.`
     : net >= 0
-      ? `${when} you kept ${money(per100 * 100, { whole: true })} of every $100 you charged, after paying crews, fuel, materials, truck wear${fixed ? " and your fixed costs" : ""}.`
+      ? `${when} you kept ${money(per100 * 100, { whole: true })} of every $100 you charged, after paying crews, fuel, materials and maintenance${share === 1 ? " and all your fixed costs" : fixed ? ` and ${Math.round(share * 100)}% of your fixed costs` : ""}.`
       : `${when} you lost ${money(-per100 * 100, { whole: true })} on every $100 you charged. Costs were higher than what the jobs brought in.`;
   const complaintRate = pct(s.complaint_jobs, s.jobs);
   const costParts = [
     { key: "Labour", v: s.labour_cents },
     { key: "Fuel", v: s.fuel_cents },
     { key: "Materials", v: s.materials_cents },
-    { key: "Truck wear", v: s.truck_cents },
+    { key: "Maintenance", v: s.maintenance_cents },
   ];
   const mixParts = [
     { key: "Regular customers", v: s.mix.regular_cents },
@@ -195,23 +286,24 @@ function Report({ s, prev, period }: { s: FinanceSummary; prev: FinanceSummary |
   if (s.losing_jobs) watch.push({ text: `${s.losing_jobs} job${s.losing_jobs === 1 ? "" : "s"} lost money. They're at the top of the jobs list below.`, level: "bad" });
   if (complaintRate >= 5) watch.push({ text: `Complaints on ${complaintRate}% of jobs (${s.complaint_jobs}).`, level: complaintRate >= 10 ? "bad" : "warn" });
   if (s.leads.open) watch.push({ text: `${s.leads.open} lead${s.leads.open === 1 ? "" : "s"} from crews still open. Quote them before they go cold.`, level: "warn" });
-  if (s.jobs && !s.labour_cents) watch.push({ text: "No pay rates set, so labour shows as $0. Add them under Costs and rates.", level: "warn" });
-  if (s.jobs && !fixed) watch.push({ text: "No fixed costs entered (insurance, rent, phones…), so profit looks higher than it is. Add them under Costs and rates.", level: "warn" });
+  if (s.jobs && !s.labour_cents) watch.push({ text: "No pay rates set, so labour shows as $0. Add them under Costs.", level: "warn" });
+  if (s.jobs && !fixedAll) watch.push({ text: "No fixed costs entered (insurance, rent, software, depreciation…). Add them under Costs to see true profit.", level: "warn" });
 
   return (
     <>
       <p className="plain">{sentence}</p>
       <section className="hero card">
         <div>
-          <p className="eyebrow">{fixed ? "Profit after fixed costs" : "Profit"}</p>
+          <p className="eyebrow">{share === 0 ? "Profit from jobs" : share === 1 ? "True profit (after fixed costs)" : `Profit after ${Math.round(share * 100)}% of fixed costs`}</p>
           <p className="hero-num">{money(net, { whole: true })}</p>
-          <Delta now={net} before={prev ? prev.net_profit_cents ?? prev.profit_cents : undefined} />
+          <Delta now={net} before={prevNet} />
         </div>
         <dl className="hero-side">
           <div><dt>Revenue</dt><dd>{money(s.revenue_cents, { whole: true })}</dd><Delta now={s.revenue_cents} before={prev?.revenue_cents} /></div>
           <div><dt>Job costs</dt><dd>{money(totalCost, { whole: true })}</dd><Delta now={totalCost} before={prev ? costs(prev) : undefined} invert /></div>
-          <div><dt>Fixed costs</dt><dd>{money(fixed, { whole: true })}</dd></div>
+          <div><dt>Fixed costs{share < 1 ? ` (${Math.round(share * 100)}% counted)` : ""}</dt><dd>{money(fixed, { whole: true })}</dd></div>
           <div><dt>Jobs done</dt><dd>{s.jobs}</dd></div>
+          <div><dt>Per hour on site</dt><dd>{perHour(net, s.crews.reduce((a, c) => a + c.minutes, 0))}</dd></div>
         </dl>
         {period.kind === "month" && s.monthly_target_cents ? (
           <div className="target">
@@ -276,7 +368,7 @@ function Report({ s, prev, period }: { s: FinanceSummary; prev: FinanceSummary |
         </p>
       </section>
 
-      {s.revenue_cents > 0 && <WhatIf s={s} fixed={fixed} />}
+      {s.revenue_cents > 0 && <WhatIf s={s} fixed={fixed} net={net} />}
       <Glossary fuel={s} />
     </>
   );
@@ -286,7 +378,7 @@ function Report({ s, prev, period }: { s: FinanceSummary; prev: FinanceSummary |
 function Per100({ revenue, jobCosts, fixed }: { revenue: number; jobCosts: number; fixed: number }) {
   const kept = revenue - jobCosts - fixed;
   const parts = [
-    { key: "Job costs (crews, fuel, materials, truck wear)", v: jobCosts, cls: "seg-1" },
+    { key: "Job costs (crews, fuel, materials, maintenance)", v: jobCosts, cls: "seg-1" },
     { key: "Fixed costs (insurance, rent, phones…)", v: fixed, cls: "seg-4" },
     { key: kept >= 0 ? "Kept" : "Lost", v: Math.abs(kept), cls: kept >= 0 ? "seg-3" : "seg-2" },
   ];
@@ -309,12 +401,11 @@ function Per100({ revenue, jobCosts, fixed }: { revenue: number; jobCosts: numbe
 }
 
 /** Move the sliders to see what profit would be if costs or prices changed. Nothing is saved. */
-function WhatIf({ s, fixed }: { s: FinanceSummary; fixed: number }) {
+function WhatIf({ s, fixed, net: now }: { s: FinanceSummary; fixed: number; net: number }) {
   const [f, setF] = useState({ fuel: 0, labour: 0, fixed: 0, prices: 0 });
   const k = (n: number) => 1 + n / 100;
   const revenue = s.revenue_cents * k(f.prices);
-  const net = revenue - s.labour_cents * k(f.labour) - s.fuel_cents * k(f.fuel) - s.materials_cents - s.truck_cents - fixed * k(f.fixed);
-  const now = s.net_profit_cents ?? s.profit_cents - fixed;
+  const net = revenue - s.labour_cents * k(f.labour) - s.fuel_cents * k(f.fuel) - s.materials_cents - s.maintenance_cents - fixed * k(f.fixed);
   const sliders: [keyof typeof f, string, number, number][] = [
     ["fuel", "Fuel price", -30, 60],
     ["labour", "Crew pay", -10, 30],
@@ -356,11 +447,12 @@ function Glossary({ fuel }: { fuel: FinanceSummary }) {
       <summary>What do these words mean?</summary>
       <dl>
         <dt>Revenue</dt><dd>Everything you charged for finished jobs.</dd>
-        <dt>Job costs</dt><dd>Costs that grow with every job: crew pay (including drive time), fuel, materials and truck wear.</dd>
-        <dt>Fixed costs</dt><dd>What you pay every month no matter how many jobs you do: insurance, rent, phones, software, loans. Each job carries a share in proportion to what it earns.</dd>
-        <dt>Profit after fixed costs</dt><dd>What's left for you after all of the above.</dd>
-        <dt>Truck wear</dt><dd>What the truck loses in value for every hour it's out: its price ÷ years you'll keep it ÷ hours it works a year.</dd>
-        <dt>Fuel</dt><dd>Kilometres from GPS × the truck's litres per 100 km × the fuel price. This period used {price}, from {from}.</dd>
+        <dt>Variable costs (job costs)</dt><dd>Costs that grow with every job: crew pay (including drive time), fuel, maintenance and materials.</dd>
+        <dt>Fixed costs</dt><dd>What you pay every month no matter how many jobs you do: insurance, subscriptions, marketing, licences, rent, and depreciation of trucks and mowers. Each job carries a share in proportion to what it earns.</dd>
+        <dt>The fixed-cost slider</dt><dd>At 0% you see what the jobs themselves earn. Slide to 100% for true profit after every bill.</dd>
+        <dt>Maintenance</dt><dd>Wear and tear: a set amount per km driven plus per mower engine hour (oil, blades, tires, repairs).</dd>
+        <dt>Depreciation</dt><dd>What a truck or mower loses in value each month: its price ÷ years you'll keep it ÷ 12.</dd>
+        <dt>Fuel</dt><dd>Truck: kilometres from GPS × litres per 100 km × the fuel price. Mowers: hours on site × how much they run × litres per hour. This period used {price}, from {from}.</dd>
       </dl>
     </details>
   );
@@ -396,4 +488,8 @@ function SplitBar({ title, total, parts, emptyText }: { title: string; total: nu
       )}
     </section>
   );
+}
+
+export function perHour(cents: number, minutes: number) {
+  return minutes ? `${money(Math.round((cents / minutes) * 60), { whole: true })}/h` : "–";
 }

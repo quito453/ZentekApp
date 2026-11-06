@@ -5,13 +5,17 @@ import { asUser, count, freshDb } from "./helpers";
 // A worked example with numbers you can check by hand.
 //
 // Crew 1 on Monday 2026-10-05 (Toronto time): shift 08:00–16:00, 30 min unpaid lunch → 450 paid min.
-// People: Marco $30/h + Luis $25/h = $55/h for the crew. Truck: $40,000 over 5 years × 1,600 h = $5/h.
-// GPS: 22.24 km that day; truck uses 20 L/100 km; fuel $1.50/L → 222¢ per job (3 jobs).
+// People: Marco $30/h + Luis $25/h = $55/h for the crew.
+// GPS: 22.24 km that day → 7.41 km per job. Truck uses 20 L/100 km; fuel $1.50/L → 222¢ per job.
+// Maintenance: 15¢ per km → 111¢ per job. The truck ($40,000 over 5 years) is depreciation, a fixed cost.
 //
-// Job   on site  share of 450 paid min  labour   truck   fuel  materials  price    profit
-// V1    60 min   150 min                $137.50  $12.50  $2.22  —         $250.00   $97.78
-// V2    30 min    75 min                 $68.75   $6.25  $2.22  $12.00     $80.00   −$9.22  (losing)
-// V3    90 min   225 min                $206.25  $18.75  $2.22  —         $400.00  $172.78  (complaint)
+// Job   on site  share of 450 paid min  labour   maint  fuel   materials  price    profit
+// V1    60 min   150 min                $137.50  $1.11  $2.22  —         $250.00  $109.17
+// V2    30 min    75 min                 $68.75  $1.11  $2.22  $12.00     $80.00   −$4.08  (losing)
+// V3    90 min   225 min                $206.25  $1.11  $2.22  —         $400.00  $190.42  (complaint)
+//
+// Trips: shift starts 08:00, V1 arrives 09:00 (60 min drive), leaves 10:00; V2 arrives 11:00 (60);
+// V3 arrives 12:00 after leaving V2 at 11:30 (30). Drive 2.5 h, on site 3 h, other 2 h of 7.5 paid.
 
 const CO = "f0000000-0000-0000-0000-000000000001";
 const OTHER_CO = "f0000000-0000-0000-0000-000000000002";
@@ -87,15 +91,15 @@ beforeAll(async () => {
   `);
 });
 
-type Job = { visit_id: string; revenue_cents: number; labour_cents: number; fuel_cents: number; materials_cents: number; truck_cents: number; profit_cents: number; complaint: boolean };
+type Job = { visit_id: string; revenue_cents: number; labour_cents: number; fuel_cents: number; materials_cents: number; maintenance_cents: number; profit_cents: number; complaint: boolean };
 
 describe("profit per job", () => {
   it("matches the worked example", async () => {
     const r = await asUser(db, OWNER, (tx) => tx.query<Job>("select * from public.job_profit($1, '2026-10-05', '2026-10-05')", [CO]));
     const byId = Object.fromEntries(r.rows.map((j) => [j.visit_id, j]));
-    expect(byId[V1]).toMatchObject({ revenue_cents: 25000, labour_cents: 13750, truck_cents: 1250, fuel_cents: 222, materials_cents: 0, profit_cents: 9778, complaint: false });
-    expect(byId[V2]).toMatchObject({ revenue_cents: 8000, labour_cents: 6875, truck_cents: 625, fuel_cents: 222, materials_cents: 1200, profit_cents: -922 });
-    expect(byId[V3]).toMatchObject({ labour_cents: 20625, truck_cents: 1875, profit_cents: 17278, complaint: true });
+    expect(byId[V1]).toMatchObject({ revenue_cents: 25000, labour_cents: 13750, maintenance_cents: 111, fuel_cents: 222, materials_cents: 0, profit_cents: 10917, complaint: false });
+    expect(byId[V2]).toMatchObject({ revenue_cents: 8000, labour_cents: 6875, maintenance_cents: 111, fuel_cents: 222, materials_cents: 1200, profit_cents: -408 });
+    expect(byId[V3]).toMatchObject({ labour_cents: 20625, maintenance_cents: 111, profit_cents: 19042, complaint: true });
   });
 
   it("ignores inaccurate fixes and impossible jumps when measuring km", async () => {
@@ -109,12 +113,12 @@ describe("business summary", () => {
     const r = await asUser(db, OWNER, (tx) => tx.query<{ s: Record<string, any> }>("select public.finance_summary($1, '2026-10-01', '2026-10-31') as s", [CO]));
     const s = r.rows[0]!.s;
     expect(s).toMatchObject({
-      jobs: 3, revenue_cents: 73000, labour_cents: 41250, fuel_cents: 666, materials_cents: 1200, truck_cents: 3750,
-      profit_cents: 26134, losing_jobs: 1, complaint_jobs: 1, monthly_target_cents: 2000000,
+      jobs: 3, revenue_cents: 73000, labour_cents: 41250, fuel_cents: 666, materials_cents: 1200, maintenance_cents: 333,
+      profit_cents: 29551, losing_jobs: 1, complaint_jobs: 1, monthly_target_cents: 2000000,
       mix: { regular_cents: 25000, new_customer_cents: 40000, upsell_cents: 8000, other_cents: 0 },
       leads: { created: 3, won: 1, open: 1 },
     });
-    expect(s.crews[0]).toMatchObject({ name: "Crew 1", jobs: 3, revenue_cents: 73000, profit_cents: 26134, complaints: 1, leads_created: 3, leads_won: 1 });
+    expect(s.crews[0]).toMatchObject({ name: "Crew 1", jobs: 3, revenue_cents: 73000, profit_cents: 29551, complaints: 1, leads_created: 3, leads_won: 1 });
   });
 
   it("is empty, not an error, for a period with no work", async () => {
@@ -175,15 +179,18 @@ describe("finance is owner-only", () => {
 
 describe("fixed costs and fuel receipts", () => {
   it("shares fixed costs by what each job earns", async () => {
-    // $1,000 a month → one day is 100000 × 12 ÷ 365.25 = 3285¢, split 250 : 80 : 400.
+    // Truck depreciation alone: $40,000 ÷ 5 ÷ 12 = $666.67 a month → 2190¢ for one day.
+    let r = await asUser(db, OWNER, (tx) => tx.query<Job & { fixed_share_cents: number; net_cents: number }>("select * from public.job_profit($1, '2026-10-05', '2026-10-05')", [CO]));
+    expect(Object.fromEntries(r.rows.map((j) => [j.visit_id, j.fixed_share_cents]))).toEqual({ [V1]: 750, [V2]: 240, [V3]: 1200 });
+    // Plus $1,000 a month insurance → (100000 + 66666.67) × 12 ÷ 365.25 = 5476¢, split 250 : 80 : 400.
     await asUser(db, OWNER, (tx) => tx.query("insert into fixed_costs (company_id, name, monthly_cents) values ($1, 'Insurance', 100000)", [CO]));
-    const r = await asUser(db, OWNER, (tx) => tx.query<Job & { fixed_share_cents: number; net_cents: number }>("select * from public.job_profit($1, '2026-10-05', '2026-10-05')", [CO]));
+    r = await asUser(db, OWNER, (tx) => tx.query<Job & { fixed_share_cents: number; net_cents: number }>("select * from public.job_profit($1, '2026-10-05', '2026-10-05')", [CO]));
     const byId = Object.fromEntries(r.rows.map((j) => [j.visit_id, j]));
-    expect(byId[V1]).toMatchObject({ fixed_share_cents: 1125, net_cents: 9778 - 1125 });
-    expect(byId[V2]).toMatchObject({ fixed_share_cents: 360, net_cents: -922 - 360 });
-    expect(byId[V3]).toMatchObject({ fixed_share_cents: 1800, net_cents: 17278 - 1800 });
+    expect(byId[V1]).toMatchObject({ fixed_share_cents: 1875, net_cents: 10917 - 1875 });
+    expect(byId[V2]).toMatchObject({ fixed_share_cents: 600, net_cents: -408 - 600 });
+    expect(byId[V3]).toMatchObject({ fixed_share_cents: 3001, net_cents: 19042 - 3001 });
     const s = await asUser(db, OWNER, (tx) => tx.query<{ s: Record<string, any> }>("select public.finance_summary($1, '2026-10-05', '2026-10-05') as s", [CO]));
-    expect(s.rows[0]!.s).toMatchObject({ profit_cents: 26134, fixed_cents: 3285, net_profit_cents: 26134 - 3285 });
+    expect(s.rows[0]!.s).toMatchObject({ profit_cents: 29551, fixed_cents: 5476, depreciation_cents: 2190, net_profit_cents: 29551 - 5476 });
     await asUser(db, OWNER, (tx) => tx.query("delete from fixed_costs where company_id = $1", [CO]));
   });
 
@@ -210,5 +217,107 @@ describe("fixed costs and fuel receipts", () => {
     // Only the server writes fetched prices, not even the owner.
     await expect(asUser(db, OWNER, (tx) => tx.query("insert into company_fuel_prices (company_id, fuel_type, price_per_l, period, area, source) values ($1, 'regular', 1, '2026-10-01', 'x', 'x')", [CO]))).rejects.toThrow();
     await asUser(db, OWNER, (tx) => tx.query("delete from fixed_costs where company_id = $1", [CO]));
+  });
+});
+
+describe("trips, time on site and payroll split", () => {
+  type Trip = { visit_id: string; from_address: string; drive_minutes: number; site_minutes: number; km: string; fuel_cents: number };
+  it("measures each drive from the last stop (or the start of the shift)", async () => {
+    const r = await asUser(db, OWNER, (tx) => tx.query<Trip>("select * from public.crew_trips($1, '2026-10-05', '2026-10-05')", [CO]));
+    const byId = Object.fromEntries(r.rows.map((t) => [t.visit_id, t]));
+    expect(byId[V1]).toMatchObject({ from_address: "Start of shift", drive_minutes: 60, site_minutes: 60 });
+    expect(Number(byId[V1]!.km)).toBeCloseTo(22.24, 1);
+    expect(byId[V1]!.fuel_cents).toBe(667); // 22.24 km × 20 L/100 km × $1.50
+    expect(byId[V2]).toMatchObject({ from_address: "1 Birch Cres", drive_minutes: 60, site_minutes: 30, fuel_cents: 0 });
+    expect(byId[V3]).toMatchObject({ from_address: "2 Birch Cres", drive_minutes: 30, site_minutes: 90 });
+  });
+
+  it("splits paid hours into on site, driving and other", async () => {
+    const r = await asUser(db, OWNER, (tx) =>
+      tx.query<{ full_name: string; paid_hours: string; on_site_hours: string; driving_hours: string; other_hours: string }>(
+        "select * from public.payroll($1, '2026-10-05', '2026-10-05')", [CO]),
+    );
+    const marco = r.rows.find((x) => x.full_name === "Marco R.")!;
+    expect([marco.paid_hours, marco.on_site_hours, marco.driving_hours, marco.other_hours].map(Number)).toEqual([7.5, 3, 2.5, 2]);
+    const week = await asUser(db, OWNER, (tx) => tx.query<{ full_name: string; other_hours: string }>("select * from public.payroll($1, '2026-10-01', '2026-10-31')", [CO]));
+    expect(Number(week.rows.find((x) => x.full_name === "Marco R.")!.other_hours)).toBe(52);
+  });
+
+  it("adds up profit and time per customer", async () => {
+    const r = await asUser(db, OWNER, (tx) =>
+      tx.query<{ address: string; visits: number; revenue_cents: number; profit_cents: number; site_minutes: number; drive_minutes: number }>(
+        "select * from public.customer_profit($1, '2026-10-01', '2026-10-31')", [CO]),
+    );
+    expect(r.rows).toHaveLength(3);
+    expect(r.rows.find((c) => c.address === "1 Birch Cres")).toMatchObject({ visits: 1, revenue_cents: 25000, profit_cents: 10917, site_minutes: 60, drive_minutes: 60 });
+  });
+
+  it("compares GPS with the odometer", async () => {
+    await db.query(
+      "insert into odometer_readings (company_id, truck_id, crew_id, reading_km, read_at) values ($1, $2, $3, 50000, '2026-10-05 11:55:00+00'), ($1, $2, $3, 50023, '2026-10-05 20:05:00+00')",
+      [CO, TRUCK, CREW],
+    );
+    const r = await asUser(db, OWNER, (tx) => tx.query<{ odometer_km: number; gps_km: string; gap_pct: string }>("select * from public.gps_vs_odometer($1, '2026-10-05', '2026-10-05')", [CO]));
+    expect(r.rows[0]!.odometer_km).toBe(23);
+    expect(Number(r.rows[0]!.gps_km)).toBeCloseTo(22.24, 1);
+    expect(Number(r.rows[0]!.gap_pct)).toBeCloseTo(3.3, 0);
+    await db.query("delete from odometer_readings where company_id = $1", [CO]);
+  });
+
+  it("dispatchers and crews cannot run trips, customers or the odometer check", async () => {
+    for (const fn of ["crew_trips", "customer_profit", "gps_vs_odometer"]) {
+      await expect(asUser(db, DISP, (tx) => tx.query(`select * from public.${fn}($1, '2026-10-01', '2026-10-31')`, [CO]))).rejects.toThrow(/owner-only/);
+    }
+  });
+});
+
+describe("mowers", () => {
+  it("adds mower fuel and maintenance for the time the engine runs", async () => {
+    // One mower: 3 L/h, runs half the time on site, $1.50 per engine hour.
+    // V1 60 min → 0.5 h → 1.5 L × $1.50 = 225¢ fuel, 75¢ maintenance.
+    await db.query("insert into equipment (id, company_id, crew_id, name) values ('f3000000-0000-0000-0000-0000000000e1', $1, $2, 'Mower 1')", [CO, CREW]);
+    await asUser(db, OWNER, (tx) =>
+      tx.query("insert into equipment_costs (equipment_id, company_id, l_per_hour, use_share, value_cents, life_years) values ('f3000000-0000-0000-0000-0000000000e1', $1, 3, 0.5, 0, 5)", [CO]),
+    );
+    const r = await asUser(db, OWNER, (tx) => tx.query<Job>("select * from public.job_profit($1, '2026-10-05', '2026-10-05')", [CO]));
+    const byId = Object.fromEntries(r.rows.map((j) => [j.visit_id, j]));
+    expect([byId[V1]!.fuel_cents, byId[V2]!.fuel_cents, byId[V3]!.fuel_cents]).toEqual([222 + 225, 222 + 113, 222 + 338]);
+    expect([byId[V1]!.maintenance_cents, byId[V2]!.maintenance_cents, byId[V3]!.maintenance_cents]).toEqual([111 + 75, 111 + 38, 111 + 113]);
+    for (const who of [DISP, TECH]) expect(await asUser(db, who, (tx) => count(tx, "select * from equipment_costs"))).toBe(0);
+    await db.query("delete from equipment where company_id = $1", [CO]);
+  });
+});
+
+describe("bringing jobs in", () => {
+  const job = (o: Record<string, unknown>) => ({ date: "2026-10-06", customer: "Customer 1", address: "1 Birch Cres", service: "Weekly mow", priceCents: 5500, crew: "crew 1", minutes: 40, area: "Birch", externalId: null, ...o });
+
+  it("adds spreadsheet jobs to existing customers and properties, and skips bad rows", async () => {
+    const jobs = [job({}), job({ customer: "New Person", address: "9 Elm St", crew: "Nobody" }), job({ date: "not a date" }), job({ priceCents: "55" })];
+    const r = await asUser(db, OWNER, (tx) => tx.query<{ r: Record<string, number> }>("select public.import_jobs($1, 'october.csv', $2) as r", [CO, JSON.stringify(jobs)]));
+    expect(r.rows[0]!.r).toEqual({ added: 2, updated: 0, skipped: 2 });
+    const v = await db.query<{ address: string; status: string; crew_id: string | null; est_minutes: number; area: string }>(
+      "select p.address, v.status, v.crew_id, v.est_minutes, p.area from visits v join properties p on p.id = v.property_id where v.arrival_source = 'import' order by p.address",
+    );
+    expect(v.rows).toEqual([
+      { address: "1 Birch Cres", status: "done", crew_id: CREW, est_minutes: 40, area: "Birch" },
+      { address: "9 Elm St", status: "done", crew_id: null, est_minutes: 40, area: "Birch" },
+    ]);
+    expect((await db.query("select * from customers where company_id = $1", [CO])).rows).toHaveLength(4);
+    expect(await asUser(db, OWNER, (tx) => count(tx, "select * from imports where rows_added = 2 and rows_skipped = 2"))).toBe(1);
+    await expect(asUser(db, DISP, (tx) => tx.query("select public.import_jobs($1, 'x.csv', '[]')", [CO]))).rejects.toThrow(/owner only/);
+  });
+
+  it("takes jobs from Zapier with a key, once per job number", async () => {
+    const key = (await asUser(db, OWNER, (tx) => tx.query<{ k: string }>("select public.create_api_key($1, 'Zapier – Yardbook') as k", [CO]))).rows[0]!.k;
+    const send = (jobs: unknown[]) => db.query<{ r: Record<string, number> }>("select public.ingest_jobs($1, 'zapier', $2) as r", [key, JSON.stringify(jobs)]);
+    expect((await send([job({ externalId: "Y-1", date: "2099-05-01" })])).rows[0]!.r).toEqual({ added: 1, updated: 0, skipped: 0 });
+    expect((await send([job({ externalId: "Y-1", date: "2099-05-01", priceCents: 6000 })])).rows[0]!.r).toEqual({ added: 0, updated: 1, skipped: 0 });
+    const v = await db.query<{ status: string; price_cents: number }>("select status, price_cents from visits where external_id = 'Y-1'");
+    expect(v.rows).toEqual([{ status: "scheduled", price_cents: 6000 }]); // future jobs go to the crew's route
+    await expect(db.query("select public.ingest_jobs('cc_live_nope', 'zapier', '[]')")).rejects.toThrow(/unknown or revoked/);
+    await asUser(db, OWNER, (tx) => tx.query("update api_keys set revoked_at = now()"));
+    await expect(send([])).rejects.toThrow(/unknown or revoked/);
+    // Signed-in users can't call it at all.
+    await expect(asUser(db, OWNER, (tx) => tx.query("select public.ingest_jobs($1, 'zapier', '[]')", [key]))).rejects.toThrow(/permission denied/);
   });
 });

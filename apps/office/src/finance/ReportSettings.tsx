@@ -2,7 +2,7 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { supabase } from "../supabase";
 
-type Settings = { weekly: boolean; weekly_day: number; monthly: boolean; recipients: string[] };
+type Settings = { weekly: boolean; weekly_day: number; monthly: boolean; season: boolean; recipients: string[] };
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const ERR: Record<string, string> = {
   email_not_configured: "Email sending isn't set up yet on the server (RESEND_API_KEY and REPORT_FROM).",
@@ -11,7 +11,7 @@ const ERR: Record<string, string> = {
 };
 
 export function ReportSettings({ companyId }: { companyId: string }) {
-  const [s, setS] = useState<Settings>({ weekly: false, weekly_day: 1, monthly: true, recipients: [] });
+  const [s, setS] = useState<Settings>({ weekly: false, weekly_day: 1, monthly: true, season: true, recipients: [] });
   const [emails, setEmails] = useState("");
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
   const [busy, setBusy] = useState(false);
@@ -19,7 +19,7 @@ export function ReportSettings({ companyId }: { companyId: string }) {
   useEffect(() => {
     supabase!
       .from("report_settings")
-      .select("weekly, weekly_day, monthly, recipients")
+      .select("weekly, weekly_day, monthly, season, recipients")
       .eq("company_id", companyId)
       .maybeSingle<Settings>()
       .then(({ data }) => {
@@ -39,7 +39,7 @@ export function ReportSettings({ companyId }: { companyId: string }) {
     setMsg(error ? { ok: false, text: error.message } : { ok: true, text: "Saved." });
   }
 
-  async function sendNow(kind: "week" | "month") {
+  async function sendNow(kind: "week" | "month" | "season") {
     setBusy(true);
     const { data, error } = await supabase!.functions.invoke("finance-report", { body: { company_id: companyId, kind } });
     setBusy(false);
@@ -54,7 +54,7 @@ export function ReportSettings({ companyId }: { companyId: string }) {
     <section className="card stack">
       <h2>Email reports</h2>
       <p className="muted">
-        A short email with profit, revenue, costs, where revenue came from, crews and anything that needs a look. Weekly reports cover the last full week (Monday to Sunday); monthly reports arrive on the 1st and cover last month.
+        A short email with profit, revenue, costs, where revenue came from, crews and anything that needs a look. Weekly reports cover the last full week (Monday to Sunday); monthly reports arrive on the 1st and cover last month; the season report arrives the month after your season ends.
       </p>
       <form className="inline-form" onSubmit={save}>
         <label className="check-row">
@@ -73,6 +73,10 @@ export function ReportSettings({ companyId }: { companyId: string }) {
           <input type="checkbox" checked={s.monthly} onChange={(e) => setS({ ...s, monthly: e.target.checked })} />
           Monthly report (on the 1st)
         </label>
+        <label className="check-row">
+          <input type="checkbox" checked={s.season} onChange={(e) => setS({ ...s, season: e.target.checked })} />
+          Season report (when the season ends)
+        </label>
         <label>
           Send to (separate several addresses with commas)
           <input value={emails} onChange={(e) => setEmails(e.target.value)} placeholder="you@yourcompany.com, accountant@firm.com" />
@@ -82,6 +86,7 @@ export function ReportSettings({ companyId }: { companyId: string }) {
       <div className="row">
         <button className="small" disabled={busy} onClick={() => void sendNow("week")}>Email me last week's report now</button>
         <button className="small" disabled={busy} onClick={() => void sendNow("month")}>Email me last month's report now</button>
+        <button className="small" disabled={busy} onClick={() => void sendNow("season")}>Email me the last season's report now</button>
       </div>
       {msg && <p className={msg.ok ? "ok" : "error"} role="status">{msg.text}</p>}
     </section>

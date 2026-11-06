@@ -28,6 +28,12 @@ export function Team({ companyId, myRole, myId }: { companyId: string; myRole: s
   }, [companyId]);
 
   const canReset = (p: Person) => p.user_id !== myId && (p.role === "crew" || (p.role === "dispatcher" && myRole === "owner"));
+  // Office people first, then one heading per crew.
+  const crewNames = [...new Set(people.filter((p) => p.role === "crew").map((p) => p.crew ?? "No crew"))].sort();
+  const groups: [string, Person[]][] = [
+    ["Office", people.filter((p) => p.role !== "crew")] as [string, Person[]],
+    ...crewNames.map((c) => [c, people.filter((p) => p.role === "crew" && (p.crew ?? "No crew") === c)] as [string, Person[]]),
+  ].filter(([, l]) => l.length > 0);
   const roleName = (r: string) => (r === "crew" ? "Technician" : r === "dispatcher" ? "Dispatcher" : "Owner");
 
   return (
@@ -41,20 +47,24 @@ export function Team({ companyId, myRole, myId }: { companyId: string; myRole: s
         )}
       </div>
       <p className="muted">To add someone or get more licences, contact your Cutting Cost administrator.</p>
-      <ul className="rows">
-        {people.map((p) => (
-          <li key={p.user_id} className="team-row">
-            <div>
-              <b>{p.full_name || p.username}</b>
-              <div className="muted">
-                {roleName(p.role)}
-                {p.crew ? ` · ${p.crew}` : ""} · <code>{p.username}</code>
-              </div>
-            </div>
-            {canReset(p) && <SetPassword userId={p.user_id} name={p.full_name || p.username} />}
-          </li>
-        ))}
-      </ul>
+      {groups.map(([title, list]) => (
+        <div key={title}>
+          <h3 className="crew-head">{title}</h3>
+          <ul className="rows">
+            {list.map((p) => (
+              <li key={p.user_id} className="team-row">
+                <div>
+                  <b>{p.full_name || p.username}</b>
+                  <div className="muted">
+                    {roleName(p.role)} · <code>{p.username}</code>
+                  </div>
+                </div>
+                {canReset(p) && <SetPassword userId={p.user_id} name={p.full_name || p.username} />}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
     </section>
   );
 }

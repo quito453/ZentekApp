@@ -84,3 +84,22 @@ body { font-size: 18px; }
 .big { font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.04em; }
 .check[aria-pressed="true"] { border-color: var(--brand); background: var(--surface); }
 .check[aria-pressed="true"] .box { background: var(--brand); border-color: var(--brand); color: var(--accent); }
+
+/* ── location gate, odometer, the stop you're at ── */
+.loc-gate { text-align: center; justify-items: center; padding: 28px 20px; }
+.loc-gate p { margin: 0; max-width: 40ch; }
+.loc-gate .primary { width: 100%; }
+.loc-icon { width: 84px; height: 84px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; font-size: 2.6rem; font-weight: 700; }
+.odo input { font: 700 2rem/1 var(--font-display); letter-spacing: 0.12em; text-align: center; min-height: 72px; width: 100%; }
+.center-screen { min-height: 50vh; align-content: center; text-align: center; }
+.eyebrow { font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; color: var(--muted); }
+.now { display: grid; gap: 6px; border-left: 6px solid var(--line); }
+.now h2 { font-size: 1.7rem; margin: 0; }
+.now p { margin: 0 0 6px; }
+.now.at { border-left-color: var(--accent); }
+.small { font-size: 0.92rem; }
+.rows li.finished b { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1px; }
+.rows li.here b::after { content: " ●"; color: var(--ok); }
+.rows li { grid-template-columns: 1fr auto; }
+.rows li > .small { grid-column: 1 / -1; margin-top: -8px; }
+.secondary { border: 2px solid var(--ink); background: var(--surface); color: var(--ink); border-radius: 6px; font-weight: 700; }

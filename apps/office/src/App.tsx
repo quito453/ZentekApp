@@ -8,9 +8,10 @@ import { Today } from "./Today";
 import { Team } from "./Team";
 import { Admin } from "./Admin";
 import { Finance } from "./finance/Finance";
+import { Routes } from "./Routes";
 
 type Membership = { company_id: string; role: "owner" | "dispatcher" | "crew"; companies: { name: string } | null };
-type Tab = "finance" | "today" | "team" | "admin";
+type Tab = "finance" | "today" | "routes" | "team" | "admin";
 
 export function App() {
   const [lang, setLang] = useState<Lang>("en");
@@ -131,7 +132,7 @@ function Office({ lang, userId }: { lang: Lang; userId: string }) {
   if (!membership && !isAdmin) return <main className="card"><p className="muted">This login isn't linked to a company yet.</p></main>;
 
   const tabs: [Tab, string][] = [
-    ...(membership ? ([["today", "Today"]] as [Tab, string][]) : []),
+    ...(membership ? ([["today", "Today"], ["routes", "Routes"]] as [Tab, string][]) : []),
     ...(membership?.role === "owner" ? ([["finance", "Finance"]] as [Tab, string][]) : []),
     ...(membership ? ([["team", "Team"]] as [Tab, string][]) : []),
     ...(isAdmin ? ([["admin", "App owner"]] as [Tab, string][]) : []),
@@ -147,6 +148,7 @@ function Office({ lang, userId }: { lang: Lang; userId: string }) {
       </nav>
       {tab === "finance" && membership?.role === "owner" && <Finance companyId={membership.company_id} companyName={membership.companies?.name ?? ""} />}
       {tab === "today" && membership && <Today lang={lang} companyId={membership.company_id} companyName={membership.companies?.name ?? ""} />}
+      {tab === "routes" && membership && <Routes companyId={membership.company_id} />}
       {tab === "team" && membership && <Team companyId={membership.company_id} myRole={membership.role} myId={userId} />}
       {tab === "admin" && isAdmin && <Admin />}
     </>

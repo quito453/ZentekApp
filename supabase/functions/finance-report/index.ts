@@ -1,15 +1,15 @@
-// finance-report: emails the owner's weekly and monthly reports.
+// finance-report: emails the owner's weekly, monthly and season reports.
 //
 // Two ways in:
 //   1. Scheduled (pg_cron, once a day): header x-cron-secret = CRON_SECRET. Sends every report that
 //      is due today in each company's time zone (see supabase/cron.example.sql).
-//   2. "Email me this report now" from the office app: POST { company_id, kind: "week" | "month" }
-//      with the owner's login. Covers the last finished week or month.
+//   2. "Email me this report now" from the office app: POST { company_id, kind: "week" | "month" | "season" }
+//      with the owner's login. Covers the last finished week, month or season.
 //
 // Secrets: RESEND_API_KEY, REPORT_FROM (e.g. "Cutting Cost <reports@yourdomain.com>"), CRON_SECRET,
 // OFFICE_URL (link in the email), ALLOWED_ORIGINS.
 import type { SupabaseClient } from "npm:@supabase/supabase-js@2.118.0";
-import { lastCompletePeriod, renderReport, reportsDue, shiftPeriod, type FinanceSummary } from "../_shared/report.ts";
+import { lastCompletePeriod, renderReport, reportsDue, shiftPeriod, type FinanceSummary, type Season } from "../_shared/report.ts";
 import { adminClient, callerClient, callerId, corsHeaders, json } from "../_shared/http.ts";
 
 async function sendEmail(to: string[], subject: string, html: string, text: string): Promise<string | null> {
@@ -24,8 +24,10 @@ async function sendEmail(to: string[], subject: string, html: string, text: stri
   return r.ok ? null : `email_failed_${r.status}`;
 }
 
-async function buildAndSend(db: SupabaseClient, companyId: string, kind: "week" | "month", today: string, to: string[]) {
-  const period = lastCompletePeriod(kind, today);
+type Kind = "week" | "month" | "season";
+
+async function buildAndSend(db: SupabaseClient, companyId: string, kind: Kind, today: string, to: string[], season: Season) {
+  const period = lastCompletePeriod(kind, today, season);
   const before = shiftPeriod(period, -1);
   const [company, now, prev] = await Promise.all([
     db.from("companies").select("name").eq("id", companyId).single<{ name: string }>(),
@@ -55,16 +57,18 @@ Deno.serve(async (req) => {
     const admin = adminClient();
     const { data: settings } = await admin
       .from("report_settings")
-      .select("company_id, weekly, weekly_day, monthly, recipients, last_weekly_sent, last_monthly_sent, companies(timezone, active)");
+      .select("company_id, weekly, weekly_day, monthly, season, recipients, last_weekly_sent, last_monthly_sent, last_season_sent, companies(timezone, active, season_start_month, season_end_month)");
     const results = [];
     for (const s of settings ?? []) {
-      const co = s.companies as unknown as { timezone: string; active: boolean } | null;
+      const co = s.companies as unknown as { timezone: string; active: boolean; season_start_month: number; season_end_month: number } | null;
       if (!co?.active || !s.recipients?.length) continue;
       const today = localToday(co.timezone);
-      for (const kind of reportsDue(today, s)) {
-        const r = await buildAndSend(admin, s.company_id, kind, today, s.recipients);
+      const season = { start: co.season_start_month, end: co.season_end_month };
+      for (const kind of reportsDue(today, s, season)) {
+        const r = await buildAndSend(admin, s.company_id, kind, today, s.recipients, season);
         if (!("error" in r)) {
-          await admin.from("report_settings").update(kind === "week" ? { last_weekly_sent: today } : { last_monthly_sent: today }).eq("company_id", s.company_id);
+          const sent = { week: { last_weekly_sent: today }, month: { last_monthly_sent: today }, season: { last_season_sent: today } }[kind];
+          await admin.from("report_settings").update(sent).eq("company_id", s.company_id);
         }
         results.push({ company_id: s.company_id, kind, ...r });
       }
@@ -77,15 +81,20 @@ Deno.serve(async (req) => {
   const me = await callerId(caller);
   if (!me) return json(req, 401, { error: "sign_in_required" });
   const body = await req.json().catch(() => null);
-  const kind = body?.kind === "week" ? "week" : "month";
+  const kind: Kind = body?.kind === "week" ? "week" : body?.kind === "season" ? "season" : "month";
   if (!body?.company_id) return json(req, 400, { error: "bad_request" });
 
   const { data: settings } = await caller.from("report_settings").select("recipients").eq("company_id", body.company_id).maybeSingle<{ recipients: string[] }>();
   const { data: user } = await caller.auth.getUser();
   const to = settings?.recipients?.length ? settings.recipients : user.user?.email && !user.user.email.endsWith(Deno.env.get("LOGIN_EMAIL_DOMAIN") ?? "\u0000") ? [user.user.email] : [];
-  const { data: co } = await caller.from("companies").select("timezone").eq("id", body.company_id).maybeSingle<{ timezone: string }>();
+  const { data: co } = await caller
+    .from("companies")
+    .select("timezone, season_start_month, season_end_month")
+    .eq("id", body.company_id)
+    .maybeSingle<{ timezone: string; season_start_month: number; season_end_month: number }>();
+  const season = { start: co?.season_start_month ?? 4, end: co?.season_end_month ?? 11 };
   // The caller's own login runs the numbers, so the database's owner-only rule applies.
-  const r = await buildAndSend(caller, body.company_id, kind, localToday(co?.timezone ?? "America/Toronto"), to);
+  const r = await buildAndSend(caller, body.company_id, kind, localToday(co?.timezone ?? "America/Toronto"), to, season);
   if ("error" in r) return json(req, r.error === "owner_only" ? 403 : 400, r);
   return json(req, 200, r);
 });

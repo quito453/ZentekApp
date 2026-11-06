@@ -1,7 +1,13 @@
 // Report periods and the owner's email report. Plain TypeScript with no runtime imports, shared by
 // the finance-report Edge Function (Deno) and the office app (re-exported by @zentek/shared).
 
-export type PeriodKind = "day" | "week" | "month";
+export type PeriodKind = "day" | "week" | "month" | "season";
+/** The months a company works, 1 = January. Default April to November. */
+export interface Season {
+  start: number;
+  end: number;
+}
+export const DEFAULT_SEASON: Season = { start: 4, end: 11 };
 export interface Period {
   kind: PeriodKind;
   from: string; // YYYY-MM-DD, inclusive
@@ -19,10 +25,25 @@ const plusDays = (s: string, n: number) => {
   return iso(d);
 };
 
-/** The day, week (Monday–Sunday) or calendar month containing a date. */
-export function periodContaining(kind: PeriodKind, date: string): Period {
+const seasonOf = (year: number, season: Season): Period => ({
+  kind: "season",
+  from: iso(new Date(Date.UTC(year, season.start - 1, 1))),
+  to: iso(new Date(Date.UTC(season.end < season.start ? year + 1 : year, season.end, 0))),
+});
+
+/** The day, week (Monday–Sunday), calendar month or season containing a date. Off-season dates
+ *  belong to the season just finished (or, before the first one of the year, last year's). */
+export function periodContaining(kind: PeriodKind, date: string, season: Season = DEFAULT_SEASON): Period {
   if (kind === "day") return { kind, from: date, to: date };
   const d = parse(date);
+  if (kind === "season") {
+    const y = d.getUTCFullYear();
+    for (const year of [y, y - 1]) {
+      const p = seasonOf(year, season);
+      if (date >= p.from) return p;
+    }
+    return seasonOf(y - 1, season);
+  }
   if (kind === "week") {
     const back = (d.getUTCDay() + 6) % 7; // days since Monday
     const from = plusDays(date, -back);
@@ -35,6 +56,15 @@ export function periodContaining(kind: PeriodKind, date: string): Period {
 
 /** The period before (n = -1) or after (n = 1). */
 export function shiftPeriod(p: Period, n: number): Period {
+  if (p.kind === "season") {
+    const from = parse(p.from);
+    const to = parse(p.to);
+    return {
+      kind: "season",
+      from: iso(new Date(Date.UTC(from.getUTCFullYear() + n, from.getUTCMonth(), 1))),
+      to: iso(new Date(Date.UTC(to.getUTCFullYear() + n, to.getUTCMonth() + 1, 0))),
+    };
+  }
   if (p.kind === "month") {
     const d = parse(p.from);
     return periodContaining("month", iso(new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + n, 1))));
@@ -42,8 +72,12 @@ export function shiftPeriod(p: Period, n: number): Period {
   return periodContaining(p.kind, plusDays(p.from, n * (p.kind === "week" ? 7 : 1)));
 }
 
-/** The last finished week or month before `today`: what a scheduled report covers. */
-export function lastCompletePeriod(kind: "week" | "month", today: string): Period {
+/** The last finished week, month or season before `today`: what a scheduled report covers. */
+export function lastCompletePeriod(kind: "week" | "month" | "season", today: string, season: Season = DEFAULT_SEASON): Period {
+  if (kind === "season") {
+    const p = periodContaining("season", today, season);
+    return p.to < today ? p : shiftPeriod(p, -1);
+  }
   return shiftPeriod(periodContaining(kind, today), -1);
 }
 
@@ -51,17 +85,27 @@ export function periodLabel(p: Period, locale = "en-CA"): string {
   const f = (s: string, o: Intl.DateTimeFormatOptions) => parse(s).toLocaleDateString(locale, { timeZone: "UTC", ...o });
   if (p.kind === "day") return f(p.from, { weekday: "long", month: "long", day: "numeric", year: "numeric" });
   if (p.kind === "month") return f(p.from, { month: "long", year: "numeric" });
+  if (p.kind === "season") {
+    const years = p.from.slice(0, 4) === p.to.slice(0, 4) ? p.from.slice(0, 4) : `${p.from.slice(0, 4)}–${p.to.slice(2, 4)}`;
+    return `${years} season (${f(p.from, { month: "long" })} – ${f(p.to, { month: "long" })})`;
+  }
   return `${f(p.from, { month: "short", day: "numeric" })} – ${f(p.to, { month: "short", day: "numeric", year: "numeric" })}`;
 }
 
-/** Is a scheduled report due today? weeklyDay: 0 Sunday … 6 Saturday. */
+/** Is a scheduled report due today? weeklyDay: 0 Sunday … 6 Saturday. The season report goes out on
+ *  the first day of the month after the season ends. */
 export function reportsDue(
   today: string,
-  s: { weekly: boolean; weekly_day: number; monthly: boolean; last_weekly_sent: string | null; last_monthly_sent: string | null },
-): ("week" | "month")[] {
-  const due: ("week" | "month")[] = [];
+  s: {
+    weekly: boolean; weekly_day: number; monthly: boolean; last_weekly_sent: string | null; last_monthly_sent: string | null;
+    season?: boolean; last_season_sent?: string | null;
+  },
+  season: Season = DEFAULT_SEASON,
+): ("week" | "month" | "season")[] {
+  const due: ("week" | "month" | "season")[] = [];
   if (s.weekly && parse(today).getUTCDay() === s.weekly_day && s.last_weekly_sent !== today) due.push("week");
   if (s.monthly && today.endsWith("-01") && s.last_monthly_sent !== today) due.push("month");
+  if (s.season && today.endsWith("-01") && parse(today).getUTCMonth() === season.end % 12 && s.last_season_sent !== today) due.push("season");
   return due;
 }
 
@@ -85,10 +129,12 @@ export interface FinanceSummary {
   labour_cents: number;
   fuel_cents: number;
   materials_cents: number;
-  truck_cents: number;
+  /** Truck maintenance per km plus mower maintenance per engine hour. */
+  maintenance_cents: number;
   profit_cents: number;
-  /** Fixed monthly costs prorated to the period, and profit after them (added with fixed costs). */
+  /** Fixed monthly costs (including depreciation) prorated to the period, and profit after them. */
   fixed_cents?: number;
+  depreciation_cents?: number;
   net_profit_cents?: number;
   /** The fuel price used, and whether it came from crews' receipts or the area average / owner. */
   fuel_price_per_l?: number;
@@ -114,7 +160,7 @@ export function change(now: number, before: number): string | null {
 }
 
 export function costs(s: FinanceSummary): number {
-  return s.labour_cents + s.fuel_cents + s.materials_cents + s.truck_cents;
+  return s.labour_cents + s.fuel_cents + s.materials_cents + s.maintenance_cents;
 }
 
 // ───────────────────────────── the email ─────────────────────────────
@@ -123,7 +169,8 @@ const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&
 export function renderReport(s: FinanceSummary, opts: { companyName: string; period: Period; previous?: FinanceSummary; appUrl?: string }) {
   const margin = pct(s.profit_cents, s.revenue_cents);
   const label = periodLabel(opts.period);
-  const subject = `${opts.companyName}: ${opts.period.kind === "month" ? "monthly" : "weekly"} report, ${label}`;
+  const kindWord = { day: "daily", week: "weekly", month: "monthly", season: "season" }[opts.period.kind];
+  const subject = `${opts.companyName}: ${kindWord} report, ${label}`;
   const prev = opts.previous;
   const delta = (now: number, before?: number) => {
     const c = before === undefined ? null : change(now, before);
@@ -159,7 +206,7 @@ ${row("Revenue", money(s.revenue_cents, { whole: true }), delta(s.revenue_cents,
 ${row("Labour", money(s.labour_cents, { whole: true }))}
 ${row("Fuel", money(s.fuel_cents, { whole: true }))}
 ${row("Materials", money(s.materials_cents, { whole: true }))}
-${row("Truck wear", money(s.truck_cents, { whole: true }))}
+${row("Maintenance", money(s.maintenance_cents, { whole: true }))}
 ${row("Profit from jobs", money(s.profit_cents, { whole: true }))}
 ${s.fixed_cents ? row("Fixed costs", money(s.fixed_cents, { whole: true })) + row("Profit after fixed costs", money(s.net_profit_cents ?? s.profit_cents - s.fixed_cents, { whole: true })) : ""}
 </table>
@@ -187,7 +234,7 @@ ${opts.appUrl ? `<p style="margin:24px 0 0"><a href="${esc(opts.appUrl)}" style=
   const text = [
     `${opts.companyName} · ${label}`,
     `Profit ${money(s.profit_cents, { whole: true })} (${margin}% margin) on ${money(s.revenue_cents, { whole: true })} from ${s.jobs} jobs.`,
-    `Labour ${money(s.labour_cents, { whole: true })}, fuel ${money(s.fuel_cents, { whole: true })}, materials ${money(s.materials_cents, { whole: true })}, truck wear ${money(s.truck_cents, { whole: true })}.`,
+    `Labour ${money(s.labour_cents, { whole: true })}, fuel ${money(s.fuel_cents, { whole: true })}, materials ${money(s.materials_cents, { whole: true })}, maintenance ${money(s.maintenance_cents, { whole: true })}.`,
     ...(s.fixed_cents ? [`Fixed costs ${money(s.fixed_cents, { whole: true })}. Profit after fixed costs ${money(s.net_profit_cents ?? s.profit_cents - s.fixed_cents, { whole: true })}.`] : []),
     ...watch,
   ].join("\n");

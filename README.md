@@ -11,10 +11,10 @@ The clickable demo of every screen is in [`demo/index.html`](demo/index.html) (o
 | `apps/office` | Owner and dispatcher web app (React + Vite) | Netlify |
 | `apps/crew` | Technician app (React + Vite, wrapped with Capacitor) | Android phones and tablets |
 | `apps/desktop` | Desktop window around the office site (Electron) | Windows, Mac |
-| `packages/shared` | Code both apps use: EN/ES text, the Done rules, the offline outbox | both apps |
+| `packages/shared` | Code both apps use: EN/ES text, the Done rules, the offline outbox, report periods, GPS arrival detection, route order, spreadsheet reading | both apps |
 | `supabase/migrations` | Database tables and row-level security (who can see what) | Supabase |
 | `supabase/tests` | Tests that run the real migrations and check every role's access | CI |
-| `supabase/functions` | Server code that needs secrets: `admin-users`, `set-password` (and later Twilio, nightly jobs) | Supabase Edge Functions |
+| `supabase/functions` | Server code that needs secrets: `admin-users`, `set-password`, `finance-report`, `fuel-prices`, `ingest` (and later Twilio, nightly jobs) | Supabase Edge Functions |
 | `demo` | The clickable demo | Netlify (optional second site) |
 
 ## Accounts
@@ -32,20 +32,55 @@ The clickable demo of every screen is in [`demo/index.html`](demo/index.html) (o
 
 ## Finance (owners only)
 
-Owners open the office app on **Today**, with **Finance** as the next tab. Dispatchers and technicians can't see any of it, including pay rates (`supabase/tests/finance.test.ts` checks this).
+Cutting Cost is finance-first: it can sit on top of the software a company already uses (Jobber, Yardbook, a spreadsheet) and work out what every job, customer, crew and kilometre really earns. Owners open the office app on **Today**; **Routes** and **Finance** come next. Dispatchers and technicians can't see any of the money, including pay rates (`supabase/tests/finance.test.ts` checks this).
 
-- **Overview** for a day, week or month, with the previous period for comparison: profit, revenue, costs, margin, jobs done and the monthly target. Below that:
-  - **Needs a look:** money-losing jobs, complaint rate, open crew leads, missing pay rates
-  - **Where the money went:** labour, fuel, materials, truck wear
-  - **Where revenue came from:** regular customers, new customers, extra work from crew leads, redos
-  - **Crews:** profit per hour on site, leads won, complaint rate
-  - **Jobs, least profitable first,** downloadable as CSV.
-- **Profit per job** = price − labour − fuel − materials − truck wear. Labour is the crew's paid time that day (shift minus unpaid lunch) × each member's hourly cost, shared across the day's jobs by minutes on site. Fuel comes from GPS km. Truck wear is value ÷ years ÷ working hours. The SQL is in `supabase/migrations/20261102190000_finance.sql`, with a worked example in its test.
-- **Payroll:** this or last week or month, with paid hours, regular and overtime hours (threshold and multiplier per company; Ontario default 44 h at 1.5×) and cost. Downloads as CSV for Excel or your payroll service.
-- **Costs and rates:** people and their hourly cost, trucks (value, years, hours per year, L/100 km), material prices, fixed costs, fuel price, overtime rule, monthly target.
-- **Fixed costs** (insurance, rent, phones, software, loans) are entered per month, prorated to the period, and shared across jobs **in proportion to what each job earns**: a $2,000 job carries ten times the share of a $200 job. Overview shows profit before and after them, "Every $100 you charged" in plain words, and a "What if…" panel with sliders for fuel, crew pay, fixed costs and prices.
-- **Fuel price:** pick the country, province or state, closest city (Canada) and fuel type, and turn on automatic prices. The `fuel-prices` Edge Function checks public averages every day (Statistics Canada monthly by city; U.S. EIA weekly by state or region). Fuel receipts logged by crews override the average for that period, because they're what was actually paid.
-- **Email reports:** weekly on a chosen day and/or monthly on the 1st, to any addresses, plus "Email me … now". Sent by the `finance-report` Edge Function through [Resend](https://resend.com). Set the secrets `RESEND_API_KEY`, `REPORT_FROM` (e.g. `Cutting Cost <reports@yourdomain.com>`, on a domain verified in Resend), `CRON_SECRET` and `OFFICE_URL`, then schedule it with `supabase/cron.example.sql`.
+**Costs are split the way owners think about them** (Costs tab):
+
+| Variable (grows with every job) | Fixed (paid every month anyway) |
+| --- | --- |
+| Crew pay (paid time incl. driving × hourly cost) | Insurance, subscriptions, marketing, licences, rent… (owner's list) |
+| Truck fuel (GPS km × L/100 km × fuel price) | Depreciation of trucks and mowers (value ÷ years ÷ 12) |
+| Mower fuel (hours on site × share running × L/h × fuel price) | |
+| Maintenance (per km driven + per mower engine hour) | |
+| Materials | |
+
+Fixed costs are prorated to the period and shared across jobs **in proportion to what each job earns**.
+
+- **Fixed-cost slider** at the top of Overview and Customers: 0% (the default) shows profit from the jobs alone; 100% shows true profit after every bill. The choice is remembered in the browser.
+- **Overview** for a day, week, month or **season** (season months are set under Costs; default April–November): profit in one plain sentence, revenue, costs, profit per hour on site, "Needs a look", where the money went, where revenue came from, crews, "What if…" sliders and every job (CSV).
+- **Customers:** by customer or by area — visits, revenue, time on site, drive time, profit, profit per visit and per hour. Rows under 85% of the company's average per hour are flagged; tap a customer for their visit history and the price per visit that would bring them to the average.
+- **Payroll:** paid, regular and overtime hours per person, split into **on site / driving / other**, grouped under each crew. CSV for Excel or a payroll service.
+- **Fuel & km:** every drive from one stop to the next per crew (left, arrived, minutes, GPS km, fuel to get there, time at the client), daily and per-trip CSV, and **GPS vs odometer** per truck per day (flagged when they differ by more than 10%).
+- **Trucks and mowers:** give each crew its truck and mowers; L/100 km, L/hour and how much of the time on site a mower runs, value and years.
+- **Fuel price:** automatic area averages from Statistics Canada (monthly, by city) or the U.S. EIA (weekly, by state or region) via the `fuel-prices` Edge Function; crews' fuel receipts override them.
+- **Email reports:** weekly, monthly and **season** (the month after the season ends), plus "Email me … now", sent by `finance-report` through [Resend](https://resend.com). Secrets: `RESEND_API_KEY`, `REPORT_FROM`, `CRON_SECRET`, `OFFICE_URL`; schedule with `supabase/cron.example.sql`.
+
+The SQL lives in `supabase/migrations/20261106000000_finance_first.sql` (`job_profit`, `finance_summary`, `customer_profit`, `crew_trips`, `gps_vs_odometer`, `payroll`), with a worked example you can check by hand in the test.
+
+## Connections
+
+Under Finance → Connections:
+
+- **Mode.** *Finance only* (default): jobs live in other software; crews just sign in, type the odometer and keep location on. *Everything*: the full crew app with the truck checklist and Done buttons.
+- **Spreadsheet import.** Any CSV with a date, customer, address and price (Jobber visits report, Yardbook jobs report, QuickBooks, Excel). Columns are guessed and can be changed; the preview shows which rows will be skipped and why. Past jobs come in as done; today's and future ones go on the crew's route. Customers are matched by name and properties by address. Reading the file happens in the browser (`packages/shared/src/importJobs.ts`); the insert is `public.import_jobs` (owner only).
+- **Zapier / any software.** The owner makes an API key (only its hash is stored). Zapier (e.g. Yardbook → Job Completed) POSTs each job to the `ingest` Edge Function with `Authorization: Bearer cc_live_…`. Field names are matched loosely; the same job number twice updates the job. See `supabase/functions/README.md`.
+- **Jobber direct** (GraphQL API with OAuth) needs a Jobber developer account and app approval; until then use Zapier or the visits report.
+
+## Routes
+
+Owners and dispatchers plan **tomorrow** or a crew's **regular weekday**: pick a crew, then drag the list (or use ↑ ↓), tap the stops on the map in driving order, or press **Shortest order** (nearest stop then 2-opt, `packages/shared/src/geo.ts`). Tap another crew's pin or use *Move to* to hand a stop over; add extras by address or skip stops. The panel shows km, drive time and fuel, and how much the new order saves. Tomorrow saves into `visits.route_order`; regular days into `route_plans`. Each crew's day has a short code like `C2-THU`.
+
+The map uses Leaflet with OpenStreetMap tiles by default. For daily use set `VITE_MAP_TILES` (and `VITE_MAP_ATTRIBUTION`) to a tile provider you have an account with.
+
+## Crew app: location, odometer, automatic arrivals
+
+1. Sign in once.
+2. **Location must be on.** Without it the app shows a blocking screen with the steps to turn it on.
+3. **Start my day:** the truck's odometer (and, in Everything mode, the truck checklist).
+4. **Today's stops:** GPS points are sent every minute through the outbox, and the tablet detects arriving at (2 minutes within 60 m) and leaving (2 minutes beyond 90 m) each property (`GeofenceDetector` in `packages/shared/src/geo.ts`). In Finance-only mode leaving the property finishes the job. Big *I'm here* / *Done* buttons are a backup.
+5. **End my day:** the odometer again (it must not be lower than the morning's), then clock out.
+
+Android needs `ACCESS_FINE_LOCATION` and `ACCESS_COARSE_LOCATION` in `AndroidManifest.xml` (added after `npx cap add android`). The app uses WebView geolocation, which records while the app is open; to keep recording with the screen off, swap `apps/crew/src/location.ts` to a background-geolocation plugin and add `ACCESS_BACKGROUND_LOCATION` and a foreground service.
 
 ## Live updates
 
@@ -102,7 +137,7 @@ The crew app updates the screen and the tablet's own storage first, then queues 
 - drops items that are no longer useful, like an On my way text after the crew has arrived
 - survives the app being closed
 
-Right now it saves to localStorage. Before the pilot, the tablet store moves to SQLite or PowerSync, because photos and a day of GPS points need more room.
+GPS points, odometer readings, clock in and clock out go through the same outbox. Right now it saves to localStorage. Before the pilot, the tablet store moves to SQLite or PowerSync, because photos and a day of GPS points need more room.
 
 ## Status
 

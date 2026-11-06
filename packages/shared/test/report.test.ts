@@ -19,6 +19,16 @@ describe("periods", () => {
     expect(lastCompletePeriod("month", "2026-12-01")).toMatchObject({ from: "2026-11-01", to: "2026-11-30" });
     expect(lastCompletePeriod("week", "2026-11-09")).toMatchObject({ from: "2026-11-02", to: "2026-11-08" });
   });
+  it("seasons run from the first month to the end of the last", () => {
+    expect(periodContaining("season", "2026-07-15")).toEqual({ kind: "season", from: "2026-04-01", to: "2026-11-30" });
+    expect(periodContaining("season", "2026-12-20")).toMatchObject({ from: "2026-04-01" }); // off season → the one just finished
+    expect(periodContaining("season", "2026-02-10")).toMatchObject({ from: "2025-04-01", to: "2025-11-30" });
+    expect(periodContaining("season", "2026-12-10", { start: 11, end: 3 })).toEqual({ kind: "season", from: "2026-11-01", to: "2027-03-31" }); // snow
+    expect(shiftPeriod(periodContaining("season", "2026-07-15"), -1)).toMatchObject({ from: "2025-04-01", to: "2025-11-30" });
+    expect(lastCompletePeriod("season", "2026-12-01")).toMatchObject({ from: "2026-04-01", to: "2026-11-30" });
+    expect(lastCompletePeriod("season", "2026-07-01")).toMatchObject({ from: "2025-04-01" });
+    expect(periodLabel(periodContaining("season", "2026-07-15"))).toBe("2026 season (April – November)");
+  });
   it("labels read naturally", () => {
     expect(periodLabel(periodContaining("month", "2026-10-15"))).toBe("October 2026");
   });
@@ -35,6 +45,11 @@ describe("which reports are due", () => {
   it("never twice on the same day", () => {
     expect(reportsDue("2026-11-02", { ...s, last_weekly_sent: "2026-11-02" })).toEqual([]);
   });
+  it("the season report goes out the month after the season ends", () => {
+    expect(reportsDue("2026-12-01", { ...s, monthly: false, season: true })).toEqual(["season"]);
+    expect(reportsDue("2026-11-01", { ...s, monthly: false, weekly: false, season: true })).toEqual([]);
+    expect(reportsDue("2026-12-01", { ...s, monthly: false, season: true, last_season_sent: "2026-12-01" })).toEqual([]);
+  });
   it("respects what the owner turned off", () => {
     expect(reportsDue("2026-06-01", { ...s, weekly: false })).toEqual(["month"]);
   });
@@ -42,7 +57,7 @@ describe("which reports are due", () => {
 
 describe("email report", () => {
   const summary: FinanceSummary = {
-    from: "2026-10-01", to: "2026-10-31", jobs: 3, revenue_cents: 73000, labour_cents: 41250, fuel_cents: 666, materials_cents: 1200, truck_cents: 3750,
+    from: "2026-10-01", to: "2026-10-31", jobs: 3, revenue_cents: 73000, labour_cents: 41250, fuel_cents: 666, materials_cents: 1200, maintenance_cents: 3750,
     profit_cents: 26134, losing_jobs: 1, complaint_jobs: 1,
     mix: { regular_cents: 25000, new_customer_cents: 40000, upsell_cents: 8000, other_cents: 0 },
     leads: { created: 3, won: 1, open: 1 }, monthly_target_cents: 2000000,

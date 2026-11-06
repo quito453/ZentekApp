@@ -5,7 +5,7 @@ import { money } from "@zentek/shared";
 import { supabase } from "../supabase";
 
 type Fixed = { id: string; name: string; monthly_cents: number };
-const IDEAS = ["Insurance", "Shop or yard rent", "Phones and internet", "Software", "Office pay", "Truck and equipment loans", "Accountant"];
+const IDEAS = ["Insurance", "Subscriptions and software", "Marketing", "Licences and permits", "Shop or yard rent", "Phones and internet", "Office pay", "Truck and equipment loans", "Accountant"];
 
 export function FixedCosts({ companyId }: { companyId: string }) {
   const [rows, setRows] = useState<Fixed[]>([]);
@@ -41,6 +41,7 @@ export function FixedCosts({ companyId }: { companyId: string }) {
         What you pay every month whether you do 10 jobs or 100. Each job carries a share in proportion to what it earns: a $2,000 job carries ten times the
         share of a $200 job.
       </p>
+      <p className="muted small-text">Depreciation of trucks and mowers is added on its own from Trucks and mowers above. Don't add it here too.</p>
       <ul className="rows">
         {rows.map((r) => (
           <li key={r.id} className="team-row">

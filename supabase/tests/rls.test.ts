@@ -193,3 +193,39 @@ describe("fixed costs and fetched fuel prices", () => {
     await expect(asUser(db, TAB_A1, (tx) => tx.query("insert into fixed_costs (company_id, name, monthly_cents) values ($1, 'x', 1)", [CO_A]))).rejects.toThrow();
   });
 });
+
+describe("regular routes", () => {
+  it("the office plans them; a crew reads only its own", async () => {
+    await asUser(db, DISP_A, (tx) =>
+      tx.query("insert into route_plans (company_id, crew_id, weekday, property_ids) values ($1, $2, 3, $3), ($1, $4, 3, $5)", [CO_A, CREW_A1, [PROP_A1], CREW_A2, [PROP_A2]]),
+    );
+    expect(await asUser(db, OWNER_A, (tx) => count(tx, "select * from route_plans"))).toBe(2);
+    expect(await asUser(db, TAB_A1, (tx) => count(tx, "select * from route_plans"))).toBe(1);
+    expect(await asUser(db, OWNER_B, (tx) => count(tx, "select * from route_plans"))).toBe(0);
+    await expect(asUser(db, TAB_A1, (tx) => tx.query("insert into route_plans (company_id, crew_id, weekday) values ($1, $2, 4)", [CO_A, CREW_A1]))).rejects.toThrow();
+    const r = await asUser(db, TAB_A1, (tx) => tx.query("update route_plans set property_ids = '{}'"));
+    expect(r.affectedRows).toBe(0);
+  });
+});
+
+describe("mower costs, imports and API keys", () => {
+  it("are the owner's alone", async () => {
+    await db.query("insert into equipment (id, company_id, crew_id, name) values ('a0000000-0000-0000-0000-0000000000b9', $1, $2, 'Mower 1')", [CO_A, CREW_A1]);
+    await asUser(db, OWNER_A, (tx) => tx.query("insert into equipment_costs (equipment_id, company_id, l_per_hour) values ('a0000000-0000-0000-0000-0000000000b9', $1, 3)", [CO_A]));
+    await db.query("insert into imports (company_id, source, rows_in) values ($1, 'spreadsheet', 4)", [CO_A]);
+    const key = await asUser(db, OWNER_A, (tx) => tx.query<{ k: string }>("select public.create_api_key($1, 'Zapier') as k", [CO_A]));
+    expect(key.rows[0]!.k).toMatch(/^cc_live_[0-9a-f]{64}$/);
+    for (const t of ["equipment_costs", "imports", "api_keys"]) {
+      expect(await asUser(db, OWNER_A, (tx) => count(tx, `select * from ${t}`))).toBe(1);
+      for (const who of [DISP_A, TAB_A1, OWNER_B]) expect(await asUser(db, who, (tx) => count(tx, `select * from ${t}`))).toBe(0);
+    }
+    // Only the hash is kept.
+    const stored = await asUser(db, OWNER_A, (tx) => tx.query<{ key_hash: string; prefix: string }>("select key_hash, prefix from api_keys"));
+    expect(stored.rows[0]!.key_hash).not.toContain(key.rows[0]!.k);
+    expect(key.rows[0]!.k.startsWith(stored.rows[0]!.prefix)).toBe(true);
+    for (const who of [DISP_A, OWNER_B]) {
+      await expect(asUser(db, who, (tx) => tx.query("select public.create_api_key($1, 'x')", [CO_A]))).rejects.toThrow(/owner only/);
+    }
+    await expect(asUser(db, OWNER_A, (tx) => tx.query("insert into api_keys (company_id, name, prefix, key_hash) values ($1, 'x', 'x', 'x')", [CO_A]))).rejects.toThrow();
+  });
+});
