@@ -6,7 +6,10 @@ import { localOutboxStore } from "./localStore";
 export type VisitUpdate = { visitId: string; patch: Record<string, unknown> };
 export type ClockIn = { id: string; company_id: string; crew_id: string; clock_in_at: string; checklist: Record<string, boolean> };
 export type ClockOut = { id: string; clock_out_at: string };
-export type GpsPoint = { id: string; company_id: string; crew_id: string; shift_id: string; recorded_at: string; lat: number; lng: number; accuracy_m: number | null };
+export type GpsPoint = {
+  client_id: string; company_id: string; crew_id: string; shift_id: string; recorded_at: string;
+  lat: number; lng: number; accuracy_m: number | null; speed_mps: number | null; heading_deg: number | null;
+};
 export type GpsBatch = { points: GpsPoint[] };
 export type OdometerRead = { id: string; company_id: string; truck_id: string; crew_id: string; reading_km: number; read_at: string };
 
@@ -24,7 +27,7 @@ async function sendItem(item: OutboxItem): Promise<SendResult> {
     const { id, clock_out_at } = item.payload as ClockOut;
     ({ error } = await supabase.from("shifts").update({ clock_out_at }).eq("id", id));
   } else if (item.op === "gps.batch") {
-    ({ error } = await supabase.from("gps_points").upsert((item.payload as GpsBatch).points, { onConflict: "id", ignoreDuplicates: true }));
+    ({ error } = await supabase.from("gps_points").upsert((item.payload as GpsBatch).points, { onConflict: "client_id", ignoreDuplicates: true }));
   } else if (item.op === "odometer.read") {
     ({ error } = await supabase.from("odometer_readings").upsert(item.payload as OdometerRead, { onConflict: "id", ignoreDuplicates: true }));
   } else {

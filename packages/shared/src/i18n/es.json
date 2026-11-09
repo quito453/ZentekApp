@@ -539,5 +539,8 @@
   "slEndP": "Escribe el odómetro y marca salida.",
   "slBack": "Regresar",
   "slGps": "GPS encendido · {n} puntos enviados",
-  "slDayDone": "Día terminado. Hasta mañana."
+  "slDayDone": "Día terminado. Hasta mañana.",
+  "gpsNoticeT": "Cutting Cost está registrando tu ruta",
+  "gpsNoticeP": "Solo mientras estás en turno. Se detiene al terminar tu día.",
+  "lcOpenSettings": "Abrir ajustes"
 }

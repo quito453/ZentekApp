@@ -11,7 +11,7 @@ import { GeofenceDetector, kmBetween, loginEmail, t, type Fix, type Lang } from 
 import { supabase } from "./supabase";
 import { loadJson, saveJson } from "./localStore";
 import { outbox, type ClockIn, type ClockOut, type GpsBatch, type GpsPoint, type OdometerRead, type VisitUpdate } from "./sync";
-import { askForLocation, locationState, watch, type LocState } from "./location";
+import { askForLocation, locationState, openLocationSettings, watch, type LocState } from "./location";
 
 type Mode = "finance" | "full";
 type Me = { company_id: string; crew_id: string; crew_name: string; full_name: string; mode: Mode; truck_id: string | null; truck_name: string | null };
@@ -210,7 +210,8 @@ function LocationGate({ lang, state, onState, onSignOut }: { lang: Lang; state: 
             <h1>{t(lang, "lcDeniedT")}</h1>
             <p>{t(lang, "lcDeniedP")}</p>
             <p className="strong">{t(lang, "lcSteps")}</p>
-            <button className="primary big" disabled={busy} onClick={() => void ask()}>{t(lang, "lcRetry")}</button>
+            <button className="primary big" disabled={busy} onClick={() => void openLocationSettings().then((ok) => { if (!ok) void ask(); })}>{t(lang, "lcOpenSettings")}</button>
+            <button className="big secondary" disabled={busy} onClick={() => void ask()}>{t(lang, "lcRetry")}</button>
           </>
         ) : state === "unsupported" ? (
           <>
@@ -387,6 +388,7 @@ function Route({ lang, me, shift, onEnd, onLocationOff }: { lang: Lang; me: Me; 
   const detector = useRef<GeofenceDetector | null>(null);
   const buffer = useRef<GpsPoint[]>([]);
   const last = useRef<Fix | null>(null);
+  const lastSend = useRef(Date.now());
   useEffect(() => {
     const stops = visits.filter((v) => v.properties?.lat != null && v.properties?.lng != null).map((v) => ({ id: v.id, lat: v.properties!.lat!, lng: v.properties!.lng! }));
     if (!detector.current) {
@@ -399,6 +401,7 @@ function Route({ lang, me, shift, onEnd, onLocationOff }: { lang: Lang; me: Me; 
 
   useEffect(() => {
     const sendBuffer = async () => {
+      lastSend.current = Date.now();
       if (!buffer.current.length) return;
       const points = buffer.current.splice(0);
       await outbox.enqueue<GpsBatch>("gps.batch", { points }, { kind: "gps" });
@@ -412,7 +415,12 @@ function Route({ lang, me, shift, onEnd, onLocationOff }: { lang: Lang; me: Me; 
       const p = last.current;
       if (!p || fix.at - p.at >= 15_000 || kmBetween(p, fix) * 1000 >= 25) {
         last.current = fix;
-        buffer.current.push({ id: crypto.randomUUID(), company_id: me.company_id, crew_id: me.crew_id, shift_id: shift.id, recorded_at: new Date(fix.at).toISOString(), lat: fix.lat, lng: fix.lng, accuracy_m: fix.accuracyM ?? null });
+        buffer.current.push({
+          client_id: crypto.randomUUID(), company_id: me.company_id, crew_id: me.crew_id, shift_id: shift.id, recorded_at: new Date(fix.at).toISOString(),
+          lat: fix.lat, lng: fix.lng, accuracy_m: fix.accuracyM ?? null, speed_mps: fix.speedMps, heading_deg: fix.headingDeg,
+        });
+        // Timers slow down when the app is in the background; new points arriving keep the upload going.
+        if (Date.now() - lastSend.current > 30_000) void sendBuffer();
       }
       for (const e of detector.current?.feed(fix) ?? []) {
         const v = visitsRef.current.find((x) => x.id === e.stopId);
@@ -421,8 +429,9 @@ function Route({ lang, me, shift, onEnd, onLocationOff }: { lang: Lang; me: Me; 
         if (e.kind === "arrived" && !v.arrived_at) void arrive(v.id, at, "geofence");
         if (e.kind === "departed" && !v.departed_at && v.status !== "done") void depart(v.id, at);
       }
-    }, onLocationOff);
-    const timer = setInterval(() => void sendBuffer(), 60_000);
+    }, onLocationOff, { title: t(lang, "gpsNoticeT"), message: t(lang, "gpsNoticeP") });
+    // Every 30 s, so the dispatcher's live map stays close to real time.
+    const timer = setInterval(() => void sendBuffer(), 30_000);
     return () => {
       stop();
       clearInterval(timer);

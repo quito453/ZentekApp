@@ -539,5 +539,8 @@
   "slEndP": "Type the odometer, then clock out.",
   "slBack": "Go back",
   "slGps": "GPS on · {n} points sent",
-  "slDayDone": "Day ended. See you tomorrow."
+  "slDayDone": "Day ended. See you tomorrow.",
+  "gpsNoticeT": "Cutting Cost is recording your route",
+  "gpsNoticeP": "Only while you're clocked in. Stops when you end your day.",
+  "lcOpenSettings": "Open settings"
 }

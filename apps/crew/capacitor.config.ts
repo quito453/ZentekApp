@@ -6,9 +6,15 @@ const config: CapacitorConfig = {
   appName: "Cutting Cost Crew",
   webDir: "dist",
   android: {
-    // Keep the WebView running while the screen is off so queued work keeps uploading.
-    // Background GPS needs a native location plugin with a foreground service; added in Stage 3.
     allowMixedContent: false,
+    // Background GPS (@capacitor-community/background-geolocation): without the legacy bridge,
+    // Android stops delivering locations to the app after about 5 minutes in the background.
+    useLegacyBridge: true,
+  },
+  plugins: {
+    // Send network requests natively, so GPS points keep uploading when the app is in the
+    // background (Android throttles the WebView's own requests after a few minutes).
+    CapacitorHttp: { enabled: true },
   },
 };
 
