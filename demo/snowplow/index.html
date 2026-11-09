@@ -162,6 +162,9 @@ details summary { cursor: pointer; font-weight: 600; }
 :root { --c-snow: #3d7fc4; --c-salt: #8a7f6e; --c-ot: #b5442a; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --c-snow: #7db4ec; --c-salt: #bdb3a2; --c-ot: #f08a6e; } }
 :root[data-theme="dark"] { --c-snow: #7db4ec; --c-salt: #bdb3a2; --c-ot: #f08a6e; }
+
+.tile.big .pos { color: #6fdba0; } .tile.big .neg { color: #ff8a7e; }
+td.n.pos, td.n.neg, td.n.warnc { font-weight: 600; }
 .cm { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--c-snow); }
 .typechip { font-size: 0.74rem; font-weight: 700; padding: 1px 7px; border-radius: 4px; background: var(--sunken); color: var(--muted); white-space: nowrap; }
 .storm-ice { color: var(--c-snow); font-weight: 600; font-size: 0.8rem; }
@@ -353,19 +356,29 @@ function siteRows(from, to) {
     return r;
   }).filter((r) => r.n || r.rev);
   const avg = all.hours ? all.cm / all.hours : 0;
+  // Compare like with like: a driveway against other driveways, a lot against other lots.
+  const typeAvg = {};
+  for (const t of Object.keys(TYPES)) {
+    const xs = rows.filter((r) => r.s.type === t);
+    const h = xs.reduce((a, r) => a + r.hours, 0);
+    typeAvg[t] = h ? xs.reduce((a, r) => a + r.cm, 0) / h : 0;
+  }
   for (const r of rows) {
-    r.status = r.cm < 0 ? "bad" : r.perHour < avg * 0.75 ? "thin" : "good";
+    const avgT = typeAvg[r.s.type];
+    r.avgT = avgT;
+    r.status = r.cm < 0 ? "bad" : r.perHour < avgT * 0.75 ? "thin" : "good";
     // Seasonal: the snowfall at which the fee stops covering the work
     if (seasonalFee(r.s) && r.cost > 0) r.breakCm = Math.round(seasonalFee(r.s) / (r.cost / TOTAL_CM));
     // Price for next winter that earns the average per equipment-hour in a NORMAL winter
     const normalCost = r.cost * NORMAL_CM / TOTAL_CM, normalHours = r.hours * NORMAL_CM / TOTAL_CM;
-    if (seasonalFee(r.s)) r.renew = Math.max(seasonalFee(r.s), round10(normalCost + avg * normalHours));
+    if (seasonalFee(r.s)) r.renew = Math.max(seasonalFee(r.s), round10(normalCost + avgT * normalHours));
   }
-  return { rows, avg, all };
+  return { rows, avg, all, typeAvg };
 }
 
 // ───────────────────────── format, state, routing ─────────────────────────
 const $ = (n, d = 0) => (n < 0 ? "−$" : "$") + Math.abs(n).toLocaleString("en-CA", { minimumFractionDigits: d, maximumFractionDigits: d });
+const pn = (n) => (n < -0.5 ? "neg" : n > 0.5 ? "pos" : ""); // red for losing, green for making money
 const pct = (n, d = 0) => (n * 100).toFixed(d) + "%";
 const h1 = (h) => h.toLocaleString("en-CA", { maximumFractionDigits: 1, minimumFractionDigits: 1 }) + " h";
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
@@ -522,12 +535,12 @@ VIEWS.home = () => {
   ].filter(Boolean);
   const byStorm = EVENTS.map((e) => { const x = sum(e.date, e.date); return x.billed - x.cost; });
   return `${periodBar()}
-  <p class="lead">${P.word} you kept <span class="${per100 < 0 ? "neg" : ""}">${$(per100)}</span> of every $100 you charged, after crews, fuel, equipment wear, salt and ${S.period === "winter" ? "a full year of fixed bills, summer included" : "the month's share of fixed bills"}.</p>
+  <p class="lead">${P.word} you kept <span class="${pn(per100)}">${$(per100)}</span> of every $100 you charged, after crews, fuel, equipment wear, salt and ${S.period === "winter" ? "a full year of fixed bills, summer included" : "the month's share of fixed bills"}.</p>
   <section class="hero" aria-label="Key numbers">
-    <div class="tile big"><span class="k">True profit</span><span class="v ${s.net < 0 ? "neg" : ""}">${$(s.net)}</span><span class="small muted">Jobs made ${$(s.cm)} → ${$(s.net)} left after ${S.period === "winter" ? "a full year of bills" : "the month's bills"}</span></div>
+    <div class="tile big"><span class="k">True profit</span><span class="v ${pn(s.net)}">${$(s.net)}</span><span class="small muted">Jobs made ${$(s.cm)} → ${$(s.net)} left after ${S.period === "winter" ? "a full year of bills" : "the month's bills"}</span></div>
     <div class="tile"><span class="k">Money in</span><span class="v">${$(s.rev)}</span><span class="small muted">${$(s.fees)} seasonal · ${$(s.billed)} per push, hour, salt</span></div>
     <div class="tile"><span class="k">Snow</span><span class="v"><span class="cm">${s.snow} cm</span></span><span class="small muted">${s.events} events${S.period === "winter" ? ` · normal is ${NORMAL_CM} cm` : ""}</span></div>
-    <div class="tile"><span class="k">Per equipment-hour</span><span class="v">${$(s.hours ? s.net / s.hours : 0)}</span><span class="small muted">${Math.round(s.hours).toLocaleString()} route-hours</span></div>
+    <div class="tile"><span class="k">Per equipment-hour</span><span class="v ${pn(s.net)}">${$(s.hours ? s.net / s.hours : 0)}</span><span class="small muted">${Math.round(s.hours).toLocaleString()} route-hours</span></div>
   </section>
   <div class="grid2">
     <section class="card"><h2>Needs a look</h2><div class="alerts">${alerts.map((a) => `<div class="alert ${a.lvl}"><span class="dot" aria-hidden="true"></span><span>${a.t}</span><a href="${a.a}">${a.al} ›</a></div>`).join("")}</div></section>
@@ -537,7 +550,7 @@ VIEWS.home = () => {
     </section>
   </div>
   <section class="card"><h2>Each storm: billed work minus what it cost</h2>
-    ${bars(byStorm, EVENTS.map((e) => fmtDay(e.date)), { fmt: kfmt, top2: EVENTS.map((e) => e.ice ? "ice" : e.cm + ""), colors: byStorm.map(() => "var(--c-snow)") })}
+    ${bars(byStorm, EVENTS.map((e) => fmtDay(e.date)), { fmt: kfmt, top2: EVENTS.map((e) => e.ice ? "ice" : e.cm + ""), colors: byStorm.map((x) => (x >= 0 ? "var(--c-kept)" : "var(--neg)")) })}
     <p class="explain">Numbers on top are centimetres ("ice" for freezing rain). Each bar is the per-push, hourly and salting work billed for that storm, minus the cost of clearing every site, seasonal ones included. ${byStorm.some((x) => x < 0) ? "Bars below zero are storms where the billed work didn't cover the seasonal sites too; the seasonal fees pay for those." : "Every storm's billed work covered the whole call-out, so the seasonal fees on top were profit."} The biggest storms leave the least: second pushes, longer passes and overtime.</p></section>`;
 };
 
@@ -553,7 +566,7 @@ VIEWS.storms = () => {
   return `<section class="card"><div class="row between"><div><h2>Every storm last winter</h2><p class="muted small">${EVENTS.length} events, <span class="cm">${TOTAL_CM} cm</span>. Driveways go out at 5 cm, commercial at 2.5 cm, salt on every event.</p></div>${deep ? `<button class="btn" data-copy="storms">Copy as CSV</button>` : ""}</div>
     <div class="tablewrap"><table><thead><tr><th>Storm</th><th class="n">Snow</th><th class="n">Sites</th><th class="n">Route-hours</th><th class="n">Overtime</th>${deep ? `<th class="n">Salt</th><th class="n">Crew pay</th><th class="n">Fuel + wear</th><th class="n">Salt $</th>` : ""}<th class="n">Cost</th><th class="n">Billed</th></tr></thead><tbody>
     ${rows.map(({ e, s, sites }) => `<tr><td><b>${fmtDay(e.date, { weekday: "short", month: "short", day: "numeric" })}</b></td><td class="n">${e.ice ? `<span class="storm-ice">ice</span>` : `<span class="cm">${e.cm} cm</span>`}</td><td class="n">${sites}</td><td class="n">${s.hours.toFixed(1)}</td><td class="n ${s.otHours > 0 ? "neg" : "muted"}">${s.otHours > 0 ? s.otHours.toFixed(1) + " h" : "–"}</td>
-      ${deep ? `<td class="n">${s.saltT.toFixed(1)} t</td><td class="n">${$(s.labour)}</td><td class="n">${$(s.fuel + s.wear)}</td><td class="n">${$(s.salt)}</td>` : ""}<td class="n">${$(s.cost)}</td><td class="n"><b>${$(s.billed)}</b></td></tr>`).join("")}
+      ${deep ? `<td class="n">${s.saltT.toFixed(1)} t</td><td class="n">${$(s.labour)}</td><td class="n">${$(s.fuel + s.wear)}</td><td class="n">${$(s.salt)}</td>` : ""}<td class="n">${$(s.cost)}</td><td class="n ${s.billed >= s.cost ? "pos" : "neg"}"><b>${$(s.billed)}</b></td></tr>`).join("")}
     <tr class="total"><td>Winter</td><td class="n">${TOTAL_CM} cm</td><td></td><td class="n">${rows.reduce((a, r) => a + r.s.hours, 0).toFixed(0)}</td><td class="n">${rows.reduce((a, r) => a + r.s.otHours, 0).toFixed(0)} h</td>${deep ? `<td class="n">${rows.reduce((a, r) => a + r.s.saltT, 0).toFixed(0)} t</td><td class="n">${$(rows.reduce((a, r) => a + r.s.labour, 0))}</td><td class="n">${$(rows.reduce((a, r) => a + r.s.fuel + r.s.wear, 0))}</td><td class="n">${$(rows.reduce((a, r) => a + r.s.salt, 0))}</td>` : ""}<td class="n">${$(rows.reduce((a, r) => a + r.s.cost, 0))}</td><td class="n">${$(rows.reduce((a, r) => a + r.s.billed, 0))}</td></tr>
     </tbody></table></div>
     <p class="explain">Billed = per-push, hourly and per-application salting. Seasonal contracts aren't billed per storm; their fees are counted month by month on Overview.</p></section>
@@ -577,8 +590,8 @@ VIEWS.sites = () => {
   return `${periodBar()}
   <div class="callout small"><b>Profit here is before insurance, the yard and other bills.</b> Those stay the same with 71 sites or 72, so a site that covers its own crew time, fuel, wear and salt still helps pay them. Fix the price before you drop anyone. True profit for the whole company is on Overview.</div>
   <section class="grid3" aria-label="Site health">
-    <div class="tile"><span class="k">Healthy</span><span class="v pos">${counts.good}</span><span class="small muted">at or near your average</span></div>
-    <div class="tile"><span class="k">Thin</span><span class="v warnc">${counts.thin}</span><span class="small muted">under 75% of your ${$(avg)}/equipment-hour</span></div>
+    <div class="tile"><span class="k">Healthy</span><span class="v pos">${counts.good}</span><span class="small muted">at or near the average for their contract</span></div>
+    <div class="tile"><span class="k">Thin</span><span class="v warnc">${counts.thin}</span><span class="small muted">under 75% of the average for their kind of contract</span></div>
     <div class="tile"><span class="k">Losing money</span><span class="v neg">${counts.bad}</span><span class="small muted">cost more to clear than they paid</span></div>
   </section>
   <section class="card">
@@ -586,14 +599,14 @@ VIEWS.sites = () => {
       <div class="row"><input type="search" id="sq" placeholder="Search site or street" value="${esc(S.siteQ)}" aria-label="Search sites">
       <select id="ssort" aria-label="Sort"><option value="hour">Lowest per hour first</option><option value="profit">Lowest profit first</option><option value="rev">Most money in</option><option value="name">Name</option></select>
       ${deep ? `<button class="btn" data-copy="sites">Copy as CSV</button>` : ""}</div></div>
-    <p class="explain">Per hour = profit ÷ hours a truck or loader spent on the site, including the drive there. It compares a $500 driveway with a $20,000 condo fairly. Tap a site for every visit and a price for next winter.</p>
+    <p class="explain">Per hour = profit ÷ hours a truck or loader spent on the site, including the drive there. It compares a $500 driveway with a $20,000 condo fairly. Status compares each site with others on the same kind of contract. Tap a site for every visit and a price for next winter.</p>
     <div class="tablewrap"><table><thead><tr><th>Site</th><th>Status</th><th class="n">Visits</th><th class="n">Money in</th><th class="n">Profit</th><th class="n">Per hour</th>${deep ? `<th class="n">Hours</th><th class="n">Salt</th><th class="n">Share of bills</th><th class="n">Breaks even at</th>` : ""}<th class="n">Next winter</th></tr></thead><tbody>
-    ${list.slice(0, S.siteAll || q || S.siteType !== "all" ? list.length : 25).map((r) => `<tr class="click" tabindex="0" data-site="${r.s.id}"><td><div class="who">${esc(r.s.name)}</div><div class="where">${esc(r.s.addr)} · <span class="typechip">${TYPES[r.s.type].short}</span></div></td><td>${chip(r.status)}</td><td class="n">${r.n}</td><td class="n">${$(r.rev)}</td><td class="n ${r.cm < 0 ? "neg" : ""}">${$(r.cm)}</td><td class="n"><b>${$(r.perHour)}</b></td>
+    ${list.slice(0, S.siteAll || q || S.siteType !== "all" ? list.length : 25).map((r) => `<tr class="click" tabindex="0" data-site="${r.s.id}"><td><div class="who">${esc(r.s.name)}</div><div class="where">${esc(r.s.addr)} · <span class="typechip">${TYPES[r.s.type].short}</span></div></td><td>${chip(r.status)}</td><td class="n">${r.n}</td><td class="n">${$(r.rev)}</td><td class="n ${pn(r.cm)}">${$(r.cm)}</td><td class="n ${({ good: "pos", thin: "warnc", bad: "neg" })[r.status]}"><b>${$(r.perHour)}</b></td>
       ${deep ? `<td class="n">${r.hours.toFixed(1)}</td><td class="n">${r.saltT.toFixed(1)} t</td><td class="n muted">${$(r.fixed)}</td><td class="n">${r.breakCm ? `<span class="cm">${r.breakCm} cm</span>` : "–"}</td>` : ""}
       <td class="n">${r.renew && r.renew > seasonalFee(r.s) ? `<b>${$(r.renew)}</b>` : `<span class="muted">${r.renew ? "keep" : "–"}</span>`}</td></tr>`).join("")}
     </tbody></table></div>
     ${!q && S.siteType === "all" && list.length > 25 ? `<button class="btn" id="sall">${S.siteAll ? "Show the first 25" : `Show all ${list.length} sites`}</button>` : ""}
-    <p class="explain">"Next winter" is for seasonal contracts: the fee that earns your average per hour in a normal ${NORMAL_CM} cm winter. Per-push and hourly sites earn more when it snows more, so they don't need it.</p></section>`;
+    <p class="explain">"Next winter" is for seasonal contracts: the fee that earns the average per hour for that kind of contract in a normal ${NORMAL_CM} cm winter. Per-push and hourly sites earn more when it snows more, so they don't need it.</p></section>`;
 };
 BIND.sites = (v) => {
   v.querySelectorAll("[data-stype]").forEach((b) => (b.onclick = () => { S.siteType = b.dataset.stype; render(); }));
@@ -617,11 +630,11 @@ function openSite(id) {
     <p class="small"><b>Price:</b> ${price}</p>
     <div class="grid3">
       <div class="tile"><span class="k">Last winter</span><span class="v">${$(r.rev)}</span><span class="small muted">${r.n} visits · ${r.pushes} pushes · ${r.salts} salts</span></div>
-      <div class="tile"><span class="k">Profit</span><span class="v ${r.cm < 0 ? "neg" : ""}">${$(r.cm)}</span><span class="small muted">before insurance and other bills</span></div>
-      <div class="tile"><span class="k">Per equipment-hour</span><span class="v">${$(r.perHour)}</span><span class="small muted">your average ${$(avg)}</span></div>
+      <div class="tile"><span class="k">Profit</span><span class="v ${pn(r.cm)}">${$(r.cm)}</span><span class="small muted">before insurance and other bills</span></div>
+      <div class="tile"><span class="k">Per equipment-hour</span><span class="v ${({ good: "pos", thin: "warnc", bad: "neg" })[r.status]}">${$(r.perHour)}</span><span class="small muted">${TYPES[s.type].short} average ${$(r.avgT)}</span></div>
     </div>
     <section class="card"><h3>What clearing it cost</h3><div class="steps">${parts.map((p) => `<div><span>${p[0]}</span><span>${$(p[1])}</span></div>`).join("")}<div class="res"><span>Total, ${r.hours.toFixed(1)} equipment-hours</span><span>${$(r.cost)}</span></div></div></section>
-    ${fee ? `<div class="callout">${r.breakCm ? `This fee covers the work up to about <b class="cm">${r.breakCm} cm</b> of snow in a winter. Last winter had ${TOTAL_CM} cm; a normal one has ${NORMAL_CM}.` : ""} ${r.renew > fee ? `<br><b>Next winter: ${$(r.renew)}</b> (now ${$(fee)}) earns your average per hour in a normal winter. Or add a snowfall clause: an extra charge per push once the season passes ${NORMAL_CM + 40} cm.` : `<br>The fee holds up: keep it.`}</div>` : `<div class="callout">Billed per ${s.type === "hr" ? "hour" : "push"}, so a heavy winter pays more. ${r.status !== "good" ? `It still earns under your average: raise the base price about ${$(Math.max(5, round5((avg - r.perHour) * r.hours / Math.max(1, r.pushes))))} a push.` : "It earns at or above your average."}</div>`}
+    ${fee ? `<div class="callout">${r.breakCm ? `This fee covers the work up to about <b class="cm">${r.breakCm} cm</b> of snow in a winter. Last winter had ${TOTAL_CM} cm; a normal one has ${NORMAL_CM}.` : ""} ${r.renew > fee ? `<br><b>Next winter: ${$(r.renew)}</b> (now ${$(fee)}) earns the ${TYPES[s.type].short.toLowerCase()} average per hour in a normal winter. Or add a snowfall clause: an extra charge per push once the season passes ${NORMAL_CM + 40} cm.` : `<br>The fee holds up: keep it.`}</div>` : `<div class="callout">Billed per ${s.type === "hr" ? "hour" : "push"}, so a heavy winter pays more. ${r.status !== "good" ? `It still earns under the average for per-push work: raise the base price about ${$(Math.max(5, round5((r.avgT - r.perHour) * r.hours / Math.max(1, r.pushes))))} a push.` : "It earns at or above the average for its kind of contract."}</div>`}
     <section class="card"><h3>Visits</h3><div class="tablewrap"><table><thead><tr><th>Storm</th><th>Work</th><th class="n">Hours</th><th class="n">Billed</th><th class="n">Cost</th></tr></thead><tbody>
       ${r.vs.slice().reverse().map((v) => `<tr><td>${fmtDay(v.date)} · <span class="cm">${EVENTS[v.e].ice ? "ice" : v.cm + " cm"}</span></td><td>${[v.pushes ? `${v.pushes} push${v.pushes > 1 ? "es" : ""}` : "", v.salts ? "salt" : ""].filter(Boolean).join(" + ")}</td><td class="n">${v.hours.toFixed(2)}</td><td class="n">${v.rev ? $(v.rev) : `<span class="muted">seasonal</span>`}</td><td class="n">${$(v.cost)}</td></tr>`).join("")}
     </tbody></table></div></section>
@@ -649,8 +662,8 @@ VIEWS.routes = () => {
       <p class="muted small">${R.people.map((p) => p[0]).join(" and ")} · ${R.unit}</p>
       <div class="grid3" style="grid-template-columns:1fr 1fr">
         <div class="tile"><span class="k">Money in</span><span class="v">${$(s.rev)}</span></div>
-        <div class="tile"><span class="k">True profit</span><span class="v ${s.cm - fixedShare < 0 ? "neg" : ""}">${$(s.cm - fixedShare)}</span><span class="small muted">jobs made ${$(s.cm)}</span></div>
-        <div class="tile"><span class="k">Per hour</span><span class="v">${$(s.hours ? s.cm / s.hours : 0)}</span><span class="small muted">before bills</span></div>
+        <div class="tile"><span class="k">True profit</span><span class="v ${pn(s.cm - fixedShare)}">${$(s.cm - fixedShare)}</span><span class="small muted">jobs made ${$(s.cm)}</span></div>
+        <div class="tile"><span class="k">Per hour</span><span class="v ${pn(s.cm)}">${$(s.hours ? s.cm / s.hours : 0)}</span><span class="small muted">before bills</span></div>
         <div class="tile"><span class="k">Overtime</span><span class="v ${s.otHours > 0 ? "neg" : ""}">${s.otHours.toFixed(0)} h</span><span class="small muted">${$(s.ot)} extra</span></div>
       </div>
       <p class="small">${evs.length} call-outs · ${(s.hours / Math.max(1, evs.length)).toFixed(1)} h a storm on average${longest ? ` · longest ${longest.hours.toFixed(1)} h (${fmtDay(EVENTS[longest.e].date)})` : ""}</p>
@@ -745,7 +758,7 @@ VIEWS.pnl = () => {
   year.s.vs = cols[6].s.vs;
   cols.push({ ...year, tot: true });
   const by = (type) => (s) => s.vs.filter((v) => SITES[v.s].type === type).reduce((a, v) => a + v.rev, 0);
-  const R = (label, f, cls = "") => `<tr class="${cls}"><td>${label}</td>${cols.map((c) => { const x = f(c.s); return `<td class="n ${typeof x === "number" && x < 0 ? "neg" : ""}">${typeof x === "string" ? x : $(x)}</td>`; }).join("")}</tr>`;
+  const R = (label, f, cls = "") => `<tr class="${cls}"><td>${label}</td>${cols.map((c) => { const x = f(c.s); return `<td class="n ${cls === "total" && typeof x === "number" ? pn(x) : ""}">${typeof x === "string" ? x : $(x)}</td>`; }).join("")}</tr>`;
   COPY.pnl = () => csv([["", ...cols.map((c) => c.l)], ...[["Seasonal fees", (s) => s.fees], ["Per push", by("com")], ["Hourly", by("hr")], ["Revenue", (s) => s.rev], ["Crew pay", (s) => s.labour - s.ot], ["Overtime extra", (s) => s.ot], ["Fuel", (s) => s.fuel], ["Wear", (s) => s.wear], ["Salt", (s) => s.salt], ["Contribution", (s) => s.cm], ["Fixed bills", (s) => s.fixed], ["Net", (s) => s.net]].map(([l, f]) => [l, ...cols.map((c) => f(c.s).toFixed(2))])]);
   return `<section class="card"><div class="row between"><div><h2>Profit and loss, winter 2025–26 and the summer after</h2><p class="muted small">* April 1–15. Summer is April 16 to October 31: no snow, bills still due.</p></div><button class="btn" data-copy="pnl">Copy as CSV</button></div>
   <div class="tablewrap"><table><thead><tr><th></th>${cols.map((c) => `<th class="n">${c.l}</th>`).join("")}</tr></thead><tbody>
@@ -778,8 +791,8 @@ VIEWS.contracts = () => {
     <div class="range" style="max-width:520px"><div class="row"><label for="snow">Snow next winter</label><span class="num cm" data-live>${cm} cm</span></div><input type="range" id="snow" data-range="snow" min="60" max="340" step="10" value="${cm}"></div>
     <div class="ticks" style="max-width:520px"><span>Light (60)</span><span>Normal (${NORMAL_CM})</span><span>Last winter (${TOTAL_CM})</span><span>Heavy (340)</span></div></section>
   <section class="hero">
-    <div class="tile big"><span class="k">True profit for the year</span><span class="v ${tot < 0 ? "neg" : ""}">${$(tot)}</span><span class="small muted">at ${cm} cm, after ${$(FIXED_M * 12)} of bills</span></div>
-    ${types.slice(0, 3).map((x) => `<div class="tile"><span class="k">${TYPES[x.t].short}</span><span class="v ${x.at(cm) < 0 ? "neg" : ""}">${$(x.at(cm))}</span><span class="small muted">profit from the work</span></div>`).join("")}
+    <div class="tile big"><span class="k">True profit for the year</span><span class="v ${pn(tot)}">${$(tot)}</span><span class="small muted">at ${cm} cm, after ${$(FIXED_M * 12)} of bills</span></div>
+    ${types.slice(0, 3).map((x) => `<div class="tile"><span class="k">${TYPES[x.t].short}</span><span class="v ${pn(x.at(cm))}">${$(x.at(cm))}</span><span class="small muted">profit from the work</span></div>`).join("")}
   </section>
   <section class="card"><h2>Profit from the work, by contract type</h2>
     ${lines(types.map((x) => ({ color: colors[x.t], vals: xs.map((c) => x.at(c)) })), xs, { fmt: kfmt, xfmt: (x) => x + " cm", vline: { i: Math.max(0, xi), label: cm + " cm" } })}

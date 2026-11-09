@@ -147,6 +147,8 @@ svg.chart .zero { stroke: var(--ink); stroke-width: 1; opacity: 0.4; }
 .explain { font-size: 0.86rem; color: var(--muted); max-width: 72ch; }
 details summary { cursor: pointer; font-weight: 600; }
 
+.tile.big .pos { color: #6fdba0; } .tile.big .neg { color: #ff8a7e; }
+td.n.pos, td.n.neg, td.n.warnc { font-weight: 600; }
 .drawer-back { position: fixed; inset: 0; background: rgb(8 12 16 / 0.55); z-index: 20; display: flex; justify-content: flex-end; }
 .drawer { background: var(--bg); width: min(560px, 100%); height: 100%; overflow: auto; padding: 18px max(16px, env(safe-area-inset-right, 0px)) calc(24px + env(safe-area-inset-bottom, 0px)) 16px; display: grid; gap: 14px; align-content: start; padding-top: calc(18px + env(safe-area-inset-top, 0px)); }
 .cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
@@ -305,6 +307,7 @@ function sum(from, to, filter = () => true) {
 
 // ───────────────────────── format ─────────────────────────
 const $ = (n, d = 0) => (n < 0 ? "−$" : "$") + Math.abs(n).toLocaleString("en-CA", { minimumFractionDigits: d, maximumFractionDigits: d });
+const pn = (n) => (n < -0.5 ? "neg" : n > 0.5 ? "pos" : ""); // red for losing, green for making money
 const pct = (n, d = 0) => (n * 100).toFixed(d) + "%";
 const hm = (m) => (m >= 60 ? `${Math.floor(m / 60).toLocaleString()} h ${String(Math.round(m % 60)).padStart(2, "0")}` : `${Math.round(m)} min`);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
@@ -528,12 +531,12 @@ VIEWS.home = () => {
   return `
   ${S.mode === "deep" ? fixBar(s.fixed) : ""}
   ${periodBar()}
-  <p class="lead">${P.word} you kept <span class="${per100 < 0 ? "neg" : ""}">${$(per100)}</span> of every $100 you charged, after paying crews, fuel, maintenance${F() === 100 ? ", materials and every fixed bill" : F() > 0 ? `, materials and ${F()}% of fixed bills` : " and materials"}.</p>
+  <p class="lead">${P.word} you kept <span class="${pn(per100)}">${$(per100)}</span> of every $100 you charged, after paying crews, fuel, maintenance${F() === 100 ? ", materials and every fixed bill" : F() > 0 ? `, materials and ${F()}% of fixed bills` : " and materials"}.</p>
   <section class="hero" aria-label="Key numbers">
-    <div class="tile big"><span class="k">${label}</span><span class="v ${n < 0 ? "neg" : ""}">${$(n)}</span>${dl(n, prev ? net(prev) : null)}<span class="small muted">Jobs made ${$(s.cm)} → ${$(n)} left after ${F() === 100 ? "bills" : F() + "% of bills"}</span></div>
+    <div class="tile big"><span class="k">${label}</span><span class="v ${pn(n)}">${$(n)}</span>${dl(n, prev ? net(prev) : null)}<span class="small muted">Jobs made ${$(s.cm)} → ${$(n)} left after ${F() === 100 ? "bills" : F() + "% of bills"}</span></div>
     <div class="tile"><span class="k">Money in</span><span class="v">${$(s.rev)}</span>${dl(s.rev, prev?.rev)}</div>
     <div class="tile"><span class="k">Costs</span><span class="v">${$(s.cost + fixedIn)}</span>${dl(s.cost + fixedIn, prev ? prev.cost + prev.fixed * F() / 100 : null, false)}</div>
-    <div class="tile"><span class="k">Per hour on site</span><span class="v">${$(s.site ? n / s.site * 60 : 0)}</span><span class="delta muted">${hm(s.site)} on site</span></div>
+    <div class="tile"><span class="k">Per hour on site</span><span class="v ${pn(n)}">${$(s.site ? n / s.site * 60 : 0)}</span><span class="delta muted">${hm(s.site)} on site</span></div>
   </section>
   <div class="grid2">
     <section class="card"><h2>Needs a look</h2><div class="alerts">${alerts.map((a) => `<div class="alert ${a.lvl}"><span class="dot" aria-hidden="true"></span><span>${a.t}</span><a href="${a.a}">${a.al} ›</a></div>`).join("")}</div></section>
@@ -543,7 +546,7 @@ VIEWS.home = () => {
     </section>
   </div>
   <section class="card"><div class="row between"><h2>${label}, week by week</h2>${S.mode === "deep" ? `<button class="btn" data-copy="home">Copy as CSV</button>` : ""}</div>
-    ${bars(weekly, wl, { hi: WEEKS - 1, fmt: kfmt })}
+    ${bars(weekly, wl, { hi: WEEKS - 1, fmt: kfmt, color: "var(--c-kept)" })}
     <p class="explain">Big weeks in spring and fall are cleanups. Each week carries its share of the year's bills, so short weeks in a slow stretch can dip below zero.</p></section>`;
 };
 
@@ -564,7 +567,7 @@ VIEWS.customers = () => {
     <section class="card"><div class="row between">${byToggle()}${deep ? `<button class="btn" data-copy="cust">Copy as CSV</button>` : ""}</div>
     <p class="explain">Areas, lowest profit per hour first. Your average is <b>${$(avg)}/h</b> on site.</p>
     <div class="tablewrap"><table><thead><tr><th>Area</th><th class="n">Customers</th><th class="n">Money in</th><th class="n">Profit</th><th class="n">Per hour</th><th class="n">Driving</th>${deep ? `<th class="n">Km</th><th class="n">Drive share</th>` : ""}</tr></thead><tbody>
-    ${areas.map((a) => `<tr><td><div class="who">${a.area}</div><div class="where">${a.crew}</div></td><td class="n">${a.k}</td><td class="n">${$(a.rev)}</td><td class="n ${a.net < 0 ? "neg" : ""}">${$(a.net)}</td><td class="n"><b>${$(a.perHour)}</b></td><td class="n">${hm(a.drive)}</td>${deep ? `<td class="n">${Math.round(a.km).toLocaleString()}</td><td class="n">${pct(a.drive / (a.drive + a.site))}</td>` : ""}</tr>`).join("")}
+    ${areas.map((a) => `<tr><td><div class="who">${a.area}</div><div class="where">${a.crew}</div></td><td class="n">${a.k}</td><td class="n">${$(a.rev)}</td><td class="n ${pn(a.net)}">${$(a.net)}</td><td class="n ${pn(a.net)}"><b>${$(a.perHour)}</b></td><td class="n">${hm(a.drive)}</td>${deep ? `<td class="n">${Math.round(a.km).toLocaleString()}</td><td class="n">${pct(a.drive / (a.drive + a.site))}</td>` : ""}</tr>`).join("")}
     </tbody></table></div></section>`;
   }
   const q = S.custQ.toLowerCase();
@@ -588,8 +591,8 @@ VIEWS.customers = () => {
       ${deep ? `<button class="btn" data-copy="cust">Copy as CSV</button>` : ""}</div></div>
     <p class="explain">Per hour = profit ÷ hours on site. It's the fairest way to compare a $45 lawn with a $240 plaza. Tap a customer for their visits and what to charge.</p>
     <div class="tablewrap"><table><thead><tr><th>Customer</th><th>Status</th><th class="n">Visits</th><th class="n">Money in</th><th class="n">Profit</th><th class="n">Per hour</th>${deep ? `<th class="n">On site</th><th class="n">Driving</th><th class="n">Share of bills</th><th class="n">After bills</th><th class="n">Now / mow</th>` : ""}<th class="n">Suggested</th></tr></thead><tbody>
-    ${list.slice(0, S.custAll || q ? list.length : 25).map((r) => `<tr class="click" tabindex="0" data-cust="${r.c.id}"><td><div class="who">${esc(r.c.name)}</div><div class="where">${esc(r.c.addr)} · ${r.c.area}</div></td><td>${chip(r.status)}</td><td class="n">${r.n}</td><td class="n">${$(r.rev)}</td><td class="n ${r.net < 0 ? "neg" : ""}">${$(r.net)}</td><td class="n"><b>${$(r.perHour)}</b></td>
-      ${deep ? `<td class="n">${hm(r.site)}</td><td class="n">${hm(r.drive)}</td><td class="n muted">${$(r.fixed)}</td><td class="n ${r.cm - r.fixed < 0 ? "neg" : ""}">${$(r.cm - r.fixed)}</td><td class="n">${$(r.c.price)}</td>` : ""}
+    ${list.slice(0, S.custAll || q ? list.length : 25).map((r) => `<tr class="click" tabindex="0" data-cust="${r.c.id}"><td><div class="who">${esc(r.c.name)}</div><div class="where">${esc(r.c.addr)} · ${r.c.area}</div></td><td>${chip(r.status)}</td><td class="n">${r.n}</td><td class="n">${$(r.rev)}</td><td class="n ${pn(r.net)}">${$(r.net)}</td><td class="n ${({ good: "pos", thin: "warnc", bad: "neg" })[r.status]}"><b>${$(r.perHour)}</b></td>
+      ${deep ? `<td class="n">${hm(r.site)}</td><td class="n">${hm(r.drive)}</td><td class="n muted">${$(r.fixed)}</td><td class="n ${pn(r.cm - r.fixed)}">${$(r.cm - r.fixed)}</td><td class="n">${$(r.c.price)}</td>` : ""}
       <td class="n">${r.suggest && r.suggest > r.c.price && r.status !== "good" ? `<b>${$(r.suggest)}</b>` : `<span class="muted">–</span>`}</td></tr>`).join("")}
     </tbody></table></div>
     ${!q && list.length > 25 ? `<button class="btn" id="call">${S.custAll ? "Show the first 25" : `Show all ${list.length} customers`}</button>` : ""}</section>`;
@@ -620,8 +623,8 @@ function openCustomer(id) {
     <div class="row between"><div><h2 id="dh">${esc(c.name)}</h2><p class="muted small">${esc(c.addr)} · ${c.area} · ${CREWS[c.crew].name} · customer since ${c.since}</p></div><button class="btn" id="dx">Close</button></div>
     <div class="grid3">
       <div class="tile"><span class="k">This season</span><span class="v">${$(r.rev)}</span><span class="small muted">${r.n} visits</span></div>
-      <div class="tile"><span class="k">Profit</span><span class="v ${r.net < 0 ? "neg" : ""}">${$(r.net)}</span><span class="small muted">before rent and other bills</span></div>
-      <div class="tile"><span class="k">Per hour on site</span><span class="v">${$(r.perHour)}</span><span class="small muted">your average ${$(avg)}</span></div>
+      <div class="tile"><span class="k">Profit</span><span class="v ${pn(r.net)}">${$(r.net)}</span><span class="small muted">before rent and other bills</span></div>
+      <div class="tile"><span class="k">Per hour on site</span><span class="v ${({ good: "pos", thin: "warnc", bad: "neg" })[r.status]}">${$(r.perHour)}</span><span class="small muted">your average ${$(avg)}</span></div>
     </div>
     ${mows.length ? `<section class="card"><h3>One mow, $${c.price}</h3>
       <div class="steps">${parts.map((p) => `<div><span>${p[0]}</span><span>${$(p[1], 2)}</span></div>`).join("")}
@@ -630,7 +633,7 @@ function openCustomer(id) {
       <p class="explain">${hm(per("site"))} on site and ${hm(per("drive"))} driving there, for a 2-person crew costing ${$(crewRate(c.crew), 2)} an hour with payroll costs.</p></section>` : ""}
     ${r.suggest && r.suggest > c.price && r.status !== "good" ? `<div class="callout"><b>Charge ${$(r.suggest)} a mow</b> (now ${$(c.price)}). That brings this lawn to your average of ${$(avg)} an hour on site: about ${$((r.suggest - c.price) * 27)} more a season.</div>` : `<div class="callout">This customer earns at or above your average of ${$(avg)} an hour. No change needed.</div>`}
     <section class="card"><h3>Visits</h3><div class="tablewrap"><table><thead><tr><th>Date</th><th>Work</th><th class="n">Price</th><th class="n">On site</th><th class="n">Costs</th><th class="n">Kept</th></tr></thead><tbody>
-      ${r.vs.slice().reverse().map((v) => `<tr><td>${fmtDay(v.date)}</td><td>${v.kind}</td><td class="n">${$(v.price)}</td><td class="n">${v.site} min</td><td class="n">${$(v.cost, 2)}</td><td class="n ${v.cm < 0 ? "neg" : ""}">${$(v.cm, 2)}</td></tr>`).join("")}
+      ${r.vs.slice().reverse().map((v) => `<tr><td>${fmtDay(v.date)}</td><td>${v.kind}</td><td class="n">${$(v.price)}</td><td class="n">${v.site} min</td><td class="n">${$(v.cost, 2)}</td><td class="n ${pn(v.cm)}">${$(v.cm, 2)}</td></tr>`).join("")}
     </tbody></table></div><p class="explain">Kept here is before fixed costs.</p></section>
   </aside></div>`;
   const close = () => (d.innerHTML = "");
@@ -657,8 +660,8 @@ VIEWS.crews = () => {
       <p class="muted small">${cr.people.map((p) => p[0]).join(" and ")} · ${cr.truck}</p>
       <div class="grid3">
         <div class="tile"><span class="k">Money in</span><span class="v">${$(s.rev)}</span></div>
-        <div class="tile"><span class="k">${F() === 100 ? "True profit" : "Profit"}</span><span class="v ${n < 0 ? "neg" : ""}">${$(n)}</span><span class="small muted">jobs made ${$(s.cm)}</span></div>
-        <div class="tile"><span class="k">Per hour on site</span><span class="v">${$(s.site ? n / s.site * 60 : 0)}</span></div>
+        <div class="tile"><span class="k">${F() === 100 ? "True profit" : "Profit"}</span><span class="v ${pn(n)}">${$(n)}</span><span class="small muted">jobs made ${$(s.cm)}</span></div>
+        <div class="tile"><span class="k">Per hour on site</span><span class="v ${pn(n)}">${$(s.site ? n / s.site * 60 : 0)}</span></div>
       </div>
       <div><b class="small">Where the paid hours went</b>
         <div class="split3" role="img" aria-label="On site ${pct(s.site / tot)}, driving ${pct(s.drive / tot)}, other ${pct(s.other / tot)}"><span style="flex:${s.site};background:var(--c-kept)"></span><span style="flex:${s.drive};background:var(--c-fuel)"></span><span style="flex:${s.other};background:var(--c-fixed)"></span></div>
@@ -752,7 +755,7 @@ VIEWS.pnl = () => {
   const season = sum(PERIODS.season.from, PERIODS.season.to);
   cols.push({ l: "Season", s: season, tot: true });
   const kind = (k) => (s) => s.vs.filter((v) => v.kind === k).reduce((a, v) => a + v.price, 0);
-  const R = (label, f, cls = "") => `<tr class="${cls}"><td>${label}</td>${cols.map((c) => { const x = f(c.s); return `<td class="n ${x < 0 ? "neg" : ""} ${c.tot ? "strong" : ""}">${typeof x === "string" ? x : $(x)}</td>`; }).join("")}</tr>`;
+  const R = (label, f, cls = "") => `<tr class="${cls}"><td>${label}</td>${cols.map((c) => { const x = f(c.s); return `<td class="n ${cls === "total" && typeof x === "number" ? pn(x) : ""} ${c.tot ? "strong" : ""}">${typeof x === "string" ? x : $(x)}</td>`; }).join("")}</tr>`;
   const fx = (s, f) => s.fixed * f.m / FIXED_M;
   const netAll = (s) => s.cm - s.fixed;
   COPY.pnl = () => csv([["", ...cols.map((c) => c.l)], ...[["Mowing", kind("Mow")], ["Cleanups", (s) => kind("Spring cleanup")(s) + kind("Fall cleanup")(s)], ["Fertilizer", kind("Fertilizer")], ["Revenue", (s) => s.rev],
@@ -890,7 +893,7 @@ VIEWS.pricing = () => {
       <div><span class="small"><b>Who gets the raise</b></span><div class="seg" role="group" aria-label="Who gets the raise"><button data-who="low" aria-pressed="${S.raiseWho === "low"}">Thin and losing (${mowRows.filter((r) => r.status !== "good").length})</button><button data-who="all" aria-pressed="${S.raiseWho === "all"}">Everyone (${mowRows.length})</button></div></div>
     </div></section>
   <section class="hero">
-    <div class="tile big"><span class="k">Change in profit, a full season</span><span class="v ${change < 0 ? "neg" : ""}">${change >= 0 ? "+" : ""}${$(change)}</span></div>
+    <div class="tile big"><span class="k">Change in profit, a full season</span><span class="v ${pn(change)}">${change >= 0 ? "+" : ""}${$(change)}</span></div>
     <div class="tile"><span class="k">From higher prices</span><span class="v pos">+${$(gain)}</span><span class="small muted">${target.length - lostN} customers</span></div>
     <div class="tile"><span class="k">Lost with leavers</span><span class="v neg">−${$(lostCm)}</span><span class="small muted">${lostN} customers</span></div>
     <div class="tile"><span class="k">Crew time freed</span><span class="v">${freedH.toFixed(1)} h</span><span class="small muted">a week, to fill with better work</span></div>
