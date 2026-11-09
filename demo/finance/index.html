@@ -316,9 +316,13 @@ const deltaHtml = (now, before, goodUp = true) => {
 
 // ───────────────────────── state ─────────────────────────
 const store = { get(k, d) { try { const v = localStorage.getItem("ccfin." + k); return v === null ? d : JSON.parse(v); } catch { return d; } }, set(k, v) { try { localStorage.setItem("ccfin." + k, JSON.stringify(v)); } catch {} } };
-const S = { mode: store.get("mode", "simple"), period: store.get("period", "season"), fix: store.get("fix", 0), custSort: "hour", custQ: "", custBy: "customer", custAll: false,
+const S = { mode: store.get("mode", "simple"), period: store.get("period", "season"), fix: store.get("fix2", 100), custSort: "hour", custQ: "", custBy: "customer", custAll: false,
   raise: 8, raiseWho: "low", lose: 5, margin: 20, ownerPay: 1200, rates: null };
-const net = (s) => s.cm - s.fixed * (S.fix / 100);
+// How much of the fixed costs a screen counts. Overview and Crews show true profit (all of it; the
+// slider for trying other shares is under Go deeper). Customer and pricing decisions use profit from
+// the job, because dropping a customer doesn't lower the rent.
+const F = () => (["home", "crews"].includes(tab()) ? (S.mode === "deep" ? S.fix : 100) : 0);
+const net = (s) => s.cm - s.fixed * (F() / 100);
 
 const SIMPLE_TABS = [["home", "Overview"], ["customers", "Customers"], ["crews", "Crews"], ["cash", "Cash"]];
 const DEEP_TABS = [["pnl", "Profit & loss"], ["rates", "True hourly cost"], ["breakeven", "Break-even"], ["pricing", "Price planner"], ["driving", "Driving & fuel"]];
@@ -388,9 +392,9 @@ function fixBar(fixedTotal) {
 }
 function bindCommon(v) {
   v.querySelectorAll("[data-period]").forEach((b) => (b.onclick = () => { S.period = b.dataset.period; store.set("period", S.period); render(); }));
-  v.querySelectorAll("[data-fix]").forEach((b) => (b.onclick = () => { S.fix = +b.dataset.fix; store.set("fix", S.fix); render(); }));
+  v.querySelectorAll("[data-fix]").forEach((b) => (b.onclick = () => { S.fix = +b.dataset.fix; store.set("fix2", S.fix); render(); }));
   const fx = v.querySelector("#fix");
-  if (fx) fx.oninput = () => { S.fix = +fx.value; store.set("fix", S.fix); update(); };
+  if (fx) fx.oninput = () => { S.fix = +fx.value; store.set("fix2", S.fix); update(); };
   v.querySelectorAll("[data-cust]").forEach((r) => {
     r.onclick = () => openCustomer(+r.dataset.cust);
     r.onkeydown = (e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), openCustomer(+r.dataset.cust));
@@ -471,15 +475,15 @@ function customerRows(from, to) {
   const rows = [...by.values()];
   for (const r of rows) {
     r.fixed = fixed * r.rev / (s.rev || 1);
-    r.net = r.cm - r.fixed * S.fix / 100;
+    r.net = r.cm; // customer decisions use profit from the job
     r.perHour = r.site ? r.net / r.site * 60 : 0;
   }
-  const avg = s.site ? net(s) / s.site * 60 : 0;
+  const avg = s.site ? s.cm / s.site * 60 : 0;
   for (const r of rows) {
     r.status = r.net < 0 ? "bad" : r.perHour < avg * 0.75 ? "thin" : "good";
     // Price per visit that earns the company's average per hour on site, rounded up to $5
     const mowVs = r.vs.filter((v) => v.kind === "Mow");
-    const perVisitCost = mowVs.length ? mowVs.reduce((a, v) => a + v.cost + (r.fixed * S.fix / 100) / r.n, 0) / mowVs.length : 0;
+    const perVisitCost = mowVs.length ? mowVs.reduce((a, v) => a + v.cost, 0) / mowVs.length : 0;
     const perVisitSite = mowVs.length ? mowVs.reduce((a, v) => a + v.site, 0) / mowVs.length : 0;
     r.suggest = mowVs.length && avg > 0 ? Math.ceil((perVisitCost + avg * perVisitSite / 60) / 5) * 5 : null;
   }
@@ -492,8 +496,8 @@ const VIEWS = {}, BIND = {};
 VIEWS.home = () => {
   const P = PERIODS[S.period], s = sum(P.from, P.to), prev = P.prev ? sum(P.prev.from, P.prev.to) : null;
   const n = net(s), per100 = s.rev ? n / s.rev * 100 : 0;
-  const fixedIn = s.fixed * S.fix / 100;
-  const label = S.fix === 0 ? "Profit from jobs" : S.fix === 100 ? "True profit" : `Profit after ${S.fix}% of fixed`;
+  const fixedIn = s.fixed * F() / 100;
+  const label = F() === 0 ? "Profit from jobs" : F() === 100 ? "True profit" : `Profit after ${F()}% of fixed`;
   const dWord = S.period === "month" ? "September" : "the week before";
   const dl = (a, b, up = true) => prev ? deltaHtml(a, b, up).replace("the week before", dWord) : `<span class="delta muted">${s.n.toLocaleString()} visits</span>`;
   // Weekly profit, season
@@ -522,13 +526,13 @@ VIEWS.home = () => {
   const tot = parts.reduce((a, p) => a + p[1], 0);
   COPY.home = () => csv([["Week of", label], ...weekly.map((v, i) => [wl[i], v.toFixed(2)])]);
   return `
-  ${fixBar(s.fixed)}
+  ${S.mode === "deep" ? fixBar(s.fixed) : ""}
   ${periodBar()}
-  <p class="lead">${P.word} you kept <span class="${per100 < 0 ? "neg" : ""}">${$(per100)}</span> of every $100 you charged, after paying crews, fuel, maintenance${S.fix === 100 ? ", materials and every fixed bill" : S.fix > 0 ? `, materials and ${S.fix}% of fixed bills` : " and materials"}.</p>
+  <p class="lead">${P.word} you kept <span class="${per100 < 0 ? "neg" : ""}">${$(per100)}</span> of every $100 you charged, after paying crews, fuel, maintenance${F() === 100 ? ", materials and every fixed bill" : F() > 0 ? `, materials and ${F()}% of fixed bills` : " and materials"}.</p>
   <section class="hero" aria-label="Key numbers">
-    <div class="tile big"><span class="k">${label}</span><span class="v ${n < 0 ? "neg" : ""}">${$(n)}</span>${dl(n, prev ? net(prev) : null)}</div>
+    <div class="tile big"><span class="k">${label}</span><span class="v ${n < 0 ? "neg" : ""}">${$(n)}</span>${dl(n, prev ? net(prev) : null)}<span class="small muted">Jobs made ${$(s.cm)} → ${$(n)} left after ${F() === 100 ? "bills" : F() + "% of bills"}</span></div>
     <div class="tile"><span class="k">Money in</span><span class="v">${$(s.rev)}</span>${dl(s.rev, prev?.rev)}</div>
-    <div class="tile"><span class="k">Costs</span><span class="v">${$(s.cost + fixedIn)}</span>${dl(s.cost + fixedIn, prev ? prev.cost + prev.fixed * S.fix / 100 : null, false)}</div>
+    <div class="tile"><span class="k">Costs</span><span class="v">${$(s.cost + fixedIn)}</span>${dl(s.cost + fixedIn, prev ? prev.cost + prev.fixed * F() / 100 : null, false)}</div>
     <div class="tile"><span class="k">Per hour on site</span><span class="v">${$(s.site ? n / s.site * 60 : 0)}</span><span class="delta muted">${hm(s.site)} on site</span></div>
   </section>
   <div class="grid2">
@@ -540,7 +544,7 @@ VIEWS.home = () => {
   </div>
   <section class="card"><div class="row between"><h2>${label}, week by week</h2>${S.mode === "deep" ? `<button class="btn" data-copy="home">Copy as CSV</button>` : ""}</div>
     ${bars(weekly, wl, { hi: WEEKS - 1, fmt: kfmt })}
-    <p class="explain">Big weeks in spring and fall are cleanups. Slide fixed costs to 100% to see which weeks really paid the bills.</p></section>`;
+    <p class="explain">Big weeks in spring and fall are cleanups. Each week carries its share of the year's bills, so short weeks in a slow stretch can dip below zero.</p></section>`;
 };
 
 VIEWS.customers = () => {
@@ -556,7 +560,7 @@ VIEWS.customers = () => {
     }
     const areas = [...g.values()].map((a) => ({ ...a, perHour: a.site ? a.net / a.site * 60 : 0 })).sort((a, b) => a.perHour - b.perHour);
     COPY.cust = () => csv([["Area", "Crew", "Customers", "Visits", "Revenue", "Costs", "Profit", "Minutes on site", "Minutes driving", "Profit per hour on site"], ...areas.map((a) => [a.area, a.crew, a.k, a.n, a.rev, a.cost.toFixed(2), a.net.toFixed(2), a.site, a.drive, a.perHour.toFixed(2)])]);
-    return `${fixBar(s.fixed)}${periodBar()}
+    return `${periodBar()}${keepNote()}
     <section class="card"><div class="row between">${byToggle()}${deep ? `<button class="btn" data-copy="cust">Copy as CSV</button>` : ""}</div>
     <p class="explain">Areas, lowest profit per hour first. Your average is <b>${$(avg)}/h</b> on site.</p>
     <div class="tablewrap"><table><thead><tr><th>Area</th><th class="n">Customers</th><th class="n">Money in</th><th class="n">Profit</th><th class="n">Per hour</th><th class="n">Driving</th>${deep ? `<th class="n">Km</th><th class="n">Drive share</th>` : ""}</tr></thead><tbody>
@@ -568,10 +572,10 @@ VIEWS.customers = () => {
   const sorters = { hour: (a, b) => a.perHour - b.perHour, profit: (a, b) => a.net - b.net, rev: (a, b) => b.rev - a.rev, name: (a, b) => a.c.name.localeCompare(b.c.name) };
   list.sort(sorters[S.custSort]);
   const counts = { good: rows.filter((r) => r.status === "good").length, thin: rows.filter((r) => r.status === "thin").length, bad: rows.filter((r) => r.status === "bad").length };
-  COPY.cust = () => csv([["Customer", "Address", "Area", "Crew", "Visits", "Revenue", "Job costs", "Fixed share", "Profit", "Minutes on site", "Minutes driving", "Profit per hour", "Suggested price per mow"],
-    ...list.map((r) => [r.c.name, r.c.addr, r.c.area, CREWS[r.c.crew].name, r.n, r.rev, r.cost.toFixed(2), (r.fixed * S.fix / 100).toFixed(2), r.net.toFixed(2), r.site, r.drive, r.perHour.toFixed(2), r.suggest ?? ""])]);
+  COPY.cust = () => csv([["Customer", "Address", "Area", "Crew", "Visits", "Revenue", "Job costs", "Share of bills", "Profit before bills", "Minutes on site", "Minutes driving", "Profit per hour", "Suggested price per mow"],
+    ...list.map((r) => [r.c.name, r.c.addr, r.c.area, CREWS[r.c.crew].name, r.n, r.rev, r.cost.toFixed(2), r.fixed.toFixed(2), r.net.toFixed(2), r.site, r.drive, r.perHour.toFixed(2), r.suggest ?? ""])]);
   const chip = (st) => st === "good" ? `<span class="chip good">Healthy</span>` : st === "thin" ? `<span class="chip thin">Thin</span>` : `<span class="chip bad">Losing money</span>`;
-  return `${fixBar(s.fixed)}${periodBar()}
+  return `${periodBar()}${keepNote()}
   <section class="grid3" aria-label="Customer health">
     <div class="tile"><span class="k">Healthy</span><span class="v pos">${counts.good}</span><span class="small muted">at or near your average</span></div>
     <div class="tile"><span class="k">Thin</span><span class="v warnc">${counts.thin}</span><span class="small muted">under 75% of your ${$(avg)}/h</span></div>
@@ -583,13 +587,14 @@ VIEWS.customers = () => {
       <select id="csort" aria-label="Sort"><option value="hour">Lowest per hour first</option><option value="profit">Lowest profit first</option><option value="rev">Most money in</option><option value="name">Name</option></select>
       ${deep ? `<button class="btn" data-copy="cust">Copy as CSV</button>` : ""}</div></div>
     <p class="explain">Per hour = profit ÷ hours on site. It's the fairest way to compare a $45 lawn with a $240 plaza. Tap a customer for their visits and what to charge.</p>
-    <div class="tablewrap"><table><thead><tr><th>Customer</th><th>Status</th><th class="n">Visits</th><th class="n">Money in</th><th class="n">Profit</th><th class="n">Per hour</th>${deep ? `<th class="n">On site</th><th class="n">Driving</th><th class="n">Fixed share</th><th class="n">Now / mow</th>` : ""}<th class="n">Suggested</th></tr></thead><tbody>
+    <div class="tablewrap"><table><thead><tr><th>Customer</th><th>Status</th><th class="n">Visits</th><th class="n">Money in</th><th class="n">Profit</th><th class="n">Per hour</th>${deep ? `<th class="n">On site</th><th class="n">Driving</th><th class="n">Share of bills</th><th class="n">After bills</th><th class="n">Now / mow</th>` : ""}<th class="n">Suggested</th></tr></thead><tbody>
     ${list.slice(0, S.custAll || q ? list.length : 25).map((r) => `<tr class="click" tabindex="0" data-cust="${r.c.id}"><td><div class="who">${esc(r.c.name)}</div><div class="where">${esc(r.c.addr)} · ${r.c.area}</div></td><td>${chip(r.status)}</td><td class="n">${r.n}</td><td class="n">${$(r.rev)}</td><td class="n ${r.net < 0 ? "neg" : ""}">${$(r.net)}</td><td class="n"><b>${$(r.perHour)}</b></td>
-      ${deep ? `<td class="n">${hm(r.site)}</td><td class="n">${hm(r.drive)}</td><td class="n muted">${$(r.fixed * S.fix / 100)}</td><td class="n">${$(r.c.price)}</td>` : ""}
+      ${deep ? `<td class="n">${hm(r.site)}</td><td class="n">${hm(r.drive)}</td><td class="n muted">${$(r.fixed)}</td><td class="n ${r.cm - r.fixed < 0 ? "neg" : ""}">${$(r.cm - r.fixed)}</td><td class="n">${$(r.c.price)}</td>` : ""}
       <td class="n">${r.suggest && r.suggest > r.c.price && r.status !== "good" ? `<b>${$(r.suggest)}</b>` : `<span class="muted">–</span>`}</td></tr>`).join("")}
     </tbody></table></div>
     ${!q && list.length > 25 ? `<button class="btn" id="call">${S.custAll ? "Show the first 25" : `Show all ${list.length} customers`}</button>` : ""}</section>`;
 };
+const keepNote = () => `<div class="callout small"><b>Profit here is before rent, insurance and other bills.</b> Those stay the same whether you have 119 lawns or 120, so a customer who covers their own crew time, fuel and wear is still helping pay them. Raise the thin ones before you drop anyone. True profit for the whole business is on Overview.</div>`;
 const byToggle = () => `<div class="seg" role="group" aria-label="Group by"><button data-by="customer" aria-pressed="${S.custBy === "customer"}">By customer</button><button data-by="area" aria-pressed="${S.custBy === "area"}">By area</button></div>`;
 BIND.customers = (v) => {
   v.querySelectorAll("[data-by]").forEach((b) => (b.onclick = () => { S.custBy = b.dataset.by; render(); }));
@@ -610,17 +615,17 @@ function openCustomer(id) {
   const per = (k) => mows.length ? mows.reduce((a, v) => a + v[k], 0) / mows.length : 0;
   const parts = [["Crew on site", per("labSite"), "var(--c-labour)"], ["Crew driving there", per("labDrive"), "var(--c-labour)"], ["Loading, shop time", per("labOther"), "var(--c-labour)"], ["Fuel", per("fuel"), "var(--c-fuel)"], ["Maintenance", per("maint"), "var(--c-maint)"]];
   const fixedPer = r.fixed / r.n;
-  const kept = c.price - parts.reduce((a, p) => a + p[1], 0) - fixedPer * S.fix / 100;
+  const kept = c.price - parts.reduce((a, p) => a + p[1], 0) - fixedPer * F() / 100;
   d.innerHTML = `<div class="drawer-back" id="db"><aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="dh">
     <div class="row between"><div><h2 id="dh">${esc(c.name)}</h2><p class="muted small">${esc(c.addr)} · ${c.area} · ${CREWS[c.crew].name} · customer since ${c.since}</p></div><button class="btn" id="dx">Close</button></div>
     <div class="grid3">
       <div class="tile"><span class="k">This season</span><span class="v">${$(r.rev)}</span><span class="small muted">${r.n} visits</span></div>
-      <div class="tile"><span class="k">Profit</span><span class="v ${r.net < 0 ? "neg" : ""}">${$(r.net)}</span><span class="small muted">${S.fix ? `after ${S.fix}% fixed` : "before fixed costs"}</span></div>
+      <div class="tile"><span class="k">Profit</span><span class="v ${r.net < 0 ? "neg" : ""}">${$(r.net)}</span><span class="small muted">before rent and other bills</span></div>
       <div class="tile"><span class="k">Per hour on site</span><span class="v">${$(r.perHour)}</span><span class="small muted">your average ${$(avg)}</span></div>
     </div>
     ${mows.length ? `<section class="card"><h3>One mow, $${c.price}</h3>
       <div class="steps">${parts.map((p) => `<div><span>${p[0]}</span><span>${$(p[1], 2)}</span></div>`).join("")}
-      ${S.fix ? `<div><span>Share of fixed costs (${S.fix}%)</span><span>${$(fixedPer * S.fix / 100, 2)}</span></div>` : ""}
+      ${F() ? `<div><span>Share of fixed costs (${F()}%)</span><span>${$(fixedPer * F() / 100, 2)}</span></div>` : ""}
       <div class="res"><span>Kept per mow</span><span class="${kept < 0 ? "neg" : "pos"}">${$(kept, 2)}</span></div></div>
       <p class="explain">${hm(per("site"))} on site and ${hm(per("drive"))} driving there, for a 2-person crew costing ${$(crewRate(c.crew), 2)} an hour with payroll costs.</p></section>` : ""}
     ${r.suggest && r.suggest > c.price && r.status !== "good" ? `<div class="callout"><b>Charge ${$(r.suggest)} a mow</b> (now ${$(c.price)}). That brings this lawn to your average of ${$(avg)} an hour on site: about ${$((r.suggest - c.price) * 27)} more a season.</div>` : `<div class="callout">This customer earns at or above your average of ${$(avg)} an hour. No change needed.</div>`}
@@ -641,18 +646,18 @@ VIEWS.crews = () => {
   const cards = CREWS.map((cr) => {
     const s = sum(P.from, P.to, (v) => v.crew === cr.id);
     const fixedShare = all.fixed * s.rev / (all.rev || 1);
-    const n = s.cm - fixedShare * S.fix / 100;
+    const n = s.cm - fixedShare * F() / 100;
     const daysWorked = new Set(s.vs.map((v) => v.date)).size || 1;
     const tot = s.site + s.drive + s.other;
     return { cr, s, n, daysWorked, tot, fixedShare };
   });
-  return `${fixBar(all.fixed)}${periodBar()}
+  return `${periodBar()}
   <div class="grid2">${cards.map(({ cr, s, n, daysWorked, tot, fixedShare }) => `
     <section class="card crewcard"><h3><i style="background:${cr.color}"></i>${cr.name}</h3>
       <p class="muted small">${cr.people.map((p) => p[0]).join(" and ")} · ${cr.truck}</p>
       <div class="grid3">
         <div class="tile"><span class="k">Money in</span><span class="v">${$(s.rev)}</span></div>
-        <div class="tile"><span class="k">Profit</span><span class="v ${n < 0 ? "neg" : ""}">${$(n)}</span></div>
+        <div class="tile"><span class="k">${F() === 100 ? "True profit" : "Profit"}</span><span class="v ${n < 0 ? "neg" : ""}">${$(n)}</span><span class="small muted">jobs made ${$(s.cm)}</span></div>
         <div class="tile"><span class="k">Per hour on site</span><span class="v">${$(s.site ? n / s.site * 60 : 0)}</span></div>
       </div>
       <div><b class="small">Where the paid hours went</b>

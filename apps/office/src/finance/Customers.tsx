@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { money, needsPriceReview, profitPerHour, suggestedPrice, toCsv, type Season } from "@zentek/shared";
 import { supabase } from "../supabase";
 import { download } from "./download";
-import { FixedSlider, PeriodBar, useFixedPct, usePeriod } from "./Finance";
+import { PeriodBar, usePeriod } from "./Finance";
 
 type Row = {
   customer_id: string; customer: string; property_id: string; address: string; area: string | null; crew: string | null;
@@ -18,13 +18,14 @@ const hm = (m: number) => (m >= 60 ? `${Math.floor(m / 60)} h ${String(Math.roun
 
 export function Customers({ companyId, companyName, season }: { companyId: string; companyName: string; season: Season }) {
   const [period, setPeriod] = usePeriod(season, "customers");
-  const [fixPct, setFixPct] = useFixedPct();
   const [rows, setRows] = useState<Row[]>([]);
   const [by, setBy] = useState<"customer" | "area">("customer");
   const [open, setOpen] = useState<Row | null>(null);
   const [error, setError] = useState("");
   const [q, setQ] = useState("");
-  const share = fixPct / 100;
+  // Customer decisions use profit from the job. Rent and insurance don't drop when a customer goes,
+  // so a lawn that covers its own costs is still helping pay them.
+  const share = 0;
 
   useEffect(() => {
     supabase!.rpc("customer_profit", { p_company: companyId, p_from: period.from, p_to: period.to }).then(({ data, error }) => {
@@ -59,16 +60,19 @@ export function Customers({ companyId, companyName, season }: { companyId: strin
     download(
       `${companyName} ${by === "customer" ? "customers" : "areas"} ${period.from} to ${period.to}.csv`,
       toCsv(
-        [by === "customer" ? "Customer" : "Area", by === "customer" ? "Address" : "Properties", "Visits", "Revenue", "Job costs", "Share of fixed costs", "Profit", "Minutes on site", "Minutes driving", "Profit per hour on site"],
-        shown.map((l) => [l.title, by === "customer" ? l.sub : l.properties, l.visits, l.revenue_cents / 100, l.costs_cents / 100, Math.round(l.fixed_share_cents * share) / 100, net(l) / 100, l.site_minutes, l.drive_minutes, profitPerHour(net(l), l.site_minutes) / 100]),
+        [by === "customer" ? "Customer" : "Area", by === "customer" ? "Address" : "Properties", "Visits", "Revenue", "Job costs", "Profit before bills", "Share of bills", "After bills", "Minutes on site", "Minutes driving", "Profit per hour on site"],
+        shown.map((l) => [l.title, by === "customer" ? l.sub : l.properties, l.visits, l.revenue_cents / 100, l.costs_cents / 100, net(l) / 100, l.fixed_share_cents / 100, (l.profit_cents - l.fixed_share_cents) / 100, l.site_minutes, l.drive_minutes, profitPerHour(net(l), l.site_minutes) / 100]),
       ),
     );
   }
 
   return (
     <div className="stack">
-      <FixedSlider value={fixPct} onChange={setFixPct} fixed={rows.reduce((a, r) => a + r.fixed_share_cents, 0)} />
       <PeriodBar period={period} setPeriod={setPeriod} season={season} />
+      <p className="notice small-text">
+        <b>Profit here is before rent, insurance and other bills.</b> Those stay the same whether you have 119 lawns or 120, so a customer who covers their own
+        crew time, fuel and wear is still helping pay them. Raise the thin ones before you drop anyone. True profit for the whole business is on Overview.
+      </p>
       {error && <p className="error">{error}</p>}
       <section className="card stack">
         <div className="row-between wrap">

@@ -214,3 +214,6 @@ input[type="search"] { min-height: 40px; }
 .pin { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--cc); color: #fff; border: 2px solid #fff; font: 700 13px/1 var(--font); box-shadow: 0 1px 4px rgb(0 0 0 / 0.4); }
 .pin.wait { background: #fff; color: var(--cc); border-color: var(--cc); }
 .primary:disabled, .small:disabled { opacity: 0.45; cursor: not-allowed; }
+.try-fixed summary { cursor: pointer; font-weight: 600; }
+.try-fixed[open] summary { margin-bottom: 8px; }
+.try-fixed .fixbar { border: 0; padding: 0; }

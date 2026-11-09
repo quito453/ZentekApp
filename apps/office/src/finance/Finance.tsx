@@ -116,8 +116,9 @@ export function usePeriod(season: Season, key: string): [Period, (p: Period) => 
 }
 
 /**
- * How much of the fixed costs to count. 0% = profit from the jobs alone (the default: what the work
- * itself earns). 100% = true profit after insurance, rent, depreciation and the rest.
+ * How much of the fixed costs to count. Overview shows true profit (100%) by default; owners can try
+ * other shares in a folded panel. Customers always use profit from the job (0%): dropping a customer
+ * doesn't lower the rent, so fixed costs shouldn't decide who to keep.
  */
 export function FixedSlider({ value, onChange, fixed }: { value: number; onChange: (n: number) => void; fixed: number }) {
   return (
@@ -140,8 +141,8 @@ export function FixedSlider({ value, onChange, fixed }: { value: number; onChang
 }
 
 export function useFixedPct(): [number, (n: number) => void] {
-  const [v, setV] = useState(() => recall("fixPct", 0));
-  return [v, (n) => { setV(n); remember("fixPct", n); }];
+  const [v, setV] = useState(() => recall("fixPct2", 100));
+  return [v, (n) => { setV(n); remember("fixPct2", n); }];
 }
 
 function Overview({ companyId, companyName, season }: { companyId: string; companyName: string; season: Season }) {
@@ -189,10 +190,13 @@ function Overview({ companyId, companyName, season }: { companyId: string; compa
 
   return (
     <div className="stack">
-      <FixedSlider value={fixPct} onChange={setFixPct} fixed={now?.fixed_cents ?? 0} />
       <PeriodBar period={period} setPeriod={setPeriod} season={season} />
       {error && <p className="error">{error}</p>}
       {now && <Report s={now} prev={prev} period={period} share={share} />}
+      <details className="card try-fixed" open={fixPct !== 100}>
+        <summary>Try counting only part of the fixed costs</summary>
+        <FixedSlider value={fixPct} onChange={setFixPct} fixed={now?.fixed_cents ?? 0} />
+      </details>
       <section className="card">
         <div className="row-between">
           <h2>Jobs, least profitable first</h2>
@@ -297,6 +301,11 @@ function Report({ s, prev, period, share }: { s: FinanceSummary; prev: FinanceSu
           <p className="eyebrow">{share === 0 ? "Profit from jobs" : share === 1 ? "True profit (after fixed costs)" : `Profit after ${Math.round(share * 100)}% of fixed costs`}</p>
           <p className="hero-num">{money(net, { whole: true })}</p>
           <Delta now={net} before={prevNet} />
+          {fixed > 0 && (
+            <p className="muted small-text">
+              Jobs made {money(s.profit_cents, { whole: true })} → {money(net, { whole: true })} left after {share === 1 ? "bills" : `${Math.round(share * 100)}% of bills`}
+            </p>
+          )}
         </div>
         <dl className="hero-side">
           <div><dt>Revenue</dt><dd>{money(s.revenue_cents, { whole: true })}</dd><Delta now={s.revenue_cents} before={prev?.revenue_cents} /></div>

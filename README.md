@@ -48,7 +48,8 @@ Cutting Cost is finance-first: it can sit on top of the software a company alrea
 
 Fixed costs are prorated to the period and shared across jobs **in proportion to what each job earns**.
 
-- **Fixed-cost slider** at the top of Overview and Customers: 0% (the default) shows profit from the jobs alone; 100% shows true profit after every bill. The choice is remembered in the browser.
+- **True profit by default.** Overview shows profit after every bill, with "Jobs made $X → $Y left after bills" under it. A folded panel lets owners try counting only part of the fixed costs.
+- **Customers use profit from the job**, before rent and other bills: those don't drop when a customer leaves, so a lawn that covers its own crew time, fuel and wear is still helping pay them. The screen says so, and the CSV includes each customer's share of bills and profit after bills.
 - **Overview** for a day, week, month or **season** (season months are set under Costs; default April–November): profit in one plain sentence, revenue, costs, profit per hour on site, "Needs a look", where the money went, where revenue came from, crews, "What if…" sliders and every job (CSV).
 - **Customers:** by customer or by area — visits, revenue, time on site, drive time, profit, profit per visit and per hour. Rows under 85% of the company's average per hour are flagged; tap a customer for their visit history and the price per visit that would bring them to the average.
 - **Payroll:** paid, regular and overtime hours per person, split into **on site / driving / other**, grouped under each crew. CSV for Excel or a payroll service.

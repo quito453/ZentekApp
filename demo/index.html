@@ -1,4 +1,5 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><style>[hidden]{display:none!important} :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)} body{margin:0} img{max-width:100%}</style><title>Cutting Cost Demo</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><style>[hidden]{display:none!important} :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)} body{margin:0} img{max-width:100%}</style>
+<title>Cutting Cost Demo</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -697,7 +698,9 @@ tr.crewhead i { display: inline-block; width: 10px; height: 10px; border-radius:
 .mapchips button[aria-pressed="true"] { box-shadow: inset 0 -3px 0 var(--accent); }
 @media (max-width: 560px) { .rtrow { grid-template-columns: 18px 30px 1fr; } .rtbtns { grid-column: 2 / -1; } }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
-</style></head><body>
+.trybox summary{cursor:pointer;font-weight:600;padding:6px 0}.trybox[open] summary{margin-bottom:6px}
+</style>
+</head><body>
 
 <div class="demo-bar wrap"><div class="in">
   <span class="lbl" data-t="viewAs">Demo · view as</span>
@@ -904,6 +907,8 @@ const T = {
     glNet: "What's left for you after all of the above.", glTruck: "What the truck loses in value for every hour it's out: its price ÷ years you'll keep it ÷ hours it works a year.",
     glFuel: "Kilometres from GPS × the truck's litres per 100 km × the fuel price. This period used {p} per litre, from {s}.", glFuelRcpt: "your crews' fuel receipts",
     pSeason: "Season", wSeason: "This season", trendS: "seasons", seasonLbl: "{y} season (Apr – Nov)",
+    fixTry: "Try counting only part of the fixed costs",
+    custBills: "Profit here is before rent, insurance and other bills. Those stay the same with 119 lawns or 120, so a customer who covers their own crew time, fuel and wear still helps pay them. Raise the thin ones before you drop anyone.",
     fixH: "Fixed costs in this view", fix0: "Off · profit from jobs only", fixAll: "All of them · true profit", fixSome: "{p}% of them", fixP: "Your fixed costs are {m} a month ({v} for this period). Each customer carries a share in proportion to what they pay you.",
     netJobs: "Profit from jobs", netTrue: "True profit (after all fixed costs)", netSome: "Profit after {p}% of fixed costs",
     plainKept0: "{w} you kept {v} of every $100 you charged, after paying crews, fuel, materials and maintenance. Slide fixed costs in at the top to see your true profit.",
@@ -1052,7 +1057,7 @@ const T = {
     slDriving: "Manejando a", slAt: "En", slLeft: "Faltan {d} · la llegada se registra sola", slArr: "Llegó {t} · registrado solo", slOnSite: "{m} min en sitio", slAllDone: "Todas las paradas listas", slHome: "Regresa al patio.",
     slStops: "Paradas de hoy", slDone: "{a} – {l} · {m} min", slNext: "Siguiente", slBreak: "Descanso, almuerzo o terminar el día", slEndT: "Terminar mi día", slOdoEnd: "Odómetro del Camión 12 ahora", slEnd: "Terminar mi día", slBack: "Regresar",
     slSum: "Hoy", slGpsKm: "GPS", slOdoKm: "Odómetro", slProblem: "Reportar un problema", slDemoOff: "Demo: apagar la ubicación",
-    gRoutes: "Rutas", tabRoutes: "Rutas", pSeason: "Temporada", wSeason: "Esta temporada", tabCustomers: "Clientes", tabConnect: "Conexiones", fixH: "Costos fijos en esta vista",
+    gRoutes: "Rutas", tabRoutes: "Rutas", pSeason: "Temporada", wSeason: "Esta temporada", tabCustomers: "Clientes", tabConnect: "Conexiones", fixTry: "Probar contando solo parte de los costos fijos", custBills: "Aquí la ganancia es antes de renta, seguro y otras cuentas. Esas no cambian con 119 o 120 jardines, así que un cliente que cubre su tiempo de cuadrilla, gasolina y desgaste sí ayuda a pagarlas. Sube el precio a los flojos antes de dejar a alguien.", fixH: "Costos fijos en esta vista",
     dispatch: "Despachador", dispWho: "Rosa M. · Jefa de equipo / despacho",
     nextSvc: "Próximo servicio recomendado", nextWhen: "Cuándo", nextNote: "Nota corta para la oficina", nextPh: "ej. Siguen cayendo hojas, falta otra pasada", needNext: "Elige el próximo servicio, una fecha y escribe una nota corta",
     ns_reg: "Visita regular", ns_leaves: "Limpieza de hojas", ns_aer: "Aireación", ns_fert: "Fertilizante", ns_over: "Resiembra", ns_shrub: "Arbustos / setos", ns_snow: "Estacas de nieve",
@@ -1315,7 +1320,7 @@ function freshState() {
     matPrices: [["Fall fertilizer 24-0-12", "kg", 1.2], ["Iron-based weed control (FeHEDTA)", "L", 14.5], ["Leaf bags", "bag", 0.45]],
     fuelLoc: { country: "CA", region: "ON", city: "Toronto", type: "regular", auto: true, src: "Statistics Canada · Toronto · regular, self-serve", period: "September 2026", checked: "Today, 6:00 a.m." },
     fixed: [["Insurance", 650], ["Shop and yard rent", 1800], ["Software subscriptions", 180], ["Marketing", 400], ["Licences and permits", 120], ["Phones and internet", 240]],
-    fixPct: 0, maintKm: 0.15, maintMowerH: 1.5,
+    fixPct: 100, maintKm: 0.15, maintMowerH: 1.5,
     mowers: [
       { id: "m1", n: 'Mower #1 · 60"', crew: "c1", lph: 3.2, val: 14500, yrs: 5, h: 6.1 }, { id: "m2", n: 'Mower #2 · 60"', crew: "c2", lph: 3.2, val: 14500, yrs: 5, h: 5.4 },
       { id: "m3", n: 'Mower #3 · 52"', crew: "c3", lph: 2.8, val: 11800, yrs: 5, h: 4.9 }, { id: "m4", n: 'Mower #4 · 60"', crew: "c4", lph: 3.2, val: 14500, yrs: 5, h: 5.8 },
@@ -2625,8 +2630,8 @@ function custData() {
     return { i, n, addr, area, crew, plan, price, on, dr, km, v, rev: v * price, cost: v * cost, perVisitCost: cost, labour: v * labour, fuel: v * fuel, maint: v * maint, mat: v * mat, onMin: v * on, drMin: v * dr };
   });
   const totRev = list.reduce((a, c) => a + c.rev, 0);
-  // fixed costs follow the revenue share of the whole business, so a $2,000 customer carries 10× the share of a $200 one
-  const fixRate = d.revenue ? d.fixedIn / d.revenue : 0;
+  // Customer decisions use profit from the job: rent and insurance don't drop when a customer leaves.
+  const fixRate = 0;
   list.forEach((c) => { c.profit = c.rev - c.cost; c.fix = c.rev * fixRate; c.net = c.profit - c.fix; c.perH = c.onMin ? (c.net / c.onMin) * 60 : 0; });
   const avgH = list.reduce((a, c) => a + c.net, 0) / Math.max(1, list.reduce((a, c) => a + c.onMin, 0)) * 60;
   return { list, totRev, avgH, fixRate };
@@ -2637,7 +2642,7 @@ function ownerCustomers() {
   let rows = list.filter((c) => !q || (c.n + " " + c.addr + " " + c.area).toLowerCase().includes(q));
   const showFix = S.fixPct > 0;
   const hdr = `${periodBar()}<div class="phd" style="margin:0"><div class="o-tabs" role="group" style="margin:0"><button data-act="custView" data-k="cust" aria-pressed="${S.custView === "cust"}">${t("cvCust")}</button><button data-act="custView" data-k="area" aria-pressed="${S.custView === "area"}">${t("cvArea")}</button></div>
-    <span class="muted" style="font-size:.9rem">${t("fixH")}: <b>${fixLabel()}</b></span></div>`;
+    </div><p class="note-sm" style="margin:0">${t("custBills")}</p>`;
   if (S.custView === "area") {
     const A = {};
     list.forEach((c) => { const a = (A[c.area] = A[c.area] || { area: c.area, n: 0, v: 0, rev: 0, net: 0, on: 0, dr: 0 }); a.n++; a.v += c.v; a.rev += c.rev; a.net += c.net; a.on += c.onMin; a.dr += c.drMin; });
@@ -3067,7 +3072,7 @@ function ownerOverview() {
   const tgt = S.finKind === "month" ? `<div class="target"><div style="display:flex;justify-content:space-between"><span>${t("fTarget", { t: money(S.target) })}</span><b>${Math.round((d.revenue / S.target) * 100)}%</b></div><div class="meter"><span style="width:${Math.min(100, (d.revenue / S.target) * 100)}%"></span></div></div>` : "";
   const crews = d.rows.slice().sort((a, b) => b.profit - a.profit);
   const pct = (a, b) => (b ? Math.round((a / b) * 1000) / 10 : 0);
-  return `${periodBar()}${fixBar(d)}
+  return `${periodBar()}<details class="trybox" ${S.fixPct !== 100 ? "open" : ""}><summary>${t("fixTry")}</summary>${fixBar(d)}</details>
     <p class="plain">${plain}</p>
     <div class="panel fhero"><div><p class="eyebrow">${netTitle()}</p><p class="hero-num">${money(d.net)}</p>${deltaHtml(d.net, p.net)}${sparkHTML()}</div>
       <div class="hero-side"><div><span>${t("fRevenue")}</span><b>${money(d.revenue)}</b>${deltaHtml(d.revenue, p.revenue)}</div><div><span>${t("fJobCosts")}</span><b>${money(cost)}</b>${deltaHtml(cost, pcost, true)}</div><div><span>${t("fFixed")}${S.fixPct && S.fixPct < 100 ? ` (${S.fixPct}%)` : ""}</span><b>${money(d.fixedIn)}</b></div><div><span>${t("fJobsDone")}</span><b>${d.jobs}</b></div></div>${tgt}</div>
