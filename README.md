@@ -6,6 +6,8 @@ The clickable demo of every screen is in [`demo/index.html`](demo/index.html) (o
 
 A separate finance-only concept, for companies that keep their CRM (Jobber, Yardbook…) and add Cutting Cost for the money side, is in [`demo/finance/index.html`](demo/finance/index.html). It has a Simple view and a Go deeper view, with sample data. It doesn't change the main demo.
 
+A snow clearing version is in [`demo/snowplow/index.html`](demo/snowplow/index.html): storms instead of weekly visits, seasonal, per-push and hourly contracts, overtime in long storms, salt, the snowfall at which each seasonal contract breaks even, and cash through the salt pre-buy and the summer. Sample data for a made-up Ottawa-area company.
+
 ## What's here
 
 | Folder | What it is | Runs on |
