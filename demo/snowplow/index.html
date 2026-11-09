@@ -168,16 +168,102 @@ td.n.pos, td.n.neg, td.n.warnc { font-weight: 600; }
 .cm { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--c-snow); }
 .typechip { font-size: 0.74rem; font-weight: 700; padding: 1px 7px; border-radius: 4px; background: var(--sunken); color: var(--muted); white-space: nowrap; }
 .storm-ice { color: var(--c-snow); font-weight: 600; font-size: 0.8rem; }
+
+/* ── product shell: sidebar on wide screens, sync status, source tags, visual guides ── */
+:root { --side: 224px; --cabh: 56px; --s-crm: #2f6fb5; --s-gps: #18794e; --s-you: #8a5a00; --s-pub: #6b4fa0; --s-calc: #56606c; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --s-crm: #7fb2ec; --s-gps: #5fd19a; --s-you: #f0b03c; --s-pub: #b79ae6; --s-calc: #9aa6b2; } }
+:root[data-theme="dark"] { --s-crm: #7fb2ec; --s-gps: #5fd19a; --s-you: #f0b03c; --s-pub: #b79ae6; --s-calc: #9aa6b2; }
+header.cab .wrap { min-height: var(--cabh); max-width: none; }
+.who-am { display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; }
+.avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; font: 700 0.85rem var(--font); }
+.syncpill { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; background: rgb(255 255 255 / 0.08); border-radius: 99px; padding: 4px 10px; border: 0; color: var(--brand-ink); }
+.syncpill i, .sys i { width: 8px; height: 8px; border-radius: 50%; background: #3ddc84; box-shadow: 0 0 0 3px rgb(61 220 132 / 0.2); }
+nav.tabs .navh { display: none; }
+@media (min-width: 1100px) {
+  nav.tabs { position: fixed; top: calc(var(--cabh) + env(safe-area-inset-top, 0px)); left: 0; bottom: 0; width: var(--side); border-bottom: 0; border-right: 1px solid var(--line); z-index: 4; }
+  nav.tabs .wrap { flex-direction: column; gap: 2px; padding: 14px 10px; overflow-y: auto; height: 100%; max-width: none; }
+  nav.tabs a { border-bottom: 0; border-left: 3px solid transparent; border-radius: 4px; padding: 9px 12px; }
+  nav.tabs a[aria-current="page"] { background: var(--sunken); border-left-color: var(--accent); }
+  nav.tabs a.deep::before { display: none; }
+  nav.tabs .sep { display: none; }
+  nav.tabs .navh { display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 14px 12px 4px; }
+  nav.tabs .navh:first-child { padding-top: 2px; }
+  main.wrap { margin-left: var(--side); max-width: calc(1180px + var(--side)); padding-left: max(28px, env(safe-area-inset-left, 0px)); padding-right: max(28px, env(safe-area-inset-right, 0px)); }
+  #view { margin-right: auto; max-width: 1180px; }
+}
+
+/* where the numbers come from */
+.sources { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.sources > span { font-size: 0.8rem; color: var(--muted); font-weight: 600; }
+.sys { display: inline-flex; align-items: center; gap: 7px; font-size: 0.8rem; padding: 5px 10px; border-radius: 99px; background: var(--surface); border: 1px solid var(--line); color: var(--ink); }
+.sys b { font-weight: 600; } .sys small { color: var(--muted); }
+.sys.warn i { background: var(--warn); box-shadow: 0 0 0 3px var(--warn-soft); }
+.src { display: inline-flex; gap: 4px; border: 0; background: none; padding: 0; margin-top: 4px; cursor: pointer; align-self: start; }
+.srct { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.02em; padding: 1px 6px; border-radius: 3px; border: 1px solid currentColor; opacity: 0.9; white-space: nowrap; }
+.srct.s-crm { color: var(--s-crm); } .srct.s-gps { color: var(--s-gps); } .srct.s-you { color: var(--s-you); } .srct.s-pub { color: var(--s-pub); } .srct.s-calc { color: var(--s-calc); }
+.tile.big .srct { color: rgb(243 245 247 / 0.8); }
+.src:hover .srct, .src:focus-visible .srct { background: var(--sunken); }
+.srcrow { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.srcrow:last-child { border-bottom: 0; }
+.formula { font: 600 0.95rem/1.5 var(--font); background: var(--sunken); border-radius: var(--r); padding: 10px 12px; }
+
+/* verdict: the one-glance answer */
+.verdict { display: grid; gap: 10px; }
+.verdict .word { display: inline-flex; align-items: center; gap: 8px; font: 700 1rem var(--font-display); padding: 3px 12px; border-radius: 99px; justify-self: start; }
+.verdict .word.good { background: var(--pos-soft); color: var(--pos); } .verdict .word.thin { background: var(--warn-soft); color: var(--warn); } .verdict .word.bad { background: var(--neg-soft); color: var(--neg); }
+.tile.big .verdict .word.good { background: rgb(76 195 138 / 0.18); color: #6fdba0; }
+.tile.big .verdict .word.thin { background: rgb(240 176 60 / 0.18); color: #f5c26b; }
+.tile.big .verdict .word.bad { background: rgb(255 122 110 / 0.18); color: #ff8a7e; }
+.meter { position: relative; height: 12px; border-radius: 99px; background: rgb(127 127 127 / 0.25); }
+.meter > span { position: absolute; inset: 0 auto 0 0; border-radius: 99px; }
+.meter > b { position: absolute; top: -4px; bottom: -4px; width: 2px; background: currentColor; }
+.meterlbl { display: flex; justify-content: space-between; font-size: 0.76rem; opacity: 0.8; }
+
+/* money flow: in → costs → kept */
+.flow { display: grid; gap: 6px; }
+.flow .fr { display: grid; grid-template-columns: minmax(90px, 128px) 1fr auto; gap: 10px; align-items: center; font-size: 0.88rem; }
+.flow .track { position: relative; height: 18px; }
+.flow .track span { position: absolute; top: 0; bottom: 0; border-radius: 3px; min-width: 2px; }
+.flow .fv { font-variant-numeric: tabular-nums; color: var(--muted); min-width: 4.5em; text-align: right; }
+.flow .fr.in .fv, .flow .fr.kept .fv { color: var(--ink); font-weight: 700; }
+.flow .fr.kept { border-top: 1px dashed var(--line); padding-top: 6px; }
+details.nums summary { font-size: 0.86rem; color: var(--muted); }
+
+/* in-table bars */
+.mbar { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; min-width: 140px; }
+.mbar .t { position: relative; height: 8px; background: var(--sunken); border-radius: 99px; }
+.mbar .t span { position: absolute; top: 0; bottom: 0; left: 0; border-radius: 99px; }
+.mbar .t b { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--ink); opacity: 0.55; }
+.mbar .v { font-weight: 700; font-variant-numeric: tabular-nums; min-width: 3.6em; text-align: right; }
+.alert .ico { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 0.85rem; }
+.alert.bad .ico { background: var(--neg-soft); color: var(--neg); } .alert.warn .ico { background: var(--warn-soft); color: var(--warn); } .alert.good .ico { background: var(--pos-soft); color: var(--pos); }
+.alert { grid-template-columns: auto 1fr auto; }
+.syssum { display: none; }
+@media (max-width: 640px) { .sources .sys, .sources > span, .sources > a.small { display: none; } .syssum { display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: 600; color: var(--ink); } .syssum i { width: 8px; height: 8px; border-radius: 50%; background: #3ddc84; } }
+main.wrap { grid-template-columns: minmax(0, 1fr); }
+a.syncpill { text-decoration: none; }
+@media (max-width: 640px) {
+  header.cab .sample, .syncpill span.long { display: none; }
+  .cab .wrap { gap: 8px; }
+  .modesw button { padding: 6px 10px; }
+}
+.src { flex-wrap: wrap; max-width: 100%; }
+@media (max-width: 760px) { .hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+.meterlbl { gap: 6px; flex-wrap: wrap; }
+td .who { min-width: 150px; }
+.mbar { min-width: 120px; }
 </style>
 <header class="cab">
   <div class="wrap">
     <div class="logo">Cutting <b>Cost</b> <small>Snow</small></div>
     <span class="sample" title="Every number on this page comes from a made-up snow clearing company">Sample company · Northline Snow &amp; Ice</span>
     <span class="spacer"></span>
+    <a class="syncpill" href="#sources"><i aria-hidden="true"></i><span class="long">All sources&nbsp;</span>up to date</a>
     <div class="modesw" role="group" aria-label="How much detail">
       <button id="m-simple" aria-pressed="true">Simple</button>
       <button id="m-deep" aria-pressed="false">Go deeper</button>
     </div>
+    <span class="who-am" title="Signed in as the owner (sample)"><span class="avatar">NB</span></span>
   </div>
 </header>
 <nav class="tabs" aria-label="Sections"><div class="wrap" id="tabs"></div></nav>
@@ -186,7 +272,7 @@ td.n.pos, td.n.neg, td.n.warnc { font-weight: 600; }
 
 <script>
 // ───────────────────────── sample company ─────────────────────────
-// Northline Snow & Ice: 72 sites, three routes, last winter (Nov 2025 – Apr 2026) had 22 snow and ice
+// Northline Snow & Ice: 72 sites, four routes, last winter (Nov 2025 – Apr 2026) had 22 snow and ice
 // events, 208 cm in all, heavier than the 180 cm a normal winter brings. Everything comes from one seed.
 let seed = 4021;
 const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
@@ -202,13 +288,14 @@ const EVENTS = [
   ["2025-11-19", 1, 1], ["2025-11-27", 9], ["2025-12-04", 6], ["2025-12-11", 14], ["2025-12-16", 2, 1], ["2025-12-22", 21], ["2025-12-28", 7],
   ["2026-01-03", 11], ["2026-01-09", 5], ["2026-01-14", 28], ["2026-01-20", 2, 1], ["2026-01-25", 8], ["2026-02-01", 16], ["2026-02-06", 4],
   ["2026-02-12", 33], ["2026-02-17", 6], ["2026-02-24", 3, 1], ["2026-03-03", 12], ["2026-03-10", 5], ["2026-03-18", 2, 1], ["2026-03-26", 10], ["2026-04-04", 3, 1],
-].map(([date, cm, ice], i) => ({ i, date, cm, ice: !!ice }));
+].map(([date, cm, ice], i) => ({ i, date, cm, ice: !!ice, ec: ice ? 0 : Math.max(0, cm + [-1, 0, 1, -2, 2, 0, -1][i % 7]) }));
 const TOTAL_CM = EVENTS.reduce((a, e) => a + e.cm, 0);
 
 const ROUTES = [
   { id: 0, name: "Route R · driveways", short: "Route R", unit: "Truck 21 + 8 ft plow", people: [["Jake", 28], ["Ana (shovel)", 20]], lph: 9, wear: 14, color: "var(--c-labour)" },
   { id: 1, name: "Route C · commercial", short: "Route C", unit: "Truck 14 + 9 ft plow + salter", people: [["Marc", 32], ["Leo", 21]], lph: 11, wear: 20, color: "var(--c-fuel)" },
   { id: 2, name: "Route L · loader", short: "Route L", unit: "Wheel loader + pusher box", people: [["Pete", 36]], lph: 14, wear: 34, color: "var(--c-maint)" },
+  { id: 3, name: "Route D · commercial", short: "Route D", unit: "Truck 9 + 9 ft plow + salter", people: [["Kevin", 30], ["Sam", 21]], lph: 11, wear: 20, color: "var(--c-mat)" },
 ];
 const BURDEN = 0.19, OT_AFTER = 10, OT_X = 1.5, DIESEL = 1.62, SALT_T = 138, LOAD_H = 0.75;
 const routeRate = (r) => ROUTES[r].people.reduce((a, p) => a + p[1], 0) * (1 + BURDEN);
@@ -235,15 +322,15 @@ for (let i = 0; i < 44; i++) {
 }
 SITES.forEach((s, i) => { if (i === 7) { s.drive = 14; s.name += " (Manotick)"; } if (i === 19) { s.drive = 12; s.name += " (Richmond)"; } });
 BIZ.forEach((n, i) => {
-  const min = Math.round(18 + rnd() * 40);
-  SITES.push({ type: "com", name: n, addr: `${Math.floor(100 + rnd() * 2900)} ${pick(STREETS)}`, route: 1, trigger: 2.5, min, drive: Math.round(5 + rnd() * 8), push: round5(min * 2.7 + 20 + (rnd() - 0.5) * 50), saltApp: round5(70 + min * 4 + rnd() * 60), saltT: +(0.06 + min / 140).toFixed(2) });
+  const min = Math.round(12 + rnd() * 24);
+  SITES.push({ type: "com", name: n, addr: `${Math.floor(100 + rnd() * 2900)} ${pick(STREETS)}`, route: i % 2 ? 3 : 1, trigger: 2.5, min, drive: Math.round(5 + rnd() * 8), push: round5(min * 4 + 35 + (rnd() - 0.5) * 40), saltApp: round5(70 + min * 4 + rnd() * 60), saltT: +(0.06 + min / 140).toFixed(2) });
 });
 BIG.forEach((n, i) => {
-  const min = Math.round(55 + rnd() * 70);
-  SITES.push({ type: "big", name: n, addr: `${Math.floor(100 + rnd() * 2900)} ${pick(STREETS)}`, route: i < 3 ? 1 : 2, trigger: 2.5, min, drive: Math.round(6 + rnd() * 8), fee: round10(min * 150 + 1500 + rnd() * 3000), saltT: +(0.3 + min / 120).toFixed(2) });
+  const min = Math.round(40 + rnd() * 45);
+  SITES.push({ type: "big", name: n, addr: `${Math.floor(100 + rnd() * 2900)} ${pick(STREETS)}`, route: i < 2 ? 1 : i < 4 ? 3 : 2, trigger: 2.5, min, drive: Math.round(6 + rnd() * 8), fee: round10(min * 200 + 1800 + rnd() * 3000), saltT: +(0.3 + min / 120).toFixed(2) });
 });
 HR.forEach((n) => {
-  const min = Math.round(90 + rnd() * 120);
+  const min = Math.round(60 + rnd() * 70);
   SITES.push({ type: "hr", name: n, addr: `${Math.floor(100 + rnd() * 2900)} ${pick(STREETS)}`, route: 2, trigger: 5, min, drive: Math.round(8 + rnd() * 10), rate: 185, saltApp: round5(260 + rnd() * 200), saltT: +(0.5 + rnd() * 0.5).toFixed(2) });
 });
 // One under-priced condo on a fixed fee, to show what a heavy winter does to it
@@ -312,6 +399,7 @@ const FIXED = [
   { n: "Accountant", m: 175 },
   { n: "Truck 21 + plow depreciation ($62,000 ÷ 7 yrs)", m: 738, dep: true },
   { n: "Truck 14 + plow + salter depreciation ($78,000 ÷ 7 yrs)", m: 929, dep: true },
+  { n: "Truck 9 + plow + salter depreciation ($64,000 ÷ 7 yrs)", m: 762, dep: true },
   { n: "Loader depreciation ($140,000 ÷ 10 yrs)", m: 1167, dep: true },
   { n: "Snow blowers and small equipment", m: 150, dep: true },
 ];
@@ -389,7 +477,7 @@ const S = { mode: store.get("mode", "simple"), period: store.get("period", "wint
 
 const SIMPLE_TABS = [["home", "Overview"], ["storms", "Storms"], ["sites", "Sites"], ["routes", "Routes"], ["cash", "Cash"]];
 const DEEP_TABS = [["pnl", "Profit & loss"], ["contracts", "Contract check"], ["rates", "True hourly cost"], ["salt", "Salt"]];
-const ALL = [...SIMPLE_TABS, ...DEEP_TABS, ["sources", "Your CRM"]];
+const ALL = [...SIMPLE_TABS, ...DEEP_TABS, ["sources", "Data sources"]];
 function tab() {
   const h = location.hash.slice(1);
   const ok = ALL.some(([k]) => k === h) && (S.mode === "deep" || !DEEP_TABS.some(([k]) => k === h));
@@ -398,9 +486,9 @@ function tab() {
 function renderTabs() {
   const t = tab();
   const a = ([k, l], deep) => `<a href="#${k}" class="${deep ? "deep" : ""}" ${t === k ? 'aria-current="page"' : ""}>${l}</a>`;
-  document.getElementById("tabs").innerHTML = SIMPLE_TABS.map((x) => a(x)).join("") +
-    (S.mode === "deep" ? `<span class="sep" aria-hidden="true"></span>` + DEEP_TABS.map((x) => a(x, true)).join("") : "") +
-    `<span class="sep" aria-hidden="true"></span>` + a(["sources", "Your CRM"]);
+  document.getElementById("tabs").innerHTML = `<span class="navh">Every storm</span>` + SIMPLE_TABS.map((x) => a(x)).join("") +
+    (S.mode === "deep" ? `<span class="sep" aria-hidden="true"></span><span class="navh">Go deeper</span>` + DEEP_TABS.map((x) => a(x, true)).join("") : "") +
+    `<span class="sep" aria-hidden="true"></span><span class="navh">Setup</span>` + a(["sources", "Data sources"]);
   document.getElementById("m-simple").setAttribute("aria-pressed", S.mode === "simple");
   document.getElementById("m-deep").setAttribute("aria-pressed", S.mode === "deep");
 }
@@ -511,6 +599,91 @@ function lines(series, xs, { h = 220, fmt = (n) => $(n), xfmt = (x) => x, ref = 
 }
 const legendRow = (items) => `<div class="row small">${items.map(([l, c]) => `<span class="row" style="gap:6px"><i style="width:14px;height:3px;background:${c};display:inline-block"></i>${l}</span>`).join("")}</div>`;
 
+
+const SYS = {
+  crm: { kind: "crm", short: "Jobber", name: "Jobber (your CRM)", status: "synced 3 min ago", what: "Sites, contracts and prices, per-push and hourly invoices, payments." },
+  gps: { kind: "gps", short: "Trucks", name: "Truck tablets (GPS)", status: "4 units ready", what: "Call-out start and end, arrive and leave times at each site, kilometres, engine hours, and the snow depth the operator taps on arrival." },
+  ec: { kind: "pub", short: "Env. Canada", name: "Environment Canada daily climate data", status: "today 6:00 am · 0 cm", what: "Daily snowfall at the nearest weather station (Ottawa Int'l A), checked every morning. Starts a storm entry automatically when snow falls." },
+  salt: { kind: "gps", short: "Salt log", name: "Salter controller and yard loads", status: "Nov 6 · 3.2 t", what: "Tonnes spread per site from the salter controller, or loads logged at the yard." },
+  you: { kind: "you", short: "Your costs", name: "Your costs and rates", status: "updated Nov 1", what: "Pay rates, payroll costs, diesel use and wear per hour for each truck and the loader, salt price, monthly bills, overtime rule." },
+  fuel: { kind: "pub", short: "StatCan", name: "Statistics Canada fuel prices", status: "Nov 3 · $1.62/L diesel", what: "Average diesel price for your city, checked every day. Fuel receipts replace it when you have them." },
+  bank: { kind: "crm", short: "QuickBooks", name: "QuickBooks (bank balance)", status: "synced 6:00 am", what: "Bank balance and bills paid. Optional: you can type the balance instead." },
+  calc: { kind: "calc", short: "Calculated", name: "Cutting Cost", status: "worked out from the rest", what: "Combines the sources above." },
+};
+const SOURCES = {
+  profit: { title: "True profit", from: ["crm", "gps", "salt", "you", "fuel"], how: "Seasonal fees earned + per-push, hourly and salting invoices − crew pay and overtime − diesel − wear − salt − fixed bills (the whole year's, for the whole winter)",
+    what: { crm: "Contracts, seasonal fees and every per-push, hourly and salting invoice.", gps: "Hours each truck spent at each site and driving between them, so crew pay and diesel can be split per site.", salt: "Tonnes spread per site.", you: "Pay rates, wear per hour, salt price and monthly bills.", fuel: "Diesel price per litre." } },
+  revenue: { title: "Money in", from: ["crm"], how: "Seasonal fees earned month by month (Nov–Mar) + per-push, hourly and salting work invoiced in Jobber" },
+  snow: { title: "Snow", from: ["gps", "ec"], how: "Depth the operators tap on arrival at each site. Environment Canada's daily snowfall fills the storm log and is shown beside it", note: "Crews' readings are what per-push invoices use. If they differ a lot from Environment Canada, the storm is flagged so you can check before invoicing." },
+  perhour: { title: "Profit per equipment-hour", from: ["gps", "crm", "you"], how: "Profit ÷ hours a truck or the loader worked, from the tablet's call-out times" },
+  site: { title: "Site profit", from: ["crm", "gps", "salt", "you", "fuel"], how: "What the site paid (its share of the seasonal fee, or its invoices) − crew time there and driving to it − diesel − wear − salt" },
+  storm: { title: "Storm log and costs", from: ["gps", "ec", "salt", "you", "fuel"], how: "Each storm: depth the crews measured (Environment Canada beside it), then route-hours × crew pay (×1.5 after 10 hours) + diesel + wear + salt for every site cleared" },
+  cash: { title: "Cash in the bank", from: ["bank"], how: "Today's balance from QuickBooks" },
+  plan: { title: "Cash plan", from: ["bank", "crm", "you"], how: "Bank balance + seasonal fees as invoiced + per-push invoices six weeks after each storm − salt − storm costs − monthly bills − your pay, for a normal winter" },
+  salt: { title: "Salt", from: ["salt", "you"], how: "Tonnes per site from the salter controller or yard loads × your price per tonne" },
+};
+
+// ───────────────────────── where each number comes from ─────────────────────────
+// SYS: the systems Cutting Cost reads from. SOURCES: what each headline number is made of.
+// (Both defined above for this company.)
+const SYS_CLS = { crm: "s-crm", gps: "s-gps", you: "s-you", pub: "s-pub", calc: "s-calc" };
+function src(key) {
+  const s = SOURCES[key];
+  if (!s) return "";
+  return `<button class="src" data-src="${key}" title="Where this comes from" aria-label="Where ${esc(s.title.toLowerCase())} comes from">${s.from.map((k) => `<span class="srct ${SYS_CLS[SYS[k].kind]}">${SYS[k].short}</span>`).join("")}</button>`;
+}
+function syncStrip() {
+  return `<div class="sources" aria-label="Data sources"><span>Numbers from</span>${Object.entries(SYS).filter(([, x]) => x.kind !== "calc").map(([k, x]) => `<span class="sys ${x.warn ? "warn" : ""}" title="${esc(x.what)}"><i aria-hidden="true"></i><b>${x.short}</b><small>${x.status}</small></span>`).join("")}<a href="#sources" class="small">How it fits together ›</a><a href="#sources" class="syssum"><i aria-hidden="true"></i>${Object.values(SYS).filter((x) => x.kind !== "calc").length} sources, all up to date ›</a></div>`;
+}
+function openSource(key) {
+  const s = SOURCES[key], d = document.getElementById("drawer");
+  d.innerHTML = `<div class="drawer-back" id="db"><aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="sh">
+    <div class="row between"><h2 id="sh">${esc(s.title)}</h2><button class="btn" id="dx">Close</button></div>
+    <p class="formula">${s.how}</p>
+    <section class="card"><h3>Comes from</h3>
+      ${s.from.map((k) => { const x = SYS[k]; return `<div class="srcrow"><span class="srct ${SYS_CLS[x.kind]}">${x.short}</span><div><b>${esc(x.name)}</b> <span class="muted small">· ${esc(x.status)}</span><p class="small">${esc((s.what && s.what[k]) || x.what)}</p></div></div>`; }).join("")}
+    </section>
+    ${s.note ? `<p class="explain">${s.note}</p>` : ""}
+  </aside></div>`;
+  const close = () => (d.innerHTML = "");
+  document.getElementById("dx").onclick = close;
+  document.getElementById("db").onclick = (e) => e.target.id === "db" && close();
+  document.addEventListener("keydown", function k(e) { if (e.key === "Escape") { close(); document.removeEventListener("keydown", k); } });
+  document.getElementById("dx").focus();
+}
+document.addEventListener("click", (e) => { const b = e.target.closest?.("[data-src]"); if (b) { e.preventDefault(); e.stopPropagation(); openSource(b.dataset.src); } }, true);
+
+// ───────────────────────── visual guides ─────────────────────────
+// Verdict: Healthy / Thin / Losing, with a meter of what's kept per $100 against a goal.
+function verdict(per100, goal = 15) {
+  const st = per100 >= goal ? "good" : per100 >= 5 ? "thin" : "bad";
+  const word = { good: "✓ Healthy", thin: "! Thin", bad: "✕ Losing money" }[st];
+  const max = 40, pos = Math.max(0, Math.min(max, per100)) / max * 100;
+  const col = { good: "var(--pos)", thin: "var(--warn)", bad: "var(--neg)" }[st];
+  return `<div class="verdict"><span class="word ${st}">${word}</span>
+    <div class="meter" role="img" aria-label="Kept ${$(per100)} of every $100, goal ${$(goal)}"><span style="width:${pos}%;background:${col}"></span><b style="left:${goal / max * 100}%" title="Goal"></b></div>
+    <div class="meterlbl"><span>$0</span><span>goal ${$(goal)}</span><span>$${max}+ kept per $100</span></div></div>`;
+}
+// Money flow: money in, then each cost taken off, then what's left.
+function flow(rev, costs, keptLabel = "Kept") {
+  const max = Math.max(rev, 1);
+  let at = rev;
+  const rows = [`<div class="fr in"><span>Money in</span><div class="track"><span style="left:0;width:${rev / max * 100}%;background:var(--c-snow, var(--c-labour));opacity:.35"></span></div><span class="fv">${kfmt(rev)}</span></div>`];
+  for (const [label, v, color] of costs) {
+    at -= v;
+    rows.push(`<div class="fr"><span>${label}</span><div class="track"><span style="left:${Math.max(0, at) / max * 100}%;width:${v / max * 100}%;background:${color}"></span></div><span class="fv">−${kfmt(v)}</span></div>`);
+  }
+  rows.push(`<div class="fr kept"><span><b>${at >= 0 ? keptLabel : "Lost"}</b></span><div class="track"><span style="left:0;width:${Math.abs(at) / max * 100}%;background:${at >= 0 ? "var(--c-kept)" : "var(--neg)"}"></span></div><span class="fv ${pn(at)}">${kfmt(at)}</span></div>`);
+  return `<div class="flow" role="img" aria-label="Money in ${kfmt(rev)}, ${costs.map((c) => `${c[0]} ${kfmt(c[1])}`).join(", ")}, ${keptLabel.toLowerCase()} ${kfmt(at)}">${rows.join("")}</div>`;
+}
+// A small bar in a table cell: value against the best in the list, with the average marked.
+function mbar(v, max, avg, status) {
+  const col = { good: "var(--pos)", thin: "var(--warn)", bad: "var(--neg)" }[status];
+  const w = Math.max(0, Math.min(100, (v / (max || 1)) * 100));
+  return `<div class="mbar"><div class="t"><span style="width:${w}%;background:${col}"></span>${avg > 0 ? `<b style="left:${Math.min(100, avg / (max || 1) * 100)}%" title="Average"></b>` : ""}</div><span class="v ${({ good: "pos", thin: "warnc", bad: "neg" })[status]}">${$(v)}</span></div>`;
+}
+const ICON = { bad: "✕", warn: "!", good: "✓" };
+
 // ───────────────────────── views ─────────────────────────
 const VIEWS = {}, BIND = {};
 
@@ -535,18 +708,20 @@ VIEWS.home = () => {
   ].filter(Boolean);
   const byStorm = EVENTS.map((e) => { const x = sum(e.date, e.date); return x.billed - x.cost; });
   return `${periodBar()}
-  <p class="lead">${P.word} you kept <span class="${pn(per100)}">${$(per100)}</span> of every $100 you charged, after crews, fuel, equipment wear, salt and ${S.period === "winter" ? "a full year of fixed bills, summer included" : "the month's share of fixed bills"}.</p>
+  ${syncStrip()}
   <section class="hero" aria-label="Key numbers">
-    <div class="tile big"><span class="k">True profit</span><span class="v ${pn(s.net)}">${$(s.net)}</span><span class="small muted">Jobs made ${$(s.cm)} → ${$(s.net)} left after ${S.period === "winter" ? "a full year of bills" : "the month's bills"}</span></div>
-    <div class="tile"><span class="k">Money in</span><span class="v">${$(s.rev)}</span><span class="small muted">${$(s.fees)} seasonal · ${$(s.billed)} per push, hour, salt</span></div>
-    <div class="tile"><span class="k">Snow</span><span class="v"><span class="cm">${s.snow} cm</span></span><span class="small muted">${s.events} events${S.period === "winter" ? ` · normal is ${NORMAL_CM} cm` : ""}</span></div>
-    <div class="tile"><span class="k">Per equipment-hour</span><span class="v ${pn(s.net)}">${$(s.hours ? s.net / s.hours : 0)}</span><span class="small muted">${Math.round(s.hours).toLocaleString()} route-hours</span></div>
+    <div class="tile big"><span class="k">True profit</span><span class="v ${pn(s.net)}">${$(s.net)}</span>
+      <span class="small muted">${P.word} you kept ${$(per100)} of every $100, after ${S.period === "winter" ? "a full year of bills" : "the month's bills"}</span>${verdict(per100)}${src("profit")}</div>
+    <div class="tile"><span class="k">Money in</span><span class="v">${$(s.rev)}</span><span class="small muted">${$(s.fees)} seasonal · ${$(s.billed)} billed</span>${src("revenue")}</div>
+    <div class="tile"><span class="k">Snow</span><span class="v"><span class="cm">${s.snow} cm</span></span><span class="small muted">${s.events} events${S.period === "winter" ? ` · normal is ${NORMAL_CM} cm` : ""}</span>${src("snow")}</div>
+    <div class="tile"><span class="k">Per equipment-hour</span><span class="v ${pn(s.net)}">${$(s.hours ? s.net / s.hours : 0)}</span><span class="small muted">${Math.round(s.hours).toLocaleString()} route-hours</span>${src("perhour")}</div>
   </section>
   <div class="grid2">
-    <section class="card"><h2>Needs a look</h2><div class="alerts">${alerts.map((a) => `<div class="alert ${a.lvl}"><span class="dot" aria-hidden="true"></span><span>${a.t}</span><a href="${a.a}">${a.al} ›</a></div>`).join("")}</div></section>
-    <section class="card"><h2>Where every $100 went</h2>
-      <div class="stack100" role="img" aria-label="${parts.map((p) => `${p[0]} ${$(p[1] / tot * 100)}`).join(", ")}">${parts.map((p) => `<span style="flex:${p[1]};background:${p[2]}"></span>`).join("")}</div>
-      <div class="legend">${parts.map((p) => `<div><i style="background:${p[2]}"></i><span>${p[0]}</span><b>${$(p[1] / (s.rev || 1) * 100)}</b><span class="p">${$(p[1])}</span></div>`).join("")}</div>
+    <section class="card"><h2>Needs a look</h2><div class="alerts">${alerts.map((a) => `<div class="alert ${a.lvl}"><span class="ico" aria-hidden="true">${ICON[a.lvl]}</span><span>${a.t}</span><a href="${a.a}">${a.al} ›</a></div>`).join("")}</div></section>
+    <section class="card"><h2>Where the money went</h2>
+      ${flow(s.rev, parts.slice(0, -1))}
+      <details class="nums"><summary>Show the numbers</summary>
+      <div class="legend">${parts.map((p) => `<div><i style="background:${p[2]}"></i><span>${p[0]}</span><b>${$(p[1] / (s.rev || 1) * 100)} of $100</b><span class="p">${$(p[1])}</span></div>`).join("")}</div></details>
     </section>
   </div>
   <section class="card"><h2>Each storm: billed work minus what it cost</h2>
@@ -563,11 +738,11 @@ VIEWS.storms = () => {
   COPY.storms = () => csv([["Date", "cm", "Ice", "Sites", "Route-hours", "Overtime hours", "Salt tonnes", "Billed", "Crew pay", "Fuel", "Wear", "Salt", "Cost"],
     ...rows.map(({ e, s, sites }) => [e.date, e.cm, e.ice ? "yes" : "", sites, s.hours.toFixed(1), s.otHours.toFixed(1), s.saltT.toFixed(2), s.billed, s.labour.toFixed(2), s.fuel.toFixed(2), s.wear.toFixed(2), s.salt.toFixed(2), s.cost.toFixed(2)])]);
   const costPerCm = rows.filter((r) => !r.e.ice).map((r) => ({ cm: r.e.cm, c: r.s.cost }));
-  return `<section class="card"><div class="row between"><div><h2>Every storm last winter</h2><p class="muted small">${EVENTS.length} events, <span class="cm">${TOTAL_CM} cm</span>. Driveways go out at 5 cm, commercial at 2.5 cm, salt on every event.</p></div>${deep ? `<button class="btn" data-copy="storms">Copy as CSV</button>` : ""}</div>
-    <div class="tablewrap"><table><thead><tr><th>Storm</th><th class="n">Snow</th><th class="n">Sites</th><th class="n">Route-hours</th><th class="n">Overtime</th>${deep ? `<th class="n">Salt</th><th class="n">Crew pay</th><th class="n">Fuel + wear</th><th class="n">Salt $</th>` : ""}<th class="n">Cost</th><th class="n">Billed</th></tr></thead><tbody>
-    ${rows.map(({ e, s, sites }) => `<tr><td><b>${fmtDay(e.date, { weekday: "short", month: "short", day: "numeric" })}</b></td><td class="n">${e.ice ? `<span class="storm-ice">ice</span>` : `<span class="cm">${e.cm} cm</span>`}</td><td class="n">${sites}</td><td class="n">${s.hours.toFixed(1)}</td><td class="n ${s.otHours > 0 ? "neg" : "muted"}">${s.otHours > 0 ? s.otHours.toFixed(1) + " h" : "–"}</td>
+  return `<section class="card"><div class="row between"><div><h2>Every storm last winter</h2><p class="muted small">${EVENTS.length} events, <span class="cm">${TOTAL_CM} cm</span>. Driveways go out at 5 cm, commercial at 2.5 cm, salt on every event.</p>${src("storm")}</div>${deep ? `<button class="btn" data-copy="storms">Copy as CSV</button>` : ""}</div>
+    <div class="tablewrap"><table><thead><tr><th>Storm</th><th class="n">Crews measured</th>${deep ? `<th class="n">Env. Canada</th>` : ""}<th class="n">Sites</th><th class="n">Route-hours</th><th class="n">Overtime</th>${deep ? `<th class="n">Salt</th><th class="n">Crew pay</th><th class="n">Fuel + wear</th><th class="n">Salt $</th>` : ""}<th class="n">Cost</th><th class="n">Billed</th></tr></thead><tbody>
+    ${rows.map(({ e, s, sites }) => `<tr><td style="white-space:nowrap"><b>${fmtDay(e.date, { weekday: "short", month: "short", day: "numeric" })}</b></td><td class="n">${e.ice ? `<span class="storm-ice">ice</span>` : `<span class="cm">${e.cm} cm</span>`}</td>${deep ? `<td class="n muted">${e.ice ? "freezing rain" : e.ec + " cm"}</td>` : ""}<td class="n">${sites}</td><td class="n">${s.hours.toFixed(1)}</td><td class="n ${s.otHours > 0 ? "neg" : "muted"}">${s.otHours > 0 ? s.otHours.toFixed(1) + " h" : "–"}</td>
       ${deep ? `<td class="n">${s.saltT.toFixed(1)} t</td><td class="n">${$(s.labour)}</td><td class="n">${$(s.fuel + s.wear)}</td><td class="n">${$(s.salt)}</td>` : ""}<td class="n">${$(s.cost)}</td><td class="n ${s.billed >= s.cost ? "pos" : "neg"}"><b>${$(s.billed)}</b></td></tr>`).join("")}
-    <tr class="total"><td>Winter</td><td class="n">${TOTAL_CM} cm</td><td></td><td class="n">${rows.reduce((a, r) => a + r.s.hours, 0).toFixed(0)}</td><td class="n">${rows.reduce((a, r) => a + r.s.otHours, 0).toFixed(0)} h</td>${deep ? `<td class="n">${rows.reduce((a, r) => a + r.s.saltT, 0).toFixed(0)} t</td><td class="n">${$(rows.reduce((a, r) => a + r.s.labour, 0))}</td><td class="n">${$(rows.reduce((a, r) => a + r.s.fuel + r.s.wear, 0))}</td><td class="n">${$(rows.reduce((a, r) => a + r.s.salt, 0))}</td>` : ""}<td class="n">${$(rows.reduce((a, r) => a + r.s.cost, 0))}</td><td class="n">${$(rows.reduce((a, r) => a + r.s.billed, 0))}</td></tr>
+    <tr class="total"><td>Winter</td><td class="n">${TOTAL_CM} cm</td>${deep ? `<td class="n muted">${EVENTS.reduce((a, e) => a + e.ec, 0)} cm</td>` : ""}<td></td><td class="n">${rows.reduce((a, r) => a + r.s.hours, 0).toFixed(0)}</td><td class="n">${rows.reduce((a, r) => a + r.s.otHours, 0).toFixed(0)} h</td>${deep ? `<td class="n">${rows.reduce((a, r) => a + r.s.saltT, 0).toFixed(0)} t</td><td class="n">${$(rows.reduce((a, r) => a + r.s.labour, 0))}</td><td class="n">${$(rows.reduce((a, r) => a + r.s.fuel + r.s.wear, 0))}</td><td class="n">${$(rows.reduce((a, r) => a + r.s.salt, 0))}</td>` : ""}<td class="n">${$(rows.reduce((a, r) => a + r.s.cost, 0))}</td><td class="n">${$(rows.reduce((a, r) => a + r.s.billed, 0))}</td></tr>
     </tbody></table></div>
     <p class="explain">Billed = per-push, hourly and per-application salting. Seasonal contracts aren't billed per storm; their fees are counted month by month on Overview.</p></section>
   <section class="card"><h2>What a storm costs, by snowfall</h2>
@@ -583,6 +758,7 @@ VIEWS.sites = () => {
   let list = rows.filter((r) => (S.siteType === "all" || r.s.type === S.siteType) && (!q || `${r.s.name} ${r.s.addr}`.toLowerCase().includes(q)));
   const sorters = { hour: (a, b) => a.perHour - b.perHour, profit: (a, b) => a.cm - b.cm, rev: (a, b) => b.rev - a.rev, name: (a, b) => a.s.name.localeCompare(b.s.name) };
   list.sort(sorters[S.siteSort]);
+  const maxH = Math.max(...rows.map((r) => r.perHour));
   const counts = { good: rows.filter((r) => r.status === "good").length, thin: rows.filter((r) => r.status === "thin").length, bad: rows.filter((r) => r.status === "bad").length };
   const chip = (st) => st === "good" ? `<span class="chip good">Healthy</span>` : st === "thin" ? `<span class="chip thin">Thin</span>` : `<span class="chip bad">Losing money</span>`;
   COPY.sites = () => csv([["Site", "Address", "Contract", "Visits", "Money in", "Job costs", "Profit before bills", "Share of bills", "Equipment hours", "Profit per hour", "Break-even snowfall cm", "Next winter price"],
@@ -599,9 +775,9 @@ VIEWS.sites = () => {
       <div class="row"><input type="search" id="sq" placeholder="Search site or street" value="${esc(S.siteQ)}" aria-label="Search sites">
       <select id="ssort" aria-label="Sort"><option value="hour">Lowest per hour first</option><option value="profit">Lowest profit first</option><option value="rev">Most money in</option><option value="name">Name</option></select>
       ${deep ? `<button class="btn" data-copy="sites">Copy as CSV</button>` : ""}</div></div>
-    <p class="explain">Per hour = profit ÷ hours a truck or loader spent on the site, including the drive there. It compares a $500 driveway with a $20,000 condo fairly. Status compares each site with others on the same kind of contract. Tap a site for every visit and a price for next winter.</p>
-    <div class="tablewrap"><table><thead><tr><th>Site</th><th>Status</th><th class="n">Visits</th><th class="n">Money in</th><th class="n">Profit</th><th class="n">Per hour</th>${deep ? `<th class="n">Hours</th><th class="n">Salt</th><th class="n">Share of bills</th><th class="n">Breaks even at</th>` : ""}<th class="n">Next winter</th></tr></thead><tbody>
-    ${list.slice(0, S.siteAll || q || S.siteType !== "all" ? list.length : 25).map((r) => `<tr class="click" tabindex="0" data-site="${r.s.id}"><td><div class="who">${esc(r.s.name)}</div><div class="where">${esc(r.s.addr)} · <span class="typechip">${TYPES[r.s.type].short}</span></div></td><td>${chip(r.status)}</td><td class="n">${r.n}</td><td class="n">${$(r.rev)}</td><td class="n ${pn(r.cm)}">${$(r.cm)}</td><td class="n ${({ good: "pos", thin: "warnc", bad: "neg" })[r.status]}"><b>${$(r.perHour)}</b></td>
+    <p class="explain">Per hour = profit ÷ hours a truck or loader spent on the site, including the drive there. It compares a $500 driveway with a $20,000 condo fairly. Status and the line in each bar compare a site with others on the same kind of contract. Tap a site for every visit and a price for next winter. ${src("site")}</p>
+    <div class="tablewrap"><table><thead><tr><th>Site</th><th>Status</th><th class="n">Visits</th><th class="n">Money in</th><th class="n">Profit</th><th>Per equipment-hour</th>${deep ? `<th class="n">Hours</th><th class="n">Salt</th><th class="n">Share of bills</th><th class="n">Breaks even at</th>` : ""}<th class="n">Next winter</th></tr></thead><tbody>
+    ${list.slice(0, S.siteAll || q || S.siteType !== "all" ? list.length : 25).map((r) => `<tr class="click" tabindex="0" data-site="${r.s.id}"><td><div class="who">${esc(r.s.name)}</div><div class="where">${esc(r.s.addr)} · <span class="typechip">${TYPES[r.s.type].short}</span></div></td><td>${chip(r.status)}</td><td class="n">${r.n}</td><td class="n">${$(r.rev)}</td><td class="n ${pn(r.cm)}">${$(r.cm)}</td><td>${mbar(r.perHour, maxH, r.avgT, r.status)}</td>
       ${deep ? `<td class="n">${r.hours.toFixed(1)}</td><td class="n">${r.saltT.toFixed(1)} t</td><td class="n muted">${$(r.fixed)}</td><td class="n">${r.breakCm ? `<span class="cm">${r.breakCm} cm</span>` : "–"}</td>` : ""}
       <td class="n">${r.renew && r.renew > seasonalFee(r.s) ? `<b>${$(r.renew)}</b>` : `<span class="muted">${r.renew ? "keep" : "–"}</span>`}</td></tr>`).join("")}
     </tbody></table></div>
@@ -649,7 +825,7 @@ function openSite(id) {
 VIEWS.routes = () => {
   const P = PERIODS[S.period], deep = S.mode === "deep";
   const all = sum(P.from, P.to);
-  const cards = ROUTES.map((R) => {
+  const cards = [0, 1, 3, 2].map((i) => ROUTES[i]).map((R) => {
     const s = sum(P.from, P.to, (v) => v.route === R.id);
     const evs = Object.values(ROUTE_EVENT).filter((x) => x.route === R.id && EVENTS[x.e].date >= P.from && EVENTS[x.e].date <= P.to);
     const longest = evs.reduce((a, x) => (x.hours > (a?.hours ?? 0) ? x : a), null);
@@ -657,7 +833,7 @@ VIEWS.routes = () => {
     return { R, s, evs, longest, fixedShare };
   });
   return `${periodBar()}
-  <div class="grid3" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))">${cards.map(({ R, s, evs, longest, fixedShare }) => `
+  <div class="grid3" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))">${cards.map(({ R, s, evs, longest, fixedShare }) => `
     <section class="card crewcard"><h3><i style="background:${R.color}"></i>${R.name}</h3>
       <p class="muted small">${R.people.map((p) => p[0]).join(" and ")} · ${R.unit}</p>
       <div class="grid3" style="grid-template-columns:1fr 1fr">
@@ -721,7 +897,7 @@ VIEWS.cash = () => {
   const AR = SITES.filter((s) => s.type === "big" || (s.type === "res" && s.id % 4 === 0)).map((s) => ({ s, amt: Math.round(seasonalFee(s) * 0.5), age: s.type === "big" ? (s.id % 3 === 0 ? 45 : 18) : 6 }));
   return `
   <section class="hero" aria-label="Cash">
-    <div class="tile big"><span class="k">In the bank</span><span class="v">$31,800</span><span class="small muted">today, Nov 8 (sample)</span></div>
+    <div class="tile big"><span class="k">In the bank</span><span class="v">$31,800</span><span class="small muted">today, Nov 8 (sample)</span>${src("cash")}</div>
     <div class="tile"><span class="k">Seasonal fees coming</span><span class="v">${$(fees)}</span><span class="small muted">half now, half in January</span></div>
     <div class="tile"><span class="k">Salt before the first storm</span><span class="v">${$(saltPrebuy)}</span><span class="small muted">at ${$(S.saltPrice)}/tonne</span></div>
     <div class="tile"><span class="k">Lowest point</span><span class="v ${low < 5000 ? "neg" : ""}">${$(low)}</span><span class="small muted">week of ${fmtDay(labels[lowI])}</span></div>
@@ -731,7 +907,7 @@ VIEWS.cash = () => {
       <div class="range"><div class="row"><label for="opay">What you pay yourself each week</label><span class="num" data-live>${$(S.ownerPay)}</span></div><input type="range" id="opay" data-range="ownerPay" min="0" max="2500" step="50" value="${S.ownerPay}"></div>
       <div class="range"><div class="row"><label for="sprice">Salt price per tonne</label><span class="num" data-live>${$(S.saltPrice)}</span></div><input type="range" id="sprice" data-range="saltPrice" min="90" max="220" step="2" value="${S.saltPrice}"></div>
     </div></section>
-  <section class="card">
+  <section class="card">${src("plan")}
     ${lines([{ vals, color: low < 5000 ? "var(--neg)" : "var(--c-labour)", area: true }], labels, { fmt: kfmt, xfmt: (l) => fmtDay(l, { month: "short" }), ref: 5000, refLabel: "$5,000 cushion", marks: [{ i: lowI, v: low, color: "var(--neg)", label: "lowest " + kfmt(low) }] })}
     <div class="callout">${low < 5000
       ? `<b>Cash dips to ${$(low)} in the week of ${fmtDay(labels[lowI])}.</b> ${lowI < 6 ? "That's the salt pre-buy landing before seasonal fees come in: invoice the first half on November 1, or ask your salt supplier for 30-day terms." : "That's the summer: no snow money from April to October. Put aside part of each per-push payment over the winter."}`
@@ -860,7 +1036,7 @@ VIEWS.salt = () => {
     <div class="tile"><span class="k">Billed per application</span><span class="v">${$(billedSalt)}</span><span class="small muted">${billedT.toFixed(0)} t on per-push and hourly sites · ${$(billedSalt / Math.max(1, billedT))}/t charged</span></div>
     <div class="tile"><span class="k">Included in a fee</span><span class="v">${unbilledT.toFixed(0)} t</span><span class="small muted">${$(unbilledT * SALT_T)} paid out of seasonal fees</span></div>
   </div>
-  <section class="card"><h2>Salt by site</h2>
+  <section class="card"><div class="row between"><h2>Salt by site</h2>${src("salt")}</div>
     <div class="tablewrap"><table><thead><tr><th>Site</th><th>Contract</th><th class="n">Applications</th><th class="n">Tonnes</th><th class="n">Salt cost</th><th class="n">Charged</th></tr></thead><tbody>
     ${salted.slice(0, 30).map((r) => `<tr class="click" tabindex="0" data-site="${r.s.id}"><td><div class="who">${esc(r.s.name)}</div></td><td><span class="typechip">${TYPES[r.s.type].short}</span></td><td class="n">${r.salts}</td><td class="n">${r.saltT.toFixed(1)}</td><td class="n">${$(r.saltT * SALT_T)}</td><td class="n">${r.s.saltApp ? $(r.salts * r.s.saltApp) : `<span class="muted">in the fee</span>`}</td></tr>`).join("")}
     </tbody></table></div>
@@ -868,6 +1044,10 @@ VIEWS.salt = () => {
 };
 
 VIEWS.sources = () => `
+  <section class="card"><h2>Where the numbers come from</h2>
+    <p class="explain">Every number in Cutting Cost is built from these. Tap the small tags next to a number anywhere in the app to see exactly which ones it uses and how.</p>
+    ${Object.entries(SYS).filter(([, x]) => x.kind !== "calc").map(([k, x]) => `<div class="srcrow"><span class="srct ${SYS_CLS[x.kind]}">${x.short}</span><div><b>${esc(x.name)}</b> <span class="chip good">${esc(x.status)}</span><p class="small">${esc(x.what)}</p></div></div>`).join("")}
+  </section>
   <section class="card"><div class="row between"><div><h2>Where the numbers come from</h2><p class="muted small">Sample setup</p></div><span class="chip good">Connected</span></div>
     <div class="grid3">
       <div class="tile"><span class="k">From your CRM</span><span class="v">${SITES.length}</span><span class="small muted">sites and contracts</span></div>

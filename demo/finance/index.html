@@ -157,6 +157,90 @@ td.n.pos, td.n.neg, td.n.warnc { font-weight: 600; }
 .cmp ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
 @media (max-width: 560px) { .cmp { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: no-preference) { .card { animation: up 0.25s ease both; } @keyframes up { from { transform: translateY(4px); } } }
+
+/* ── product shell: sidebar on wide screens, sync status, source tags, visual guides ── */
+:root { --side: 224px; --cabh: 56px; --s-crm: #2f6fb5; --s-gps: #18794e; --s-you: #8a5a00; --s-pub: #6b4fa0; --s-calc: #56606c; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --s-crm: #7fb2ec; --s-gps: #5fd19a; --s-you: #f0b03c; --s-pub: #b79ae6; --s-calc: #9aa6b2; } }
+:root[data-theme="dark"] { --s-crm: #7fb2ec; --s-gps: #5fd19a; --s-you: #f0b03c; --s-pub: #b79ae6; --s-calc: #9aa6b2; }
+header.cab .wrap { min-height: var(--cabh); max-width: none; }
+.who-am { display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; }
+.avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; font: 700 0.85rem var(--font); }
+.syncpill { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; background: rgb(255 255 255 / 0.08); border-radius: 99px; padding: 4px 10px; border: 0; color: var(--brand-ink); }
+.syncpill i, .sys i { width: 8px; height: 8px; border-radius: 50%; background: #3ddc84; box-shadow: 0 0 0 3px rgb(61 220 132 / 0.2); }
+nav.tabs .navh { display: none; }
+@media (min-width: 1100px) {
+  nav.tabs { position: fixed; top: calc(var(--cabh) + env(safe-area-inset-top, 0px)); left: 0; bottom: 0; width: var(--side); border-bottom: 0; border-right: 1px solid var(--line); z-index: 4; }
+  nav.tabs .wrap { flex-direction: column; gap: 2px; padding: 14px 10px; overflow-y: auto; height: 100%; max-width: none; }
+  nav.tabs a { border-bottom: 0; border-left: 3px solid transparent; border-radius: 4px; padding: 9px 12px; }
+  nav.tabs a[aria-current="page"] { background: var(--sunken); border-left-color: var(--accent); }
+  nav.tabs a.deep::before { display: none; }
+  nav.tabs .sep { display: none; }
+  nav.tabs .navh { display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 14px 12px 4px; }
+  nav.tabs .navh:first-child { padding-top: 2px; }
+  main.wrap { margin-left: var(--side); max-width: calc(1180px + var(--side)); padding-left: max(28px, env(safe-area-inset-left, 0px)); padding-right: max(28px, env(safe-area-inset-right, 0px)); }
+  #view { margin-right: auto; max-width: 1180px; }
+}
+
+/* where the numbers come from */
+.sources { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.sources > span { font-size: 0.8rem; color: var(--muted); font-weight: 600; }
+.sys { display: inline-flex; align-items: center; gap: 7px; font-size: 0.8rem; padding: 5px 10px; border-radius: 99px; background: var(--surface); border: 1px solid var(--line); color: var(--ink); }
+.sys b { font-weight: 600; } .sys small { color: var(--muted); }
+.sys.warn i { background: var(--warn); box-shadow: 0 0 0 3px var(--warn-soft); }
+.src { display: inline-flex; gap: 4px; border: 0; background: none; padding: 0; margin-top: 4px; cursor: pointer; align-self: start; }
+.srct { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.02em; padding: 1px 6px; border-radius: 3px; border: 1px solid currentColor; opacity: 0.9; white-space: nowrap; }
+.srct.s-crm { color: var(--s-crm); } .srct.s-gps { color: var(--s-gps); } .srct.s-you { color: var(--s-you); } .srct.s-pub { color: var(--s-pub); } .srct.s-calc { color: var(--s-calc); }
+.tile.big .srct { color: rgb(243 245 247 / 0.8); }
+.src:hover .srct, .src:focus-visible .srct { background: var(--sunken); }
+.srcrow { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.srcrow:last-child { border-bottom: 0; }
+.formula { font: 600 0.95rem/1.5 var(--font); background: var(--sunken); border-radius: var(--r); padding: 10px 12px; }
+
+/* verdict: the one-glance answer */
+.verdict { display: grid; gap: 10px; }
+.verdict .word { display: inline-flex; align-items: center; gap: 8px; font: 700 1rem var(--font-display); padding: 3px 12px; border-radius: 99px; justify-self: start; }
+.verdict .word.good { background: var(--pos-soft); color: var(--pos); } .verdict .word.thin { background: var(--warn-soft); color: var(--warn); } .verdict .word.bad { background: var(--neg-soft); color: var(--neg); }
+.tile.big .verdict .word.good { background: rgb(76 195 138 / 0.18); color: #6fdba0; }
+.tile.big .verdict .word.thin { background: rgb(240 176 60 / 0.18); color: #f5c26b; }
+.tile.big .verdict .word.bad { background: rgb(255 122 110 / 0.18); color: #ff8a7e; }
+.meter { position: relative; height: 12px; border-radius: 99px; background: rgb(127 127 127 / 0.25); }
+.meter > span { position: absolute; inset: 0 auto 0 0; border-radius: 99px; }
+.meter > b { position: absolute; top: -4px; bottom: -4px; width: 2px; background: currentColor; }
+.meterlbl { display: flex; justify-content: space-between; font-size: 0.76rem; opacity: 0.8; }
+
+/* money flow: in → costs → kept */
+.flow { display: grid; gap: 6px; }
+.flow .fr { display: grid; grid-template-columns: minmax(90px, 128px) 1fr auto; gap: 10px; align-items: center; font-size: 0.88rem; }
+.flow .track { position: relative; height: 18px; }
+.flow .track span { position: absolute; top: 0; bottom: 0; border-radius: 3px; min-width: 2px; }
+.flow .fv { font-variant-numeric: tabular-nums; color: var(--muted); min-width: 4.5em; text-align: right; }
+.flow .fr.in .fv, .flow .fr.kept .fv { color: var(--ink); font-weight: 700; }
+.flow .fr.kept { border-top: 1px dashed var(--line); padding-top: 6px; }
+details.nums summary { font-size: 0.86rem; color: var(--muted); }
+
+/* in-table bars */
+.mbar { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; min-width: 140px; }
+.mbar .t { position: relative; height: 8px; background: var(--sunken); border-radius: 99px; }
+.mbar .t span { position: absolute; top: 0; bottom: 0; left: 0; border-radius: 99px; }
+.mbar .t b { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--ink); opacity: 0.55; }
+.mbar .v { font-weight: 700; font-variant-numeric: tabular-nums; min-width: 3.6em; text-align: right; }
+.alert .ico { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 0.85rem; }
+.alert.bad .ico { background: var(--neg-soft); color: var(--neg); } .alert.warn .ico { background: var(--warn-soft); color: var(--warn); } .alert.good .ico { background: var(--pos-soft); color: var(--pos); }
+.alert { grid-template-columns: auto 1fr auto; }
+main.wrap { grid-template-columns: minmax(0, 1fr); }
+a.syncpill { text-decoration: none; }
+.src { flex-wrap: wrap; max-width: 100%; }
+@media (max-width: 760px) { .hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+.meterlbl { gap: 6px; flex-wrap: wrap; }
+td .who { min-width: 150px; }
+.mbar { min-width: 120px; }
+.syssum { display: none; }
+@media (max-width: 640px) { .sources .sys, .sources > span, .sources > a.small { display: none; } .syssum { display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: 600; color: var(--ink); } .syssum i { width: 8px; height: 8px; border-radius: 50%; background: #3ddc84; } }
+@media (max-width: 640px) {
+  header.cab .sample, .syncpill span.long { display: none; }
+  .cab .wrap { gap: 8px; }
+  .modesw button { padding: 6px 10px; }
+}
 </style>
 </head><body>
 
@@ -165,10 +249,12 @@ td.n.pos, td.n.neg, td.n.warnc { font-weight: 600; }
     <div class="logo">Cutting <b>Cost</b> <small>Finance</small></div>
     <span class="sample" title="Every number on this page comes from a made-up lawn company">Sample company · Green Ridge Lawn</span>
     <span class="spacer"></span>
+    <a class="syncpill" href="#sources"><i aria-hidden="true"></i><span class="long">All sources&nbsp;</span>up to date</a>
     <div class="modesw" role="group" aria-label="How much detail">
       <button id="m-simple" aria-pressed="true">Simple</button>
       <button id="m-deep" aria-pressed="false">Go deeper</button>
     </div>
+    <span class="who-am" title="Signed in as the owner (sample)"><span class="avatar">MR</span></span>
   </div>
 </header>
 <nav class="tabs" aria-label="Sections"><div class="wrap" id="tabs"></div></nav>
@@ -329,7 +415,7 @@ const net = (s) => s.cm - s.fixed * (F() / 100);
 
 const SIMPLE_TABS = [["home", "Overview"], ["customers", "Customers"], ["crews", "Crews"], ["cash", "Cash"]];
 const DEEP_TABS = [["pnl", "Profit & loss"], ["rates", "True hourly cost"], ["breakeven", "Break-even"], ["pricing", "Price planner"], ["driving", "Driving & fuel"]];
-const ALL = [...SIMPLE_TABS, ...DEEP_TABS, ["sources", "Your CRM"]];
+const ALL = [...SIMPLE_TABS, ...DEEP_TABS, ["sources", "Data sources"]];
 
 function tab() {
   const h = location.hash.slice(1);
@@ -340,8 +426,9 @@ function renderTabs() {
   const t = tab();
   const a = ([k, l], deep) => `<a href="#${k}" class="${deep ? "deep" : ""}" ${t === k ? 'aria-current="page"' : ""}>${l}</a>`;
   document.getElementById("tabs").innerHTML =
-    SIMPLE_TABS.map((x) => a(x)).join("") + (S.mode === "deep" ? `<span class="sep" aria-hidden="true"></span>` + DEEP_TABS.map((x) => a(x, true)).join("") : "") +
-    `<span class="sep" aria-hidden="true"></span>` + a(["sources", "Your CRM"]);
+    `<span class="navh">Every week</span>` + SIMPLE_TABS.map((x) => a(x)).join("") +
+    (S.mode === "deep" ? `<span class="sep" aria-hidden="true"></span><span class="navh">Go deeper</span>` + DEEP_TABS.map((x) => a(x, true)).join("") : "") +
+    `<span class="sep" aria-hidden="true"></span><span class="navh">Setup</span>` + a(["sources", "Data sources"]);
   document.getElementById("m-simple").setAttribute("aria-pressed", S.mode === "simple");
   document.getElementById("m-deep").setAttribute("aria-pressed", S.mode === "deep");
 }
@@ -493,6 +580,92 @@ function customerRows(from, to) {
   return { rows, avg, s };
 }
 
+
+const SYS = {
+  crm: { kind: "crm", short: "Jobber", name: "Jobber (your CRM)", status: "synced 4 min ago", what: "Clients, properties, completed visits, prices and invoices." },
+  gps: { kind: "gps", short: "Tablets", name: "Crew tablets (GPS)", status: "2 crews live", what: "Clock in and out, arrive and leave times at each property, kilometres driven, odometer morning and night." },
+  you: { kind: "you", short: "Your costs", name: "Your costs and rates", status: "updated Oct 30", what: "Pay rates, payroll costs, truck and mower details, maintenance rates, monthly bills." },
+  fuel: { kind: "pub", short: "StatCan", name: "Statistics Canada fuel prices", status: "Nov 3 · $1.47/L", what: "Average pump price for regular gas in your city, checked every day. Crews' fuel receipts replace it when you have them." },
+  bank: { kind: "crm", short: "QuickBooks", name: "QuickBooks (bank balance)", status: "synced 6:00 am", what: "Bank balance and bills paid. Optional: you can type the balance instead." },
+  calc: { kind: "calc", short: "Calculated", name: "Cutting Cost", status: "worked out from the rest", what: "Combines the sources above." },
+};
+const SOURCES = {
+  profit: { title: "True profit", from: ["crm", "gps", "you", "fuel"], how: "Money in − crew pay − fuel − maintenance − materials − the period's share of fixed bills",
+    what: { crm: "Every completed visit and its price.", gps: "How long crews were on site, driving and at the shop, so pay can be split per job.", you: "Pay rates, fixed bills, maintenance and material prices.", fuel: "Fuel price per litre." } },
+  revenue: { title: "Money in", from: ["crm"], how: "The price of every visit marked complete in Jobber, for the dates shown", what: { crm: "Completed visits with their line-item prices. Quotes and unscheduled work aren't counted." } },
+  costs: { title: "Costs", from: ["gps", "you", "fuel"], how: "Crew pay + fuel + maintenance + materials + share of fixed bills", note: "Nothing here comes from your CRM: field software tracks what you charge, not what each job costs you." },
+  perhour: { title: "Profit per hour on site", from: ["gps", "crm", "you"], how: "Profit ÷ hours on site, from the tablet's arrive and leave times", what: { gps: "Arrive and leave times at each property, recorded by the tablet without anyone tapping." } },
+  labour: { title: "Crew pay", from: ["gps", "you"], how: "Paid hours (clock in to clock out, lunch removed) × each person's hourly cost, shared across the day's jobs by minutes on site" },
+  fuel: { title: "Fuel", from: ["gps", "you", "fuel"], how: "GPS km × truck litres per 100 km × fuel price, plus mower hours × litres per hour" },
+  fixed: { title: "Fixed bills", from: ["you"], how: "Your monthly bills + truck and mower depreciation, spread by days and shared across jobs by what each earns" },
+  cust: { title: "Customer profit", from: ["crm", "gps", "you", "fuel"], how: "What the customer paid − the cost of every visit (crew time on site, driving there, fuel, wear, materials)" },
+  cash: { title: "Cash in the bank", from: ["bank"], how: "Today's balance from QuickBooks" },
+  owed: { title: "Owed to you", from: ["crm"], how: "Unpaid Jobber invoices, by days since they were sent" },
+  winter: { title: "Winter forecast", from: ["bank", "crm", "you"], how: "Bank balance + invoices likely to be paid − monthly bills (not depreciation) − your pay, week by week to April" },
+  drive: { title: "Cost of getting there", from: ["gps", "you", "fuel"], how: "Crew pay while driving + truck fuel + maintenance per km, for every stop" },
+};
+
+// ───────────────────────── where each number comes from ─────────────────────────
+// SYS: the systems Cutting Cost reads from. SOURCES: what each headline number is made of.
+// (Both defined above for this company.)
+const SYS_CLS = { crm: "s-crm", gps: "s-gps", you: "s-you", pub: "s-pub", calc: "s-calc" };
+function src(key) {
+  const s = SOURCES[key];
+  if (!s) return "";
+  return `<button class="src" data-src="${key}" title="Where this comes from" aria-label="Where ${esc(s.title.toLowerCase())} comes from">${s.from.map((k) => `<span class="srct ${SYS_CLS[SYS[k].kind]}">${SYS[k].short}</span>`).join("")}</button>`;
+}
+function syncStrip() {
+  return `<div class="sources" aria-label="Data sources"><span>Numbers from</span>${Object.entries(SYS).filter(([, x]) => x.kind !== "calc").map(([k, x]) => `<span class="sys ${x.warn ? "warn" : ""}" title="${esc(x.what)}"><i aria-hidden="true"></i><b>${x.short}</b><small>${x.status}</small></span>`).join("")}<a href="#sources" class="small">How it fits together ›</a><a href="#sources" class="syssum"><i aria-hidden="true"></i>${Object.values(SYS).filter((x) => x.kind !== "calc").length} sources, all up to date ›</a></div>`;
+}
+function openSource(key) {
+  const s = SOURCES[key], d = document.getElementById("drawer");
+  d.innerHTML = `<div class="drawer-back" id="db"><aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="sh">
+    <div class="row between"><h2 id="sh">${esc(s.title)}</h2><button class="btn" id="dx">Close</button></div>
+    <p class="formula">${s.how}</p>
+    <section class="card"><h3>Comes from</h3>
+      ${s.from.map((k) => { const x = SYS[k]; return `<div class="srcrow"><span class="srct ${SYS_CLS[x.kind]}">${x.short}</span><div><b>${esc(x.name)}</b> <span class="muted small">· ${esc(x.status)}</span><p class="small">${esc((s.what && s.what[k]) || x.what)}</p></div></div>`; }).join("")}
+    </section>
+    ${s.note ? `<p class="explain">${s.note}</p>` : ""}
+  </aside></div>`;
+  const close = () => (d.innerHTML = "");
+  document.getElementById("dx").onclick = close;
+  document.getElementById("db").onclick = (e) => e.target.id === "db" && close();
+  document.addEventListener("keydown", function k(e) { if (e.key === "Escape") { close(); document.removeEventListener("keydown", k); } });
+  document.getElementById("dx").focus();
+}
+document.addEventListener("click", (e) => { const b = e.target.closest?.("[data-src]"); if (b) { e.preventDefault(); e.stopPropagation(); openSource(b.dataset.src); } }, true);
+
+// ───────────────────────── visual guides ─────────────────────────
+// Verdict: Healthy / Thin / Losing, with a meter of what's kept per $100 against a goal.
+function verdict(per100, goal = 15) {
+  const st = per100 >= goal ? "good" : per100 >= 5 ? "thin" : "bad";
+  const word = { good: "✓ Healthy", thin: "! Thin", bad: "✕ Losing money" }[st];
+  const max = 40, pos = Math.max(0, Math.min(max, per100)) / max * 100;
+  const col = { good: "var(--pos)", thin: "var(--warn)", bad: "var(--neg)" }[st];
+  return `<div class="verdict"><span class="word ${st}">${word}</span>
+    <div class="meter" role="img" aria-label="Kept ${$(per100)} of every $100, goal ${$(goal)}"><span style="width:${pos}%;background:${col}"></span><b style="left:${goal / max * 100}%" title="Goal"></b></div>
+    <div class="meterlbl"><span>$0</span><span>goal ${$(goal)}</span><span>$${max}+ kept per $100</span></div></div>`;
+}
+// Money flow: money in, then each cost taken off, then what's left.
+function flow(rev, costs, keptLabel = "Kept") {
+  const max = Math.max(rev, 1);
+  let at = rev;
+  const rows = [`<div class="fr in"><span>Money in</span><div class="track"><span style="left:0;width:${rev / max * 100}%;background:var(--c-snow, var(--c-labour));opacity:.35"></span></div><span class="fv">${kfmt(rev)}</span></div>`];
+  for (const [label, v, color] of costs) {
+    at -= v;
+    rows.push(`<div class="fr"><span>${label}</span><div class="track"><span style="left:${Math.max(0, at) / max * 100}%;width:${v / max * 100}%;background:${color}"></span></div><span class="fv">−${kfmt(v)}</span></div>`);
+  }
+  rows.push(`<div class="fr kept"><span><b>${at >= 0 ? keptLabel : "Lost"}</b></span><div class="track"><span style="left:0;width:${Math.abs(at) / max * 100}%;background:${at >= 0 ? "var(--c-kept)" : "var(--neg)"}"></span></div><span class="fv ${pn(at)}">${kfmt(at)}</span></div>`);
+  return `<div class="flow" role="img" aria-label="Money in ${kfmt(rev)}, ${costs.map((c) => `${c[0]} ${kfmt(c[1])}`).join(", ")}, ${keptLabel.toLowerCase()} ${kfmt(at)}">${rows.join("")}</div>`;
+}
+// A small bar in a table cell: value against the best in the list, with the average marked.
+function mbar(v, max, avg, status) {
+  const col = { good: "var(--pos)", thin: "var(--warn)", bad: "var(--neg)" }[status];
+  const w = Math.max(0, Math.min(100, (v / (max || 1)) * 100));
+  return `<div class="mbar"><div class="t"><span style="width:${w}%;background:${col}"></span>${avg > 0 ? `<b style="left:${Math.min(100, avg / (max || 1) * 100)}%" title="Average"></b>` : ""}</div><span class="v ${({ good: "pos", thin: "warnc", bad: "neg" })[status]}">${$(v)}</span></div>`;
+}
+const ICON = { bad: "✕", warn: "!", good: "✓" };
+
 // ───────────────────────── views ─────────────────────────
 const VIEWS = {}, BIND = {};
 
@@ -531,18 +704,20 @@ VIEWS.home = () => {
   return `
   ${S.mode === "deep" ? fixBar(s.fixed) : ""}
   ${periodBar()}
-  <p class="lead">${P.word} you kept <span class="${pn(per100)}">${$(per100)}</span> of every $100 you charged, after paying crews, fuel, maintenance${F() === 100 ? ", materials and every fixed bill" : F() > 0 ? `, materials and ${F()}% of fixed bills` : " and materials"}.</p>
+  ${syncStrip()}
   <section class="hero" aria-label="Key numbers">
-    <div class="tile big"><span class="k">${label}</span><span class="v ${pn(n)}">${$(n)}</span>${dl(n, prev ? net(prev) : null)}<span class="small muted">Jobs made ${$(s.cm)} → ${$(n)} left after ${F() === 100 ? "bills" : F() + "% of bills"}</span></div>
-    <div class="tile"><span class="k">Money in</span><span class="v">${$(s.rev)}</span>${dl(s.rev, prev?.rev)}</div>
-    <div class="tile"><span class="k">Costs</span><span class="v">${$(s.cost + fixedIn)}</span>${dl(s.cost + fixedIn, prev ? prev.cost + prev.fixed * F() / 100 : null, false)}</div>
-    <div class="tile"><span class="k">Per hour on site</span><span class="v ${pn(n)}">${$(s.site ? n / s.site * 60 : 0)}</span><span class="delta muted">${hm(s.site)} on site</span></div>
+    <div class="tile big"><span class="k">${label}</span><span class="v ${pn(n)}">${$(n)}</span>${dl(n, prev ? net(prev) : null)}
+      <span class="small muted">${P.word} you kept ${$(per100)} of every $100</span>${verdict(per100)}${src("profit")}</div>
+    <div class="tile"><span class="k">Money in</span><span class="v">${$(s.rev)}</span>${dl(s.rev, prev?.rev)}${src("revenue")}</div>
+    <div class="tile"><span class="k">Costs</span><span class="v">${$(s.cost + fixedIn)}</span>${dl(s.cost + fixedIn, prev ? prev.cost + prev.fixed * F() / 100 : null, false)}${src("costs")}</div>
+    <div class="tile"><span class="k">Per hour on site</span><span class="v ${pn(n)}">${$(s.site ? n / s.site * 60 : 0)}</span><span class="delta muted">${hm(s.site)} on site</span>${src("perhour")}</div>
   </section>
   <div class="grid2">
-    <section class="card"><h2>Needs a look</h2><div class="alerts">${alerts.map((a) => `<div class="alert ${a.lvl}"><span class="dot" aria-hidden="true"></span><span>${a.t}</span><a href="${a.a}">${a.al} ›</a></div>`).join("")}</div></section>
-    <section class="card"><h2>Where every $100 went</h2>
-      <div class="stack100" role="img" aria-label="${parts.map((p) => `${p[0]} ${$(p[1] / tot * 100)}`).join(", ")}">${parts.map((p) => `<span style="flex:${p[1]};background:${p[2]}"></span>`).join("")}</div>
-      <div class="legend">${parts.map((p) => `<div><i style="background:${p[2]}"></i><span>${p[0]}</span><b>${$(p[1] / (s.rev || 1) * 100)}</b><span class="p">${$(p[1])}</span></div>`).join("")}</div>
+    <section class="card"><h2>Needs a look</h2><div class="alerts">${alerts.map((a) => `<div class="alert ${a.lvl}"><span class="ico" aria-hidden="true">${ICON[a.lvl]}</span><span>${a.t}</span><a href="${a.a}">${a.al} ›</a></div>`).join("")}</div></section>
+    <section class="card"><h2>Where the money went</h2>
+      ${flow(s.rev, parts.slice(0, -1))}
+      <details class="nums"><summary>Show the numbers</summary>
+      <div class="legend">${parts.map((p) => `<div><i style="background:${p[2]}"></i><span>${p[0]}</span><b>${$(p[1] / (s.rev || 1) * 100)} of $100</b><span class="p">${$(p[1])}</span></div>`).join("")}</div></details>
     </section>
   </div>
   <section class="card"><div class="row between"><h2>${label}, week by week</h2>${S.mode === "deep" ? `<button class="btn" data-copy="home">Copy as CSV</button>` : ""}</div>
@@ -574,6 +749,7 @@ VIEWS.customers = () => {
   list = rows.filter((r) => !q || `${r.c.name} ${r.c.addr} ${r.c.area}`.toLowerCase().includes(q));
   const sorters = { hour: (a, b) => a.perHour - b.perHour, profit: (a, b) => a.net - b.net, rev: (a, b) => b.rev - a.rev, name: (a, b) => a.c.name.localeCompare(b.c.name) };
   list.sort(sorters[S.custSort]);
+  const maxH = Math.max(...rows.map((r) => r.perHour));
   const counts = { good: rows.filter((r) => r.status === "good").length, thin: rows.filter((r) => r.status === "thin").length, bad: rows.filter((r) => r.status === "bad").length };
   COPY.cust = () => csv([["Customer", "Address", "Area", "Crew", "Visits", "Revenue", "Job costs", "Share of bills", "Profit before bills", "Minutes on site", "Minutes driving", "Profit per hour", "Suggested price per mow"],
     ...list.map((r) => [r.c.name, r.c.addr, r.c.area, CREWS[r.c.crew].name, r.n, r.rev, r.cost.toFixed(2), r.fixed.toFixed(2), r.net.toFixed(2), r.site, r.drive, r.perHour.toFixed(2), r.suggest ?? ""])]);
@@ -589,9 +765,9 @@ VIEWS.customers = () => {
       <div class="row"><input type="search" id="cq" placeholder="Search name or street" value="${esc(S.custQ)}" aria-label="Search customers">
       <select id="csort" aria-label="Sort"><option value="hour">Lowest per hour first</option><option value="profit">Lowest profit first</option><option value="rev">Most money in</option><option value="name">Name</option></select>
       ${deep ? `<button class="btn" data-copy="cust">Copy as CSV</button>` : ""}</div></div>
-    <p class="explain">Per hour = profit ÷ hours on site. It's the fairest way to compare a $45 lawn with a $240 plaza. Tap a customer for their visits and what to charge.</p>
-    <div class="tablewrap"><table><thead><tr><th>Customer</th><th>Status</th><th class="n">Visits</th><th class="n">Money in</th><th class="n">Profit</th><th class="n">Per hour</th>${deep ? `<th class="n">On site</th><th class="n">Driving</th><th class="n">Share of bills</th><th class="n">After bills</th><th class="n">Now / mow</th>` : ""}<th class="n">Suggested</th></tr></thead><tbody>
-    ${list.slice(0, S.custAll || q ? list.length : 25).map((r) => `<tr class="click" tabindex="0" data-cust="${r.c.id}"><td><div class="who">${esc(r.c.name)}</div><div class="where">${esc(r.c.addr)} · ${r.c.area}</div></td><td>${chip(r.status)}</td><td class="n">${r.n}</td><td class="n">${$(r.rev)}</td><td class="n ${pn(r.net)}">${$(r.net)}</td><td class="n ${({ good: "pos", thin: "warnc", bad: "neg" })[r.status]}"><b>${$(r.perHour)}</b></td>
+    <p class="explain">Per hour = profit ÷ hours on site. It's the fairest way to compare a $45 lawn with a $240 plaza. The line in each bar is your average. Tap a customer for their visits and what to charge. ${src("cust")}</p>
+    <div class="tablewrap"><table><thead><tr><th>Customer</th><th>Status</th><th class="n">Visits</th><th class="n">Money in</th><th class="n">Profit</th><th>Per hour on site</th>${deep ? `<th class="n">On site</th><th class="n">Driving</th><th class="n">Share of bills</th><th class="n">After bills</th><th class="n">Now / mow</th>` : ""}<th class="n">Suggested</th></tr></thead><tbody>
+    ${list.slice(0, S.custAll || q ? list.length : 25).map((r) => `<tr class="click" tabindex="0" data-cust="${r.c.id}"><td><div class="who">${esc(r.c.name)}</div><div class="where">${esc(r.c.addr)} · ${r.c.area}</div></td><td>${chip(r.status)}</td><td class="n">${r.n}</td><td class="n">${$(r.rev)}</td><td class="n ${pn(r.net)}">${$(r.net)}</td><td>${mbar(r.perHour, maxH, avg, r.status)}</td>
       ${deep ? `<td class="n">${hm(r.site)}</td><td class="n">${hm(r.drive)}</td><td class="n muted">${$(r.fixed)}</td><td class="n ${pn(r.cm - r.fixed)}">${$(r.cm - r.fixed)}</td><td class="n">${$(r.c.price)}</td>` : ""}
       <td class="n">${r.suggest && r.suggest > r.c.price && r.status !== "good" ? `<b>${$(r.suggest)}</b>` : `<span class="muted">–</span>`}</td></tr>`).join("")}
     </tbody></table></div>
@@ -716,8 +892,8 @@ VIEWS.cash = () => {
   const setAside = Math.max(0, Math.ceil((W.short) / 29 / 10) * 10);
   return `
   <section class="hero" aria-label="Cash">
-    <div class="tile big"><span class="k">In the bank</span><span class="v">${$(CASH_NOW)}</span><span class="delta" style="color:rgb(243 245 247 / .7)">as of today (sample)</span></div>
-    <div class="tile"><span class="k">Owed to you</span><span class="v">${$(owedTotal)}</span><span class="small muted">${AR.length} unpaid invoices</span></div>
+    <div class="tile big"><span class="k">In the bank</span><span class="v">${$(CASH_NOW)}</span><span class="delta" style="color:rgb(243 245 247 / .7)">as of today (sample)</span>${src("cash")}</div>
+    <div class="tile"><span class="k">Owed to you</span><span class="v">${$(owedTotal)}</span><span class="small muted">${AR.length} unpaid invoices</span>${src("owed")}</div>
     <div class="tile"><span class="k">Bills each month</span><span class="v">${$(FIXED_CASH_M)}</span><span class="small muted">rent, insurance, software…</span></div>
     <div class="tile"><span class="k">Lowest point</span><span class="v ${low < 5000 ? "neg" : ""}">${$(low)}</span><span class="small muted">week of ${labels[lowI]}</span></div>
   </section>
@@ -935,7 +1111,7 @@ VIEWS.driving = () => {
   <div class="grid3">
     <div class="tile"><span class="k">Driving</span><span class="v">${hm(s.drive)}</span><span class="small muted">${pct(s.drive / (s.site + s.drive + s.other))} of paid time</span></div>
     <div class="tile"><span class="k">Kilometres</span><span class="v">${Math.round(s.km).toLocaleString()}</span><span class="small muted">from GPS, stop to stop</span></div>
-    <div class="tile"><span class="k">Cost of getting there</span><span class="v">${$(s.labDrive + s.km * (19.5 / 100 * 1.47 + MAINT_KM))}</span><span class="small muted">crew pay + fuel + wear while driving</span></div>
+    <div class="tile"><span class="k">Cost of getting there</span><span class="v">${$(s.labDrive + s.km * (19.5 / 100 * 1.47 + MAINT_KM))}</span><span class="small muted">crew pay + fuel + wear while driving</span>${src("drive")}</div>
   </div>
   <section class="card"><h2>Cost of getting there, by area</h2>
     <div class="tablewrap"><table><thead><tr><th>Area</th><th class="n">Visits</th><th class="n">Drive / visit</th><th class="n">Km</th><th class="n">Getting there / visit</th><th class="n">Share of price</th></tr></thead><tbody>
@@ -955,6 +1131,10 @@ VIEWS.driving = () => {
 };
 
 VIEWS.sources = () => `
+  <section class="card"><h2>Where the numbers come from</h2>
+    <p class="explain">Every number in Cutting Cost is built from these. Tap the small tags next to a number anywhere in the app to see exactly which ones it uses and how.</p>
+    ${Object.entries(SYS).filter(([, x]) => x.kind !== "calc").map(([k, x]) => `<div class="srcrow"><span class="srct ${SYS_CLS[x.kind]}">${x.short}</span><div><b>${esc(x.name)}</b> <span class="chip good">${esc(x.status)}</span><p class="small">${esc(x.what)}</p></div></div>`).join("")}
+  </section>
   <section class="card"><div class="row between"><div><h2>Connected to Jobber</h2><p class="muted small">Sample connection · last sync 4 minutes ago</p></div><span class="chip good">Connected</span></div>
     <div class="grid3">
       <div class="tile"><span class="k">From your CRM</span><span class="v">${CUST.length}</span><span class="small muted">clients and properties</span></div>
