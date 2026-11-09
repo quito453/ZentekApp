@@ -4,6 +4,8 @@ Field-service app for lawn care companies: a tablet app for crews and a web app 
 
 The clickable demo of every screen is in [`demo/index.html`](demo/index.html) (open it in a browser). The real app is being built from it, stage by stage.
 
+A separate finance-only concept, for companies that keep their CRM (Jobber, Yardbook…) and add Cutting Cost for the money side, is in [`demo/finance/index.html`](demo/finance/index.html). It has a Simple view and a Go deeper view, with sample data. It doesn't change the main demo.
+
 ## What's here
 
 | Folder | What it is | Runs on |

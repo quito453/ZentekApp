@@ -1,0 +1,980 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><style>[hidden]{display:none!important} :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)} body{margin:0} img{max-width:100%}</style>
+<title>Cutting Cost Finance</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@600;700&display=swap">
+<style>
+/* Layout: a work-truck dashboard. Dark cab bar on top, light shop-floor cards below; simple tabs first, "Go deeper" tabs behind a switch. */
+:root {
+  --bg: #eceff3; --surface: #ffffff; --sunken: #e3e7ec; --line: #cfd5dc;
+  --ink: #141b24; --muted: #56606c; --brand: #1c2733; --brand-ink: #f3f5f7;
+  --accent: #ffc414; --accent-ink: #1c2733; --accent-soft: #fff3cc; --focus: #1f5fbf;
+  --pos: #18794e; --pos-soft: #dcf1e5; --neg: #c0362c; --neg-soft: #fbe2df; --warn: #a15c00; --warn-soft: #fdecc8;
+  --c-labour: #2f5d8a; --c-fuel: #d9622b; --c-maint: #2a8c82; --c-mat: #7b5ea7; --c-fixed: #9aa3ad; --c-kept: #18794e;
+  --font: "Barlow", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Barlow Semi Condensed", "Barlow", "Arial Narrow", system-ui, sans-serif;
+  --r: 6px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #10151b; --surface: #19212a; --sunken: #222c37; --line: #33404d;
+  --ink: #e9edf1; --muted: #9aa6b2; --brand: #0b1016; --brand-ink: #f3f5f7;
+  --accent: #ffcc29; --accent-ink: #141b24; --accent-soft: #3a3214; --focus: #6aa3ff;
+  --pos: #4cc38a; --pos-soft: #173a29; --neg: #ff7a6e; --neg-soft: #44201d; --warn: #f0b03c; --warn-soft: #3d2f12;
+  --c-labour: #6e9fd0; --c-fuel: #f08a55; --c-maint: #4fbfb3; --c-mat: #a88bd6; --c-fixed: #6c7783; --c-kept: #4cc38a;
+  color-scheme: dark;
+} }
+:root[data-theme="dark"] {
+  --bg: #10151b; --surface: #19212a; --sunken: #222c37; --line: #33404d;
+  --ink: #e9edf1; --muted: #9aa6b2; --brand: #0b1016; --brand-ink: #f3f5f7;
+  --accent: #ffcc29; --accent-ink: #141b24; --accent-soft: #3a3214; --focus: #6aa3ff;
+  --pos: #4cc38a; --pos-soft: #173a29; --neg: #ff7a6e; --neg-soft: #44201d; --warn: #f0b03c; --warn-soft: #3d2f12;
+  --c-labour: #6e9fd0; --c-fuel: #f08a55; --c-maint: #4fbfb3; --c-mat: #a88bd6; --c-fixed: #6c7783; --c-kept: #4cc38a;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--font); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--brand); }
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.15; text-wrap: balance; margin: 0; }
+h2 { font-size: 1.3rem; } h3 { font-size: 1.05rem; }
+p { margin: 0; }
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.num, td.n, th.n { font-variant-numeric: tabular-nums; }
+.muted { color: var(--muted); }
+.small { font-size: 0.86rem; }
+.pos { color: var(--pos); } .neg { color: var(--neg); } .warnc { color: var(--warn); }
+
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header.cab { background: var(--brand); color: var(--brand-ink); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; }
+.cab .wrap { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding-block: 10px; }
+.logo { font: 700 1.35rem/1 var(--font-display); letter-spacing: 0.01em; display: flex; align-items: baseline; gap: 6px; }
+.logo b { background: var(--accent); color: var(--accent-ink); padding: 1px 6px; border-radius: 3px; }
+.logo small { font: 500 0.8rem var(--font); opacity: 0.75; }
+.sample { font-size: 0.78rem; border: 1px solid rgb(255 255 255 / 0.3); border-radius: 99px; padding: 2px 10px; opacity: 0.85; }
+.spacer { flex: 1; }
+.modesw { display: inline-flex; background: rgb(255 255 255 / 0.1); border-radius: var(--r); padding: 3px; }
+.modesw button { border: 0; background: none; color: var(--brand-ink); padding: 6px 12px; border-radius: 4px; font-weight: 600; min-height: 36px; }
+.modesw button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+nav.tabs { background: var(--surface); border-bottom: 1px solid var(--line); }
+nav.tabs .wrap { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+nav.tabs a { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; padding: 12px 12px 10px; color: var(--muted); text-decoration: none; font-weight: 600; border-bottom: 3px solid transparent; }
+nav.tabs a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
+nav.tabs a.deep::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--c-labour); }
+nav.tabs .sep { width: 1px; background: var(--line); margin: 10px 6px; flex: none; }
+
+main.wrap { padding-block: 18px 48px; display: grid; gap: 16px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; display: grid; gap: 12px; min-width: 0; align-content: start; }
+.tile.big .muted { color: rgb(243 245 247 / 0.7); }
+.grid2 { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); }
+.grid3 { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); }
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.between { justify-content: space-between; }
+.seg { display: inline-flex; background: var(--sunken); border-radius: var(--r); padding: 3px; flex-wrap: wrap; }
+.seg button { border: 0; background: none; padding: 6px 14px; border-radius: 4px; font-weight: 600; min-height: 38px; color: var(--muted); }
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgb(0 0 0 / 0.15); }
+.btn { border: 1.5px solid var(--line); background: var(--surface); padding: 6px 14px; border-radius: var(--r); font-weight: 600; min-height: 38px; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn:hover { border-color: var(--ink); }
+
+.lead { font: 600 clamp(1.15rem, 2.4vw, 1.5rem)/1.3 var(--font-display); max-width: 46ch; }
+.hero { display: grid; gap: 12px; grid-template-columns: minmax(0, 1.3fr) repeat(3, minmax(0, 1fr)); }
+@media (max-width: 760px) { .hero { grid-template-columns: 1fr 1fr; } .hero .big { grid-column: 1 / -1; } }
+.tile { background: var(--sunken); border-radius: var(--r); padding: 12px 14px; display: grid; gap: 2px; align-content: start; }
+.tile .k { font-size: 0.8rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.tile .v { font: 700 1.55rem/1.1 var(--font-display); font-variant-numeric: tabular-nums; }
+.tile.big { background: var(--brand); color: var(--brand-ink); }
+.tile.big .k { color: rgb(243 245 247 / 0.7); }
+.tile.big .v { font-size: 2.6rem; }
+.delta { font-size: 0.82rem; font-weight: 600; }
+
+.fixbar { display: grid; gap: 6px; border-left: 4px solid var(--accent); }
+.fixbar input[type=range] { width: 100%; accent-color: var(--brand); min-height: 32px; }
+:root[data-theme="dark"] .fixbar input[type=range] { accent-color: var(--accent); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .fixbar input[type=range] { accent-color: var(--accent); } }
+.ticks { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--muted); }
+
+.alerts { display: grid; gap: 8px; }
+.alert { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; padding: 10px 12px; border-radius: var(--r); background: var(--sunken); }
+.alert .dot { width: 10px; height: 10px; border-radius: 50%; }
+.alert.bad .dot { background: var(--neg); } .alert.warn .dot { background: var(--warn); } .alert.good .dot { background: var(--pos); }
+.alert a { font-weight: 600; color: var(--ink); white-space: nowrap; }
+
+.stack100 { display: flex; height: 26px; border-radius: 4px; overflow: hidden; }
+.stack100 span { display: block; min-width: 2px; }
+.legend { display: grid; gap: 4px; }
+.legend div { display: grid; grid-template-columns: 14px 1fr auto auto; gap: 8px; align-items: center; padding: 4px 0; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+.legend div:last-child { border-bottom: 0; }
+.legend i { width: 12px; height: 12px; border-radius: 3px; }
+.legend .p { color: var(--muted); min-width: 3.5em; text-align: right; }
+
+.chip { display: inline-block; font-size: 0.78rem; font-weight: 700; padding: 2px 8px; border-radius: 99px; white-space: nowrap; }
+.chip.good { background: var(--pos-soft); color: var(--pos); }
+.chip.thin { background: var(--warn-soft); color: var(--warn); }
+.chip.bad { background: var(--neg-soft); color: var(--neg); }
+.chip.info { background: var(--sunken); color: var(--muted); }
+
+.tablewrap { overflow-x: auto; margin: 0 -4px; padding: 0 4px; }
+table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+th { text-align: left; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); font-weight: 700; padding: 8px 8px; border-bottom: 1.5px solid var(--line); white-space: nowrap; }
+td { padding: 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+td.n, th.n { text-align: right; white-space: nowrap; }
+tr.click { cursor: pointer; } tr.click:hover td { background: var(--sunken); }
+tr.sub td { color: var(--muted); }
+tr.total td { font-weight: 700; border-top: 1.5px solid var(--ink); }
+tr.hl td { background: var(--accent-soft); }
+td .who { font-weight: 600; } td .where { font-size: 0.82rem; color: var(--muted); }
+input[type=search], input[type=number], select { border: 1.5px solid var(--line); background: var(--surface); border-radius: var(--r); padding: 6px 10px; min-height: 38px; }
+input[type=number] { width: 7em; text-align: right; }
+label.f { display: grid; gap: 4px; font-weight: 600; font-size: 0.88rem; }
+.range { display: grid; gap: 4px; }
+.range .row { justify-content: space-between; font-weight: 600; }
+.range input { width: 100%; accent-color: var(--c-labour); min-height: 30px; }
+
+svg.chart { width: 100%; height: auto; display: block; overflow: visible; }
+svg.chart text { fill: var(--muted); font: 11px var(--font); font-variant-numeric: tabular-nums; }
+svg.chart .grid { stroke: var(--line); stroke-width: 1; }
+svg.chart .zero { stroke: var(--ink); stroke-width: 1; opacity: 0.4; }
+
+.crewcard h3 { display: flex; align-items: center; gap: 8px; }
+.crewcard h3 i { width: 12px; height: 12px; border-radius: 50%; }
+.split3 { display: flex; height: 14px; border-radius: 3px; overflow: hidden; }
+.steps { display: grid; gap: 0; }
+.steps div { display: grid; grid-template-columns: 1fr auto; gap: 10px; padding: 7px 0; border-bottom: 1px dashed var(--line); font-variant-numeric: tabular-nums; }
+.steps div.res { border-bottom: 0; border-top: 1.5px solid var(--ink); font-weight: 700; font-size: 1.05rem; }
+.callout { background: var(--accent-soft); border-left: 4px solid var(--accent); border-radius: var(--r); padding: 12px 14px; }
+.explain { font-size: 0.86rem; color: var(--muted); max-width: 72ch; }
+details summary { cursor: pointer; font-weight: 600; }
+
+.drawer-back { position: fixed; inset: 0; background: rgb(8 12 16 / 0.55); z-index: 20; display: flex; justify-content: flex-end; }
+.drawer { background: var(--bg); width: min(560px, 100%); height: 100%; overflow: auto; padding: 18px max(16px, env(safe-area-inset-right, 0px)) calc(24px + env(safe-area-inset-bottom, 0px)) 16px; display: grid; gap: 14px; align-content: start; padding-top: calc(18px + env(safe-area-inset-top, 0px)); }
+.cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.cmp > div { padding: 12px 14px; display: grid; gap: 6px; align-content: start; }
+.cmp > div:first-child { background: var(--sunken); }
+.cmp ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+@media (max-width: 560px) { .cmp { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: no-preference) { .card { animation: up 0.25s ease both; } @keyframes up { from { transform: translateY(4px); } } }
+</style>
+</head><body>
+
+<header class="cab">
+  <div class="wrap">
+    <div class="logo">Cutting <b>Cost</b> <small>Finance</small></div>
+    <span class="sample" title="Every number on this page comes from a made-up lawn company">Sample company · Green Ridge Lawn</span>
+    <span class="spacer"></span>
+    <div class="modesw" role="group" aria-label="How much detail">
+      <button id="m-simple" aria-pressed="true">Simple</button>
+      <button id="m-deep" aria-pressed="false">Go deeper</button>
+    </div>
+  </div>
+</header>
+<nav class="tabs" aria-label="Sections"><div class="wrap" id="tabs"></div></nav>
+<main class="wrap" id="view"></main>
+<div id="drawer"></div>
+
+<script>
+// ───────────────────────── sample company ─────────────────────────
+// Everything is generated from one seed so every screen agrees. Today is Sat Nov 8, 2026, the last
+// week of the season (fall cleanups). A season runs April 6 to the end of November.
+let seed = 20261108;
+const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const pick = (a) => a[Math.floor(rnd() * a.length)];
+const round5 = (n) => Math.round(n / 5) * 5;
+
+const TODAY = "2026-11-08";
+const SEASON_START = new Date(Date.UTC(2026, 3, 6)); // Mon Apr 6
+const WEEKS = 31; // Apr 6 … week of Nov 2
+const dayStr = (d) => d.toISOString().slice(0, 10);
+const addDays = (d, n) => new Date(d.getTime() + n * 86400000);
+const fmtDay = (s, o = { month: "short", day: "numeric" }) => new Date(s + "T12:00:00Z").toLocaleDateString("en-CA", { ...o, timeZone: "UTC" });
+
+const CREWS = [
+  { id: 0, name: "Crew 1 · Dave", people: [["Dave", 27], ["Luis", 21]], burden: 0.17, l100: 18, color: "var(--c-labour)", truck: "Truck 12" },
+  { id: 1, name: "Crew 2 · Marco", people: [["Marco", 25], ["Sam", 20]], burden: 0.17, l100: 22, color: "var(--c-fuel)", truck: "Truck 7" },
+];
+const AREAS = [
+  { n: "Maple Grove", crew: 0, drive: [3, 7], street: ["Maple Grove Rd", "Cedar Ct", "Elm St"] },
+  { n: "Aspen Park", crew: 0, drive: [4, 8], street: ["Aspen Ave", "Oak Ln", "Poplar Dr"] },
+  { n: "Old Mill", crew: 0, drive: [5, 10], street: ["Mill Rd", "Wheel Ct", "Grist Way"] },
+  { n: "Birch Hills", crew: 1, drive: [3, 7], street: ["Birch Cres", "Hilltop Dr", "Fern Rd"] },
+  { n: "Northgate", crew: 1, drive: [5, 9], street: ["Northgate Blvd", "Kings Rd", "Lark St"] },
+  { n: "Riverside", crew: 1, drive: [13, 22], street: ["River Rd", "Bend Ln", "Shore Dr"] },
+];
+const SURN = "Hendricks Okafor Wong Fraser Nguyen Reyes Kowalski Tremblay Patel Singh Murphy Rossi Campbell Lee Martin Dubois Novak Haddad Ito Moreau Grant Byrne Silva Kaur Walsh Chen Bauer Olsen Ahmed Price Duarte Klein Ross Mendes Park Young Hughes Ward Petrov Lam".split(" ");
+const CUST = [];
+for (let a = 0; a < AREAS.length; a++) {
+  for (let i = 0; i < 20; i++) {
+    const A = AREAS[a];
+    const site = Math.round(17 + rnd() * 26); // minutes on site per mow
+    // Price roughly follows lot size, with noise: some customers were priced years ago and never raised.
+    const stale = rnd() < 0.18;
+    const price = Math.max(40, round5(site * 1.75 + 10 + (rnd() - 0.5) * 18 - (stale ? 14 : 0)));
+    CUST.push({
+      id: CUST.length, name: `${pick(SURN)}${rnd() < 0.5 ? "" : " " + "ABCDEGHJKMNPRSTW"[Math.floor(rnd() * 16)] + "."}`,
+      addr: `${Math.floor(3 + rnd() * 180)} ${pick(A.street)}`, area: A.n, areaIdx: a, crew: A.crew,
+      site, price, drive: Math.round(A.drive[0] + rnd() * (A.drive[1] - A.drive[0])),
+      spring: rnd() < 0.62, fall: rnd() < 0.72, fert: rnd() < 0.5, since: 2018 + Math.floor(rnd() * 8),
+    });
+  }
+}
+// Two commercial accounts
+CUST[44] = { ...CUST[44], name: "Northgate Plaza", addr: "Northgate Plaza lot", site: 115, price: 240, drive: 8, fert: true };
+CUST[13] = { ...CUST[13], name: "Old Mill Condos", addr: "40 Mill Rd", site: 95, price: 195, drive: 6, fert: true };
+// Each crew does 12 stops a day: customer → weekday by position in the crew's list
+for (const c of [0, 1]) CUST.filter((x) => x.crew === c).forEach((x, i) => (x.weekday = Math.min(4, Math.floor(i / 12))));
+
+const FUEL = Array.from({ length: WEEKS }, (_, w) => +(1.44 + 0.07 * Math.sin(w / 4.5) + 0.02 * Math.sin(w * 1.7)).toFixed(3));
+const MOWER = { lph: 3.2, use: 0.75, maintHr: 1.5 }, MAINT_KM = 0.15, KM_PER_MIN = 0.55, OTHER_H = 1.0;
+const crewRate = (c) => CREWS[c].people.reduce((a, p) => a + p[1], 0) * (1 + CREWS[c].burden);
+
+const FIXED = [
+  { n: "Insurance (liability, vehicles)", m: 1150, g: "Insurance" },
+  { n: "Yard and shop rent", m: 1400, g: "Rent" },
+  { n: "CRM and software subscriptions", m: 210, g: "Subscriptions" },
+  { n: "Phones and data", m: 160, g: "Subscriptions" },
+  { n: "Marketing (ads, door hangers)", m: 450, g: "Marketing" },
+  { n: "Licences and permits", m: 75, g: "Licences" },
+  { n: "Accountant", m: 175, g: "Other" },
+  { n: "Truck 12 depreciation ($48,000 ÷ 6 yrs)", m: 667, g: "Depreciation", dep: true },
+  { n: "Truck 7 depreciation ($32,000 ÷ 6 yrs)", m: 444, g: "Depreciation", dep: true },
+  { n: "Mowers depreciation (2 × $15,000 ÷ 5 yrs)", m: 500, g: "Depreciation", dep: true },
+  { n: "Trailers and small engines", m: 120, g: "Depreciation", dep: true },
+];
+const FIXED_M = FIXED.reduce((a, f) => a + f.m, 0);
+const FIXED_CASH_M = FIXED.filter((f) => !f.dep).reduce((a, f) => a + f.m, 0);
+const fixedFor = (days) => (FIXED_M * 12 / 365.25) * days;
+
+// Visits for the season
+const VISITS = [];
+for (const c of CUST) {
+  for (let w = 0; w < WEEKS; w++) {
+    const date = dayStr(addDays(SEASON_START, w * 7 + c.weekday));
+    if (date > TODAY) continue;
+    const add = (kind, price, site) => VISITS.push({ c: c.id, w, date, kind, price, site, drive: c.drive, crew: c.crew });
+    if (w <= 1 && c.spring && w === c.id % 2) add("Spring cleanup", round5(c.site * 6.2 + 40 + rnd() * 30), Math.round(c.site * 3.4));
+    if (w >= 2 && w <= 28) add("Mow", c.price, Math.round(c.site * (0.85 + rnd() * 0.3)));
+    if (c.fert && w >= 3 && w <= 27 && (w - 3) % 6 === c.id % 6) add("Fertilizer", round5(45 + c.site * 0.6), 12);
+    if (w >= 29 && c.fall && w === 29 + (c.id % 2)) add("Fall cleanup", round5(c.site * 7 + 60 + rnd() * 40), Math.round(c.site * 3.8));
+  }
+}
+// Cost of each visit. "Other" paid time (loading, fuelling, shop) is spread over the day's stops by minutes.
+const dayMins = {};
+for (const v of VISITS) dayMins[v.crew + v.date] = (dayMins[v.crew + v.date] || 0) + v.site + v.drive;
+for (const v of VISITS) {
+  const rate = crewRate(v.crew), share = (v.site + v.drive) / dayMins[v.crew + v.date];
+  v.km = v.drive * KM_PER_MIN;
+  v.otherMin = OTHER_H * 60 * share;
+  v.labSite = (rate * v.site) / 60;
+  v.labDrive = (rate * v.drive) / 60;
+  v.labOther = (rate * v.otherMin) / 60;
+  v.labour = v.labSite + v.labDrive + v.labOther;
+  const mowerH = v.kind === "Fertilizer" ? 0 : (v.site / 60) * MOWER.use;
+  v.fuel = (v.km * CREWS[v.crew].l100 / 100 + mowerH * MOWER.lph) * FUEL[v.w];
+  v.maint = v.km * MAINT_KM + mowerH * MOWER.maintHr;
+  v.mat = v.kind === "Fertilizer" ? 16 : v.kind.includes("cleanup") ? 9 : 0;
+  v.cost = v.labour + v.fuel + v.maint + v.mat;
+  v.cm = v.price - v.cost; // profit before fixed costs
+}
+
+// Money owed (from the CRM's invoices) and cash
+const AR = [];
+for (let i = 0; i < 26; i++) {
+  const c = CUST[Math.floor(rnd() * CUST.length)], age = Math.floor(rnd() < 0.7 ? rnd() * 28 : 30 + rnd() * 70);
+  AR.push({ c, age, amt: round5(c.price * (2 + Math.floor(rnd() * 3)) + (rnd() < 0.45 ? c.site * 7 + 60 : 0)) });
+}
+const CASH_NOW = 38400;
+
+// ───────────────────────── periods and sums ─────────────────────────
+const PERIODS = {
+  week: { label: "This week", sub: "Nov 2 – 8", from: "2026-11-02", to: "2026-11-08", prev: { from: "2026-10-26", to: "2026-11-01" }, word: "This week" },
+  month: { label: "October", sub: "Oct 1 – 31", from: "2026-10-01", to: "2026-10-31", prev: { from: "2026-09-01", to: "2026-09-30" }, word: "In October" },
+  season: { label: "Season", sub: "Apr 6 – Nov 8", from: "2026-04-06", to: "2026-11-08", prev: null, word: "So far this season" },
+};
+const days = (p) => (Date.parse(p.to) - Date.parse(p.from)) / 86400000 + 1;
+function sum(from, to, filter = () => true) {
+  const vs = VISITS.filter((v) => v.date >= from && v.date <= to && filter(v));
+  const s = { n: vs.length, rev: 0, labour: 0, labSite: 0, labDrive: 0, labOther: 0, fuel: 0, maint: 0, mat: 0, cost: 0, cm: 0, site: 0, drive: 0, other: 0, km: 0, vs };
+  for (const v of vs) {
+    s.rev += v.price; s.labour += v.labour; s.labSite += v.labSite; s.labDrive += v.labDrive; s.labOther += v.labOther;
+    s.fuel += v.fuel; s.maint += v.maint; s.mat += v.mat; s.cost += v.cost; s.cm += v.cm; s.site += v.site; s.drive += v.drive; s.other += v.otherMin; s.km += v.km;
+  }
+  s.fixed = fixedFor((Date.parse(to) - Date.parse(from)) / 86400000 + 1);
+  return s;
+}
+
+// ───────────────────────── format ─────────────────────────
+const $ = (n, d = 0) => (n < 0 ? "−$" : "$") + Math.abs(n).toLocaleString("en-CA", { minimumFractionDigits: d, maximumFractionDigits: d });
+const pct = (n, d = 0) => (n * 100).toFixed(d) + "%";
+const hm = (m) => (m >= 60 ? `${Math.floor(m / 60).toLocaleString()} h ${String(Math.round(m % 60)).padStart(2, "0")}` : `${Math.round(m)} min`);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const deltaHtml = (now, before, goodUp = true) => {
+  if (before == null || !isFinite(before) || before === 0) return "";
+  const ch = (now - before) / Math.abs(before), good = goodUp ? ch >= 0 : ch <= 0;
+  return `<span class="delta ${good ? "pos" : "neg"}">${ch >= 0 ? "▲" : "▼"} ${Math.abs(ch * 100).toFixed(0)}% vs ${"the week before"}</span>`;
+};
+
+// ───────────────────────── state ─────────────────────────
+const store = { get(k, d) { try { const v = localStorage.getItem("ccfin." + k); return v === null ? d : JSON.parse(v); } catch { return d; } }, set(k, v) { try { localStorage.setItem("ccfin." + k, JSON.stringify(v)); } catch {} } };
+const S = { mode: store.get("mode", "simple"), period: store.get("period", "season"), fix: store.get("fix", 0), custSort: "hour", custQ: "", custBy: "customer", custAll: false,
+  raise: 8, raiseWho: "low", lose: 5, margin: 20, ownerPay: 1200, rates: null };
+const net = (s) => s.cm - s.fixed * (S.fix / 100);
+
+const SIMPLE_TABS = [["home", "Overview"], ["customers", "Customers"], ["crews", "Crews"], ["cash", "Cash"]];
+const DEEP_TABS = [["pnl", "Profit & loss"], ["rates", "True hourly cost"], ["breakeven", "Break-even"], ["pricing", "Price planner"], ["driving", "Driving & fuel"]];
+const ALL = [...SIMPLE_TABS, ...DEEP_TABS, ["sources", "Your CRM"]];
+
+function tab() {
+  const h = location.hash.slice(1);
+  const ok = ALL.some(([k]) => k === h) && (S.mode === "deep" || !DEEP_TABS.some(([k]) => k === h));
+  return ok ? h : "home";
+}
+function renderTabs() {
+  const t = tab();
+  const a = ([k, l], deep) => `<a href="#${k}" class="${deep ? "deep" : ""}" ${t === k ? 'aria-current="page"' : ""}>${l}</a>`;
+  document.getElementById("tabs").innerHTML =
+    SIMPLE_TABS.map((x) => a(x)).join("") + (S.mode === "deep" ? `<span class="sep" aria-hidden="true"></span>` + DEEP_TABS.map((x) => a(x, true)).join("") : "") +
+    `<span class="sep" aria-hidden="true"></span>` + a(["sources", "Your CRM"]);
+  document.getElementById("m-simple").setAttribute("aria-pressed", S.mode === "simple");
+  document.getElementById("m-deep").setAttribute("aria-pressed", S.mode === "deep");
+}
+function render() {
+  renderTabs();
+  const t = tab();
+  const v = document.getElementById("view");
+  v.innerHTML = VIEWS[t]();
+  (BIND[t] || (() => {}))(v);
+  bindCommon(v);
+}
+// While a slider is dragged, rebuild everything around it but keep its section (and the slider) in
+// place, refreshing only the parts marked data-live.
+function update() {
+  const t = tab(), v = document.getElementById("view"), y = scrollY;
+  const tmp = document.createElement("div");
+  tmp.innerHTML = VIEWS[t]();
+  const fresh = [...tmp.children], old = [...v.children];
+  fresh.forEach((n, i) => {
+    const o = old[i];
+    if (o && n.dataset.static && o.dataset.static === n.dataset.static) {
+      const lo = o.querySelectorAll("[data-live]"), ln = n.querySelectorAll("[data-live]");
+      lo.forEach((el, j) => ln[j] && (el.innerHTML = ln[j].innerHTML));
+    } else if (o) o.replaceWith(n);
+    else v.append(n);
+  });
+  old.slice(fresh.length).forEach((o) => o.remove());
+  (BIND[t] || (() => {}))(v);
+  bindCommon(v);
+  scrollTo(0, y);
+}
+document.getElementById("m-simple").onclick = () => { S.mode = "simple"; store.set("mode", "simple"); if (DEEP_TABS.some(([k]) => k === location.hash.slice(1))) location.hash = "home"; render(); };
+document.getElementById("m-deep").onclick = () => { S.mode = "deep"; store.set("mode", "deep"); render(); };
+window.addEventListener("hashchange", () => { render(); window.scrollTo(0, 0); });
+
+// ───────────────────────── shared pieces ─────────────────────────
+function periodBar() {
+  return `<div class="row between"><div class="seg" role="group" aria-label="Period">${Object.entries(PERIODS)
+    .map(([k, p]) => `<button data-period="${k}" aria-pressed="${S.period === k}">${p.label}</button>`).join("")}</div>
+    <span class="muted small">${PERIODS[S.period].sub}, 2026</span></div>`;
+}
+function fixBar(fixedTotal) {
+  const f = S.fix;
+  const what = f === 0 ? "Profit from the jobs alone. Rent, insurance and the rest are left out." : f === 100 ? "True profit: every bill paid, including what the trucks and mowers lose in value." : `${$(fixedTotal * f / 100)} of ${$(fixedTotal)} in fixed costs counted.`;
+  return `<section class="card fixbar" aria-label="Fixed costs" data-static="fix">
+    <div class="row between"><b>Fixed costs counted: <span class="num" data-live>${f}%</span></b>
+      <span class="row"><button class="btn" data-fix="0">Jobs only</button><button class="btn" data-fix="100">True profit</button></span></div>
+    <input type="range" id="fix" min="0" max="100" step="5" value="${f}" aria-label="Share of fixed costs to count">
+    <div class="ticks"><span>Jobs only</span><span>Half</span><span>Everything</span></div>
+    <p class="small muted" data-live>${what}</p></section>`;
+}
+function bindCommon(v) {
+  v.querySelectorAll("[data-period]").forEach((b) => (b.onclick = () => { S.period = b.dataset.period; store.set("period", S.period); render(); }));
+  v.querySelectorAll("[data-fix]").forEach((b) => (b.onclick = () => { S.fix = +b.dataset.fix; store.set("fix", S.fix); render(); }));
+  const fx = v.querySelector("#fix");
+  if (fx) fx.oninput = () => { S.fix = +fx.value; store.set("fix", S.fix); update(); };
+  v.querySelectorAll("[data-cust]").forEach((r) => {
+    r.onclick = () => openCustomer(+r.dataset.cust);
+    r.onkeydown = (e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), openCustomer(+r.dataset.cust));
+  });
+  v.querySelectorAll("[data-copy]").forEach((b) => (b.onclick = () => copyText(COPY[b.dataset.copy](), b)));
+}
+const COPY = {};
+function copyText(text, btn) {
+  const done = () => { const t = btn.textContent; btn.textContent = "Copied"; setTimeout(() => (btn.textContent = t), 1500); };
+  try { navigator.clipboard.writeText(text).then(done, () => fallback()); } catch { fallback(); }
+  function fallback() { const ta = document.createElement("textarea"); ta.value = text; document.body.append(ta); ta.select(); try { document.execCommand("copy"); done(); } catch {} ta.remove(); }
+}
+const csv = (rows) => rows.map((r) => r.map((x) => (typeof x === "string" && /[",\n]/.test(x) ? `"${x.replace(/"/g, '""')}"` : x)).join(",")).join("\n");
+
+// Bar chart, drawn to one scale. vals may be negative.
+const chartW = (half) => {
+  const full = Math.max(300, (document.getElementById("view").clientWidth || 640) - 34 - 32);
+  return Math.round(half && innerWidth > 760 ? (full - 16) / 2 : full);
+};
+function bars(vals, labels, { hi = -1, color = "var(--c-labour)", neg = "var(--neg)", h = 190, fmt = (n) => $(n), line = null, lineLabel = "", half = false } = {}) {
+  const W = chartW(half), H = h, L = 46, B = 22, T = 8;
+  const max = Math.max(0, ...vals, line ?? 0), min = Math.min(0, ...vals);
+  const step = niceStep((max - min) / 4);
+  const top = Math.ceil(max / step) * step, bot = Math.floor(min / step) * step || 0;
+  const y = (v) => T + (top - v) / (top - bot || 1) * (H - T - B);
+  const bw = (W - L) / vals.length;
+  let g = "";
+  for (let t = bot; t <= top + 1e-9; t += step) g += `<line class="grid" x1="${L}" x2="${W}" y1="${y(t)}" y2="${y(t)}"/><text x="${L - 6}" y="${y(t) + 4}" text-anchor="end">${fmt(t)}</text>`;
+  vals.forEach((v, i) => {
+    const x = L + i * bw + bw * 0.15, yy = Math.min(y(v), y(0)), hh = Math.abs(y(v) - y(0));
+    g += `<rect x="${x}" y="${yy}" width="${bw * 0.7}" height="${Math.max(hh, 1)}" rx="2" fill="${v < 0 ? neg : color}" opacity="${hi < 0 || i === hi ? 1 : 0.55}"><title>${esc(labels[i])}: ${fmt(v)}</title></rect>`;
+    if (labels.length <= 12 || i % Math.ceil(labels.length / Math.max(3, Math.floor(W / 90))) === 0) g += `<text x="${x + bw * 0.35}" y="${H - 6}" text-anchor="middle">${esc(labels[i])}</text>`;
+  });
+  g += `<line class="zero" x1="${L}" x2="${W}" y1="${y(0)}" y2="${y(0)}"/>`;
+  if (line != null) g += `<line x1="${L}" x2="${W}" y1="${y(line)}" y2="${y(line)}" stroke="var(--neg)" stroke-width="2" stroke-dasharray="6 4"/><text x="${W}" y="${y(line) - 6}" text-anchor="end" style="fill:var(--neg);font-weight:600">${esc(lineLabel)}</text>`;
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img">${g}</svg>`;
+}
+function lines(series, labels, { h = 210, fmt = (n) => $(n), ref = null, refLabel = "", marks = [], half = false } = {}) {
+  const W = chartW(half), H = h, L = 54, B = 22, T = 10;
+  const all = series.flatMap((s) => s.vals).concat(ref ?? []);
+  const max = Math.max(...all), min = Math.min(0, ...all);
+  const step = niceStep((max - min) / 4);
+  const top = Math.ceil(max / step) * step, bot = Math.floor(min / step) * step;
+  const y = (v) => T + (top - v) / (top - bot || 1) * (H - T - B);
+  const x = (i) => L + (i / (labels.length - 1)) * (W - L - 8);
+  let g = "";
+  for (let t = bot; t <= top + 1e-9; t += step) g += `<line class="grid" x1="${L}" x2="${W}" y1="${y(t)}" y2="${y(t)}"/><text x="${L - 6}" y="${y(t) + 4}" text-anchor="end">${fmt(t)}</text>`;
+  const every = Math.ceil(labels.length / Math.max(3, Math.floor(W / 80)));
+  labels.forEach((l, i) => { if ((i % every === 0 && labels.length - 1 - i >= every / 2) || i === labels.length - 1) g += `<text x="${x(i)}" y="${H - 6}" text-anchor="middle">${esc(l)}</text>`; });
+  if (ref != null) g += `<line x1="${L}" x2="${W}" y1="${y(ref)}" y2="${y(ref)}" stroke="var(--neg)" stroke-width="1.5" stroke-dasharray="6 4"/><text x="${W}" y="${y(ref) - 6}" text-anchor="end" style="fill:var(--neg);font-weight:600">${esc(refLabel)}</text>`;
+  for (const s of series) {
+    const pts = s.vals.map((v, i) => `${x(i)},${y(v)}`).join(" ");
+    if (s.area) g += `<polygon points="${x(0)},${y(Math.max(bot, 0))} ${pts} ${x(s.vals.length - 1)},${y(Math.max(bot, 0))}" fill="${s.color}" opacity="0.12"/>`;
+    g += `<polyline points="${pts}" fill="none" stroke="${s.color}" stroke-width="2.5" stroke-linejoin="round" ${s.dash ? 'stroke-dasharray="5 4"' : ""}/>`;
+    const li = s.vals.length - 1;
+    g += `<circle cx="${x(li)}" cy="${y(s.vals[li])}" r="4" fill="${s.color}"/>`;
+  }
+  for (const m of marks) g += `<circle cx="${x(m.i)}" cy="${y(m.v)}" r="5" fill="var(--surface)" stroke="${m.color}" stroke-width="2.5"/><text x="${x(m.i)}" y="${y(m.v) - 10}" text-anchor="${x(m.i) > W - 70 ? "end" : x(m.i) < L + 70 ? "start" : "middle"}" style="fill:var(--ink);font-weight:600">${esc(m.label)}</text>`;
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img">${g}</svg>`;
+}
+function niceStep(raw) {
+  if (raw <= 0) return 1;
+  const p = Math.pow(10, Math.floor(Math.log10(raw))), f = raw / p;
+  return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * p;
+}
+const kfmt = (n) => (Math.abs(n) >= 1000 ? (n < 0 ? "−$" : "$") + (Math.abs(n) / 1000).toFixed(Math.abs(n) >= 10000 ? 0 : 1) + "k" : $(n));
+
+// Per-customer season numbers (and per period)
+function customerRows(from, to) {
+  const s = sum(from, to);
+  const fixed = s.fixed;
+  const by = new Map();
+  for (const v of s.vs) {
+    const r = by.get(v.c) || { c: CUST[v.c], n: 0, rev: 0, cost: 0, cm: 0, site: 0, drive: 0, km: 0, vs: [] };
+    r.n++; r.rev += v.price; r.cost += v.cost; r.cm += v.cm; r.site += v.site; r.drive += v.drive; r.km += v.km; r.vs.push(v);
+    by.set(v.c, r);
+  }
+  const rows = [...by.values()];
+  for (const r of rows) {
+    r.fixed = fixed * r.rev / (s.rev || 1);
+    r.net = r.cm - r.fixed * S.fix / 100;
+    r.perHour = r.site ? r.net / r.site * 60 : 0;
+  }
+  const avg = s.site ? net(s) / s.site * 60 : 0;
+  for (const r of rows) {
+    r.status = r.net < 0 ? "bad" : r.perHour < avg * 0.75 ? "thin" : "good";
+    // Price per visit that earns the company's average per hour on site, rounded up to $5
+    const mowVs = r.vs.filter((v) => v.kind === "Mow");
+    const perVisitCost = mowVs.length ? mowVs.reduce((a, v) => a + v.cost + (r.fixed * S.fix / 100) / r.n, 0) / mowVs.length : 0;
+    const perVisitSite = mowVs.length ? mowVs.reduce((a, v) => a + v.site, 0) / mowVs.length : 0;
+    r.suggest = mowVs.length && avg > 0 ? Math.ceil((perVisitCost + avg * perVisitSite / 60) / 5) * 5 : null;
+  }
+  return { rows, avg, s };
+}
+
+// ───────────────────────── views ─────────────────────────
+const VIEWS = {}, BIND = {};
+
+VIEWS.home = () => {
+  const P = PERIODS[S.period], s = sum(P.from, P.to), prev = P.prev ? sum(P.prev.from, P.prev.to) : null;
+  const n = net(s), per100 = s.rev ? n / s.rev * 100 : 0;
+  const fixedIn = s.fixed * S.fix / 100;
+  const label = S.fix === 0 ? "Profit from jobs" : S.fix === 100 ? "True profit" : `Profit after ${S.fix}% of fixed`;
+  const dWord = S.period === "month" ? "September" : "the week before";
+  const dl = (a, b, up = true) => prev ? deltaHtml(a, b, up).replace("the week before", dWord) : `<span class="delta muted">${s.n.toLocaleString()} visits</span>`;
+  // Weekly profit, season
+  const weekly = Array.from({ length: WEEKS }, (_, w) => {
+    const f = dayStr(addDays(SEASON_START, w * 7)), t = dayStr(addDays(SEASON_START, w * 7 + 6));
+    return net(sum(f, t));
+  });
+  const wl = weekly.map((_, w) => fmtDay(dayStr(addDays(SEASON_START, w * 7))));
+  // Alerts
+  const { rows, avg } = customerRows(PERIODS.season.from, PERIODS.season.to);
+  const losing = rows.filter((r) => r.status === "bad").length, thin = rows.filter((r) => r.status === "thin").length;
+  const riv = sum(PERIODS.season.from, PERIODS.season.to, (v) => CUST[v.c].area === "Riverside");
+  const old = AR.filter((a) => a.age > 60);
+  const winter = winterNeed();
+  const alerts = [
+    losing && { lvl: "bad", t: `${losing} customer${losing > 1 ? "s" : ""} cost more to serve than they paid this season.`, a: "#customers", al: "See who" },
+    thin && { lvl: "warn", t: `${thin} more earn under 75% of your average ${$(avg)}/h on site. A small raise fixes most of them.`, a: S.mode === "deep" ? "#pricing" : "#customers", al: "Plan raises" },
+    { lvl: "warn", t: `Riverside stops spend ${pct(riv.drive / (riv.site + riv.drive))} of their time driving, ${$(riv.labDrive + riv.km * (CREWS[1].l100 / 100 * 1.47 + MAINT_KM))} this season just getting there.`, a: S.mode === "deep" ? "#driving" : "#crews", al: "Look closer" },
+    old.length && { lvl: "bad", t: `${$(old.reduce((a, x) => a + x.amt, 0))} in invoices is over 60 days late (${old.length} customers).`, a: "#cash", al: "Cash" },
+    { lvl: winter.short > 0 ? "warn" : "good", t: winter.short > 0 ? `Winter: bills keep coming with no mowing. You're ${$(winter.short)} short of covering them until April.` : `Winter is covered: cash in the bank and money owed pay the bills until April.`, a: "#cash", al: "Winter plan" },
+  ].filter(Boolean);
+  const parts = [
+    ["Crew pay", s.labour, "var(--c-labour)"], ["Fuel", s.fuel, "var(--c-fuel)"], ["Maintenance", s.maint, "var(--c-maint)"], ["Materials", s.mat, "var(--c-mat)"],
+    ...(fixedIn > 0 ? [["Fixed costs", fixedIn, "var(--c-fixed)"]] : []), [n >= 0 ? "Kept" : "Lost", Math.abs(n), n >= 0 ? "var(--c-kept)" : "var(--neg)"],
+  ];
+  const tot = parts.reduce((a, p) => a + p[1], 0);
+  COPY.home = () => csv([["Week of", label], ...weekly.map((v, i) => [wl[i], v.toFixed(2)])]);
+  return `
+  ${fixBar(s.fixed)}
+  ${periodBar()}
+  <p class="lead">${P.word} you kept <span class="${per100 < 0 ? "neg" : ""}">${$(per100)}</span> of every $100 you charged, after paying crews, fuel, maintenance${S.fix === 100 ? ", materials and every fixed bill" : S.fix > 0 ? `, materials and ${S.fix}% of fixed bills` : " and materials"}.</p>
+  <section class="hero" aria-label="Key numbers">
+    <div class="tile big"><span class="k">${label}</span><span class="v ${n < 0 ? "neg" : ""}">${$(n)}</span>${dl(n, prev ? net(prev) : null)}</div>
+    <div class="tile"><span class="k">Money in</span><span class="v">${$(s.rev)}</span>${dl(s.rev, prev?.rev)}</div>
+    <div class="tile"><span class="k">Costs</span><span class="v">${$(s.cost + fixedIn)}</span>${dl(s.cost + fixedIn, prev ? prev.cost + prev.fixed * S.fix / 100 : null, false)}</div>
+    <div class="tile"><span class="k">Per hour on site</span><span class="v">${$(s.site ? n / s.site * 60 : 0)}</span><span class="delta muted">${hm(s.site)} on site</span></div>
+  </section>
+  <div class="grid2">
+    <section class="card"><h2>Needs a look</h2><div class="alerts">${alerts.map((a) => `<div class="alert ${a.lvl}"><span class="dot" aria-hidden="true"></span><span>${a.t}</span><a href="${a.a}">${a.al} ›</a></div>`).join("")}</div></section>
+    <section class="card"><h2>Where every $100 went</h2>
+      <div class="stack100" role="img" aria-label="${parts.map((p) => `${p[0]} ${$(p[1] / tot * 100)}`).join(", ")}">${parts.map((p) => `<span style="flex:${p[1]};background:${p[2]}"></span>`).join("")}</div>
+      <div class="legend">${parts.map((p) => `<div><i style="background:${p[2]}"></i><span>${p[0]}</span><b>${$(p[1] / (s.rev || 1) * 100)}</b><span class="p">${$(p[1])}</span></div>`).join("")}</div>
+    </section>
+  </div>
+  <section class="card"><div class="row between"><h2>${label}, week by week</h2>${S.mode === "deep" ? `<button class="btn" data-copy="home">Copy as CSV</button>` : ""}</div>
+    ${bars(weekly, wl, { hi: WEEKS - 1, fmt: kfmt })}
+    <p class="explain">Big weeks in spring and fall are cleanups. Slide fixed costs to 100% to see which weeks really paid the bills.</p></section>`;
+};
+
+VIEWS.customers = () => {
+  const P = PERIODS[S.period];
+  const { rows, avg, s } = customerRows(P.from, P.to);
+  const deep = S.mode === "deep";
+  let list = rows;
+  if (S.custBy === "area") {
+    const g = new Map();
+    for (const r of rows) {
+      const a = g.get(r.c.area) || { area: r.c.area, crew: CREWS[r.c.crew].name, k: 0, n: 0, rev: 0, cost: 0, net: 0, site: 0, drive: 0, km: 0 };
+      a.k++; a.n += r.n; a.rev += r.rev; a.cost += r.cost; a.net += r.net; a.site += r.site; a.drive += r.drive; a.km += r.km; g.set(r.c.area, a);
+    }
+    const areas = [...g.values()].map((a) => ({ ...a, perHour: a.site ? a.net / a.site * 60 : 0 })).sort((a, b) => a.perHour - b.perHour);
+    COPY.cust = () => csv([["Area", "Crew", "Customers", "Visits", "Revenue", "Costs", "Profit", "Minutes on site", "Minutes driving", "Profit per hour on site"], ...areas.map((a) => [a.area, a.crew, a.k, a.n, a.rev, a.cost.toFixed(2), a.net.toFixed(2), a.site, a.drive, a.perHour.toFixed(2)])]);
+    return `${fixBar(s.fixed)}${periodBar()}
+    <section class="card"><div class="row between">${byToggle()}${deep ? `<button class="btn" data-copy="cust">Copy as CSV</button>` : ""}</div>
+    <p class="explain">Areas, lowest profit per hour first. Your average is <b>${$(avg)}/h</b> on site.</p>
+    <div class="tablewrap"><table><thead><tr><th>Area</th><th class="n">Customers</th><th class="n">Money in</th><th class="n">Profit</th><th class="n">Per hour</th><th class="n">Driving</th>${deep ? `<th class="n">Km</th><th class="n">Drive share</th>` : ""}</tr></thead><tbody>
+    ${areas.map((a) => `<tr><td><div class="who">${a.area}</div><div class="where">${a.crew}</div></td><td class="n">${a.k}</td><td class="n">${$(a.rev)}</td><td class="n ${a.net < 0 ? "neg" : ""}">${$(a.net)}</td><td class="n"><b>${$(a.perHour)}</b></td><td class="n">${hm(a.drive)}</td>${deep ? `<td class="n">${Math.round(a.km).toLocaleString()}</td><td class="n">${pct(a.drive / (a.drive + a.site))}</td>` : ""}</tr>`).join("")}
+    </tbody></table></div></section>`;
+  }
+  const q = S.custQ.toLowerCase();
+  list = rows.filter((r) => !q || `${r.c.name} ${r.c.addr} ${r.c.area}`.toLowerCase().includes(q));
+  const sorters = { hour: (a, b) => a.perHour - b.perHour, profit: (a, b) => a.net - b.net, rev: (a, b) => b.rev - a.rev, name: (a, b) => a.c.name.localeCompare(b.c.name) };
+  list.sort(sorters[S.custSort]);
+  const counts = { good: rows.filter((r) => r.status === "good").length, thin: rows.filter((r) => r.status === "thin").length, bad: rows.filter((r) => r.status === "bad").length };
+  COPY.cust = () => csv([["Customer", "Address", "Area", "Crew", "Visits", "Revenue", "Job costs", "Fixed share", "Profit", "Minutes on site", "Minutes driving", "Profit per hour", "Suggested price per mow"],
+    ...list.map((r) => [r.c.name, r.c.addr, r.c.area, CREWS[r.c.crew].name, r.n, r.rev, r.cost.toFixed(2), (r.fixed * S.fix / 100).toFixed(2), r.net.toFixed(2), r.site, r.drive, r.perHour.toFixed(2), r.suggest ?? ""])]);
+  const chip = (st) => st === "good" ? `<span class="chip good">Healthy</span>` : st === "thin" ? `<span class="chip thin">Thin</span>` : `<span class="chip bad">Losing money</span>`;
+  return `${fixBar(s.fixed)}${periodBar()}
+  <section class="grid3" aria-label="Customer health">
+    <div class="tile"><span class="k">Healthy</span><span class="v pos">${counts.good}</span><span class="small muted">at or near your average</span></div>
+    <div class="tile"><span class="k">Thin</span><span class="v warnc">${counts.thin}</span><span class="small muted">under 75% of your ${$(avg)}/h</span></div>
+    <div class="tile"><span class="k">Losing money</span><span class="v neg">${counts.bad}</span><span class="small muted">cost more than they pay</span></div>
+  </section>
+  <section class="card">
+    <div class="row between">${byToggle()}
+      <div class="row"><input type="search" id="cq" placeholder="Search name or street" value="${esc(S.custQ)}" aria-label="Search customers">
+      <select id="csort" aria-label="Sort"><option value="hour">Lowest per hour first</option><option value="profit">Lowest profit first</option><option value="rev">Most money in</option><option value="name">Name</option></select>
+      ${deep ? `<button class="btn" data-copy="cust">Copy as CSV</button>` : ""}</div></div>
+    <p class="explain">Per hour = profit ÷ hours on site. It's the fairest way to compare a $45 lawn with a $240 plaza. Tap a customer for their visits and what to charge.</p>
+    <div class="tablewrap"><table><thead><tr><th>Customer</th><th>Status</th><th class="n">Visits</th><th class="n">Money in</th><th class="n">Profit</th><th class="n">Per hour</th>${deep ? `<th class="n">On site</th><th class="n">Driving</th><th class="n">Fixed share</th><th class="n">Now / mow</th>` : ""}<th class="n">Suggested</th></tr></thead><tbody>
+    ${list.slice(0, S.custAll || q ? list.length : 25).map((r) => `<tr class="click" tabindex="0" data-cust="${r.c.id}"><td><div class="who">${esc(r.c.name)}</div><div class="where">${esc(r.c.addr)} · ${r.c.area}</div></td><td>${chip(r.status)}</td><td class="n">${r.n}</td><td class="n">${$(r.rev)}</td><td class="n ${r.net < 0 ? "neg" : ""}">${$(r.net)}</td><td class="n"><b>${$(r.perHour)}</b></td>
+      ${deep ? `<td class="n">${hm(r.site)}</td><td class="n">${hm(r.drive)}</td><td class="n muted">${$(r.fixed * S.fix / 100)}</td><td class="n">${$(r.c.price)}</td>` : ""}
+      <td class="n">${r.suggest && r.suggest > r.c.price && r.status !== "good" ? `<b>${$(r.suggest)}</b>` : `<span class="muted">–</span>`}</td></tr>`).join("")}
+    </tbody></table></div>
+    ${!q && list.length > 25 ? `<button class="btn" id="call">${S.custAll ? "Show the first 25" : `Show all ${list.length} customers`}</button>` : ""}</section>`;
+};
+const byToggle = () => `<div class="seg" role="group" aria-label="Group by"><button data-by="customer" aria-pressed="${S.custBy === "customer"}">By customer</button><button data-by="area" aria-pressed="${S.custBy === "area"}">By area</button></div>`;
+BIND.customers = (v) => {
+  v.querySelectorAll("[data-by]").forEach((b) => (b.onclick = () => { S.custBy = b.dataset.by; render(); }));
+  const q = v.querySelector("#cq"), so = v.querySelector("#csort");
+  if (q) q.oninput = () => { S.custQ = q.value; render(); const n = document.getElementById("cq"); n.focus(); n.setSelectionRange(n.value.length, n.value.length); };
+  if (so) { so.value = S.custSort; so.onchange = () => { S.custSort = so.value; render(); }; }
+  const all = v.querySelector("#call");
+  if (all) all.onclick = () => { S.custAll = !S.custAll; render(); };
+};
+
+function openCustomer(id) {
+  const c = CUST[id];
+  const { rows, avg } = customerRows(PERIODS.season.from, PERIODS.season.to);
+  const r = rows.find((x) => x.c.id === id);
+  if (!r) return;
+  const d = document.getElementById("drawer");
+  const mows = r.vs.filter((v) => v.kind === "Mow");
+  const per = (k) => mows.length ? mows.reduce((a, v) => a + v[k], 0) / mows.length : 0;
+  const parts = [["Crew on site", per("labSite"), "var(--c-labour)"], ["Crew driving there", per("labDrive"), "var(--c-labour)"], ["Loading, shop time", per("labOther"), "var(--c-labour)"], ["Fuel", per("fuel"), "var(--c-fuel)"], ["Maintenance", per("maint"), "var(--c-maint)"]];
+  const fixedPer = r.fixed / r.n;
+  const kept = c.price - parts.reduce((a, p) => a + p[1], 0) - fixedPer * S.fix / 100;
+  d.innerHTML = `<div class="drawer-back" id="db"><aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="dh">
+    <div class="row between"><div><h2 id="dh">${esc(c.name)}</h2><p class="muted small">${esc(c.addr)} · ${c.area} · ${CREWS[c.crew].name} · customer since ${c.since}</p></div><button class="btn" id="dx">Close</button></div>
+    <div class="grid3">
+      <div class="tile"><span class="k">This season</span><span class="v">${$(r.rev)}</span><span class="small muted">${r.n} visits</span></div>
+      <div class="tile"><span class="k">Profit</span><span class="v ${r.net < 0 ? "neg" : ""}">${$(r.net)}</span><span class="small muted">${S.fix ? `after ${S.fix}% fixed` : "before fixed costs"}</span></div>
+      <div class="tile"><span class="k">Per hour on site</span><span class="v">${$(r.perHour)}</span><span class="small muted">your average ${$(avg)}</span></div>
+    </div>
+    ${mows.length ? `<section class="card"><h3>One mow, $${c.price}</h3>
+      <div class="steps">${parts.map((p) => `<div><span>${p[0]}</span><span>${$(p[1], 2)}</span></div>`).join("")}
+      ${S.fix ? `<div><span>Share of fixed costs (${S.fix}%)</span><span>${$(fixedPer * S.fix / 100, 2)}</span></div>` : ""}
+      <div class="res"><span>Kept per mow</span><span class="${kept < 0 ? "neg" : "pos"}">${$(kept, 2)}</span></div></div>
+      <p class="explain">${hm(per("site"))} on site and ${hm(per("drive"))} driving there, for a 2-person crew costing ${$(crewRate(c.crew), 2)} an hour with payroll costs.</p></section>` : ""}
+    ${r.suggest && r.suggest > c.price && r.status !== "good" ? `<div class="callout"><b>Charge ${$(r.suggest)} a mow</b> (now ${$(c.price)}). That brings this lawn to your average of ${$(avg)} an hour on site: about ${$((r.suggest - c.price) * 27)} more a season.</div>` : `<div class="callout">This customer earns at or above your average of ${$(avg)} an hour. No change needed.</div>`}
+    <section class="card"><h3>Visits</h3><div class="tablewrap"><table><thead><tr><th>Date</th><th>Work</th><th class="n">Price</th><th class="n">On site</th><th class="n">Costs</th><th class="n">Kept</th></tr></thead><tbody>
+      ${r.vs.slice().reverse().map((v) => `<tr><td>${fmtDay(v.date)}</td><td>${v.kind}</td><td class="n">${$(v.price)}</td><td class="n">${v.site} min</td><td class="n">${$(v.cost, 2)}</td><td class="n ${v.cm < 0 ? "neg" : ""}">${$(v.cm, 2)}</td></tr>`).join("")}
+    </tbody></table></div><p class="explain">Kept here is before fixed costs.</p></section>
+  </aside></div>`;
+  const close = () => (d.innerHTML = "");
+  document.getElementById("dx").onclick = close;
+  document.getElementById("db").onclick = (e) => e.target.id === "db" && close();
+  document.addEventListener("keydown", function k(e) { if (e.key === "Escape") { close(); document.removeEventListener("keydown", k); } });
+  document.getElementById("dx").focus();
+}
+
+VIEWS.crews = () => {
+  const P = PERIODS[S.period], deep = S.mode === "deep";
+  const all = sum(P.from, P.to);
+  const cards = CREWS.map((cr) => {
+    const s = sum(P.from, P.to, (v) => v.crew === cr.id);
+    const fixedShare = all.fixed * s.rev / (all.rev || 1);
+    const n = s.cm - fixedShare * S.fix / 100;
+    const daysWorked = new Set(s.vs.map((v) => v.date)).size || 1;
+    const tot = s.site + s.drive + s.other;
+    return { cr, s, n, daysWorked, tot, fixedShare };
+  });
+  return `${fixBar(all.fixed)}${periodBar()}
+  <div class="grid2">${cards.map(({ cr, s, n, daysWorked, tot, fixedShare }) => `
+    <section class="card crewcard"><h3><i style="background:${cr.color}"></i>${cr.name}</h3>
+      <p class="muted small">${cr.people.map((p) => p[0]).join(" and ")} · ${cr.truck}</p>
+      <div class="grid3">
+        <div class="tile"><span class="k">Money in</span><span class="v">${$(s.rev)}</span></div>
+        <div class="tile"><span class="k">Profit</span><span class="v ${n < 0 ? "neg" : ""}">${$(n)}</span></div>
+        <div class="tile"><span class="k">Per hour on site</span><span class="v">${$(s.site ? n / s.site * 60 : 0)}</span></div>
+      </div>
+      <div><b class="small">Where the paid hours went</b>
+        <div class="split3" role="img" aria-label="On site ${pct(s.site / tot)}, driving ${pct(s.drive / tot)}, other ${pct(s.other / tot)}"><span style="flex:${s.site};background:var(--c-kept)"></span><span style="flex:${s.drive};background:var(--c-fuel)"></span><span style="flex:${s.other};background:var(--c-fixed)"></span></div>
+        <div class="legend"><div><i style="background:var(--c-kept)"></i><span>On site (billable)</span><b>${pct(s.site / tot)}</b><span class="p">${hm(s.site)}</span></div><div><i style="background:var(--c-fuel)"></i><span>Driving between stops</span><b>${pct(s.drive / tot)}</b><span class="p">${hm(s.drive)}</span></div><div><i style="background:var(--c-fixed)"></i><span>Loading, fuelling, shop</span><b>${pct(s.other / tot)}</b><span class="p">${hm(s.other)}</span></div></div>
+      </div>
+      <p class="small">${(s.n / daysWorked).toFixed(1)} stops a day · ${(s.km / daysWorked).toFixed(0)} km a day · ${$(s.rev / daysWorked)} a day</p>
+      ${deep ? `<details><summary>Crew profit and loss</summary><div class="steps">
+        <div><span>Money in</span><span>${$(s.rev)}</span></div><div><span>Crew pay (${$(crewRate(cr.id), 2)}/h with payroll costs)</span><span>−${$(s.labour)}</span></div>
+        <div><span>Fuel (truck ${cr.l100} L/100 km, mowers)</span><span>−${$(s.fuel)}</span></div><div><span>Maintenance</span><span>−${$(s.maint)}</span></div><div><span>Materials</span><span>−${$(s.mat)}</span></div>
+        <div><span>Profit from jobs</span><span>${$(s.cm)}</span></div><div><span>Share of fixed costs (by revenue)</span><span>−${$(fixedShare)}</span></div>
+        <div class="res"><span>True profit</span><span class="${s.cm - fixedShare < 0 ? "neg" : "pos"}">${$(s.cm - fixedShare)}</span></div></div></details>` : ""}
+    </section>`).join("")}</div>
+  <section class="card"><h2>Stops per day, ${PERIODS.season.label.toLowerCase()}</h2>
+    ${crewWeekly()}
+    <p class="explain">Stops each crew finished per week. Dips are rain weeks and holidays in a real company; here they're cleanup weeks, when each stop takes longer.</p></section>`;
+};
+function crewWeekly() {
+  const labels = Array.from({ length: WEEKS }, (_, w) => fmtDay(dayStr(addDays(SEASON_START, w * 7))));
+  const series = CREWS.map((cr) => ({ color: cr.color, vals: labels.map((_, w) => VISITS.filter((v) => v.crew === cr.id && v.w === w).length) }));
+  return lines(series, labels, { fmt: (n) => String(Math.round(n)) }) + `<div class="row small">${CREWS.map((c) => `<span class="row" style="gap:6px"><i style="width:14px;height:3px;background:${c.color};display:inline-block"></i>${c.name}</span>`).join("")}</div>`;
+}
+
+// Cash: what's in the bank, what's owed, and whether it lasts the winter.
+function winterNeed(ownerPay = S.ownerPay) {
+  const weeks = 21; // Nov 9 → end of March
+  const owed = AR.reduce((a, x) => a + x.amt * (x.age > 60 ? 0.6 : 0.95), 0);
+  const bills = FIXED_CASH_M * 12 / 52 * weeks;
+  const pay = ownerPay * weeks;
+  const startup = 4200; // March: insurance renewal deposit, tune-ups, blades
+  const end = CASH_NOW + owed - bills - pay - startup;
+  return { weeks, owed, bills, pay, startup, end, short: Math.max(0, -end + 5000) /* keep a $5,000 cushion */ };
+}
+VIEWS.cash = () => {
+  const deep = S.mode === "deep";
+  const W = winterNeed();
+  const buckets = [["Under 30 days", (a) => a.age < 30, "info"], ["30–60 days", (a) => a.age >= 30 && a.age <= 60, "thin"], ["Over 60 days", (a) => a.age > 60, "bad"]];
+  const owedTotal = AR.reduce((a, x) => a + x.amt, 0);
+  // Weekly cash forecast
+  const labels = [], vals = [];
+  let bal = CASH_NOW;
+  const wk = FIXED_CASH_M * 12 / 52;
+  for (let i = 0; i <= W.weeks; i++) {
+    labels.push(fmtDay(dayStr(addDays(new Date(Date.UTC(2026, 10, 9)), i * 7))));
+    if (i > 0) {
+      for (const a of AR) { const due = a.age > 60 ? 8 : a.age >= 30 ? 3 : 2; if (i === due) bal += a.amt * (a.age > 60 ? 0.6 : 0.95); }
+      bal -= wk + S.ownerPay;
+      if (i >= 17) bal -= W.startup / 4;
+    }
+    vals.push(bal);
+  }
+  const low = Math.min(...vals), lowI = vals.indexOf(low);
+  const setAside = Math.max(0, Math.ceil((W.short) / 29 / 10) * 10);
+  return `
+  <section class="hero" aria-label="Cash">
+    <div class="tile big"><span class="k">In the bank</span><span class="v">${$(CASH_NOW)}</span><span class="delta" style="color:rgb(243 245 247 / .7)">as of today (sample)</span></div>
+    <div class="tile"><span class="k">Owed to you</span><span class="v">${$(owedTotal)}</span><span class="small muted">${AR.length} unpaid invoices</span></div>
+    <div class="tile"><span class="k">Bills each month</span><span class="v">${$(FIXED_CASH_M)}</span><span class="small muted">rent, insurance, software…</span></div>
+    <div class="tile"><span class="k">Lowest point</span><span class="v ${low < 5000 ? "neg" : ""}">${$(low)}</span><span class="small muted">week of ${labels[lowI]}</span></div>
+  </section>
+  <section class="card" data-static="opay"><h2>Will the money last the winter?</h2>
+    <div class="range"><div class="row"><label for="opay">What you pay yourself each week this winter</label><span class="num" data-live>${$(S.ownerPay)}</span></div><input type="range" id="opay" min="0" max="2500" step="50" value="${S.ownerPay}"></div></section>
+  <section class="card">
+    ${lines([{ vals, color: low < 5000 ? "var(--neg)" : "var(--c-labour)", area: true }], labels, { fmt: kfmt, ref: 5000, refLabel: "$5,000 cushion", marks: [{ i: lowI, v: low, color: "var(--neg)", label: "lowest " + kfmt(low) }] })}
+    <div class="callout">${W.short > 0
+      ? `<b>You'll run ${$(W.short)} short of a $5,000 cushion by spring.</b> Next season, set aside <b>${$(setAside)} a week</b> from April to November, collect the ${$(AR.filter((a) => a.age > 60).reduce((s, a) => s + a.amt, 0))} that's over 60 days late, or pay yourself less this winter.`
+      : `<b>You're covered.</b> At ${$(S.ownerPay)} a week for yourself, cash stays above a $5,000 cushion until the grass grows again.`}</div>
+    ${deep ? `<details><summary>How this is worked out</summary><div class="steps">
+      <div><span>In the bank now</span><span>${$(CASH_NOW)}</span></div>
+      <div><span>Invoices collected (95% of recent, 60% of over 60 days)</span><span>+${$(W.owed)}</span></div>
+      <div><span>Bills for ${W.weeks} weeks (depreciation left out: it isn't cash)</span><span>−${$(W.bills)}</span></div>
+      <div><span>Your pay, ${W.weeks} weeks</span><span>−${$(W.pay)}</span></div>
+      <div><span>Spring start-up in March (insurance deposit, blades, tune-ups)</span><span>−${$(W.startup)}</span></div>
+      <div class="res"><span>Cash on April 1</span><span class="${W.end < 5000 ? "neg" : "pos"}">${$(W.end)}</span></div></div></details>` : ""}
+  </section>
+  <section class="card"><h2>Who owes you</h2>
+    <div class="grid3">${buckets.map(([l, f, c]) => { const xs = AR.filter(f); return `<div class="tile"><span class="k">${l}</span><span class="v">${$(xs.reduce((a, x) => a + x.amt, 0))}</span><span class="chip ${c}" style="justify-self:start">${xs.length} invoices</span></div>`; }).join("")}</div>
+    <div class="tablewrap"><table><thead><tr><th>Customer</th><th class="n">Amount</th><th class="n">Days late</th><th></th></tr></thead><tbody>
+      ${AR.slice().sort((a, b) => b.age - a.age).slice(0, deep ? 26 : 8).map((a) => `<tr><td><div class="who">${esc(a.c.name)}</div><div class="where">${esc(a.c.addr)}</div></td><td class="n">${$(a.amt)}</td><td class="n">${a.age}</td><td>${a.age > 60 ? `<span class="chip bad">Call</span>` : a.age >= 30 ? `<span class="chip thin">Reminder</span>` : `<span class="chip info">Sent</span>`}</td></tr>`).join("")}
+    </tbody></table></div>
+    <p class="explain">Invoices and payments come from your CRM. Cutting Cost doesn't send them; it tells you which ones are holding up your cash.</p></section>`;
+};
+BIND.cash = (v) => { const r = v.querySelector("#opay"); if (r) r.oninput = () => { S.ownerPay = +r.value; update(); }; };
+
+// ───────────────────────── deeper tabs ─────────────────────────
+VIEWS.pnl = () => {
+  const months = [["Apr", 3], ["May", 4], ["Jun", 5], ["Jul", 6], ["Aug", 7], ["Sep", 8], ["Oct", 9], ["Nov*", 10]];
+  const cols = months.map(([l, m]) => {
+    const from = dayStr(new Date(Date.UTC(2026, m, m === 3 ? 6 : 1))), last = dayStr(new Date(Date.UTC(2026, m + 1, 0)));
+    return { l, s: sum(from, last < TODAY ? last : TODAY) };
+  });
+  const season = sum(PERIODS.season.from, PERIODS.season.to);
+  cols.push({ l: "Season", s: season, tot: true });
+  const kind = (k) => (s) => s.vs.filter((v) => v.kind === k).reduce((a, v) => a + v.price, 0);
+  const R = (label, f, cls = "") => `<tr class="${cls}"><td>${label}</td>${cols.map((c) => { const x = f(c.s); return `<td class="n ${x < 0 ? "neg" : ""} ${c.tot ? "strong" : ""}">${typeof x === "string" ? x : $(x)}</td>`; }).join("")}</tr>`;
+  const fx = (s, f) => s.fixed * f.m / FIXED_M;
+  const netAll = (s) => s.cm - s.fixed;
+  COPY.pnl = () => csv([["", ...cols.map((c) => c.l)], ...[["Mowing", kind("Mow")], ["Cleanups", (s) => kind("Spring cleanup")(s) + kind("Fall cleanup")(s)], ["Fertilizer", kind("Fertilizer")], ["Revenue", (s) => s.rev],
+    ["Crew pay", (s) => s.labour], ["Fuel", (s) => s.fuel], ["Maintenance", (s) => s.maint], ["Materials", (s) => s.mat], ["Contribution", (s) => s.cm],
+    ...FIXED.map((f) => [f.n, (s) => fx(s, f)]), ["Net profit", netAll]].map(([l, f]) => [l, ...cols.map((c) => f(c.s).toFixed(2))])]);
+  return `<section class="card"><div class="row between"><div><h2>Profit and loss, 2026 season</h2><p class="muted small">Every number below comes from your jobs, your crew rates and your bills. * November to date.</p></div><button class="btn" data-copy="pnl">Copy as CSV</button></div>
+  <div class="tablewrap"><table><thead><tr><th></th>${cols.map((c) => `<th class="n">${c.l}</th>`).join("")}</tr></thead><tbody>
+    ${R("Mowing", kind("Mow"), "sub")}${R("Cleanups", (s) => kind("Spring cleanup")(s) + kind("Fall cleanup")(s), "sub")}${R("Fertilizer", kind("Fertilizer"), "sub")}
+    ${R("<b>Revenue</b>", (s) => s.rev)}
+    ${R("Crew pay: on site", (s) => -s.labSite, "sub")}${R("Crew pay: driving", (s) => -s.labDrive, "sub")}${R("Crew pay: loading, shop", (s) => -s.labOther, "sub")}
+    ${R("Fuel (trucks and mowers)", (s) => -s.fuel, "sub")}${R("Maintenance", (s) => -s.maint, "sub")}${R("Materials", (s) => -s.mat, "sub")}
+    ${R("<b>Contribution</b> (profit from jobs)", (s) => s.cm, "total")}
+    ${R("Contribution margin", (s) => pct(s.cm / (s.rev || 1)), "sub")}
+    ${FIXED.map((f) => R(f.n, (s) => -fx(s, f), "sub")).join("")}
+    ${R("<b>Net profit</b>", netAll, "total")}
+    ${R("Net margin", (s) => pct(netAll(s) / (s.rev || 1)), "sub")}
+  </tbody></table></div>
+  <p class="explain">Contribution is what the jobs leave after their own costs. Fixed costs are spread by days, so a month carries its share whether the crews worked or not. Depreciation isn't cash going out, but trucks and mowers do wear out and need replacing.</p></section>
+  <section class="card"><h2>Net profit by month</h2>${bars(cols.slice(0, -1).map((c) => netAll(c.s)), cols.slice(0, -1).map((c) => c.l), { fmt: kfmt, color: "var(--c-kept)" })}</section>`;
+};
+
+VIEWS.rates = () => {
+  if (!S.rates) S.rates = CREWS.map((c) => ({ w: c.people.map((p) => p[1]), burden: c.burden * 100 }));
+  const season = sum(PERIODS.season.from, PERIODS.season.to);
+  const crewHoursPaid = (season.site + season.drive + season.other) / 60;
+  const yearFixed = FIXED_M * 12;
+  const ohPerHour = yearFixed / crewHoursPaid * (31 / 34); // a full season ≈ 34 weeks of work
+  const fuelMaintPerHour = (season.fuel + season.maint) / crewHoursPaid;
+  const siteShare = season.site / (season.site + season.drive + season.other);
+  const actual = season.rev / (season.site / 60);
+  const out = CREWS.map((cr, i) => {
+    const r = S.rates[i];
+    const pay = r.w.reduce((a, b) => a + b, 0) * (1 + r.burden / 100);
+    const costPaidHour = pay + fuelMaintPerHour + ohPerHour;
+    const costSiteHour = costPaidHour / siteShare;
+    const need = costSiteHour / (1 - S.margin / 100);
+    const s = sum(PERIODS.season.from, PERIODS.season.to, (v) => v.crew === i);
+    return { cr, r, pay, costPaidHour, costSiteHour, need, actual: s.rev / (s.site / 60) };
+  });
+  return `<section class="card" data-static="mg"><h2>What a crew-hour really costs</h2>
+    <p class="explain">Most owners price from the wage. The real cost of an hour on a lawn includes payroll costs, fuel, wear, every fixed bill, and the hours spent driving and loading that nobody pays for. Change the numbers to match yours.</p>
+    <div class="range" style="max-width:420px"><div class="row"><label for="mg">Profit you want to keep</label><span class="num" data-live>${S.margin}%</span></div><input type="range" id="mg" min="0" max="40" step="1" value="${S.margin}"></div>
+  </section>
+  <div class="grid2">${out.map((o, i) => `<section class="card"><h3>${o.cr.name}</h3>
+    <div class="row">${o.cr.people.map((p, j) => `<label class="f">${p[0]}, $/h<input type="number" min="0" step="0.5" data-w="${i}-${j}" value="${o.r.w[j]}"></label>`).join("")}
+      <label class="f">Payroll costs %<input type="number" min="0" step="1" data-b="${i}" value="${o.r.burden}"></label></div>
+    <div class="steps">
+      <div><span>Wages + payroll costs (CPP, EI, WSIB, vacation)</span><span>${$(o.pay, 2)}</span></div>
+      <div><span>Fuel and maintenance per paid hour</span><span>${$(fuelMaintPerHour, 2)}</span></div>
+      <div><span>Fixed costs per paid crew-hour (${$(yearFixed)} a year)</span><span>${$(ohPerHour, 2)}</span></div>
+      <div><span><b>Cost of a paid crew-hour</b></span><span><b>${$(o.costPaidHour, 2)}</b></span></div>
+      <div><span>Only ${pct(siteShare)} of paid time is on a lawn, so an hour on site costs</span><span>${$(o.costSiteHour, 2)}</span></div>
+      <div class="res"><span>Charge at least, per crew-hour on site</span><span>${$(o.need, 2)}</span></div>
+    </div>
+    <p class="small">You're charging <b class="${o.actual < o.need ? "neg" : "pos"}">${$(o.actual, 2)}</b> an hour on site on average this season${o.actual < o.need ? `, ${$(o.need - o.actual, 2)} under target. On a 30-minute lawn that's ${$((o.need - o.actual) / 2)} a visit.` : ". You're above target."}</p>
+  </section>`).join("")}</div>
+  <section class="card"><h3>Quick price for a new lawn</h3>
+    <div class="row"><label class="f">Minutes on site<input type="number" id="qm" min="5" step="5" value="30"></label><label class="f">Minutes driving to it<input type="number" id="qd" min="0" step="1" value="8"></label><label class="f">Crew<select id="qc">${CREWS.map((c, i) => `<option value="${i}">${c.name}</option>`).join("")}</select></label></div>
+    <p class="lead" id="qout"></p></section>`;
+};
+BIND.rates = (v) => {
+  const rerender = () => { const y = scrollY; render(); scrollTo(0, y); };
+  v.querySelector("#mg").oninput = (e) => { S.margin = +e.target.value; update(); };
+  v.querySelectorAll("[data-w]").forEach((x) => (x.onchange = () => { const [i, j] = x.dataset.w.split("-").map(Number); S.rates[i].w[j] = Math.max(0, +x.value || 0); rerender(); }));
+  v.querySelectorAll("[data-b]").forEach((x) => (x.onchange = () => { S.rates[+x.dataset.b].burden = Math.max(0, +x.value || 0); rerender(); }));
+  const q = () => {
+    const season = sum(PERIODS.season.from, PERIODS.season.to);
+    const paidH = (season.site + season.drive + season.other) / 60;
+    const i = +v.querySelector("#qc").value, r = S.rates[i];
+    const pay = r.w.reduce((a, b) => a + b, 0) * (1 + r.burden / 100);
+    const perPaidH = pay + (season.fuel + season.maint) / paidH + FIXED_M * 12 / paidH * (31 / 34);
+    const m = +v.querySelector("#qm").value || 0, d = +v.querySelector("#qd").value || 0;
+    const other = (m + d) * (season.other / (season.site + season.drive));
+    const cost = perPaidH * (m + d + other) / 60;
+    const price = Math.ceil(cost / (1 - S.margin / 100) / 5) * 5;
+    v.querySelector("#qout").innerHTML = `Quote <b>${$(price)}</b> a visit. It costs you ${$(cost, 2)} with every bill included, so you keep ${$(price - cost, 2)}.`;
+  };
+  v.querySelectorAll("#qm,#qd,#qc").forEach((x) => (x.oninput = q));
+  q();
+};
+
+VIEWS.breakeven = () => {
+  const yearFixed = FIXED_M * 12;
+  const labels = [], cum = [];
+  let c = 0, crossI = -1;
+  for (let w = 0; w < WEEKS; w++) {
+    const f = dayStr(addDays(SEASON_START, w * 7)), t = dayStr(addDays(SEASON_START, w * 7 + 6));
+    c += sum(f, t).cm; labels.push(fmtDay(f)); cum.push(c);
+    if (crossI < 0 && c >= yearFixed) crossI = w;
+  }
+  const season = sum(PERIODS.season.from, PERIODS.season.to);
+  const cmPct = season.cm / season.rev;
+  const beRev = yearFixed / cmPct;
+  const avgMow = season.vs.filter((v) => v.kind === "Mow");
+  const cmPerMow = avgMow.reduce((a, v) => a + v.cm, 0) / avgMow.length;
+  const mowsNeeded = yearFixed / cmPerMow;
+  return `<div class="grid3">
+    <div class="tile"><span class="k">Fixed costs for the year</span><span class="v">${$(yearFixed)}</span><span class="small muted">${$(FIXED_M)} a month, all 12 months</span></div>
+    <div class="tile"><span class="k">Jobs keep, per $100</span><span class="v">${$(cmPct * 100)}</span><span class="small muted">after crew, fuel, wear, materials</span></div>
+    <div class="tile"><span class="k">Revenue to break even</span><span class="v">${$(beRev)}</span><span class="small muted">for the year</span></div>
+  </div>
+  <section class="card"><h2>When did this year start making money?</h2>
+    ${lines([{ vals: cum, color: "var(--c-kept)", area: true }], labels, { fmt: kfmt, ref: yearFixed, refLabel: "a full year of fixed costs", marks: crossI >= 0 ? [{ i: crossI, v: cum[crossI], color: "var(--c-kept)", label: "broke even " + labels[crossI] }] : [] })}
+    <p class="explain">The green line is profit from jobs, added up week by week. Until it crosses the red line, the season is still paying off a year of rent, insurance, software and equipment. ${crossI >= 0 ? `This year it crossed in the week of ${labels[crossI]}; everything after that is real profit.` : `It hasn't crossed yet.`}</p></section>
+  <section class="card"><h2>In mows</h2>
+    <div class="steps">
+      <div><span>Average a mow leaves after its own costs</span><span>${$(cmPerMow, 2)}</span></div>
+      <div><span>Mows a year just to pay fixed costs</span><span>${Math.ceil(mowsNeeded).toLocaleString()}</span></div>
+      <div><span>That's per week, over 27 mowing weeks</span><span>${Math.ceil(mowsNeeded / 27)}</span></div>
+      <div class="res"><span>You mow per week</span><span>${Math.round(avgMow.length / 27)}</span></div></div>
+    <p class="explain">Every weekly customer above the break-even line adds about ${$(cmPerMow * 27)} a season to your profit. Every one below it is helping pay the rent.</p></section>`;
+};
+
+VIEWS.pricing = () => {
+  const { rows, avg } = customerRows(PERIODS.season.from, PERIODS.season.to);
+  const mowRows = rows.filter((r) => r.vs.some((v) => v.kind === "Mow"));
+  const target = S.raiseWho === "all" ? mowRows : mowRows.filter((r) => r.status !== "good");
+  const lostN = Math.round(target.length * S.lose / 100);
+  const lost = target.slice().sort((a, b) => a.perHour - b.perHour).slice(0, lostN); // assume the worst-earning ones leave first
+  const lostSet = new Set(lost.map((r) => r.c.id));
+  const mowWeeks = 27;
+  let gain = 0, lostCm = 0, freedMin = 0;
+  for (const r of target) {
+    const mows = r.vs.filter((v) => v.kind === "Mow");
+    if (lostSet.has(r.c.id)) { lostCm += mows.reduce((a, v) => a + v.cm, 0); freedMin += mows.reduce((a, v) => a + v.site + v.drive, 0); }
+    else gain += r.c.price * S.raise / 100 * mows.length;
+  }
+  const change = gain - lostCm;
+  const freedH = freedMin / 60 / mowWeeks;
+  return `<section class="card" data-static="price"><h2>Price planner</h2>
+    <p class="explain">Try a price increase before you send the letters. It assumes the customers who leave are the ones earning you the least, which is usually what happens.</p>
+    <div class="grid3">
+      <div class="range"><div class="row"><label for="rr">Raise prices by</label><span class="num" data-live>${S.raise}%</span></div><input type="range" id="rr" min="0" max="25" step="1" value="${S.raise}"></div>
+      <div class="range"><div class="row"><label for="rl">Customers who might leave</label><span class="num" data-live>${S.lose}%</span></div><input type="range" id="rl" min="0" max="30" step="1" value="${S.lose}"></div>
+      <div><span class="small"><b>Who gets the raise</b></span><div class="seg" role="group" aria-label="Who gets the raise"><button data-who="low" aria-pressed="${S.raiseWho === "low"}">Thin and losing (${mowRows.filter((r) => r.status !== "good").length})</button><button data-who="all" aria-pressed="${S.raiseWho === "all"}">Everyone (${mowRows.length})</button></div></div>
+    </div></section>
+  <section class="hero">
+    <div class="tile big"><span class="k">Change in profit, a full season</span><span class="v ${change < 0 ? "neg" : ""}">${change >= 0 ? "+" : ""}${$(change)}</span></div>
+    <div class="tile"><span class="k">From higher prices</span><span class="v pos">+${$(gain)}</span><span class="small muted">${target.length - lostN} customers</span></div>
+    <div class="tile"><span class="k">Lost with leavers</span><span class="v neg">−${$(lostCm)}</span><span class="small muted">${lostN} customers</span></div>
+    <div class="tile"><span class="k">Crew time freed</span><span class="v">${freedH.toFixed(1)} h</span><span class="small muted">a week, to fill with better work</span></div>
+  </section>
+  <section class="card"><h2>Who gets a letter</h2>
+    <div class="tablewrap"><table><thead><tr><th>Customer</th><th class="n">Per hour now</th><th class="n">Now</th><th class="n">New price</th><th class="n">Suggested</th><th></th></tr></thead><tbody>
+    ${target.slice().sort((a, b) => a.perHour - b.perHour).map((r) => `<tr class="click ${lostSet.has(r.c.id) ? "hl" : ""}" tabindex="0" data-cust="${r.c.id}"><td><div class="who">${esc(r.c.name)}</div><div class="where">${esc(r.c.addr)} · ${r.c.area}</div></td><td class="n">${$(r.perHour)}</td><td class="n">${$(r.c.price)}</td><td class="n"><b>${$(round5(r.c.price * (1 + S.raise / 100)))}</b></td><td class="n">${r.suggest && r.suggest > r.c.price ? $(r.suggest) : "–"}</td><td>${lostSet.has(r.c.id) ? `<span class="chip thin">Might leave</span>` : ""}</td></tr>`).join("")}
+    </tbody></table></div>
+    <p class="explain">New prices are rounded to $5. "Suggested" is the price that brings a lawn to your average of ${$(avg)} an hour on site.</p></section>`;
+};
+BIND.pricing = (v) => {
+  const re = (id) => { const y = scrollY; render(); scrollTo(0, y); document.getElementById(id)?.focus(); };
+  v.querySelector("#rr").oninput = (e) => { S.raise = +e.target.value; update(); };
+  v.querySelector("#rl").oninput = (e) => { S.lose = +e.target.value; update(); };
+  v.querySelectorAll("[data-who]").forEach((b) => (b.onclick = () => { S.raiseWho = b.dataset.who; re(); }));
+};
+
+VIEWS.driving = () => {
+  const P = PERIODS[S.period];
+  const s = sum(P.from, P.to);
+  const areas = AREAS.map((A) => {
+    const a = sum(P.from, P.to, (v) => CUST[v.c].area === A.n);
+    const fuelDrive = a.km * CREWS[A.crew].l100 / 100 * 1.47;
+    const getThere = a.labDrive + fuelDrive + a.km * MAINT_KM;
+    return { A, a, getThere, perVisit: getThere / (a.n || 1), share: getThere / (a.rev || 1) };
+  }).sort((x, y) => y.share - x.share);
+  const fl = FUEL.map((_, w) => fmtDay(dayStr(addDays(SEASON_START, w * 7))));
+  // GPS vs odometer, last five work days, per crew
+  const odo = [];
+  for (let d = 0; d < 5; d++) for (const cr of CREWS) {
+    const date = dayStr(addDays(new Date(Date.UTC(2026, 10, 2)), d));
+    const vs = VISITS.filter((v) => v.date === date && v.crew === cr.id);
+    if (!vs.length) continue;
+    const gps = vs.reduce((a, v) => a + v.km, 0) + 9.5; // + yard and fuel stop
+    const extra = cr.id === 1 && d === 3 ? 21 : (rnd() - 0.4) * 2.4;
+    odo.push({ date, cr, gps, odo: Math.round(gps + extra) });
+  }
+  return `${periodBar()}
+  <div class="grid3">
+    <div class="tile"><span class="k">Driving</span><span class="v">${hm(s.drive)}</span><span class="small muted">${pct(s.drive / (s.site + s.drive + s.other))} of paid time</span></div>
+    <div class="tile"><span class="k">Kilometres</span><span class="v">${Math.round(s.km).toLocaleString()}</span><span class="small muted">from GPS, stop to stop</span></div>
+    <div class="tile"><span class="k">Cost of getting there</span><span class="v">${$(s.labDrive + s.km * (19.5 / 100 * 1.47 + MAINT_KM))}</span><span class="small muted">crew pay + fuel + wear while driving</span></div>
+  </div>
+  <section class="card"><h2>Cost of getting there, by area</h2>
+    <div class="tablewrap"><table><thead><tr><th>Area</th><th class="n">Visits</th><th class="n">Drive / visit</th><th class="n">Km</th><th class="n">Getting there / visit</th><th class="n">Share of price</th></tr></thead><tbody>
+    ${areas.map((x) => `<tr><td><div class="who">${x.A.n}</div><div class="where">${CREWS[x.A.crew].name}</div></td><td class="n">${x.a.n}</td><td class="n">${(x.a.drive / (x.a.n || 1)).toFixed(1)} min</td><td class="n">${Math.round(x.a.km).toLocaleString()}</td><td class="n"><b>${$(x.perVisit, 2)}</b></td><td class="n"><span class="chip ${x.share > 0.15 ? "bad" : x.share > 0.08 ? "thin" : "good"}">${pct(x.share)}</span></td></tr>`).join("")}
+    </tbody></table></div>
+    <p class="explain">Getting there = crew pay while driving + truck fuel + maintenance per km. ${areas[0].A.n} costs ${$(areas[0].perVisit, 2)} a visit before anyone starts a mower: charge a travel fee, fill the street with more customers, or hand it to a closer crew.</p></section>
+  <div class="grid2">
+    <section class="card"><h2>Fuel price, regular, $/L</h2>
+      ${lines([{ vals: FUEL, color: "var(--c-fuel)" }], fl, { fmt: (n) => "$" + n.toFixed(2), h: 180, half: true })}
+      <p class="explain">Weekly area average, looked up automatically (Statistics Canada for Canadian cities, the EIA for U.S. states). Crews' fuel receipts replace it when you have them.</p></section>
+    <section class="card"><h2>GPS against the odometer</h2>
+      <div class="tablewrap"><table><thead><tr><th>Day</th><th>Truck</th><th class="n">GPS km</th><th class="n">Odometer km</th><th class="n">Gap</th></tr></thead><tbody>
+      ${odo.map((o) => { const gap = (o.odo - o.gps) / o.odo; return `<tr><td>${fmtDay(o.date, { weekday: "short", day: "numeric" })}</td><td>${o.cr.truck}</td><td class="n">${o.gps.toFixed(1)}</td><td class="n">${o.odo}</td><td class="n">${Math.abs(gap) > 0.1 ? `<span class="chip bad">+${pct(gap)}</span>` : pct(gap)}</td></tr>`; }).join("")}
+      </tbody></table></div>
+      <p class="explain">The odometer is typed at the start and end of the day. A gap over 10% means the truck went somewhere the tablet didn't: worth a quiet question.</p></section>
+  </div>`;
+};
+
+VIEWS.sources = () => `
+  <section class="card"><div class="row between"><div><h2>Connected to Jobber</h2><p class="muted small">Sample connection · last sync 4 minutes ago</p></div><span class="chip good">Connected</span></div>
+    <div class="grid3">
+      <div class="tile"><span class="k">From your CRM</span><span class="v">${CUST.length}</span><span class="small muted">clients and properties</span></div>
+      <div class="tile"><span class="k">Visits</span><span class="v">${VISITS.length.toLocaleString()}</span><span class="small muted">completed this season</span></div>
+      <div class="tile"><span class="k">Invoices</span><span class="v">${AR.length}</span><span class="small muted">unpaid, with ages</span></div>
+    </div>
+    <p class="explain">Other ways in: Yardbook and other tools through Zapier, or a spreadsheet export from anything. Nothing changes in your CRM: you keep quoting, scheduling and invoicing there.</p></section>
+  <section class="card"><h2>What each side does</h2>
+    <div class="cmp">
+      <div><b>Your CRM keeps</b><ul><li>Clients, properties, quotes</li><li>Schedule and visits</li><li>Invoices and payments</li><li>Messages to customers</li></ul></div>
+      <div><b>Cutting Cost adds</b><ul>
+        <li>The real cost of every visit: crew time on site, driving and loading</li>
+        <li>Fixed bills and equipment wear shared across jobs, with a slider for true profit</li>
+        <li>Profit per hour by customer, area and crew, and what to charge</li>
+        <li>Fuel and kilometres from the crew tablet's GPS, checked against the odometer</li>
+        <li>True hourly cost, break-even, price planner and winter cash</li></ul></div>
+    </div>
+    <p class="explain">The crew side stays tiny: sign in, keep location on, type the odometer morning and night. Arrivals and departures record themselves.</p></section>
+  <section class="card"><h2>What it uses from you, once</h2>
+    <div class="tablewrap"><table><thead><tr><th>Setting</th><th>Sample value</th><th>Used for</th></tr></thead><tbody>
+      ${CREWS.map((c) => `<tr><td>${c.name} pay</td><td>${c.people.map((p) => `${p[0]} $${p[1]}/h`).join(", ")} + ${c.burden * 100}% payroll costs</td><td>Crew pay per minute</td></tr>`).join("")}
+      <tr><td>Trucks</td><td>${CREWS.map((c) => `${c.truck} ${c.l100} L/100 km`).join(", ")}</td><td>Fuel per km</td></tr>
+      <tr><td>Mowers</td><td>${MOWER.lph} L/h, running ${pct(MOWER.use)} of time on site</td><td>Mower fuel and wear</td></tr>
+      <tr><td>Maintenance</td><td>$${MAINT_KM.toFixed(2)}/km, $${MOWER.maintHr.toFixed(2)}/mower hour</td><td>Wear and tear</td></tr>
+      <tr><td>Fixed bills</td><td>${FIXED.length} lines, ${$(FIXED_M)} a month</td><td>True profit, break-even, cash</td></tr>
+      <tr><td>Season</td><td>April to November</td><td>Season view and winter plan</td></tr>
+    </tbody></table></div></section>`;
+
+render();
+</script>
+</body></html>
