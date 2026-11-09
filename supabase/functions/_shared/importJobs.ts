@@ -57,10 +57,12 @@ const GUESS: [ImportField, RegExp][] = [
   ["date", /date|day|completed|scheduled/],
   ["customer", /client|customer|name/],
   ["address", /address|property|location|street/],
-  ["service", /service|item|job title|description|title/],
-  ["price", /total|price|amount|revenue|charge/],
+  ["service", /job title|visit title|title|line item|item|description|service/],
+  // Jobber's visits report calls its prices "Visit based ($)" and "One-off job ($)".
+  ["price", /total|price|amount|revenue|charge|visit based|one-off|\(\$\)/],
   ["crew", /crew|team|assigned|employee|visit.*by/],
-  ["minutes", /minutes|duration|time on site|hours/],
+  // Time actually worked beats time scheduled ("Time tracked" before "Scheduled duration").
+  ["minutes", /time tracked|time on site|minutes|actual|duration|hours/],
   ["area", /area|zone|neighbou?rhood|route/],
 ];
 
@@ -69,7 +71,14 @@ export function guessMap(header: string[]): ColumnMap {
   const map: ColumnMap = {};
   const used = new Set<number>();
   for (const [field, re] of GUESS) {
-    const i = header.findIndex((h, idx) => !used.has(idx) && re.test(h.trim().toLowerCase()));
+    // Earlier words in the pattern win: try them one at a time across all columns.
+    const words = /\(.*\|/.test(re.source) ? [re.source] : re.source.split("|");
+    let i = -1;
+    for (const w of words) {
+      const one = new RegExp(w);
+      i = header.findIndex((h, idx) => !used.has(idx) && one.test(h.trim().toLowerCase()));
+      if (i >= 0) break;
+    }
     if (i >= 0) {
       map[field] = i;
       used.add(i);
@@ -132,7 +141,9 @@ export function readRow(cells: string[], map: ColumnMap, rowNumber: number): Row
   if (!get("address")) return fail("no address");
   const price = readMoney(get("price"));
   if (price === null) return fail(get("price") ? `price "${get("price")}" not understood` : "no price");
-  const mins = get("minutes") ? Number(get("minutes").replace(/[^\d.]/g, "")) : NaN;
+  const rawMins = get("minutes");
+  const hm = rawMins.match(/^(\d+):(\d{2})/); // "1:30" = an hour and a half
+  const mins = hm ? Number(hm[1]) * 60 + Number(hm[2]) : rawMins ? Number(rawMins.replace(/[^\d.]/g, "")) : NaN;
   return {
     ok: true,
     job: {
@@ -143,7 +154,7 @@ export function readRow(cells: string[], map: ColumnMap, rowNumber: number): Row
       priceCents: price,
       crew: get("crew").slice(0, 60) || null,
       // Under 12 is almost certainly hours ("1.5"), not minutes.
-      minutes: Number.isFinite(mins) && mins > 0 ? Math.round(mins < 12 ? mins * 60 : mins) : null,
+      minutes: Number.isFinite(mins) && mins > 0 ? Math.round(!hm && mins < 12 ? mins * 60 : mins) : null,
       area: get("area").slice(0, 60) || null,
       externalId: get("id").slice(0, 80) || null,
     },

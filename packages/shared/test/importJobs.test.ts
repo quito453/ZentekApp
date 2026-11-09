@@ -29,6 +29,14 @@ describe("spreadsheet import", () => {
     expect(r[2]).toEqual({ ok: false, row: 4, reason: "no date" });
   });
 
+  it("guesses the columns of Jobber's visits report", () => {
+    const head = ["Job #", "Date", "Visit title", "Client name", "Client email", "Client phone", "Service street", "Service city", "Service province", "Service postal code", "Visit completed", "Assigned to", "Line items", "One-off job ($)", "Visit based ($)", "Scheduled duration", "Time tracked"];
+    const map = guessMap(head);
+    expect(map).toMatchObject({ id: 0, date: 1, service: 2, customer: 3, address: 6, crew: 11, minutes: 16 });
+    expect([13, 14]).toContain(map.price);
+    expect(readRow(["1042", "2026-10-05", "Weekly mow", "Hendricks", "", "", "12 Maple Grove Rd", "Ottawa", "ON", "", "Yes", "Crew 2", "", "", "55.00", "0:45", "1:10"], map, 2)).toMatchObject({ ok: true, job: { priceCents: 5500, minutes: 70, address: "12 Maple Grove Rd" } });
+  });
+
   it("reads the date formats people export", () => {
     expect(readDate("2026/10/05")).toBe("2026-10-05");
     expect(readDate("10/05/2026")).toBe("2026-10-05");

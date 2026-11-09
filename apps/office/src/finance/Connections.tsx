@@ -120,7 +120,7 @@ function SpreadsheetImport({ companyId, onDone }: { companyId: string; onDone: (
     <section className="card stack">
       <h2>Import from a spreadsheet</h2>
       <p className="muted">
-        Export completed visits from Jobber (Reports → Visits), Yardbook (Reports → Jobs), QuickBooks or Excel as a CSV file. It needs a date, customer, address and price for each job.
+        Export completed visits as a CSV file: in Jobber, Insights → Reports → Visits, set Completed to Yes, then Export to CSV (Jobber emails it to you). Yardbook, QuickBooks and Excel exports work too. It needs a date, customer, address and price for each job.
         The same customer or address is matched to what's already here.
       </p>
       <div className="row wrap">
