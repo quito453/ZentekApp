@@ -4,9 +4,9 @@
 //   • Extras: add a property for just this day (tomorrow) or to the regular week. Skip removes it.
 // Tomorrow saves into visits (crew and route_order); a regular weekday saves into route_plans.
 import { useEffect, useMemo, useRef, useState, type DragEvent } from "react";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
-import { ROAD_FACTOR, routeCode, routeKm, shortestOrder } from "@zentek/shared";
+import { useMap } from "./maps/useMap";
+import { YARD_HTML, type LL } from "./maps/MapView";
+import { ROAD_FACTOR, routeCode, routeKm, shortestOrder, type LatLng } from "@zentek/shared";
 import { supabase } from "./supabase";
 
 type Crew = { id: string; name: string; color: string | null };
@@ -20,8 +20,6 @@ type Prop = { id: string; address: string; lat: number | null; lng: number | nul
 
 const WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const PALETTE = ["#1f5fbf", "#c2410c", "#15803d", "#7c3aed", "#0e7490", "#b91c1c", "#a16207", "#4d7c0f"];
-const TILES = (import.meta.env.VITE_MAP_TILES as string | undefined) || "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
-const ATTRIB = (import.meta.env.VITE_MAP_ATTRIBUTION as string | undefined) || "© OpenStreetMap contributors";
 const KMH = 32; // average speed in town, for drive-time estimates
 
 const tomorrow = () => {
@@ -30,7 +28,8 @@ const tomorrow = () => {
   return d.toLocaleDateString("en-CA");
 };
 const hasXY = (s: Stop): s is Stop & { lat: number; lng: number } => s.lat !== null && s.lng !== null;
-const kmOf = (stops: Stop[]) => routeKm(stops.filter(hasXY)) * ROAD_FACTOR;
+// Road km for a crew's day: from the yard, through the stops, back to the yard.
+const kmOf = (stops: Stop[], yard: LatLng | null) => routeKm(stops.filter(hasXY), yard, !!yard) * ROAD_FACTOR;
 
 export function Routes({ companyId }: { companyId: string }) {
   const [day, setDay] = useState<Day>("tomorrow");
@@ -41,13 +40,13 @@ export function Routes({ companyId }: { companyId: string }) {
   const [tapMode, setTapMode] = useState<string[] | null>(null); // keys tapped so far
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
   const [saving, setSaving] = useState(false);
-  const [fuel, setFuel] = useState<{ price: number; l100: Record<string, number> }>({ price: 0, l100: {} });
+  const [fuel, setFuel] = useState<{ price: number; l100: Record<string, number>; yard: LatLng | null }>({ price: 0, l100: {}, yard: null });
 
   useEffect(() => {
     (async () => {
       const [c, co, t] = await Promise.all([
         supabase!.from("crews").select("id, name, color").eq("company_id", companyId).eq("active", true).order("name"),
-        supabase!.from("companies").select("fuel_price_per_l").eq("id", companyId).single<{ fuel_price_per_l: number | null }>(),
+        supabase!.from("companies").select("fuel_price_per_l, yard_lat, yard_lng").eq("id", companyId).single<{ fuel_price_per_l: number | null; yard_lat: number | null; yard_lng: number | null }>(),
         supabase!.from("trucks").select("crew_id, l_per_100km").eq("company_id", companyId),
       ]);
       const list = (c.data as Crew[]) ?? [];
@@ -55,6 +54,7 @@ export function Routes({ companyId }: { companyId: string }) {
       setCrewId((id) => id ?? list[0]?.id ?? null);
       setFuel({
         price: Number(co.data?.fuel_price_per_l ?? 0),
+        yard: co.data?.yard_lat != null && co.data?.yard_lng != null ? { lat: co.data.yard_lat, lng: co.data.yard_lng } : null,
         l100: Object.fromEntries(((t.data as { crew_id: string | null; l_per_100km: number | null }[]) ?? []).filter((x) => x.crew_id).map((x) => [x.crew_id!, Number(x.l_per_100km ?? 0)])),
       });
     })();
@@ -112,11 +112,11 @@ export function Routes({ companyId }: { companyId: string }) {
   };
   const shortest = () => {
     const located = mine.filter(hasXY);
-    setMine([...shortestOrder(located), ...mine.filter((s) => !hasXY(s))]);
+    setMine([...shortestOrder(located, fuel.yard), ...mine.filter((s) => !hasXY(s))]);
   };
-  const before = kmOf(original.filter((s) => s.crewId === crewId));
-  const after = kmOf(mine);
-  const bestKm = useMemo(() => kmOf(shortestOrder(mine.filter(hasXY))), [mine]);
+  const before = kmOf(original.filter((s) => s.crewId === crewId), fuel.yard);
+  const after = kmOf(mine, fuel.yard);
+  const bestKm = useMemo(() => kmOf(shortestOrder(mine.filter(hasXY), fuel.yard), fuel.yard), [mine, fuel.yard]);
   const fuelCost = (km: number) => (km * (fuel.l100[crewId ?? ""] ?? 0)) / 100 * fuel.price;
 
   function onMapTap(key: string) {
@@ -193,7 +193,7 @@ export function Routes({ companyId }: { companyId: string }) {
       </section>
 
       <div className="routes-grid">
-        <RouteMap stops={stops} crewId={crewId} color={color} onTap={onMapTap} tapped={tapMode} />
+        <RouteMap stops={stops} crewId={crewId} color={color} onTap={onMapTap} tapped={tapMode} yard={fuel.yard} />
         <section className="card stack">
           <div className="row-between wrap">
             <h2 className="crew-head">{crew?.name ?? "No crews yet"}</h2>
@@ -316,60 +316,34 @@ function AddStop({ companyId, onAdd, exclude }: { companyId: string; onAdd: (p: 
   );
 }
 
-function RouteMap({ stops, crewId, color, onTap, tapped }: { stops: Stop[]; crewId: string | null; color: (id: string | null) => string; onTap: (key: string) => void; tapped: string[] | null }) {
-  const el = useRef<HTMLDivElement>(null);
-  const map = useRef<L.Map | null>(null);
-  const layer = useRef<L.LayerGroup | null>(null);
+function RouteMap({ stops, crewId, color, onTap, tapped, yard }: { stops: Stop[]; crewId: string | null; color: (id: string | null) => string; onTap: (key: string) => void; tapped: string[] | null; yard: LatLng | null }) {
+  const { el, view } = useMap();
   const fitted = useRef<string>("");
 
   useEffect(() => {
-    if (!el.current || map.current) return;
-    map.current = L.map(el.current, { zoomControl: true }).setView([43.7, -79.4], 11);
-    L.tileLayer(TILES, { maxZoom: 19, attribution: ATTRIB }).addTo(map.current);
-    layer.current = L.layerGroup().addTo(map.current);
-    // The card's size settles after layout (and changes with the window): keep Leaflet in step.
-    const ro = new ResizeObserver(() => map.current?.invalidateSize());
-    ro.observe(el.current);
-    return () => {
-      ro.disconnect();
-      map.current?.remove();
-      map.current = null;
-    };
-  }, []);
-
-  useEffect(() => {
-    const m = map.current;
-    const g = layer.current;
-    if (!m || !g) return;
-    g.clearLayers();
+    if (!view) return;
+    view.clear();
     const located = stops.filter(hasXY);
+    if (yard) view.marker({ at: [yard.lat, yard.lng], html: YARD_HTML, title: "Yard", tooltip: "Yard: routes start and end here", z: 500 });
     // Other crews first, faded, so the selected route sits on top.
     for (const s of located.filter((x) => x.crewId !== crewId)) {
-      L.circleMarker([s.lat, s.lng], { radius: 7, color: "#fff", weight: 2, fillColor: color(s.crewId), fillOpacity: 0.55 })
-        .bindTooltip(`${s.address} · tap to move here`)
-        .on("click", () => onTap(s.key))
-        .addTo(g);
+      view.marker({ at: [s.lat, s.lng], html: `<span class="dot" style="--cc:${color(s.crewId)}"></span>`, title: s.address, tooltip: `${s.address} · tap to move here`, onClick: () => onTap(s.key) });
     }
     const mine = located.filter((x) => x.crewId === crewId);
-    if (mine.length > 1) L.polyline(mine.map((s) => [s.lat, s.lng] as [number, number]), { color: color(crewId), weight: 4, opacity: 0.8 }).addTo(g);
+    const path = mine.map((s) => [s.lat, s.lng] as LL);
+    view.line(yard ? [[yard.lat, yard.lng], ...path, [yard.lat, yard.lng]] : path, color(crewId), 4, 0.8);
     mine.forEach((s) => {
       const n = stops.filter((x) => x.crewId === crewId).indexOf(s) + 1;
       const done = tapped?.includes(s.key);
-      L.marker([s.lat, s.lng], {
-        icon: L.divIcon({ className: "", html: `<span class="pin${tapped && !done ? " wait" : ""}" style="--cc:${color(crewId)}">${tapped && !done ? "?" : n}</span>`, iconSize: [28, 28], iconAnchor: [14, 14] }),
-        keyboard: true,
-        title: s.address,
-      })
-        .on("click", () => onTap(s.key))
-        .addTo(g);
+      view.marker({ at: [s.lat, s.lng], html: `<span class="pin${tapped && !done ? " wait" : ""}" style="--cc:${color(crewId)}">${tapped && !done ? "?" : n}</span>`, title: s.address, z: 100 + n, onClick: () => onTap(s.key) });
     });
     // Fit the view when the day or crew changes, not on every reorder.
     const sig = `${crewId}|${located.length}`;
     if (located.length && fitted.current !== sig) {
       fitted.current = sig;
-      m.fitBounds(L.latLngBounds((mine.length ? mine : located).map((s) => [s.lat, s.lng] as [number, number])), { padding: [30, 30], maxZoom: 15 });
+      view.fit([...(mine.length ? mine : located).map((s) => [s.lat, s.lng] as LL), ...(yard ? [[yard.lat, yard.lng] as LL] : [])]);
     }
-  }, [stops, crewId, tapped]);
+  }, [view, stops, crewId, tapped, yard]);
 
-  return <div ref={el} className="route-map card" role="application" aria-label="Map of stops. Numbered pins are the selected crew's route." />;
+  return <div ref={el} className="route-map card" role="application" aria-label="Map of stops. Numbered pins are the selected crew's route; Y is the yard." />;
 }

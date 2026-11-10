@@ -16,3 +16,4 @@ supabase/.temp/
 # Capacitor native builds (regenerate with `npx cap add android`)
 apps/crew/android/
 apps/crew/ios/
+_site/

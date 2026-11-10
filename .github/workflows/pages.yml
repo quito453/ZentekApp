@@ -1,0 +1,71 @@
+# Publishes the live apps and the demos on GitHub Pages:
+#   /live/tech      technician app (phones and tablets)
+#   /live/dispatch  office app, opening on the day's work
+#   /live/owner     office app, opening on the money
+#   /demo, /demo/finance, /demo/snowplow   the clickable demos (sample data, no login)
+#
+# One-time setup (repository Settings):
+#   Pages → Build and deployment → Source: GitHub Actions
+#   Secrets and variables → Actions → Secrets:
+#     SUPABASE_URL, SUPABASE_ANON_KEY   (Supabase → Project Settings → API)
+#     GOOGLE_MAPS_KEY                   (browser key, restricted to this site and to Maps JavaScript API + Places API (New))
+#   Variables: LOGIN_EMAIL_DOMAIN (e.g. users.cuttingcost.app), GOOGLE_MAP_ID (optional)
+name: Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+      VITE_GOOGLE_MAPS_KEY: ${{ secrets.GOOGLE_MAPS_KEY }}
+      VITE_LOGIN_EMAIL_DOMAIN: ${{ vars.LOGIN_EMAIL_DOMAIN }}
+      VITE_GOOGLE_MAP_ID: ${{ vars.GOOGLE_MAP_ID }}
+      SITE: /${{ github.event.repository.name }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Technician app → /live/tech
+        run: VITE_BASE="$SITE/live/tech/" npm run build -w @zentek/crew -- --outDir ../../_site/live/tech --emptyOutDir
+      - name: Dispatch app → /live/dispatch
+        run: VITE_BASE="$SITE/live/dispatch/" VITE_APP_FOCUS=dispatch npm run build -w @zentek/office -- --outDir ../../_site/live/dispatch --emptyOutDir
+      - name: Owner app → /live/owner
+        run: VITE_BASE="$SITE/live/owner/" VITE_APP_FOCUS=owner npm run build -w @zentek/office -- --outDir ../../_site/live/owner --emptyOutDir
+      - name: Demos and the start page
+        run: |
+          cp -r demo _site/demo
+          cp live/index.html _site/index.html
+          printf '<!doctype html><meta http-equiv="refresh" content="0; url=../">' > _site/live/index.html
+          touch _site/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

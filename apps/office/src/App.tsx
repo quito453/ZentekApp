@@ -10,9 +10,16 @@ import { Admin } from "./Admin";
 import { Finance } from "./finance/Finance";
 import { Routes } from "./Routes";
 import { Live } from "./Live";
+import { Setup } from "./Setup";
+import { Clients } from "./Clients";
+import { Jobs } from "./Jobs";
 
-type Membership = { company_id: string; role: "owner" | "dispatcher" | "crew"; companies: { name: string } | null };
-type Tab = "finance" | "today" | "live" | "routes" | "team" | "admin";
+// One codebase, three addresses: /live/owner opens on the money, /live/dispatch on the day's work.
+// What a login may see is still decided by its role in the database.
+const FOCUS = (import.meta.env.VITE_APP_FOCUS as "owner" | "dispatch" | undefined) ?? undefined;
+
+type Membership = { company_id: string; role: "owner" | "dispatcher" | "crew"; companies: { name: string; country: string } | null };
+type Tab = "finance" | "today" | "live" | "routes" | "jobs" | "clients" | "setup" | "team" | "admin";
 
 export function App() {
   const [lang, setLang] = useState<Lang>("en");
@@ -38,7 +45,7 @@ export function App() {
   return (
     <div className="shell">
       <header className="top">
-        <strong>Cutting Cost</strong>
+        <strong>Cutting Cost{FOCUS === "dispatch" ? " · Dispatch" : FOCUS === "owner" ? " · Owner" : ""}</strong>
         <div className="row">
           <div className="seg" role="group" aria-label="Language">
             {(["en", "es"] as const).map((l) => (
@@ -119,12 +126,18 @@ function Office({ lang, userId }: { lang: Lang; userId: string }) {
   useEffect(() => {
     (async () => {
       const [m, a] = await Promise.all([
-        supabase!.from("memberships").select("company_id, role, companies(name)").eq("user_id", userId).limit(1).maybeSingle<Membership>(),
+        supabase!.from("memberships").select("company_id, role, companies(name, country)").eq("user_id", userId).limit(1).maybeSingle<Membership>(),
         supabase!.rpc("is_platform_admin"),
       ]);
       setMembership(m.data ?? null);
       setIsAdmin(a.data === true);
       if (!m.data && a.data === true) setTab("admin");
+      else if (m.data) {
+        // A brand-new company opens on Setup until it has a crew.
+        const { count } = await supabase!.from("crews").select("id", { count: "exact", head: true }).eq("company_id", m.data.company_id);
+        if (!count) setTab("setup");
+        else if (FOCUS === "owner" && m.data.role === "owner") setTab("finance");
+      }
     })();
   }, [userId]);
 
@@ -132,10 +145,12 @@ function Office({ lang, userId }: { lang: Lang; userId: string }) {
   if (membership?.role === "crew") return <main className="card"><p>This login is a technician. Use the Cutting Cost crew app.</p></main>;
   if (!membership && !isAdmin) return <main className="card"><p className="muted">This login isn't linked to a company yet.</p></main>;
 
+  const owner = membership?.role === "owner";
+  const money: [Tab, string][] = owner && FOCUS !== "dispatch" ? [["finance", "Finance"]] : [];
+  const work: [Tab, string][] = membership ? [["today", "Today"], ["live", "Live map"], ["routes", "Routes"], ["jobs", "Jobs"], ["clients", "Customers"]] : [];
   const tabs: [Tab, string][] = [
-    ...(membership ? ([["today", "Today"], ["live", "Live map"], ["routes", "Routes"]] as [Tab, string][]) : []),
-    ...(membership?.role === "owner" ? ([["finance", "Finance"]] as [Tab, string][]) : []),
-    ...(membership ? ([["team", "Team"]] as [Tab, string][]) : []),
+    ...(FOCUS === "owner" ? [...money, ...work] : [...work, ...money]),
+    ...(membership ? ([["setup", "Setup"], ["team", "Team"]] as [Tab, string][]) : []),
     ...(isAdmin ? ([["admin", "App owner"]] as [Tab, string][]) : []),
   ];
   return (
@@ -151,6 +166,9 @@ function Office({ lang, userId }: { lang: Lang; userId: string }) {
       {tab === "today" && membership && <Today lang={lang} companyId={membership.company_id} companyName={membership.companies?.name ?? ""} />}
       {tab === "live" && membership && <Live companyId={membership.company_id} />}
       {tab === "routes" && membership && <Routes companyId={membership.company_id} />}
+      {tab === "jobs" && membership && <Jobs companyId={membership.company_id} />}
+      {tab === "clients" && membership && <Clients companyId={membership.company_id} region={membership.companies?.country === "US" ? "us" : membership.companies?.country === "CA" ? "ca" : undefined} />}
+      {tab === "setup" && membership && <Setup companyId={membership.company_id} isOwner={owner} go={setTab} />}
       {tab === "team" && membership && <Team companyId={membership.company_id} myRole={membership.role} myId={userId} />}
       {tab === "admin" && isAdmin && <Admin />}
     </>

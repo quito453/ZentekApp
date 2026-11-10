@@ -11,7 +11,7 @@ import { GeofenceDetector, kmBetween, loginEmail, t, type Fix, type Lang } from 
 import { supabase } from "./supabase";
 import { loadJson, saveJson } from "./localStore";
 import { outbox, type ClockIn, type ClockOut, type GpsBatch, type GpsPoint, type OdometerRead, type VisitUpdate } from "./sync";
-import { askForLocation, locationState, openLocationSettings, watch, type LocState } from "./location";
+import { askForLocation, isNativeApp, locationState, openLocationSettings, watch, type LocState } from "./location";
 
 type Mode = "finance" | "full";
 type Me = { company_id: string; crew_id: string; crew_name: string; full_name: string; mode: Mode; truck_id: string | null; truck_name: string | null };
@@ -439,6 +439,23 @@ function Route({ lang, me, shift, onEnd, onLocationOff }: { lang: Lang; me: Me; 
     };
   }, [me.company_id, me.crew_id, shift.id]);
 
+  // In a phone browser, location only records while the screen is on: keep it on while clocked in.
+  useEffect(() => {
+    if (isNativeApp) return;
+    let lock: { release: () => Promise<void> } | null = null;
+    const ask = async () => {
+      try {
+        lock = await (navigator as Navigator & { wakeLock?: { request: (t: "screen") => Promise<{ release: () => Promise<void> }> } }).wakeLock?.request("screen") ?? null;
+      } catch {
+        /* low battery or not supported */
+      }
+    };
+    const again = () => document.visibilityState === "visible" && void ask();
+    void ask();
+    document.addEventListener("visibilitychange", again);
+    return () => { document.removeEventListener("visibilitychange", again); void lock?.release(); };
+  }, []);
+
   async function endDay(odoEnd: string) {
     const now = new Date().toISOString();
     if (me.truck_id && odoEnd) {
@@ -471,7 +488,7 @@ function Route({ lang, me, shift, onEnd, onLocationOff }: { lang: Lang; me: Me; 
           <b>{t(lang, "offT")}</b> {t(lang, "offP")}
         </div>
       )}
-      <p className="muted small"><span className="ok">●</span> {t(lang, "slGps", { n: sent })}{waiting > 0 ? ` · ${online ? t(lang, "netSync", { n: waiting }) : t(lang, "netOff", { n: waiting })}` : ""}</p>
+      <p className="muted small"><span className="ok">●</span> {t(lang, "slGps", { n: sent })}{!isNativeApp && <> · {t(lang, "gpsKeepOpen")}</>}{waiting > 0 ? ` · ${online ? t(lang, "netSync", { n: waiting }) : t(lang, "netOff", { n: waiting })}` : ""}</p>
 
       {current ? (
         <section className="card now at">

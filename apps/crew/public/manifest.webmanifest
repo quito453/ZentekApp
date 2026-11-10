@@ -1,0 +1,12 @@
+{
+  "name": "Cutting Cost Tech",
+  "short_name": "CC Tech",
+  "description": "Today's stops, odometer and GPS for Cutting Cost crews.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#eceff3",
+  "theme_color": "#1c2733",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

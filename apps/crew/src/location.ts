@@ -14,6 +14,8 @@ export type LocState = "granted" | "prompt" | "denied" | "unsupported";
 export type CrewFix = Fix & { speedMps: number | null; headingDeg: number | null };
 
 const native = Capacitor.isNativePlatform();
+/** True in the Android app; false in a phone browser (where the screen must stay on to record). */
+export const isNativeApp = native;
 const BG = native ? registerPlugin<BackgroundGeolocationPlugin>("BackgroundGeolocation") : null;
 
 export async function locationState(): Promise<LocState> {

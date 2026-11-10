@@ -5,8 +5,8 @@
 // Positions come from the crew tablets (gps_points) and appear as they arrive through Supabase
 // Realtime; the rest refreshes when visits, shifts or breaks change, and every minute as a safety net.
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
+import { useMap } from "./maps/useMap";
+import { YARD_HTML, type LL } from "./maps/MapView";
 import { etaMinutes, liveLabel, liveStatus, type LiveKind } from "@zentek/shared";
 import { supabase } from "./supabase";
 import { debounce } from "./lib";
@@ -24,8 +24,6 @@ type Stop = { id: string; status: string; route_order: number | null; departed_a
 type Pt = { lat: number; lng: number; recorded_at: string };
 
 const PALETTE = ["#1f5fbf", "#c2410c", "#15803d", "#7c3aed", "#0e7490", "#b91c1c", "#a16207", "#4d7c0f"];
-const TILES = (import.meta.env.VITE_MAP_TILES as string | undefined) || "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
-const ATTRIB = (import.meta.env.VITE_MAP_ATTRIBUTION as string | undefined) || "© OpenStreetMap contributors";
 const TONE: Record<LiveKind, string> = { off: "muted", no_signal: "bad", break: "warn", at_stop: "ok", driving: "info", stopped: "warn", done: "ok" };
 const today = () => new Date().toLocaleDateString("en-CA");
 const ago = (iso: string | null, now: number) => {
@@ -43,6 +41,11 @@ export function Live({ companyId }: { companyId: string }) {
   const [sel, setSel] = useState<string | null>(null);
   const [trail, setTrail] = useState<Pt[]>([]);
   const [stops, setStops] = useState<Stop[]>([]);
+  const [yard, setYard] = useState<LL | null>(null);
+  useEffect(() => {
+    supabase!.from("companies").select("yard_lat, yard_lng").eq("id", companyId).single<{ yard_lat: number | null; yard_lng: number | null }>()
+      .then(({ data }) => setYard(data?.yard_lat != null && data?.yard_lng != null ? [data.yard_lat, data.yard_lng] : null));
+  }, [companyId]);
 
   const load = useCallback(async () => {
     const { data, error } = await supabase!.rpc("live_crews", { p_company: companyId });
@@ -127,7 +130,7 @@ export function Live({ companyId }: { companyId: string }) {
       </section>
       {error && <p className="error">{error}</p>}
       <div className="routes-grid">
-        <LiveMap crews={crews} sel={sel} onSel={setSel} trail={trail} stops={stops} />
+        <LiveMap crews={crews} sel={sel} onSel={setSel} trail={trail} stops={stops} yard={yard} />
         <section className="stack">
           {crews.map((c) => {
             const pct = c.r.stops_total ? Math.round((c.r.stops_done / c.r.stops_total) * 100) : 0;
@@ -164,61 +167,44 @@ export function Live({ companyId }: { companyId: string }) {
 
 type C = { r: Row; st: { kind: LiveKind }; color: string; label: string };
 
-function LiveMap({ crews, sel, onSel, trail, stops }: { crews: C[]; sel: string | null; onSel: (id: string | null) => void; trail: Pt[]; stops: Stop[] }) {
-  const el = useRef<HTMLDivElement>(null);
-  const map = useRef<L.Map | null>(null);
-  const layer = useRef<L.LayerGroup | null>(null);
+function LiveMap({ crews, sel, onSel, trail, stops, yard }: { crews: C[]; sel: string | null; onSel: (id: string | null) => void; trail: Pt[]; stops: Stop[]; yard: LL | null }) {
+  const { el, view } = useMap();
   const fitted = useRef("");
 
   useEffect(() => {
-    if (!el.current || map.current) return;
-    map.current = L.map(el.current).setView([43.7, -79.4], 11);
-    L.tileLayer(TILES, { maxZoom: 19, attribution: ATTRIB }).addTo(map.current);
-    layer.current = L.layerGroup().addTo(map.current);
-    const ro = new ResizeObserver(() => map.current?.invalidateSize());
-    ro.observe(el.current);
-    return () => { ro.disconnect(); map.current?.remove(); map.current = null; };
-  }, []);
-
-  useEffect(() => {
-    const m = map.current, g = layer.current;
-    if (!m || !g) return;
-    g.clearLayers();
+    if (!view) return;
+    view.clear();
+    if (yard) view.marker({ at: yard, html: YARD_HTML, title: "Yard", tooltip: "Yard" });
     const selected = crews.find((c) => c.r.crew_id === sel);
-    if (selected && trail.length > 1) L.polyline(trail.map((p) => [p.lat, p.lng] as [number, number]), { color: selected.color, weight: 4, opacity: 0.55 }).addTo(g);
     if (selected) {
+      view.line(trail.map((p) => [p.lat, p.lng] as LL), selected.color, 4, 0.55);
       stops.forEach((s, i) => {
         if (s.properties?.lat == null || s.properties?.lng == null) return;
         const done = s.status === "done" || !!s.departed_at;
         const here = s.status === "on_site" && !s.departed_at;
-        L.marker([s.properties.lat, s.properties.lng], {
-          icon: L.divIcon({ className: "", html: `<span class="pin ${done ? "done" : here ? "here" : "wait"}" style="--cc:${selected.color}">${done ? "✓" : i + 1}</span>`, iconSize: [26, 26], iconAnchor: [13, 13] }),
-          title: s.properties.address,
-        }).addTo(g);
+        view.marker({ at: [s.properties.lat, s.properties.lng], html: `<span class="pin ${done ? "done" : here ? "here" : "wait"}" style="--cc:${selected.color}">${done ? "✓" : i + 1}</span>`, title: s.properties.address, z: 50 });
       });
     }
-    const pts: [number, number][] = [];
-    for (const c of crews) {
-      if (c.r.lat === null || c.r.lng === null || c.st.kind === "off") continue;
-      pts.push([c.r.lat, c.r.lng]);
-      const faded = c.st.kind === "no_signal";
-      L.marker([c.r.lat, c.r.lng], {
-        icon: L.divIcon({ className: "", html: `<span class="truck ${faded ? "faded" : ""} ${c.r.crew_id === sel ? "sel" : ""}" style="--cc:${c.color}">${initials(c.r.crew)}</span>`, iconSize: [36, 36], iconAnchor: [18, 18] }),
+    const onMap = crews.filter((c) => c.r.lat !== null && c.r.lng !== null && c.st.kind !== "off");
+    for (const c of onMap) {
+      view.marker({
+        at: [c.r.lat!, c.r.lng!],
+        html: `<span class="truck ${c.st.kind === "no_signal" ? "faded" : ""} ${c.r.crew_id === sel ? "sel" : ""}" style="--cc:${c.color}">${initials(c.r.crew)}</span>`,
         title: `${c.r.crew}: ${c.label}`,
-        zIndexOffset: c.r.crew_id === sel ? 1000 : 0,
-        keyboard: true,
-      })
-        .bindTooltip(`<b>${c.r.crew}</b><br>${c.label}`)
-        .on("click", () => onSel(c.r.crew_id))
-        .addTo(g);
+        tooltip: `<b>${c.r.crew}</b><br>${c.label}`,
+        z: c.r.crew_id === sel ? 1000 : 200,
+        onClick: () => onSel(c.r.crew_id),
+      });
     }
     // Frame the trucks when the set of crews on the map changes, or the selected crew's day.
-    const sig = sel ? `sel:${sel}:${stops.length}` : `all:${pts.length}`;
+    const sig = sel ? `sel:${sel}:${stops.length}` : `all:${onMap.length}`;
     if (fitted.current !== sig) {
-      const frame: [number, number][] = sel ? [...stops.filter((s) => s.properties?.lat != null).map((s) => [s.properties!.lat!, s.properties!.lng!] as [number, number]), ...pts.filter((_, i) => crews.filter((c) => c.r.lat !== null && c.st.kind !== "off")[i]?.r.crew_id === sel)] : pts;
-      if (frame.length) { fitted.current = sig; m.fitBounds(L.latLngBounds(frame), { padding: [40, 40], maxZoom: 15 }); }
+      const own = onMap.filter((c) => c.r.crew_id === sel).map((c) => [c.r.lat!, c.r.lng!] as LL);
+      const frame: LL[] = sel ? [...stops.filter((s) => s.properties?.lat != null).map((s) => [s.properties!.lat!, s.properties!.lng!] as LL), ...own] : onMap.map((c) => [c.r.lat!, c.r.lng!] as LL);
+      if (!frame.length && yard) frame.push(yard);
+      if (frame.length) { fitted.current = sig; view.fit(frame); }
     }
-  }, [crews, sel, trail, stops]);
+  }, [view, crews, sel, trail, stops, yard]);
 
-  return <div ref={el} className="route-map card" role="application" aria-label="Map of crews. Each truck is at its last known position." />;
+  return <div ref={el} className="route-map card" role="application" aria-label="Map of crews. Each truck is at its last known position; Y is the yard." />;
 }

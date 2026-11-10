@@ -542,5 +542,6 @@
   "slDayDone": "Día terminado. Hasta mañana.",
   "gpsNoticeT": "Cutting Cost está registrando tu ruta",
   "gpsNoticeP": "Solo mientras estás en turno. Se detiene al terminar tu día.",
-  "lcOpenSettings": "Abrir ajustes"
+  "lcOpenSettings": "Abrir ajustes",
+  "gpsKeepOpen": "deja esta pantalla abierta mientras trabajas"
 }

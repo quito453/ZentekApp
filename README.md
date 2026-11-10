@@ -34,6 +34,20 @@ A snow clearing version is in [`demo/snowplow/index.html`](demo/snowplow/index.h
 2. In the SQL editor: `insert into app.platform_admins (user_id) values ('<your user id>');`
 3. Sign in to the office app; the **App owner** tab appears.
 
+## Live apps (GitHub Pages)
+
+The same code is published three times by `.github/workflows/pages.yml`:
+
+| Address | App | For |
+| --- | --- | --- |
+| `/live/tech/` | crew app | Crew phones and tablets: sign in, location on, odometer, today's stops, automatic arrivals |
+| `/live/dispatch/` | office app, `VITE_APP_FOCUS=dispatch` | Jobs, customers, routes, live map, crews (no Finance) |
+| `/live/owner/` | office app, `VITE_APP_FOCUS=owner` | Finance first, plus everything dispatch has |
+
+They talk to each other through the one Supabase project: a crew phone's GPS points and arrivals appear on the dispatch and owner live maps within seconds (Supabase Realtime). A new company opens on **Setup**: yard address (Google Maps), crews with names and colours, crew members, then customers (addresses picked on Google Maps), jobs (once or weekly), routes from the yard, and crew logins.
+
+One-time setup in the GitHub repository: Settings → Pages → Source **GitHub Actions**; Settings → Secrets and variables → Actions → secrets `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `GOOGLE_MAPS_KEY`, and variable `LOGIN_EMAIL_DOMAIN`. Restrict the Google key to `https://<user>.github.io/*` and to Maps JavaScript API + Places API (New). In a phone browser the tech app keeps the screen on while clocked in, because browsers stop location when the screen is off; the Android build records in the background.
+
 ## Finance (owners only)
 
 Cutting Cost is finance-first: it can sit on top of the software a company already uses (Jobber, Yardbook, a spreadsheet) and work out what every job, customer, crew and kilometre really earns. Owners open the office app on **Today**; **Routes** and **Finance** come next. Dispatchers and technicians can't see any of the money, including pay rates (`supabase/tests/finance.test.ts` checks this).

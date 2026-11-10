@@ -101,3 +101,13 @@ describe("points from the tablet", () => {
     ).rejects.toThrow();
   });
 });
+
+describe("yard", () => {
+  it("the owner sets the yard; a dispatcher or crew can read it but not change it", async () => {
+    await asUser(db, OWNER, (tx) => tx.query("update companies set yard_address = '120 Industrial Rd', yard_lat = 43.68, yard_lng = -79.41 where id = $1", [CO]));
+    const r = await asUser(db, TECH, (tx) => tx.query<{ yard_address: string }>("select yard_address from companies where id = $1", [CO]));
+    expect(r.rows[0]!.yard_address).toBe("120 Industrial Rd");
+    const d = await asUser(db, DISP, (tx) => tx.query("update companies set yard_address = 'x' where id = $1", [CO]));
+    expect(d.affectedRows).toBe(0);
+  });
+});
