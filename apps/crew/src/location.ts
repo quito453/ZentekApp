@@ -48,13 +48,25 @@ export async function askForLocation(): Promise<LocState> {
     return state;
   }
   if (!("geolocation" in navigator)) return "unsupported";
-  return new Promise((resolve) =>
+  // Some phone browsers never call back after "Allow" (no fix yet, or the prompt answered late), so
+  // also watch the permission itself and stop waiting after 20 s instead of hanging.
+  return new Promise((resolve) => {
+    let finished = false;
+    const finish = (s: LocState) => {
+      if (finished) return;
+      finished = true;
+      clearInterval(poll);
+      clearTimeout(limit);
+      resolve(s);
+    };
     navigator.geolocation.getCurrentPosition(
-      () => resolve("granted"),
-      (e) => resolve(e.code === e.PERMISSION_DENIED ? "denied" : "granted"), // timeout / no fix yet still means allowed
-      { enableHighAccuracy: true, timeout: 15_000 },
-    ),
-  );
+      () => finish("granted"),
+      (e) => finish(e.code === e.PERMISSION_DENIED ? "denied" : "granted"), // timeout / no fix yet still means allowed
+      { enableHighAccuracy: false, timeout: 15_000, maximumAge: 60_000 },
+    );
+    const poll = setInterval(() => void locationState().then((s) => (s === "granted" || s === "denied") && finish(s)), 1_000);
+    const limit = setTimeout(() => void locationState().then(finish), 20_000);
+  });
 }
 
 /** Opens the app's settings page so the crew can turn location back on (app only). */
