@@ -54,7 +54,8 @@ jobs:
         run: |
           cp -r demo _site/demo
           cp live/index.html _site/index.html
-          printf '<!doctype html><meta http-equiv="refresh" content="0; url=../">' > _site/live/index.html
+          # The same start page at /live/, with its links pointing one level down (no live/live/…).
+          sed -e 's#href="live/#href="#g' -e 's#href="demo/#href="../demo/#g' live/index.html > _site/live/index.html
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:
