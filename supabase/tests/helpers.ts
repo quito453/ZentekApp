@@ -10,6 +10,12 @@ const MIGRATIONS = fileURLToPath(new URL("../migrations/", import.meta.url));
 const SUPABASE_STANDIN = `
   create role authenticated nologin;
   create role anon nologin;
+  -- What Edge Functions use. Like on Supabase: skips row-level security and gets the public tables,
+  -- but nothing in the app schema unless a migration grants it.
+  create role service_role nologin bypassrls;
+  alter default privileges in schema public grant all on tables to service_role;
+  alter default privileges in schema public grant all on sequences to service_role;
+  alter default privileges in schema public grant all on functions to service_role;
   create schema auth;
   create table auth.users (id uuid primary key);
   create function auth.uid() returns uuid language sql stable as $$

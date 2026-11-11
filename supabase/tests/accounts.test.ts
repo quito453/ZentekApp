@@ -12,6 +12,7 @@ const TECH = "00000000-0000-0000-0000-00000000c003";
 const TECH2 = "00000000-0000-0000-0000-00000000c004";
 const OTHER_OWNER = "00000000-0000-0000-0000-00000000d001";
 const NEW_USER = "00000000-0000-0000-0000-00000000c005";
+const SERVER_USER = "00000000-0000-0000-0000-00000000d002";
 
 let db: PGlite;
 
@@ -73,10 +74,26 @@ describe("only the app owner creates logins and sets licences", () => {
     expect(await asUser(db, OWNER, (tx) => count(tx, "select * from memberships"))).toBe(5);
   });
 
+  it("the server (Edge Functions) can add a login and change licences", async () => {
+    await db.exec(`insert into auth.users (id) values ('${SERVER_USER}')`);
+    await db.transaction(async (tx) => {
+      await tx.exec("set local role service_role");
+      await tx.query("update companies set seat_limit = 3 where id = $1", [OTHER_CO]);
+      // The way Supabase's data API writes rows: column types are named, so app.role must be usable.
+      await tx.query(
+        `insert into memberships (user_id, company_id, role, crew_id)
+         select * from json_to_recordset($1::json) as _("user_id" uuid, "company_id" uuid, "role" app.role, "crew_id" uuid)`,
+        [JSON.stringify([{ user_id: SERVER_USER, company_id: OTHER_CO, role: "dispatcher", crew_id: null }])],
+      );
+      await tx.query("insert into profiles (user_id, company_id, username, full_name) values ($1, $2, 'sam.k', 'Sam K.')", [SERVER_USER, OTHER_CO]);
+    });
+    expect(await asUser(db, OTHER_OWNER, (tx) => count(tx, "select * from memberships"))).toBe(2);
+  });
+
   it("the office sees its company's usernames; technicians see only their own", async () => {
     expect(await asUser(db, DISP, (tx) => count(tx, "select * from profiles"))).toBeGreaterThanOrEqual(2);
     expect(await asUser(db, TECH, (tx) => count(tx, "select * from profiles"))).toBe(1);
-    expect(await asUser(db, OTHER_OWNER, (tx) => count(tx, "select * from profiles"))).toBe(0);
+    expect(await asUser(db, OTHER_OWNER, (tx) => count(tx, "select * from profiles where company_id = $1", [CO]))).toBe(0);
   });
 
   it("nobody but the database can see who the app owners are", async () => {
