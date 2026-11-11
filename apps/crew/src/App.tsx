@@ -152,8 +152,9 @@ function SignedIn({ lang }: { lang: Lang }) {
       const { data: user } = await supabase!.auth.getUser();
       if (!user.user) return;
       const m = await supabase!.from("memberships").select("company_id, role, crew_id, crews(name)").eq("user_id", user.user.id).maybeSingle<{ company_id: string; role: string; crew_id: string | null; crews: { name: string } | null }>();
-      if (m.error || !m.data) return; // no signal: keep the saved copy
-      if (m.data.role !== "crew" || !m.data.crew_id) return setNotTech(true);
+      if (m.error) return; // no signal: keep the saved copy
+      // No company login at all (e.g. the app owner's), or an office login: say so instead of loading forever.
+      if (!m.data || m.data.role !== "crew" || !m.data.crew_id) return setNotTech(true);
       const [p, co, tr] = await Promise.all([
         supabase!.from("profiles").select("full_name").eq("user_id", user.user.id).maybeSingle<{ full_name: string }>(),
         supabase!.from("companies").select("mode").eq("id", m.data.company_id).maybeSingle<{ mode: Mode }>(),
